@@ -103,8 +103,8 @@ int	b_read(int argc,char *argv[], Shbltin_t *context)
 		if(opt_info.arg && *opt_info.arg!='\n')
 		{
 			char *cp = opt_info.arg;
-			flags &= ~((1<<D_FLAG)-1);
-			flags |= (mbchar(cp)<< D_FLAG);
+			flags &= ((1<<D_FLAG+1)-1);
+			flags |= (mbchar(cp)<<D_FLAG+1) | (1<<D_FLAG);
 		}
 		break;
 	    case 'p':
@@ -283,7 +283,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 			tty_raw(fd,1);
 		if(!(flags&(N_FLAG|NN_FLAG)))
 		{
-			delim = ((unsigned)flags)>>D_FLAG;
+			delim = ((unsigned)flags)>>(D_FLAG+1);
 			ep->e_nttyparm.c_cc[VEOL] = delim;
 			ep->e_nttyparm.c_lflag |= ISIG;
 			tty_set(fd,TCSADRAIN,&ep->e_nttyparm);

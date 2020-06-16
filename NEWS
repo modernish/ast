@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-16:
+
+- Passing the '-d' flag to the read builtin will no longer cause the '-r'
+  flag to be discarded when 'read -r -d' is run.
+
 2020-06-15:
 
 - The 'source' alias has been converted into a regular built-in command.

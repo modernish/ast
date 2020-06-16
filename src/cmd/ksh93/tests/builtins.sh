@@ -693,4 +693,9 @@ PATH=/dev/null
 whence -q export) || err_exit '`builtin -d` deletes special builtins'
 
 # ======
+# `read -r -d` should not ignore `-r`
+printf '\\\000' | read -r -d ''
+[[ $REPLY == $'\\' ]] || err_exit "read -r -d '' ignores -r"
+
+# ======
 exit $((Errors<125?Errors:125))
