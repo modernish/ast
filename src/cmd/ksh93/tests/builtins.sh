@@ -698,4 +698,9 @@ printf '\\\000' | read -r -d ''
 [[ $REPLY == $'\\' ]] || err_exit "read -r -d '' ignores -r"
 
 # ======
+# Preceding a special builtin with `command` should disable its special properties
+foo=BUG command eval ':'
+[[ $foo == BUG ]] && err_exit '`command` fails to disable the special properties of special builtins'
+
+# ======
 exit $((Errors<125?Errors:125))

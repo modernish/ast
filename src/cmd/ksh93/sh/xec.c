@@ -1134,7 +1134,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 			io = t->tre.treio;
 			if(shp->envlist = argp = t->com.comset)
 			{
-				if(argn==0 || (np && nv_isattr(np,(BLT_DCL|BLT_SPC))))
+				if(argn==0 || (np && (nv_isattr(np,BLT_DCL) || (!command && nv_isattr(np,BLT_SPC)))))
 				{
 					Namval_t *tp=0;
 					if(argn)

@@ -13,9 +13,6 @@ Fix build system:
 - Reimport the removed nmake. It is necessary for changes in Makefiles
   to take effect. The machine-generated Mamfiles are now used as a fallback,
   but they are not meant to be edited by hand.
-- Reimport the removed pty command (for scripting interactive sessions). This
-  is necessary for the pty.sh regression tests to work, which test ksh as an
-  interactive shell. We want to avoid breaking the interactive shell, too.
 
 ______
 Fix or remove broken or misguided default aliases:
@@ -58,10 +55,6 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
 	set -- command ls; "$@"
   don't work.
   See also: https://github.com/att/ast/issues/963
-
-- BUG_CMDSPASGN: preceding a "special builtin"[*] with 'command' does not
-  stop preceding invocation-local variable assignments from becoming global.
-  [*] https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14
 
 - BUG_CMDSPEXIT: preceding a "special builtin"[*] (other than 'eval', 'exec',
   'return' or 'exit') with 'command' does not always stop it from exiting

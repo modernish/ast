@@ -8,6 +8,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Passing the '-d' flag to the read builtin will no longer cause the '-r'
   flag to be discarded when 'read -r -d' is run.
 
+- Fix BUG_CMDSPASGN: preceding a "special builtin"[*] with 'command' now
+  prevents preceding invocation-local variable assignments from becoming global.
+  [*] https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14
+
 2020-06-15:
 
 - The 'source' alias has been converted into a regular built-in command.
