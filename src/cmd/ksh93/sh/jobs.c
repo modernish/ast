@@ -1973,8 +1973,14 @@ again:
 
 void *job_subsave(void)
 {
-	struct back_save *bp = new_of(struct back_save,0);
+	/*
+	 * We must make a lock first before doing anything else,
+	 * otherwise GCC will remove the job locking mechanism
+	 * as a result of compiler optimization.
+	 */
 	job_lock();
+
+	struct back_save *bp = new_of(struct back_save,0);
 	*bp = bck;
 	bp->prev = bck.prev;
 	bck.count = 0;
