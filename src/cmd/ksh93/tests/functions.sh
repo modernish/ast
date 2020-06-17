@@ -1250,4 +1250,13 @@ expect_status=0
     err_exit "autoload function skipped dir test wrong output (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
+# When a function unsets itself, it should not fail to be unset
+$SHELL -c 'PATH=/dev/null; fn() { unset -f fn; true; }; fn' || err_exit 'unset of POSIX function in the calling stack fails'
+$SHELL -c 'PATH=/dev/null; function ftest { ftest2; }; function ftest2 { unset -f ftest; }; ftest' || err_exit 'unset of ksh function in the calling stack fails'
+$SHELL -c 'PATH=/dev/null; fn() { unset -f fn; true; }; fn; fn' 2> /dev/null
+[[ $? != 127 ]] && err_exit 'unset of POSIX function fails when it is still running'
+$SHELL -c 'PATH=/dev/null; function fn { unset -f fn; true; }; fn; fn' 2> /dev/null
+[[ $? != 127 ]] && err_exit 'unset of ksh function fails when it is still running'
+
+# ======
 exit $((Errors<125?Errors:125))

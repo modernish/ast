@@ -2509,7 +2509,7 @@ void	_nv_unset(register Namval_t *np,int flags)
 	if(is_afunction(np) && np->nvalue.ip)
 	{
 		register struct slnod *slp = (struct slnod*)(np->nvenv);
-		if(shp->st.real_fun == np->nvalue.rp)
+		if(np->nvalue.rp->running)
 		{
 			np->nvalue.rp->running |= 1;
 			return;
