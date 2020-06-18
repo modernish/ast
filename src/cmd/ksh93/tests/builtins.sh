@@ -703,4 +703,18 @@ foo=BUG command eval ':'
 [[ $foo == BUG ]] && err_exit '`command` fails to disable the special properties of special builtins'
 
 # ======
+# `whence -a` should not base the path of tracked aliases on the current directory
+run_whence()
+{
+	whence -a chmod >> /dev/null
+	builtin chmod
+	whence -a chmod
+}
+actual="$(run_whence)"
+expected="chmod is a shell builtin
+chmod is $(whence -p chmod)
+chmod is a tracked alias for $(whence -p chmod)"
+[[ $actual == $expected ]] || err_exit '`whence -a` does not work correctly with tracked aliases'
+
+# ======
 exit $((Errors<125?Errors:125))

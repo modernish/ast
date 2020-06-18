@@ -3,6 +3,13 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-06-18:
+
+- A two decade old bug that caused 'whence -a' to base the path of
+  tracked aliases on the user's current working directory has been
+  fixed. Now the real path to the tracked aliases is shown when '-a'
+  is passed to the whence command.
+
 2020-06-17:
 
 - A bug in 'unset -f' was fixed that prevented shell functions from

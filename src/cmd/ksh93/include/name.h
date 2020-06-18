@@ -32,6 +32,7 @@
 #include	<cdt.h>
 
 typedef int (*Nambfp_f)(int, char**, void*);
+struct pathcomp;
 
 /* Nodes can have all kinds of values */
 union Value
@@ -54,6 +55,7 @@ union Value
 	struct Namfun		*funp;	/* discipline pointer */
 	struct Namref		*nrp;	/* name reference */
 	Nambfp_f		bfp;	/* builtin entry point function pointer */
+	struct pathcomp *pathcomp;
 };
 
 #include	"nval.h"
