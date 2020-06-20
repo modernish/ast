@@ -638,7 +638,7 @@ static void put_rand(register Namval_t* np,const char *val,int flags,Namfun_t *f
 		fp = nv_stack(np, NIL(Namfun_t*));
 		if(fp && !fp->nofree)
 			free((void*)fp);
-		_nv_unset(np,0);
+		_nv_unset(np,NV_RDONLY);
 		return;
 	}
 	if(flags&NV_INTEGER)
@@ -696,7 +696,7 @@ static void put_lineno(Namval_t* np,const char *val,int flags,Namfun_t *fp)
 		fp = nv_stack(np, NIL(Namfun_t*));
 		if(fp && !fp->nofree)
 			free((void*)fp);
-		_nv_unset(np,0);
+		_nv_unset(np,NV_RDONLY);
 		return;
 	}
 	if(flags&NV_INTEGER)

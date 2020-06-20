@@ -796,4 +796,147 @@ actual=$(env SHLVL="2#11+x[\$(env echo Exploited vuln CVE-2019-14868 >&2)0]" "$S
 [[ $actual == $expect ]] || err_exit "expression allowed on env var import (expected '$expect', got '$actual')"
 
 # ======
+# Check unset and cleanup/restore behavior of special variables.
+
+# Keep the list in sync (minus ".sh") with shtab_variables[] in src/cmd/ksh93/data/variables.c
+# Note: as long as changing $PATH forks a virtual subshell, "PATH" should also be excluded below.
+set -- \
+	"PS1" \
+	"PS2" \
+	"IFS" \
+	"PWD" \
+	"HOME" \
+	"MAIL" \
+	"REPLY" \
+	"SHELL" \
+	"EDITOR" \
+	"MAILCHECK" \
+	"RANDOM" \
+	"ENV" \
+	"HISTFILE" \
+	"HISTSIZE" \
+	"HISTEDIT" \
+	"HISTCMD" \
+	"FCEDIT" \
+	"CDPATH" \
+	"MAILPATH" \
+	"PS3" \
+	"OLDPWD" \
+	"VISUAL" \
+	"COLUMNS" \
+	"LINES" \
+	"PPID" \
+	"_" \
+	"TMOUT" \
+	"SECONDS" \
+	"LINENO" \
+	"OPTARG" \
+	"OPTIND" \
+	"PS4" \
+	"FPATH" \
+	"LANG" \
+	"LC_ALL" \
+	"LC_COLLATE" \
+	"LC_CTYPE" \
+	"LC_MESSAGES" \
+	"LC_NUMERIC" \
+	"FIGNORE" \
+	"KSH_VERSION" \
+	"JOBMAX" \
+	".sh.edchar" \
+	".sh.edcol" \
+	".sh.edtext" \
+	".sh.edmode" \
+	".sh.name" \
+	".sh.subscript" \
+	".sh.value" \
+	".sh.version" \
+	".sh.dollar" \
+	".sh.match" \
+	".sh.command" \
+	".sh.file" \
+	".sh.fun" \
+	".sh.lineno" \
+	".sh.subshell" \
+	".sh.level" \
+	".sh.stats" \
+	".sh.math" \
+	".sh.pool" \
+	"SHLVL" \
+	"CSWIDTH"
+
+# ... unset
+$SHELL -c '
+	errors=0
+	unset -v "$@" || let errors++
+	for var
+	do	if	[[ $var != "_" ]] &&	# only makes sense that $_ is immediately set again
+			{ [[ -v $var ]] || eval "[[ -n \${$var+s} ]]"; }
+		then	echo "	$0: special variable $var still set" >&2
+			let errors++
+		elif	eval "[[ -n \${$var} ]]"
+		then	echo "	$0: special variable $var has value, though unset" >&2
+			let errors++
+		fi
+	done
+	exit $((errors + 1))	# a possible erroneous asynchronous fork would cause exit status 0
+' unset_test "$@"
+e=$?
+((e == 1)) || err_exit "Failure in unsetting one or more special variables (exit status $e)"
+
+# ... unset in virtual subshell inside of nested function
+$SHELL -c '
+	errors=0
+	fun1()
+	{
+		fun2()
+		{
+			(
+				unset -v "$@" || let errors++
+				for var
+				do	if	[[ $var != "_" ]] &&	# only makes sense that $_ is immediately set again
+						{ [[ -v $var ]] || eval "[[ -n \${$var+s} ]]"; }
+					then	echo "	$0: special variable $var still set" >&2
+						let errors++
+					elif	eval "[[ -n \${$var} ]]"
+					then	echo "	$0: special variable $var has value, though unset" >&2
+						let errors++
+					fi
+				done
+				exit $errors
+			) || errors=$?
+		}
+		fun2 "$@"
+	}
+	fun1 "$@"
+	exit $((errors + 1))	# a possible erroneous asynchronous fork would cause exit status 0
+' unset_subsh_fun_test "$@"
+e=$?
+((e == 1)) || err_exit "Unset of special variable(s) in a virtual subshell within a nested function fails (exit status $e)"
+
+# ... readonly in subshell
+$SHELL -c '
+	errors=0
+	(
+		readonly "$@"
+		for var
+		do	if	(eval "$var=") 2>/dev/null
+			then	echo "	$0: special variable $var not made readonly in subshell" >&2
+				let errors++
+			fi
+		done
+		exit $errors
+	) || errors=$?
+	for var
+	do	if	! (eval "$var=")
+		then	echo "	$0: special variable $var still readonly outside subshell" >&2
+			let errors++
+		fi
+	done
+	exit $((errors + 1))	# a possible erroneous asynchronous fork would cause exit status 0
+' readonly_test "$@"
+e=$?
+((e == 1)) || err_exit "Failure in making one or more special variables readonly in a subshell (exit status $e)"
+
+# ======
 exit $((Errors<125?Errors:125))
