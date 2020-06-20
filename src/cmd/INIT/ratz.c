@@ -4736,7 +4736,7 @@ char**	argv;
 	}
 	else
 		state.id = "ratz";
-	switch ('~')
+	switch ((unsigned char)'~')
 	{
 	case 0241:
 		switch ('\n')
