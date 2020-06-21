@@ -4991,7 +4991,7 @@ admin)	while	test ! -f $admin_db
 
 clean|clobber)
 	cd $PACKAGEROOT
-	$exec rm -rf $INSTALLROOT
+	$exec rm -rf arch/$HOSTTYPE
 	exit
 	;;
 
