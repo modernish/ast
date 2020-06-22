@@ -8,20 +8,20 @@ jobs:
     name: Linux
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
+    - name: Checkout sources
       uses: actions/checkout@v2
-    - name: build
+    - name: Build
       run: bin/package make
-    - name: test
+    - name: Regression tests
       run: bin/shtests
 
   MacOS:
     name: MacOS
     runs-on: macos-latest
     steps:
-    - name: checkout
+    - name: Checkout sources
       uses: actions/checkout@v2
-    - name: build
+    - name: Build
       run: bin/package make
-    - name: test
+    - name: Regression tests
       run: bin/shtests
