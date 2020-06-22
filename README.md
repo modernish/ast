@@ -55,17 +55,17 @@ improved release out there.
 
 After cloning this repo, cd to the top directory of it and run:
 ```sh
-./bin/package make
+bin/package make
 ```
 If you have trouble or want to tune the binaries, you may pass additional
 compiler and linker flags by appending it to the command shown above. E.g.:
 ```sh
-./bin/package make \
+bin/package make \
     SHELL=/bin/bash CCFLAGS="-xc99 -D_XPG6 -m64 -xO4" LDFLAGS="-m64"
 ```
 For more information run
 ```sh
-        bin/package help
+bin/package help
 ```
 Many other commands in this repo self-document via the `--help`, `--man` and
 `--html` options; those that do have no separate manual page.
@@ -75,7 +75,7 @@ Many other commands in this repo self-document via the `--help`, `--man` and
 After compiling, you can run the regression tests.
 Start by reading the information printed by:
 ```sh
-./bin/shtests --man
+bin/shtests --man
 ```
 
 ## What is ksh93?
