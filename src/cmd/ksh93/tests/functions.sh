@@ -1259,4 +1259,12 @@ $SHELL -c 'PATH=/dev/null; function fn { unset -f fn; true; }; fn; fn' 2> /dev/n
 [[ $? != 127 ]] && err_exit 'unset of ksh function fails when it is still running'
 
 # ======
+# Check if environment variables passed while invoking a function are exported
+# https://github.com/att/ast/issues/32
+unset foo
+function f2 { env | grep -q "^foo" || err_exit "Environment variable is not propogated from caller function"; }
+function f1 { f2; env | grep -q "^foo" || err_exit "Environment variable is not passed to a function"; }
+foo=bar f1
+
+# ======
 exit $((Errors<125?Errors:125))

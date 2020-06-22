@@ -3249,7 +3249,10 @@ static void  local_exports(register Namval_t *np, void *data)
 	if(nv_isarray(np))
 		nv_putsub(np,NIL(char*),0);
 	if((cp = nv_getval(np)) && (mp = nv_search(nv_name(np), shp->var_tree, NV_ADD|HASH_NOSCOPE)) && nv_isnull(mp))
+	{
 		nv_putval(mp, cp, 0);
+		mp->nvflag = np->nvflag;
+	}
 }
 
 /*
