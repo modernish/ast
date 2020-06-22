@@ -12,6 +12,8 @@ jobs:
       uses: actions/checkout@v2
     - name: build
       run: bin/package make
+    - name: test
+      run: bin/shtests
 
   MacOS:
     name: MacOS
@@ -21,3 +23,5 @@ jobs:
       uses: actions/checkout@v2
     - name: build
       run: bin/package make
+    - name: test
+      run: bin/shtests
