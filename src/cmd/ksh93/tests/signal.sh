@@ -461,4 +461,11 @@ fi
 let "${actual##*$'\n'} > 128" || err_exit "child process signal did not cause exit status > 128"
 
 # ======
+# Killing a non-existent job shouldn't cause a segfault. Note that `2> /dev/null` has no effect when
+# there is a segfault.
+$SHELL -c 'kill %% 2> /dev/null'; [[ $? == 1 ]] || err_exit $'`kill` doesn\'t handle a non-existent job correctly when passed \'%%\''
+$SHELL -c 'kill %+ 2> /dev/null'; [[ $? == 1 ]] || err_exit $'`kill` doesn\'t handle a non-existent job correctly when passed \'%+\''
+$SHELL -c 'kill %- 2> /dev/null'; [[ $? == 1 ]] || err_exit $'`kill` doesn\'t handle a non-existent job correctly when passed \'%-\''
+
+# ======
 exit $((Errors<125?Errors:125))

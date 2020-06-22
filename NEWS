@@ -11,6 +11,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 	cmd=stop; $cmd $!
   will now work. See 'stop --man' and 'suspend --man' for more information.
 
+- Fixed a bug that caused the kill and stop commands to segfault when given
+  a non-existent job.
+
 2020-06-20:
 
 - Fixed a bug that caused setting the following variables as readonly in

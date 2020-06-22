@@ -1111,6 +1111,8 @@ static struct process *job_bystring(register char *ajob)
 
 int job_kill(register struct process *pw,register int sig)
 {
+	if(!pw)
+		goto error;
 	Shell_t	*shp = pw->p_shp;
 	register pid_t pid;
 	register int r;
@@ -1122,8 +1124,6 @@ int job_kill(register struct process *pw,register int sig)
 #endif	/* SIGTSTP */
 	job_lock();
 	errno = ECHILD;
-	if(pw==0)
-		goto error;
 	pid = pw->p_pid;
 #if SHOPT_COSHELL
 	if(pw->p_cojob)
