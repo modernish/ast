@@ -310,8 +310,8 @@ then	err_exit "printf '%..*s' not working"
 fi
 [[ $(printf '%q\n') == '' ]] || err_exit 'printf "%q" with missing arguments'
 # we won't get hit by the one second boundary twice, right?
-[[ $(printf '%T\n' now) == "$(date)" ]] ||
-[[ $(printf '%T\n' now) == "$(date)" ]] ||
+[[ $(LC_ALL=C printf '%T\n' now) == "$(LC_ALL=C date)" ]] ||
+[[ $(LC_ALL=C printf '%T\n' now) == "$(LC_ALL=C date)" ]] ||
 err_exit 'printf "%T" now'
 behead()
 {
