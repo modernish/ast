@@ -1,3 +1,5 @@
+![](https://github.com/ksh93/ksh/workflows/CI/badge.svg)
+
 # KornShell 93u+m
 
 This repository is used to develop bugfixes

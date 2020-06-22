@@ -1,0 +1,23 @@
+name: CI
+
+on: [push]
+
+jobs:
+
+  Linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: build
+      run: bin/package make
+
+  MacOS:
+    name: MacOS
+    runs-on: macos-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2
+    - name: build
+      run: bin/package make
