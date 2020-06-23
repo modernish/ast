@@ -13,15 +13,6 @@ jobs:
     - name: Build
       run: bin/package make
     - name: Regression tests
-      run: bin/shtests
-
-  MacOS:
-    name: MacOS
-    runs-on: macos-latest
-    steps:
-    - name: Checkout sources
-      uses: actions/checkout@v2
-    - name: Build
-      run: bin/package make
-    - name: Regression tests
-      run: bin/shtests
+      run: |
+        ulimit -n 1024
+        script -q -e -c "bin/shtests"
