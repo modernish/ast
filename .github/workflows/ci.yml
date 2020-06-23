@@ -14,5 +14,6 @@ jobs:
       run: bin/package make
     - name: Regression tests
       run: |
+        export TZ=GMT
         ulimit -n 1024
         script -q -e -c "bin/shtests"
