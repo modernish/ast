@@ -1182,20 +1182,20 @@ int	sh_redirect(Shell_t *shp,struct ionod *iop, int flag)
 				strcpy(ap->argval,iop->ioname);
 				fname=sh_macpat(shp,ap,(iof&IOARITH)?ARG_ARITH:ARG_EXP);
 			}
-			else if(iof&IOPROCSUB)
-			{
-				struct argnod *ap = (struct argnod*)stakalloc(ARGVAL+strlen(iop->ioname));
-				memset(ap, 0, ARGVAL);
-				if(iof&IOPUT)
-					ap->argflag = ARG_RAW;
-				else if(shp->subshell)
-					sh_subtmpfile(shp);
-				ap->argchn.ap = (struct argnod*)fname; 
-				ap = sh_argprocsub(shp,ap);
-				fname = ap->argval;
-			}
-			else
+			else if(!(iof&IOPROCSUB))
 				fname=sh_mactrim(shp,fname,(!sh_isoption(SH_NOGLOB)&&sh_isoption(SH_INTERACTIVE))?2:0);
+		}
+		if((iof&IOPROCSUB) && !(iof&IOLSEEK))
+		{
+			struct argnod *ap = (struct argnod*)stakalloc(ARGVAL+strlen(iop->ioname));
+			memset(ap, 0, ARGVAL);
+			if(iof&IOPUT)
+				ap->argflag = ARG_RAW;
+			else if(shp->subshell)
+				sh_subtmpfile(shp);
+			ap->argchn.ap = (struct argnod*)fname;
+			ap = sh_argprocsub(shp,ap);
+			fname = ap->argval;
 		}
 		errno=0;
 		np = 0;

@@ -540,4 +540,22 @@ expect="*: redirect: incorrect syntax"
 [[ $actual == $expect ]] || err_exit "redirect command wrongly accepting non-redir args"
 
 # ======
+# Process substitution
+
+# An output process substitution should work when combined with a redirection.
+# The 'cd "$tmp"' is because in many versions of ksh the test creates a bizarre
+# file that isn't easy to delete individually.
+cd "$tmp"
+result=$("$SHELL" -c 'echo ok > >(sed s/ok/good/); wait')
+[[ $result == good ]] || err_exit 'process substitution does not work with redirections' \
+				"(expected 'good', got $(printf %q "$result"))"
+cd - >/dev/null
+
+# Process substitution in an interactive shell shouldn't print the
+# process ID of the asynchronous process.
+result=$("$SHELL" -ic 'echo >(true) >/dev/null' 2>&1)
+[[ -z $result ]] || err_exit 'interactive shells print a PID during process substitution' \
+				"(expected '', got $(printf %q "$result"))"
+
+# ======
 exit $((Errors<125?Errors:125))

@@ -10,7 +10,7 @@ valgrindflags='--xml=yes --log-file=/dev/null --track-origins=yes --read-var-inf
 
 USAGE=$'
 [-s8?
-@(#)$Id: shtests (AT&T Research) 2012-05-29 $
+@(#)$Id: shtests (AT&T Research/ksh93) 2020-06-23 $
 ]
 '$USAGE_LICENSE$'
 [+NAME?shtests - ksh regression test harness]
@@ -273,16 +273,19 @@ then	s=${SHELL:##*sh}
 	else	SHCOMP=shcomp
 	fi
 fi
+
+tmp=$(
+	d=${TMPDIR:-/tmp}/ksh93.shtests.$$.${RANDOM:-0}
+	mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+	echo 'mkdir failed' >&2
+	exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
+
 if	(( compile ))
 then	if	whence $SHCOMP > /dev/null
-	then	tmp=$(
-			d=${TMPDIR:-/tmp}/ksh93.shtests.$$.${RANDOM:-0}
-			mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
-		) || {
-			echo 'mkdir failed' >&2
-			exit 1
-		}
-		trap 'cd / && rm -rf "$tmp"' EXIT
+	then	:
 	elif	(( compile > 1 ))
 	then	echo $0: --compile: $SHCOMP not found >&2
 		exit 1
@@ -292,16 +295,6 @@ fi
 if	[[ $valgrind ]]
 then	if	[[ -x $SHELL-g ]]
 	then	SHELL=$SHELL-g
-	fi
-	if	[[ ! $tmp ]]
-	then	tmp=$(
-			d=${TMPDIR:-/tmp}/ksh93.shtests.$$.${RANDOM:-0}
-			mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
-		) || {
-			echo 'mkdir failed' >&2
-			exit 1
-		}
-		trap 'cd / && rm -rf "$tmp"' EXIT
 	fi
 	valxml=$tmp/valgrind.xml
 	valgrind+=" --xml-file=$valxml"
@@ -393,17 +386,30 @@ do	[[ $i == *.sh ]] || i+='.sh'
 done
 print "Total errors: $total_e"
 
-# TODO: output process substitution is fatally broken.
-# Until that is fixed, skip the pretty-printing.
-# See https://github.com/modernish/ksh/issues/7
-#print $'CPU time used:\n\\t user:\t system:'
-#times > >(
-#	t[0]='main'
-#	read t[1] t[2]
-#	t[3]='*.sh'
-#	read t[4] t[5]
-#	printf '%s:\t%s\t%s\n' "${t[@]}"
-#)
-times
+# This test harness should continue to work with old and buggy versions of ksh93, so check
+# if we have the 'times' builtin and can use process substitution with output redirection.
+# See:	https://github.com/ksh93/ksh/commit/65d363fd
+#	https://github.com/ksh93/ksh/issues/2
+if 	(	ulimit -t unlimited	# fork to circumvent old ksh bugs
+		unalias times
+		PATH=/dev/null whence -q times || exit
+		cd "$tmp" || exit
+		echo ok > >(cat > procsubst_test)
+		wait
+		[[ $(< procsubst_test) == ok ]]
+	) 2>/dev/null
+then	# Transforming 'times' output requires a process substitution.
+	# A regular 'times | ...' pipeline would cause 'times' to be
+	# run in a subshell, which would reset all the times to zero.
+	times > >(
+		t[0]='CPU time'	t[1]='user:'	t[2]='system:'
+		t[3]='main:'; 	read t[4]	t[5]
+		t[6]='tests:';	read t[7]	t[8]
+		printf '%-8s%12s %12s\n' "${t[@]}"
+	)
+	wait "$!"  # process substitutions are executed asynchronously
+else	# No pretty-printing.
+	times
+fi
 
 exit $((total_e > 125 ? 125 : total_e))

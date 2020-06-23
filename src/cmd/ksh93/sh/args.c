@@ -784,7 +784,7 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 {
 	/* argument of the form <(cmd) or >(cmd) */
 	register struct argnod *ap;
-	int monitor, fd, pv[3];
+	int monitor, interactive, fd, pv[3];
 	int subshell = shp->subshell;
 	ap = (struct argnod*)stkseek(shp->stk,ARGVAL);
 	ap->argflag |= ARG_MAKE;
@@ -805,8 +805,14 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 	sfputr(shp->stk,fmtbase((long)pv[fd],10,0),0);
 	ap = (struct argnod*)stkfreeze(shp->stk,0);
 	shp->inpipe = shp->outpipe = 0;
+
+	/* turn off job control */
+	if(interactive = (sh_isstate(SH_INTERACTIVE)!=0))
+		sh_offstate(SH_INTERACTIVE);
 	if(monitor = (sh_isstate(SH_MONITOR)!=0))
 		sh_offstate(SH_MONITOR);
+
+	/* do the process substitution */
 	shp->subshell = 0;
 	if(fd)
 	{
@@ -818,9 +824,13 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 		shp->outpipe = pv;
 		sh_exec((Shnode_t*)argp->argchn.ap,(int)sh_isstate(SH_ERREXIT));
 	}
+
+	/* restore the previous state */
 	shp->subshell = subshell;
 	if(monitor)
 		sh_onstate(SH_MONITOR);
+	if(interactive)
+		sh_onstate(SH_INTERACTIVE);
 #if SHOPT_DEVFD
 	close(pv[1-fd]);
 	sh_iosave(shp,-pv[fd], shp->topfd, (char*)0);
