@@ -561,7 +561,7 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 			if(troot == shp->fun_tree)
 			{
 				/*
-				 *functions can be exported or
+				 * functions can be exported or
 				 * traced but not set
 				 */
 				flag &= ~NV_ASSIGN;

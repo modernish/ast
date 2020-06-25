@@ -39,7 +39,7 @@ ksh93, rksh93, pfksh93 \- KornShell, a standard/restricted command and programmi
 .B ksh93
 .\}
 [
-.B \(+-abcefhikmnoprstuvxBCDP
+.B \(+-abcefhiklmnoprstuvxBCDEGHP
 ] [
 .B \-R
 file ] [
@@ -63,7 +63,7 @@ option ] .\|.\|. [
 .B \-R
 file ] [
 .B \(+-o
-option ] .\|.\|.  [
+option ] .\|.\|. [
 .B \-
 ] [ arg .\|.\|. ]
 .SH DESCRIPTION
@@ -2201,7 +2201,7 @@ included.
 .IP
 All other characters are output without change and a trailing
 newline is added.
-If unset, the default value, \fB$'\enreal\et%2lR\enuser\et%2lU\ensys\t%2lS'\fP,
+If unset, the default value, \fB$'\enreal\et%2lR\enuser\et%2lU\ensys\et%2lS'\fP,
 is used.  If the value is null, no timing information is displayed.
 .TP
 .B
@@ -4005,7 +4005,7 @@ by defining the first sub-variable name as
 and defining its type as the base type.
 Any remaining definitions will be additions and modifications
 that apply to the new type.
-If the new type name is the same is that of the base type,
+If the new type name is the same as that of the base type,
 the type will be replaced and the original type will
 no longer be accessible.
 .PP
@@ -4014,7 +4014,7 @@ The
 command with the
 .B \-T
 and no option argument or operands will write all the type definitions to
-standard output in a form that that can be read in to create all they types.
+standard output in a form that can be read in to create all they types.
 .SS Jobs.
 .PP
 If the
@@ -4252,7 +4252,7 @@ where
 .I path\^
 names an
 existing directory
-then that directory is searched after immediately after the current directory
+then that directory is searched immediately after the current directory
 as if it were found in the
 .B
 .SM FPATH
@@ -5769,7 +5769,7 @@ The
 command may not be executed by
 .if \nZ=0 .B rsh\^.
 .if \nZ=1 .B rksh\^.
-.if \nZ=1 .B rksh93\^.
+.if \nZ=2 .B rksh93\^.
 .TP
 \f3command\fP \*(OK \f3\-pvxV\fP \*(CK \f2name\^\fP \*(OK \f2arg\^\fP .\|.\|. \*(CK
 Without the
@@ -6302,7 +6302,7 @@ The exit status is
 0 if the value of the last expression
 is non-zero, and 1 otherwise.
 .TP
-\f3print\fP \*(OK \f3\-CRenprsv\^\fP \*(CK \*(OK \f3\-u\fP \f2unit\^\fP\*(CK \*(OK \f3\-f\fP \f2format\^\fP \*(CK \*(OK \f2arg\^\fP .\|.\|. \*(CK
+\f3print\fP \*(OK \f3\-CRenprsv\^\fP \*(CK \*(OK \f3\-u\fP \f2unit \^\fP\*(CK \*(OK \f3\-f\fP \f2format\^\fP \*(CK \*(OK \f2arg\^\fP .\|.\|. \*(CK
 With no options or with option
 .B \-
 or
@@ -6607,7 +6607,7 @@ or
 on the command line
 determines which method is used.
 .TP
-\f3read\fP \*(OK \f3\-ACSprsv\^\fP \*(CK \*(OK \f3\-d\fP \f2delim\^\fP\*(CK \*(OK \f3\-n\fP \f2n\^\fP\*(CK \*(OK \*(OK \f3\-N\fP \f2n\^\fP\*(CK \*(OK \*(OK \f3\-t\fP \f2timeout\^\fP\*(CK \*(OK \f3\-u\fP \f2unit\^\fP\*(CK \*(OK \f2vname\f3?\f2prompt\^\f1 \*(CK \*(OK \f2vname\^\fP .\|.\|. \*(CK
+\f3read\fP \*(OK \f3\-ACSprsv\^\fP \*(CK \*(OK \f3\-d\fP \f2delim \^\fP\*(CK \*(OK \f3\-n\fP \f2n \^\fP\*(CK \*(OK \*(OK \f3\-N\fP \f2n \^\fP\*(CK \*(OK \f3\-t\fP \f2timeout \^\fP\*(CK \*(OK \f3\-u\fP \f2unit \^\fP\*(CK \*(OK \f2vname\f3?\f2prompt\^\f1 \*(CK \*(OK \f2vname\^\fP .\|.\|. \*(CK
 The shell input mechanism.
 One line is read and
 is broken up into fields using the characters in
@@ -6838,6 +6838,11 @@ If followed by a
 .B /
 only directories and sub-directories are matched.
 .TP 8
+.B \-H
+Enable \f3!\fP-style history expansion similar to
+.IR csh (1).
+.
+.TP 8
 .B \-a
 All subsequent variables that are defined are automatically exported.
 .TP 8
@@ -6896,10 +6901,6 @@ The following argument can be one of the following option names:
 Same as
 .BR \-a .
 .TP 8
-.B errexit
-Same as
-.BR \-e .
-.TP 8
 .B bgnice
 All background jobs are run at a lower priority.
 This is the default mode.
@@ -6913,6 +6914,10 @@ Puts you in an
 .I emacs
 style in-line editor for command entry.
 .TP 8
+.B errexit
+Same as
+.BR \-e .
+.TP 8
 .B globstar
 Same as
 .BR \-G .
@@ -6921,6 +6926,10 @@ Same as
 Puts you in a
 .I gmacs
 style in-line editor for command entry.
+.TP 8
+.B histexpand
+Same as
+.BR \-H .
 .TP 8
 .B ignoreeof
 The shell will not exit on end-of-file.
@@ -6981,6 +6990,10 @@ of the pipeline have completed, and the return value
 will be the value of the last non-zero command
 to fail or zero if no command has failed.
 .TP 8
+.B privileged
+Same as
+.BR \-p .
+.TP 8
 .B showme
 When enabled, simple commands or pipelines preceded by a semicolon
 .RB ( ; )
@@ -6991,17 +7004,13 @@ Otherwise, the leading
 .B ;
 will be ignored.
 .TP 8
-.B privileged
+.B trackall
 Same as
-.BR \-p .
+.BR \-h .
 .TP 8
 .B verbose
 Same as
 .BR \-v .
-.TP 8
-.B trackall
-Same as
-.BR \-h .
 .TP 8
 .B vi
 Puts you in insert mode of a
@@ -7937,10 +7946,13 @@ when it is invoked:
 .PD 0
 .TP 8
 .B \-D
-Do not execute the script, but output the set of double quoted strings
-preceded by a
-.BR $ .
-These strings are needed for localization of the script to different locales.
+A list of all double quoted strings that are preceded by a
+.B $
+will be printed on standard output and the shell will exit.
+This set of strings will be subject to language translation
+when the locale is not C or POSIX.
+No commands will be executed.
+.PD
 .TP 8
 .B \-E
 Reads the file named by the
@@ -7948,7 +7960,7 @@ Reads the file named by the
 variable or by
 \s-1$HOME\s+1/\f3.\fPkshrc
 if not defined after the profiles.
-.TP 10
+.TP 8
 .BI \-c
 If the
 .B \-c
@@ -7984,22 +7996,13 @@ In this case \s-1TERM\s+1 is ignored (so that \f3kill 0\fP
 does not kill an interactive shell) and \s-1INTR\s+1 is caught and ignored
 (so that
 .B wait
-is ).
+is interruptible).
 In all cases, \s-1QUIT\s+1 is ignored by the shell.
 .TP
 .B \-r
 If the
 .B \-r
 option is present, the shell is a restricted shell.
-.TP
-.B \-D
-A list of all double quoted strings that are preceded by a
-.B $
-will be printed on standard output and the shell will exit.
-This set of strings will be subject to language translation
-when the locale is not C or POSIX.
-No commands will be executed.
-.PD
 .TP
 .B \-P
 If

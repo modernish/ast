@@ -70,7 +70,7 @@
 10-06-25 package.sh: "force admin ditto" => no ditto --update option
 10-06-22 C+probe: handle cc that require .[ci] input for version info
 10-06-21 ditto.sh: change default remote access to ssh (about time)
-10-06-12 regress.sh: DISGNOSTICS [ 1 | 0 | pattern ] and fix EXIT for all
+10-06-12 regress.sh: DIAGNOSTICS [ 1 | 0 | pattern ] and fix EXIT for all
 10-06-09 package.sh: add AT&T to usable nmake check
 10-06-06 iffe.sh,iffe.tst: add { api ver } ops
 10-04-22 package.sh: update "html binary|source" NAME/PASSWORD info

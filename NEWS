@@ -45,8 +45,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - A two decade old bug that caused 'whence -a' to base the path of
   tracked aliases on the user's current working directory has been
-  fixed. Now the real path to the tracked aliases is shown when '-a'
-  is passed to the whence command.
+  fixed. Now the real path to tracked aliases is shown when '-a' is
+  passed to the whence command.
 
 2020-06-17:
 
@@ -119,6 +119,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Changing the hash table in a subshell will no longer affect the parent
   shell's hash table. This fix applies to the hash utility and when the
   PATH is reset manually.
+
+- 'set +r' is no longer able to unset the restricted option. This change
+  makes the behavior of 'set +r' identical to 'set +o restricted'.
 
 2020-06-09:
 

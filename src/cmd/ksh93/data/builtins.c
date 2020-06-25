@@ -940,7 +940,7 @@ const char sh_opthash[] =
 "\n"
 "[+EXIT STATUS?]{"
 	"[+0?Successful completion.]"
-	"[+>0?An error occured.]"
+	"[+>0?An error occurred.]"
 "}"
 "[+SEE ALSO?\bsh\b(1), \balias\b(1)]"
 ;

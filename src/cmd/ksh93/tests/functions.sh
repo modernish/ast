@@ -1262,7 +1262,7 @@ $SHELL -c 'PATH=/dev/null; function fn { unset -f fn; true; }; fn; fn' 2> /dev/n
 # Check if environment variables passed while invoking a function are exported
 # https://github.com/att/ast/issues/32
 unset foo
-function f2 { env | grep -q "^foo" || err_exit "Environment variable is not propogated from caller function"; }
+function f2 { env | grep -q "^foo" || err_exit "Environment variable is not propagated from caller function"; }
 function f1 { f2; env | grep -q "^foo" || err_exit "Environment variable is not passed to a function"; }
 foo=bar f1
 

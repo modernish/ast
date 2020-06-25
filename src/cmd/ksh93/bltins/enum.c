@@ -160,7 +160,7 @@ static void put_enum(Namval_t* np,const char *val,int flags,Namfun_t *fp)
 		i++;
 	}
 	if(nv_isattr(np,NV_NOFREE))
-		error(ERROR_exit(1), "%s:  invalid value %s",nv_name(np),val);
+		error(ERROR_exit(1), "%s: invalid value %s",nv_name(np),val);
 }
 
 static char* get_enum(register Namval_t* np, Namfun_t *fp)

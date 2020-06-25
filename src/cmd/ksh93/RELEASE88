@@ -157,7 +157,7 @@ of ksh.
 	8.  Variable .sh.version is set to the version string for
 	    this shell.
 	9.  Variable .sh.name is set to the name of the variable
-	    that that was referenced or assigned to when executing a get
+	    that was referenced or assigned to when executing a get
 	    or set discipline function.
 	10. Variable .sh.subscript is set to the subscript for the variable
 	    that was referenced or assign to when executing a get or
