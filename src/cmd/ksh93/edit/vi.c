@@ -2391,6 +2391,7 @@ static int textmod(register Vi_t *vp,register int c, int mode)
 	register genchar *p = vp->lastline;
 	register int trepeat = vp->repeat;
 	genchar *savep;
+	int ch;
 
 	if(mode && (fold(vp->lastmotion)=='F' || fold(vp->lastmotion)=='T')) 
 		vp->lastmotion = ';';
@@ -2421,7 +2422,10 @@ addin:
 		++last_virt;
 		mode = cur_virt-1;
 		virtual[last_virt] = 0;
-		if(ed_expand(vp->ed,(char*)virtual, &cur_virt, &last_virt, c, vp->repeat_set?vp->repeat:-1)<0)
+		ch = c;
+		if(mode>=0 && c=='\\' && virtual[mode+1]=='/')
+			c = '=';
+		if(ed_expand(vp->ed,(char*)virtual, &cur_virt, &last_virt, ch, vp->repeat_set?vp->repeat:-1)<0)
 		{
 			if(vp->ed->e_tabcount)
 			{
@@ -2433,9 +2437,8 @@ addin:
 			last_virt = i;
 			ed_ringbell();
 		}
-		else if((c=='=' || (c=='\\'&&virtual[i]=='/')) && !vp->repeat_set)
+		else if((c=='=' || (c=='\\'&&virtual[last_virt]=='/')) && !vp->repeat_set)
 		{
-			last_virt = i;
 			vp->nonewline++;
 			ed_ungetchar(vp->ed,cntl('L'));
 			return(GOOD);

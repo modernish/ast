@@ -453,4 +453,22 @@ w fg
 u yes-yes
 !
 
+# ======
+# err_exit #
+# Test file name completion in vi mode
+mkdir /tmp/fakehome
+tst $LINENO <<"!"
+L vi mode file name completion
+
+# Completing a file name in vi mode that contains '~' and has a
+# base name the same length as the home directory's parent directory
+# shouldn't fail.
+
+w set -o vi; HOME=/tmp/fakehome; touch ~/testfile
+w echo ~/tes\t
+u ^/tmp/fakehome/testfile\r?\n$
+!
+rm -r /tmp/fakehome
+
+# ======
 exit $((Errors<125?Errors:125))
