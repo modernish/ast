@@ -718,4 +718,13 @@ chmod is a tracked alias for $(whence -p chmod)"
 [[ $actual == $expected ]] || err_exit '`whence -a` does not work correctly with tracked aliases'
 
 # ======
+# 'cd ../.foo' should not exclude the '.' in '.foo'
+(
+	cd "$tmp"
+	mkdir foo .bar
+	cd foo
+	cd ../.bar
+) || err_exit 'cd ../.bar when ../.bar exists should not fail'
+
+# ======
 exit $((Errors<125?Errors:125))
