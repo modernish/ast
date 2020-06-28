@@ -578,7 +578,7 @@ static char *array_getval(Namval_t *np, Namfun_t *disc)
 		return(cp);
 	}
 #if SHOPT_FIXEDARRAY
-	if(ap->fixed && nv_isattr(np,NV_INT16P) == NV_INT16)
+	if(ap->fixed && nv_isattr(np,NV_INT16P|NV_DOUBLE) == NV_INT16)
 		np->nvalue.s = *np->nvalue.sp;
 #endif /* SHOPT_FIXEDARRAY */
 	return(nv_getv(np,&ap->hdr));

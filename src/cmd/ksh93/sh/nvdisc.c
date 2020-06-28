@@ -862,7 +862,7 @@ static void *num_clone(register Namval_t *np, void *val)
 			size = sizeof(Sflong_t);
 		else if(nv_isattr(np,NV_SHORT))
 		{
-			if(nv_isattr(np,NV_INT16P)==NV_INT16P)
+			if(nv_isattr(np,NV_INT16P|NV_DOUBLE)==NV_INT16P)
 				size = sizeof(short);
 			else
 				return((void*)np->nvalue.ip);

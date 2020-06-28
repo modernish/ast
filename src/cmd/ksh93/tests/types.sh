@@ -645,4 +645,9 @@ Bar_t bar
 bar.foo+=(bam)
 [[ ${bar.foo[0]} == bam ]] || err_exit 'appending to empty array variable in type does not create element 0'
 
+# ======
+# 'typeset -RF' should not create variables that cause crashes
+"$SHELL" -c 'typeset -RF foo=1; test $foo' || err_exit 'typeset -RF does not work'
+
+# ======
 exit $((Errors<125?Errors:125))

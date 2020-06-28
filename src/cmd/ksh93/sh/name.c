@@ -1648,7 +1648,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 		return;
 	}
 	up= &np->nvalue;
-	if(nv_isattr(np,NV_INT16P) == NV_INT16)
+	if(nv_isattr(np,NV_INT16P|NV_DOUBLE) == NV_INT16)
 	{
 		if(!np->nvalue.up || !nv_isarray(np))
 		{
