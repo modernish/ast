@@ -8,6 +8,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Variables created with 'typeset -RF' no longer cause a memory fault
   when accessed.
 
+- Unsetting an array that was turned into a compound variable will no
+  longer cause silent memory corruption.
+
 2020-06-26:
 
 - Changing to a directory that has a name starting with a '.' will no

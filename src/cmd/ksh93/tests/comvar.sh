@@ -25,6 +25,15 @@ function err_exit
 }
 alias err_exit='err_exit $LINENO'
 
+tmp=$(
+    d=${TMPDIR:-/tmp}/ksh93.comvar.$$.${RANDOM:-0}
+    mkdir -m700 -- "$d" && CDPATH= cd -P -- "$d" && pwd
+) || {
+    err\_exit $LINENO 'mkdir failed'
+    exit 1
+}
+trap 'cd / && rm -rf "$tmp"' EXIT
+
 #test for compound variables
 Command=${0##*/}
 integer Errors=0
@@ -691,4 +700,23 @@ xx=(foo=bar)
 xx=()
 [[ $xx == $'(\n)' ]] || err_exit 'xx=() not unsetting previous value'
 
+# ======
+# Unsetting an array turned into a compound variable shouldn't cause
+# memory corruption. This test must be run as an executable script
+# with 'ksh -c' (although that still doesn't make the test very
+# consistent as it is testing a heisenbug).
+compound_array=$tmp/compound_array.sh
+cat >| "$compound_array" << 'EOF'
+testarray=(1 2)
+compound testarray
+unset testarray
+eval testarray=
+EOF
+(
+	unset LC_ALL # Must be done outside of the script
+	chmod +x "$compound_array"
+	"$SHELL" -c "$compound_array"
+) || err_exit 'unsetting an array turned into a compound variable fails'
+
+# ======
 exit $((Errors<125?Errors:125))
