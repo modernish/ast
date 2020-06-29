@@ -1142,6 +1142,8 @@ static void put_tree(register Namval_t *np, const char *val, int flags,Namfun_t 
 	nv_putv(np, val, flags,fp);
 	if(val && nv_isattr(np,(NV_INTEGER|NV_BINARY)))
 		return;
+	if(!val && !np->nvfun)
+		return;
 	if(ap= nv_arrayptr(np))
 		nleft = array_elem(ap);
 	if(nleft==0)
