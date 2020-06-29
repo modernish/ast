@@ -12,7 +12,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   longer cause silent memory corruption.
 
 - Variables created with 'readonly' in functions are now set to the
-  specified value instead of nothing.
+  specified value instead of nothing. Note that 'readonly' does not
+  create a function-local scope, unlike 'typeset -r' which does.
 
 2020-06-26:
 

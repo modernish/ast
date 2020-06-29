@@ -6752,6 +6752,12 @@ are marked
 readonly and these
 names cannot be changed
 by subsequent assignment.
+Unlike
+.B typeset\ -r ,
+.B readonly
+does not create a function-local scope and the given
+.IR vname s
+are marked globally read-only by default.
 When defining a type, if the value of a readonly sub-variable is not defined
 the value is required when creating each instance.
 .TP

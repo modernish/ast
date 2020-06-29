@@ -1360,7 +1360,7 @@ USAGE_LICENSE
 ;
 
 const char sh_optreadonly[] =
-"[-1c?\n@(#)$Id: readonly (AT&T Research) 2008-06-16 $\n]"
+"[-1c?\n@(#)$Id: readonly (AT&T Research/ksh93) 2020-06-28 $\n]"
 USAGE_LICENSE
 "[+NAME?readonly - set readonly attribute on variables]"
 "[+DESCRIPTION?\breadonly\b sets the readonly attribute on each of "
@@ -1368,6 +1368,9 @@ USAGE_LICENSE
 	"values from being changed.  If \b=\b\avalue\a is specified, "
 	"the variable \aname\a is set to \avalue\a before the variable "
 	"is made readonly.]"
+"[+?Unlike \btypeset -r\b, \breadonly\b does not create a function-local "
+	"scope and the given \aname\as are marked globally read-only by "
+	"default.]"
 "[+?Within a type definition, if the value is not specified, then a "
 	"value must be specified when creating each instance of the type "
         "and the value is readonly for each instance.]"
