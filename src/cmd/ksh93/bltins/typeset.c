@@ -125,11 +125,9 @@ int    b_readonly(int argc,char *argv[],Shbltin_t *context)
 	}
 #endif
 	else
-	{
 		flag = (NV_ASSIGN|NV_EXPORT|NV_IDENT);
-		if(!tdata.sh->prefix)
-			tdata.sh->prefix = "";
-	}
+	if(!tdata.sh->prefix)
+		tdata.sh->prefix = "";
 	return(setall(argv,flag,tdata.sh->var_tree, &tdata));
 }
 

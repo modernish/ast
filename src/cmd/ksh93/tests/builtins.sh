@@ -727,4 +727,16 @@ chmod is a tracked alias for $(whence -p chmod)"
 ) || err_exit 'cd ../.bar when ../.bar exists should not fail'
 
 # ======
+# 'readonly' should set the correct scope when creating variables in functions
+unset foo
+(
+	function test_func
+	{
+		readonly foo="bar"
+		[[ "$foo" = "bar" ]] || err_exit "readonly variable is not assigned a value inside functions"
+	}
+	test_func
+)
+
+# ======
 exit $((Errors<125?Errors:125))
