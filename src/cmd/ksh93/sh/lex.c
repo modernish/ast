@@ -388,6 +388,12 @@ int sh_lex(Lex_t* lp)
 		switch(n)
 		{
 			case S_BREAK:
+				if(lp->lex.incase>TEST_RE && mode==ST_NORM && c==LPAREN)
+				{
+					pushlevel(lp,RPAREN,mode);
+					mode = ST_NESTED;
+					continue;
+				}
 				fcseek(-LEN);
 				goto breakloop;
 			case S_EOF:
@@ -1163,7 +1169,7 @@ int sh_lex(Lex_t* lp)
 				}
 				if(mode==ST_NONE)
 					return(0);
-				if(c!=n)
+				if(c!=n && lp->lex.incase<TEST_RE)
 				{
 					lp->token = c;
 					sh_syntax(lp);

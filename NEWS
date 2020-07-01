@@ -8,6 +8,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - 'read -u' will no longer crash with a memory fault when given an out of
   range or negative file descriptor.
 
+- The '=~' operator no longer raises an error if a regular expression
+  combines the '{x}' quantifier with a sub-expression.
+
 2020-06-28:
 
 - Variables created with 'typeset -RF' no longer cause a memory fault

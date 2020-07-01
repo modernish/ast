@@ -389,4 +389,9 @@ test 123 -eq 123x 2>/dev/null
 [[ $? -ge 2 ]] || err_exit 'test builtin should return value greater than 1 on error'
 
 # ======
+# The '=~' operator should work with curly brackets
+$SHELL -c '[[ AATAAT =~ (AAT){2} ]]' || err_exit '[[ AATAAT =~ (AAT){2} ]] does not match'
+$SHELL -c '[[ AATAATCCCAATAAT =~ (AAT){2}CCC(AAT){2} ]]' || err_exit '[[ AATAATCCCAATAAT =~ (AAT){2}CCC(AAT){2} ]] does not match'
+
+# ======
 exit $((Errors<125?Errors:125))
