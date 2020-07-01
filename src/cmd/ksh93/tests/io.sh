@@ -558,4 +558,17 @@ result=$("$SHELL" -ic 'echo >(true) >/dev/null' 2>&1)
 				"(expected '', got $(printf %q "$result"))"
 
 # ======
+# Out of range file descriptors shouldn't cause 'read -u' to segfault
+"$SHELL" -c 'read -u2000000' 2> /dev/null
+[[ $? == 1 ]] || err_exit "Large file descriptors cause 'read -u' to crash"
+
+# Separately test numbers outside of the 32-bit limit as well
+"$SHELL" -c 'read -u2000000000000' 2> /dev/null
+[[ $? == 1 ]] || err_exit "File descriptors larger than the 32-bit limit cause 'read -u' to crash"
+
+# Negative numbers shouldn't segfault either
+"$SHELL" -c 'read -u-2000000' 2> /dev/null
+[[ $? == 1 ]] || err_exit "Negative file descriptors cause 'read -u' to crash"
+
+# ======
 exit $((Errors<125?Errors:125))

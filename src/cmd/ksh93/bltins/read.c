@@ -128,6 +128,8 @@ int	b_read(int argc,char *argv[], Shbltin_t *context)
 		break;
 	    case 'u':
 		fd = (int)opt_info.num;
+		if(opt_info.num<0 || opt_info.num>INT_MAX || (fd>=shp->gd->lim.open_max && !sh_iovalidfd(shp,fd)))
+			errormsg(SH_DICT,ERROR_exit(1),e_file,opt_info.arg); /* reject invalid file descriptors */
 		if(sh_inuse(shp,fd))
 			fd = -1;
 		break;
