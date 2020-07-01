@@ -89,6 +89,6 @@ for ((i=0; i < 500; i++))
 do      read -C stat <<< "$data"
 done
 after=$(getmem)
-(( after > before )) && err_exit 'memory leak with read -C when using <<< (leaked $((after - before)) bytes)'
+(( after > before )) && err_exit "memory leak with read -C when using <<< (leaked $((after - before)) bytes)"
 
 exit $((Errors<125?Errors:125))
