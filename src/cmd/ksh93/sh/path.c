@@ -1507,6 +1507,10 @@ static int path_chkpaths(Shell_t *shp,Pathcomp_t *first, Pathcomp_t* old,Pathcom
 	if((fd=open(stakptr(offset),O_RDONLY))>=0)
 	{
 		fstat(fd,&statb);
+		if (S_ISDIR(statb.st_mode)) {
+			close(fd);
+			return 0;
+		}
 		n = statb.st_size;
 		stakseek(offset+pp->len+n+2);
 		sp = stakptr(offset+pp->len);

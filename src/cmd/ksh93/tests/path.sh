@@ -408,6 +408,10 @@ END
 v=$(PATH=/dev/null "$SHELL" -c 'command -p ls /dev/null')
 [[ $v == /dev/null ]] || err_exit 'command -p fails to find standard utility'
 
+# ksh segfaults if $PATH contains a .paths directory
+mkdir -p $tmp/paths-dir-crash/.paths
+export PATH=$tmp/paths-dir-crash:$PATH
+
 # ======
 exit $((Errors<125?Errors:125))
 
