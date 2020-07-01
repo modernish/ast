@@ -62,7 +62,7 @@ test_reset $N
 after=$(getmem)
 
 if	(( after > before ))
-then	err_exit "variable value reset memory leak -- $((after - before)) bytes after $N iterations"
+then	err_exit "variable value reset memory leak -- $((after - before)) KiB after $N iterations"
 fi
 
 # buffer boundary tests
@@ -81,7 +81,7 @@ done |	while read -u$n -C stat
 	do	:
 	done	{n}<&0-
 after=$(getmem)
-(( after > before )) && err_exit "memory leak with read -C when deleting compound variable (leaked $((after - before)) bytes)"
+(( after > before )) && err_exit "memory leak with read -C when deleting compound variable (leaked $((after - before)) KiB)"
 
 read -C stat <<< "$data"
 before=$(getmem)
@@ -89,6 +89,6 @@ for ((i=0; i < 500; i++))
 do      read -C stat <<< "$data"
 done
 after=$(getmem)
-(( after > before )) && err_exit "memory leak with read -C when using <<< (leaked $((after - before)) bytes)"
+(( after > before )) && err_exit "memory leak with read -C when using <<< (leaked $((after - before)) KiB)"
 
 exit $((Errors<125?Errors:125))
