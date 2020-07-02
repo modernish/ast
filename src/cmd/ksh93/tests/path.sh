@@ -409,8 +409,13 @@ v=$(PATH=/dev/null "$SHELL" -c 'command -p ls /dev/null')
 [[ $v == /dev/null ]] || err_exit 'command -p fails to find standard utility'
 
 # ksh segfaults if $PATH contains a .paths directory
+mkdir -p $tmp/paths-dir-crash/
+cat > $tmp/paths-dir-crash/run.sh <<- EOF
 mkdir -p $tmp/paths-dir-crash/.paths
 export PATH=$tmp/paths-dir-crash:$PATH
+print ok
+EOF
+[[ $($SHELL $tmp/paths-dir-crash/run.sh 2>/dev/null) == ok ]] || err_exit "ksh crashes if PATH contains a .paths directory"
 
 # ======
 exit $((Errors<125?Errors:125))
