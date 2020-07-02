@@ -1507,7 +1507,7 @@ static int path_chkpaths(Shell_t *shp,Pathcomp_t *first, Pathcomp_t* old,Pathcom
 	if((fd=open(stakptr(offset),O_RDONLY))>=0)
 	{
 		fstat(fd,&statb);
-		if (S_ISDIR(statb.st_mode)) {
+		if (!S_ISREG(statb.st_mode)) {
 			close(fd);
 			return 0;
 		}
