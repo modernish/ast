@@ -524,9 +524,8 @@ for mode in emacs vi; do
 tst $LINENO << !
 L escaping backslashes in $mode mode
 
-# Backslashes should only be escaped if the previous input character was
-# a backslash. Other backslashes stored in the input buffer should be
-# deleted normally.
+# Backslashes should only be escaped if the previous input was a backslash.
+# Other backslashes stored in the input buffer should be erased normally.
 
 w set -o $mode; stty erase ^H
 p :test-2:
