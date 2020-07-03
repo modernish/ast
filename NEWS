@@ -14,11 +14,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   string such as 'ab\\\' will only cause the first backslash to escape a
   Backspace as '^?', like in emacs mode.
 
-- An odd interaction with Backspace when the last character of a temporary
+- An odd interaction with Backspace when the last character of a separate
   buffer created with Shift-C was '\' has been fixed. '^?' will no longer
-  be output repeatedly when attempting to erase a temporary buffer with
-  a Backspace. Note that temporary buffers created with Shift-C are not
-  meant to be erasable:
+  be output repeatedly when attempting to erase a separate buffer with
+  a Backspace. Note that buffers created with Shift-C are not meant to be
+  erasable:
   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/vi.html#tag_20_152_13_49
 
 2020-07-02:
