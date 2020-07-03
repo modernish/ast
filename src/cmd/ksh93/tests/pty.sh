@@ -511,6 +511,8 @@ L raw Bourne mode backslash handling
 # The escaping backslash feature should be disabled in the raw Bourne mode.
 # This is tested with both erase and kill characters.
 
+d 10
+p :test-1:
 w set +o vi +o emacs; stty erase ^H kill ^X
 p :test-2:
 w true string\\\\\cH\cH
@@ -527,6 +529,8 @@ L escaping backslashes in $mode mode
 # Backslashes should only be escaped if the previous input was a backslash.
 # Other backslashes stored in the input buffer should be erased normally.
 
+d 10
+p :test-1:
 w set -o $mode; stty erase ^H
 p :test-2:
 w true string\\\\\\\\\\cH\\cH\\cH
