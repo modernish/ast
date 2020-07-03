@@ -1363,7 +1363,7 @@ static void getline(register Vi_t* vp,register int mode)
 {
 	register int c;
 	register int tmp;
-	int	max_virt=0, last_save=0;
+	int	max_virt=0, last_save=0, backslash=0;
 	genchar saveline[MAXLINE];
 	vp->addnl = 1;
 
@@ -1460,8 +1460,9 @@ static void getline(register Vi_t* vp,register int mode)
 				/*** treat as backspace ***/
 
 		case '\b':		/** backspace **/
-			if( virtual[cur_virt] == '\\' )
+			if( sh_isoption(SH_VI) && backslash && virtual[cur_virt] == '\\' )
 			{
+				backslash = 0;
 				cdelete(vp,1, BAD);
 				append(vp,usrerase, mode);
 			}
@@ -1505,8 +1506,9 @@ static void getline(register Vi_t* vp,register int mode)
 			break;
 
 		case UKILL:		/** user kill line char **/
-			if( virtual[cur_virt] == '\\' )
+			if( sh_isoption(SH_VI) && backslash && virtual[cur_virt] == '\\' )
 			{
+				backslash = 0;
 				cdelete(vp,1, BAD);
 				append(vp,usrkill, mode);
 			}
@@ -1580,6 +1582,7 @@ static void getline(register Vi_t* vp,register int mode)
 				mode = APPEND;
 				max_virt = last_virt+3;
 			}
+			backslash = (c == '\\');
 			append(vp,c, mode);
 			break;
 		}

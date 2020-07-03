@@ -3,6 +3,17 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-07-03:
+
+- Backslashes are no longer escaped in the raw Bourne Shell-like editing
+  mode in multibyte locales, i.e. backslashes are no longer treated like
+  Control-V if the emacs and vi modes are disabled.
+
+- Deleting a backslash in vi mode with Control-H or Backspace now only
+  escapes a backslash if it was the previous input. This means erasing a
+  string such as 'ab\\\' will only cause the first backslash to escape a
+  Backspace as '^?', like in emacs mode.
+
 2020-07-02:
 
 - Fixed a crash that occurred if a directory named '.paths' existed in any

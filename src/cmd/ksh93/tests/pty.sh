@@ -505,5 +505,35 @@ r ^:test-2: true (/de\tv/nu\tl\tl|/de       v/nu    l       l)\r\n$
 p :test-3:
 !
 
+LC_ALL=C.UTF8 tst $LINENO <<"!"
+L raw Bourne mode backslash handling
+
+# The escaping backslash feature should be disabled in the raw Bourne mode.
+# This is tested with both erase and kill characters.
+
+w set +o vi +o emacs; stty erase ^H kill ^X
+p :test-2:
+w true string\\\\\cH\cH
+r ^:test-2: true string\r\n$
+p :test-3:
+w true incorrect\\\cXtrue correct
+r ^:test-3: true correct\r\n$
+!
+
+for mode in emacs vi; do
+tst $LINENO << !
+L escaping backslashes in $mode mode
+
+# Backslashes should only be escaped if the previous input character was
+# a backslash. Other backslashes stored in the input buffer should be
+# deleted normally.
+
+w set -o $mode; stty erase ^H
+p :test-2:
+w true string\\\\\\\\\\cH\\cH\\cH
+r ^:test-2: true string\\r\\n$
+!
+done
+
 # ======
 exit $((Errors<125?Errors:125))
