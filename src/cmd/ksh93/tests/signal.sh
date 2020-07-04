@@ -460,4 +460,11 @@ $SHELL -c 'kill %+ 2> /dev/null'; [[ $? == 1 ]] || err_exit $'`kill` doesn\'t ha
 $SHELL -c 'kill %- 2> /dev/null'; [[ $? == 1 ]] || err_exit $'`kill` doesn\'t handle a non-existent job correctly when passed \'%-\''
 
 # ======
+# SIGINFO should be supported by the kill builtin on platforms that have it.
+if "$(whence -p kill)" -INFO $$ 2> /dev/null
+then
+	kill -INFO $$ || err_exit '`kill` cannot send SIGINFO to processes when passed `-INFO`'
+fi
+
+# ======
 exit $((Errors<125?Errors:125))

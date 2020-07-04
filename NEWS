@@ -21,6 +21,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   erasable:
   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/vi.html#tag_20_152_13_49
 
+- The 'kill' builtin now supports the SIGINFO signal (on operating systems
+  with support for SIGINFO).
+
 2020-07-02:
 
 - Fixed a crash that occurred if a directory named '.paths' existed in any
