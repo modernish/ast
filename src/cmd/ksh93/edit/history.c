@@ -395,7 +395,7 @@ retry:
 			if(fd>=0)
 			{
 				fcntl(fd,F_SETFD,FD_CLOEXEC);
-				hp->tty = strdup(ttyname(2));
+				hp->tty = strdup(isatty(2)?ttyname(2):"notty");
 				hp->auditfp = sfnew((Sfio_t*)0,NULL,-1,fd,SF_WRITE);
 			}
 		}
