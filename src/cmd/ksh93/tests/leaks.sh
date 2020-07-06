@@ -118,7 +118,8 @@ do
 	stuff[xyz][elem4]="data4"
 done
 after=$(getmem)
-(( after > before )) && err_exit 'unset of associative array causes memory leak'
+(( after > before )) && err_exit 'unset of associative array causes memory leak' \
+	"(leaked $((after - before)) KiB)"
 
 # ======
 exit $((Errors<125?Errors:125))
