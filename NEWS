@@ -8,6 +8,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - 'notty' is now written to the ksh auditing file instead of '(null)' if
   the user's tty could not be determined.
 
+- Unsetting an associative array no longer causes a memory leak to occur.
+
 2020-07-05:
 
 - In UTF-8 locales, fix corruption of the shell's internal string quoting

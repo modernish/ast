@@ -101,4 +101,24 @@ done
 after=$(getmem)
 (( after > before )) && err_exit "memory leak with read -C when using <<< (leaked $((after - before)) $unit)"
 
+# ======
+# Unsetting an associative array shouldn't cause a memory leak
+# See https://www.mail-archive.com/ast-users@lists.research.att.com/msg01017.html
+typeset -A stuff
+typeset -lui i=0
+before=$(getmem)
+for (( i=0; i<1000; i++ ))
+do
+	unset stuff[xyz]
+	typeset -A stuff[xyz]
+	stuff[xyz][elem0]="data0"
+	stuff[xyz][elem1]="data1"
+	stuff[xyz][elem2]="data2"
+	stuff[xyz][elem3]="data3"
+	stuff[xyz][elem4]="data4"
+done
+after=$(getmem)
+(( after > before )) && err_exit 'unset of associative array causes memory leak'
+
+# ======
 exit $((Errors<125?Errors:125))
