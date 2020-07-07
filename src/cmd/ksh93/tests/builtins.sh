@@ -750,4 +750,11 @@ unset foo
 )
 
 # ======
+# Test the output of nonstandard date formats with 'printf %T'
+[[ $(printf '%(%l)T') == $(printf '%(%_I)T') ]] || err_exit 'date format %l is not the same as %_I'
+[[ $(printf '%(%k)T') == $(printf '%(%_H)T') ]] || err_exit 'date format %k is not the same as %_H'
+[[ $(printf '%(%f)T') == $(printf '%(%Y.%m.%d-%H:%M:%S)T') ]] || err_exit 'date format %f is not the same as %Y.%m.%d-%H:%M:%S'
+[[ $(printf '%(%q)T') == $(printf '%(%Qz)T') ]] && err_exit 'date format %q is the same as %Qz'
+
+# ======
 exit $((Errors<125?Errors:125))

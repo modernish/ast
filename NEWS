@@ -3,6 +3,15 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-07-07:
+
+- Four of the date formats accepted by 'printf %()T' have had their
+  functionality altered to the common behavior of date(1):
+  '%k' prints the current hour (0-23) with blank padding (GNU and BSD).
+  '%l' prints the current hour (0-12) with blank padding (GNU and BSD).
+  '%f' prints a date with the format '%Y.%m.%d-%H:%M:%S' (BusyBox).
+  '%q' prints the quarter of the year (GNU).
+
 2020-07-06:
 
 - 'notty' is now written to the ksh auditing file instead of '(null)' if
