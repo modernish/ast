@@ -7,7 +7,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Four of the date formats accepted by 'printf %()T' have had their
   functionality altered to the common behavior of date(1):
-  - '%k' prints the current hour (0-23) with blank padding (GNU and BSD).
+  - '%k' and '%l' print the current hour with blank padding, the former
+    based on a 24-hour clock and the latter a twelve hour clock. These
+    are common extensions present in Linux and *BSD.
   - '%l' prints the current hour (0-12) with blank padding (GNU and BSD).
   - '%f' prints a date with the format '%Y.%m.%d-%H:%M:%S' (BusyBox).
   - '%q' prints the quarter of the year (GNU).
