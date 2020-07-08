@@ -117,6 +117,7 @@ do
 	stuff[xyz][elem3]="data3"
 	stuff[xyz][elem4]="data4"
 done
+unset stuff
 after=$(getmem)
 (( after > before )) && err_exit 'unset of associative array causes memory leak' \
 	"(leaked $((after - before)) $unit)"
