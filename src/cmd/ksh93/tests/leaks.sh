@@ -119,7 +119,7 @@ do
 done
 after=$(getmem)
 (( after > before )) && err_exit 'unset of associative array causes memory leak' \
-	"(leaked $((after - before)) KiB)"
+	"(leaked $((after - before)) $unit)"
 
 # ======
 exit $((Errors<125?Errors:125))
