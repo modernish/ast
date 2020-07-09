@@ -764,7 +764,7 @@ v=$(printf $'%.28a\n' 64)
 # ======
 # Redirections with ((...)) should not cause a syntax error
 "$SHELL" 2>/dev/null -c '(($(echo 1+1 | tee /dev/fd/3))) >/dev/null 3>&1'
-(( $? )) && err_exit 'redirections with ((...))) yield a syntax error'
+(( $? )) && err_exit 'redirections with ((...)) yield a syntax error'
 
 # ======
 exit $((Errors<125?Errors:125))
