@@ -1367,13 +1367,13 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 		return(t);
 	}
 	sh_lex(lexp);
+done:
 	/* redirection(s) following a compound command */
 	if(io=inout(lexp,io,0))
 	{
 		t=makeparent(lexp,TSETIO,t);
 		t->tre.treio=io;
 	}
-done:
 	lexp->lasttok = savwdval;
 	lexp->lastline = savline;
 	return(t);

@@ -12,6 +12,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a memory leak when restoring PATH when temporarily setting PATH
   for a command (e.g. PATH=/foo/bar command ...) or in a virtual subshell.
 
+- Combining ((...)) with redirections no longer causes a syntax error
+  due to the parser handling '>' incorrectly.
+
 2020-07-07:
 
 - Four of the date formats accepted by 'printf %()T' have had their
