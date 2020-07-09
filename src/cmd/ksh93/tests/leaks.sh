@@ -105,7 +105,6 @@ after=$(getmem)
 # Unsetting an associative array shouldn't cause a memory leak
 # See https://www.mail-archive.com/ast-users@lists.research.att.com/msg01016.html
 typeset -A stuff
-typeset -lui i=0
 before=$(getmem)
 for (( i=0; i<1000; i++ ))
 do
