@@ -1368,7 +1368,7 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 	}
 	sh_lex(lexp);
 done:
-	/* redirection(s) following a compound command */
+	/* redirection(s) following a compound command or arithmetic expression */
 	if(io=inout(lexp,io,0))
 	{
 		t=makeparent(lexp,TSETIO,t);
