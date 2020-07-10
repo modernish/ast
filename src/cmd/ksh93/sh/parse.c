@@ -1477,7 +1477,7 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 						t->comnamp = (void*)np;
 					if(nv_isattr(np,BLT_DCL))
 					{
-						assignment = 1+(*argp->argval=='a');
+						assignment = 1;
 						if(np==SYSTYPESET)
 							lexp->intypeset = 1;
 						key_on = 1;
