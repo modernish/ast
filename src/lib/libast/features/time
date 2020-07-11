@@ -1,7 +1,12 @@
 set	prototyped
-lib	nanosleep,usleep,_strftime
+lib	getrusage,nanosleep,usleep,_strftime
 typ	clock_t = uint32_t
 typ	time_t = uint32_t
+
+if sys resource {
+	#include <sys/resource.h>
+}
+endif
 
 if sys time {
 	#include <sys/time.h>

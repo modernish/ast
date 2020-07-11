@@ -8,6 +8,18 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a fork bomb that could occur when the vi editor was sent SIGTSTP
   while running in a ksh script.
 
+- Appending a lone percent to the end of a format specifier no longer
+  causes a syntax error. The extra percent will be treated as a literal
+  '%', like in Bash and zsh.
+
+- The 'time' keyword now has proper support for millisecond precision.
+  Although this feature was previously documented, the 'time' keyword
+  only supported up to centisecond precision, which caused a command
+  like the one below to return '0.000' on certain operating systems:
+  $ TIMEFORMAT='%3R'; time sleep .003
+
+- The 'time' keyword now zero-pads seconds less than ten (like mksh).
+
 2020-07-10:
 
 - Fixed a bug that caused types created with 'typeset -T' to throw an error

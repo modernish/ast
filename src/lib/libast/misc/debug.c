@@ -27,6 +27,7 @@
 #include <ast.h>
 #include <error.h>
 #include <debug.h>
+#include "FEATURE/time"
 
 void
 debug_fatal(const char* file, int line)
@@ -35,11 +36,9 @@ debug_fatal(const char* file, int line)
 	abort();
 }
 
-#if _sys_times
+#if defined(_sys_times) && defined(_lib_getrusage)
 
 #include <times.h>
-#include <sys/resource.h>
-
 double
 debug_elapsed(int set)
 {	

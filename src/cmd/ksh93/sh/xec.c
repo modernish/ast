@@ -95,6 +95,52 @@ struct funenv
     }
 #endif /* !SHOPT_DEVFD */
 
+#if _lib_getrusage
+/* getrusage tends to have higher precision */
+static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *tv_sys)
+{
+	NOT_USED(shp);
+	struct rusage usage_self, usage_child;
+
+	getrusage(RUSAGE_SELF, &usage_self);
+	getrusage(RUSAGE_CHILDREN, &usage_child);
+	timeradd(&usage_self.ru_utime, &usage_child.ru_utime, tv_usr);
+	timeradd(&usage_self.ru_stime, &usage_child.ru_stime, tv_sys);
+}
+#else
+static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *tv_sys)
+{
+	struct tms cpu_times;
+	struct timeval tv1, tv2;
+	double dtime;
+
+	if(times(&cpu_times) == (clock_t)-1)
+		errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+
+	dtime = (double)cpu_times.tms_utime / shp->gd->lim.clk_tck;
+	tv1.tv_sec = dtime / 60;
+	tv1.tv_usec = 1000000 * (dtime - tv1.tv_sec);
+	dtime = (double)cpu_times.tms_cutime / shp->gd->lim.clk_tck;
+	tv2.tv_sec = dtime / 60;
+	tv2.tv_usec = 1000000 * (dtime - tv2.tv_sec);
+	timeradd(&tv1, &tv2, tv_usr);
+
+	dtime = (double)cpu_times.tms_stime / shp->gd->lim.clk_tck;
+	tv1.tv_sec = dtime / 60;
+	tv1.tv_usec = 1000000 * (dtime - tv1.tv_sec);
+	dtime = (double)cpu_times.tms_cstime / shp->gd->lim.clk_tck;
+	tv2.tv_sec = dtime / 60;
+	tv2.tv_usec = 1000000 * (dtime - tv2.tv_sec);
+	timeradd(&tv1, &tv2, tv_sys);
+}
+#endif
+
+/* 'inline' is commented out because C89 doesn't have it */
+static /*inline*/ double timeval_to_double(struct timeval tv)
+{
+	return (double)tv.tv_sec + ((double)tv.tv_usec / 1000000.0);
+}
+
 /*
  * The following two functions allow command substitution for non-builtins
  * to use a pipe and to wait for the pipe to close before restoring to a
@@ -182,78 +228,103 @@ static void iounpipe(Shell_t *shp)
 /*
  * print time <t> in h:m:s format with precision <p>
  */
-static void     l_time(Sfio_t *outfile,register clock_t t,int p)
+static void l_time(Sfio_t *outfile, struct timeval *tv, int precision)
 {
-	register int  min, sec, frac;
-	register int hr;
-	if(p)
-	{
-		frac = t%shgd->lim.clk_tck;
-		frac = (frac*100)/shgd->lim.clk_tck;
-	}
-	t /= shgd->lim.clk_tck;
-	sec = t%60;
-	t /= 60;
-	min = t%60;
-	if(hr=t/60)
-		sfprintf(outfile,"%dh",hr);
-	if(p)
-		sfprintf(outfile,"%dm%d%c%0*ds",min,sec,GETDECIMAL(0),p,frac);
+	int hr = tv->tv_sec / (60 * 60);
+	int min = (tv->tv_sec / 60) % 60;
+	int sec = tv->tv_sec % 60;
+	int frac = tv->tv_usec;
+
+	/* scale fraction from micro to milli, centi, or deci second according to precision */
+	int n;
+	for(n = 3 + (3 - precision); n > 0; --n)
+		frac /= 10;
+
+	if(hr)
+		sfprintf(outfile, "%dh", hr);
+	if(precision)
+		sfprintf(outfile, "%dm%02d%c%0*ds", min, sec, GETDECIMAL(0), precision, frac);
 	else
-		sfprintf(outfile,"%dm%ds",min,sec);
+		sfprintf(outfile,"%dm%02ds",min,sec);
 }
 
-static int p_time(Shell_t *shp, Sfio_t *out, const char *format, clock_t *tm)
+#define TM_REAL_IDX 0
+#define TM_USR_IDX 1
+#define TM_SYS_IDX 2
+
+static void p_time(Shell_t *shp, Sfio_t *out, const char *format, struct timeval tm[3])
 {
-	int		c,p,l,n,offset = staktell();
+	int		c,n,offset = staktell();
 	const char	*first;
-	double		d;
+	struct timeval tv_cpu_sum;
+	struct timeval *tvp;
 	Stk_t		*stkp = shp->stk;
-	for(first=format ; c= *format; format++)
+	for(first=format ; *format; format++)
 	{
+		c = *format;
 		if(c!='%')
 			continue;
+		unsigned char l_modifier = 0;
+		int precision = 3;
+
 		sfwrite(stkp, first, format-first);
-		n = l = 0;
-		p = 3;
-		if((c= *++format) == '%')
+		c = *++format;
+		if(c=='\0')
+		{
+			/* If a lone percent is the last character of the format pretend
+			   the user had written `%%` for a literal percent */
+			sfwrite(stkp, "%", 1);
+			first = format + 1;
+			break;
+		}
+		else if(c=='%')
 		{
 			first = format;
 			continue;
 		}
 		if(c>='0' && c <='9')
 		{
-			p = (c>'3')?3:(c-'0');
+			precision = (c>'3')?3:(c-'0');
 			c = *++format;
 		}
-		else if(c=='P')
+		if(c=='P')
 		{
-			if(d=tm[0])
-				d = 100.*(((double)(tm[1]+tm[2]))/d);
-			p = 2;
-			goto skip;
+			struct timeval tv_real = tm[TM_REAL_IDX];
+			struct timeval tv_cpu;
+			timeradd(&tm[TM_USR_IDX], &tm[TM_SYS_IDX], &tv_cpu);
+
+			double d = timeval_to_double(tv_real);
+			if(d)
+				d = 100.0 * timeval_to_double(tv_cpu) / d;
+			sfprintf(stkp, "%.*f", precision, d);
+			first = format + 1;
+			continue;
 		}
 		if(c=='l')
 		{
-			l = 1;
+			l_modifier = 1;
 			c = *++format;
 		}
-		if(c=='U')
-			n = 1;
+		if(c=='R')
+			tvp = &tm[TM_REAL_IDX];
+		else if(c=='U')
+			tvp = &tm[TM_USR_IDX];
 		else if(c=='S')
-			n = 2;
-		else if(c!='R')
-		{
-			stkseek(stkp,offset);
-			errormsg(SH_DICT,ERROR_exit(0),e_badtformat,c);
-			return(0);
-		}
-		d = (double)tm[n]/shp->gd->lim.clk_tck;
-	skip:
-		if(l)
-			l_time(stkp, tm[n], p);
+			tvp = &tm[TM_SYS_IDX];
 		else
-			sfprintf(stkp,"%.*f",p, d);
+		{
+			errormsg(SH_DICT,ERROR_exit(0),e_badtformat,c);
+			continue;
+		}
+		if(l_modifier)
+			l_time(stkp, tvp, precision);
+		else
+		{
+			/* scale fraction from micro to milli, centi, or deci second according to precision */
+			int n, frac = tvp->tv_usec;
+			for(n = 3 + (3 - precision); n > 0; --n) frac /= 10;
+			sfprintf(stkp, "%d.%0*d", tvp->tv_sec, precision, frac);
+		}
 		first = format+1;
 	}
 	if(format>first)
@@ -262,7 +333,6 @@ static int p_time(Shell_t *shp, Sfio_t *out, const char *format, clock_t *tm)
 	n = stktell(stkp)-offset;
 	sfwrite(out,stkptr(stkp,offset),n);
 	stkseek(stkp,offset);
-	return(n);
 }
 
 #if SHOPT_OPTIMIZE
@@ -2577,14 +2647,9 @@ int sh_exec(register const Shnode_t *t, int flags)
 		    case TTIME:
 		    {
 			/* time the command */
-			struct tms before,after;
 			const char *format = e_timeformat;
-			clock_t at, tm[3];
-#ifdef timeofday
-			struct timeval tb,ta;
-#else
-			clock_t bt;
-#endif	/* timeofday */
+			struct timeval ta, tb, tm[3];
+			struct timeval before_usr, before_sys, after_usr, after_sys;
 #if SHOPT_COSHELL
 			if(shp->inpool)
 			{
@@ -2599,18 +2664,13 @@ int sh_exec(register const Shnode_t *t, int flags)
 				shp->exitval = !shp->exitval;
 				break;
 			}
+			timeofday(&tb);
+			get_cpu_times(shp, &before_usr, &before_sys);
 			if(t->par.partre)
 			{
-				long timer_on;
 				if(shp->subshell && shp->comsub==1)
 					sh_subfork();
-				timer_on = sh_isstate(SH_TIMING);
-#ifdef timeofday
-				timeofday(&tb);
-				times(&before);
-#else
-				bt = times(&before);
-#endif	/* timeofday */
+				long timer_on = sh_isstate(SH_TIMING);
 				job.waitall = 1;
 				sh_onstate(SH_TIMING);
 				sh_exec(t->par.partre,OPTIMIZE);
@@ -2618,23 +2678,12 @@ int sh_exec(register const Shnode_t *t, int flags)
 					sh_offstate(SH_TIMING);
 				job.waitall = 0;
 			}
-			else
-			{
-#ifndef timeofday
-				bt = 0;
-#endif	/* timeofday */
-				before.tms_utime = before.tms_cutime = 0;
-				before.tms_stime = before.tms_cstime = 0;
-			}
-#ifdef timeofday
-			times(&after);
+			get_cpu_times(shp, &after_usr, &after_sys);
 			timeofday(&ta);
-			at = shp->gd->lim.clk_tck*(ta.tv_sec-tb.tv_sec);
-			at +=  ((shp->gd->lim.clk_tck*(((1000000L/2)/shp->gd->lim.clk_tck)+(ta.tv_usec-tb.tv_usec)))/1000000L);
-#else
-			at = times(&after) - bt;
-#endif	/* timeofday */
-			tm[0] = at;
+			timersub(&ta, &tb, &tm[TM_REAL_IDX]); /* calculate elapsed real-time */
+			timersub(&after_usr, &before_usr, &tm[TM_USR_IDX]);
+			timersub(&after_sys, &before_sys, &tm[TM_SYS_IDX]);
+
 			if(t->par.partre)
 			{
 				Namval_t *np = nv_open("TIMEFORMAT",shp->var_tree,NV_NOADD);
@@ -2648,10 +2697,6 @@ int sh_exec(register const Shnode_t *t, int flags)
 			}
 			else
 				format = strchr(format+1,'\n')+1;
-			tm[1] = after.tms_utime - before.tms_utime;
-			tm[1] += after.tms_cutime - before.tms_cutime;
-			tm[2] = after.tms_stime - before.tms_stime;
-			tm[2] += after.tms_cstime - before.tms_cstime;
 			if(format && *format)
 				p_time(shp,sfstderr,sh_translate(format),tm);
 			break;
