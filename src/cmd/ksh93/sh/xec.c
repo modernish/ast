@@ -108,6 +108,7 @@ static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *
 	timeradd(&usage_self.ru_stime, &usage_child.ru_stime, tv_sys);
 }
 #else
+#ifdef timeofday
 static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *tv_sys)
 {
 	struct tms cpu_times;
@@ -133,13 +134,16 @@ static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *
 	tv2.tv_usec = 1000000 * (dtime - tv2.tv_sec);
 	timeradd(&tv1, &tv2, tv_sys);
 }
-#endif
+#endif /* timeofday */
+#endif /* _lib_getrusage */
 
+#ifdef timeofday
 /* 'inline' is commented out because C89 doesn't have it */
 static /*inline*/ double timeval_to_double(struct timeval tv)
 {
 	return (double)tv.tv_sec + ((double)tv.tv_usec / 1000000.0);
 }
+#endif
 
 /*
  * The following two functions allow command substitution for non-builtins
@@ -228,6 +232,7 @@ static void iounpipe(Shell_t *shp)
 /*
  * print time <t> in h:m:s format with precision <p>
  */
+#ifdef timeofday
 static void l_time(Sfio_t *outfile, struct timeval *tv, int precision)
 {
 	int hr = tv->tv_sec / (60 * 60);
@@ -239,11 +244,27 @@ static void l_time(Sfio_t *outfile, struct timeval *tv, int precision)
 	int n;
 	for(n = 3 + (3 - precision); n > 0; --n)
 		frac /= 10;
-
-	if(hr)
-		sfprintf(outfile, "%dh", hr);
+#else
+/* fallback */
+static void l_time(Sfio_t *outfile,register clock_t t,int precision)
+{
+	register int min, sec, frac;
+	register int hr;
 	if(precision)
-		sfprintf(outfile, "%dm%02d%c%0*ds", min, sec, GETDECIMAL(0), precision, frac);
+	{
+		frac = t%shgd->lim.clk_tck;
+		frac = (frac*100)/shgd->lim.clk_tck;
+	}
+	t /= shgd->lim.clk_tck;
+	sec = t%60;
+	t /= 60;
+	min = t%60;
+	hr = t/60;
+#endif
+	if(hr)
+		sfprintf(outfile,"%dh",hr);
+	if(precision)
+		sfprintf(outfile,"%dm%02d%c%0*ds",min,sec,GETDECIMAL(0),precision,frac);
 	else
 		sfprintf(outfile,"%dm%02ds",min,sec);
 }
@@ -252,14 +273,22 @@ static void l_time(Sfio_t *outfile, struct timeval *tv, int precision)
 #define TM_USR_IDX 1
 #define TM_SYS_IDX 2
 
+#ifdef timeofday
 static void p_time(Shell_t *shp, Sfio_t *out, const char *format, struct timeval tm[3])
+#else
+static void p_time(Shell_t *shp, Sfio_t *out, const char *format, clock_t *tm)
+#endif
 {
 	int		c,n,offset = staktell();
 	const char	*first;
+	Stk_t		*stkp = shp->stk;
+#ifdef timeofday
 	struct timeval tv_cpu_sum;
 	struct timeval *tvp;
-	Stk_t		*stkp = shp->stk;
-	for(first=format ; *format; format++)
+#else
+	double d;
+#endif
+	for(first=format; *format; format++)
 	{
 		c = *format;
 		if(c!='%')
@@ -289,6 +318,7 @@ static void p_time(Shell_t *shp, Sfio_t *out, const char *format, struct timeval
 		}
 		if(c=='P')
 		{
+#ifdef timeofday
 			struct timeval tv_real = tm[TM_REAL_IDX];
 			struct timeval tv_cpu;
 			timeradd(&tm[TM_USR_IDX], &tm[TM_SYS_IDX], &tv_cpu);
@@ -299,12 +329,19 @@ static void p_time(Shell_t *shp, Sfio_t *out, const char *format, struct timeval
 			sfprintf(stkp, "%.*f", precision, d);
 			first = format + 1;
 			continue;
+#else
+			if(d=tm[0])
+				d = 100.*(((double)(tm[1]+tm[2]))/d);
+			precision = 2;
+			goto skip;
+#endif
 		}
 		if(c=='l')
 		{
 			l_modifier = 1;
 			c = *++format;
 		}
+#ifdef timeofday
 		if(c=='R')
 			tvp = &tm[TM_REAL_IDX];
 		else if(c=='U')
@@ -325,6 +362,24 @@ static void p_time(Shell_t *shp, Sfio_t *out, const char *format, struct timeval
 			for(n = 3 + (3 - precision); n > 0; --n) frac /= 10;
 			sfprintf(stkp, "%d.%0*d", tvp->tv_sec, precision, frac);
 		}
+#else
+		if(c=='U')
+			n = 1;
+		else if(c=='S')
+			n = 2;
+		else if(c!='R')
+		{
+			stkseek(stkp,offset);
+			errormsg(SH_DICT,ERROR_exit(0),e_badtformat,c);
+			return;
+		}
+		d = (double)tm[n]/shp->gd->lim.clk_tck;
+	skip:
+		if(l_modifier)
+			l_time(stkp, tm[n], precision);
+		else
+			sfprintf(stkp,"%.*f",precision, d);
+#endif
 		first = format+1;
 	}
 	if(format>first)
@@ -2648,8 +2703,13 @@ int sh_exec(register const Shnode_t *t, int flags)
 		    {
 			/* time the command */
 			const char *format = e_timeformat;
-			struct timeval ta, tb, tm[3];
-			struct timeval before_usr, before_sys, after_usr, after_sys;
+			struct timeval ta, tb;
+#ifdef timeofday
+			struct timeval before_usr, before_sys, after_usr, after_sys, tm[3];
+#else
+			struct tms before,after;
+			clock_t at, bt, tm[3];
+#endif
 #if SHOPT_COSHELL
 			if(shp->inpool)
 			{
@@ -2664,8 +2724,14 @@ int sh_exec(register const Shnode_t *t, int flags)
 				shp->exitval = !shp->exitval;
 				break;
 			}
+#ifdef timeofday
 			timeofday(&tb);
 			get_cpu_times(shp, &before_usr, &before_sys);
+#else
+			bt = times(&before);
+			if(bt == (clock_t)-1)
+				errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+#endif
 			if(t->par.partre)
 			{
 				if(shp->subshell && shp->comsub==1)
@@ -2678,11 +2744,18 @@ int sh_exec(register const Shnode_t *t, int flags)
 					sh_offstate(SH_TIMING);
 				job.waitall = 0;
 			}
+#ifndef timeofday
+			at = times(&after) - bt;
+			if(at == (clock_t)-1)
+				errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+			tm[0] = at;
+#else
 			get_cpu_times(shp, &after_usr, &after_sys);
 			timeofday(&ta);
 			timersub(&ta, &tb, &tm[TM_REAL_IDX]); /* calculate elapsed real-time */
 			timersub(&after_usr, &before_usr, &tm[TM_USR_IDX]);
 			timersub(&after_sys, &before_sys, &tm[TM_SYS_IDX]);
+#endif
 
 			if(t->par.partre)
 			{
@@ -2697,6 +2770,12 @@ int sh_exec(register const Shnode_t *t, int flags)
 			}
 			else
 				format = strchr(format+1,'\n')+1;
+#ifndef timeofday
+			tm[1] = after.tms_utime - before.tms_utime;
+			tm[1] += after.tms_cutime - before.tms_cutime;
+			tm[2] = after.tms_stime - before.tms_stime;
+			tm[2] += after.tms_cstime - before.tms_cstime;
+#endif
 			if(format && *format)
 				p_time(shp,sfstderr,sh_translate(format),tm);
 			break;
