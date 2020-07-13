@@ -360,7 +360,7 @@ static void p_time(Shell_t *shp, Sfio_t *out, const char *format, clock_t *tm)
 			/* scale fraction from micro to milli, centi, or deci second according to precision */
 			int n, frac = tvp->tv_usec;
 			for(n = 3 + (3 - precision); n > 0; --n) frac /= 10;
-			sfprintf(stkp, "%d.%0*d", tvp->tv_sec, precision, frac);
+			sfprintf(stkp, "%d%c%0*d", tvp->tv_sec, GETDECIMAL(0), precision, frac);
 		}
 #else
 		if(c=='U')
