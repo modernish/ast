@@ -573,5 +573,20 @@ result=( $(
 ) )
 [[ ${result[4]} == bad ]] && err_exit "'%' is not treated literally when placed after a format specifier"
 
+# The locale's radix point shouldn't be ignored
+us=$(
+	LC_ALL='C.UTF-8' # radix point `.`
+	TIMEFORMAT='%1S'
+	redirect 2>&1
+	time sleep 0
+)
+eu=$(
+	LC_ALL='C-EU.UTF-8' # radix point `,`
+	TIMEFORMAT='%1S'
+	redirect 2>&1
+	time sleep 0
+)
+[[ ${us:1:1} == ${eu:1:1} ]] && err_exit "The time keyword ignores the locale's radix point"
+
 # ======
 exit $((Errors<125?Errors:125))
