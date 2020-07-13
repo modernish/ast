@@ -2724,16 +2724,16 @@ int sh_exec(register const Shnode_t *t, int flags)
 				shp->exitval = !shp->exitval;
 				break;
 			}
-#ifdef timeofday
-			timeofday(&tb);
-			get_cpu_times(shp, &before_usr, &before_sys);
-#endif
 			if(t->par.partre)
 			{
 				if(shp->subshell && shp->comsub==1)
 					sh_subfork();
 				long timer_on = sh_isstate(SH_TIMING);
-#ifndef timeofday
+#ifdef timeofday
+				/* must be run after forking a subshell */
+				timeofday(&tb);
+				get_cpu_times(shp, &before_usr, &before_sys);
+#else
 				bt = times(&before);
 				if(bt == (clock_t)-1)
 					errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
@@ -2745,13 +2745,18 @@ int sh_exec(register const Shnode_t *t, int flags)
 					sh_offstate(SH_TIMING);
 				job.waitall = 0;
 			}
-#ifndef timeofday
 			else
 			{
+#ifdef timeofday
+				before_usr.tv_sec = before_usr.tv_usec = 0;
+				before_sys.tv_sec = before_sys.tv_usec = 0;
+#else
 				bt = 0;
 				before.tms_utime = before.tms_cutime = 0;
 				before.tms_stime = before.tms_cstime = 0;
+#endif
 			}
+#ifndef timeofday
 			at = times(&after) - bt;
 			if(at == (clock_t)-1)
 				errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
