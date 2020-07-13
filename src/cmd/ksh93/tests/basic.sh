@@ -575,13 +575,13 @@ result=( $(
 
 # The locale's radix point shouldn't be ignored
 us=$(
-	LC_ALL='C.UTF-8' # radix point `.`
+	LC_ALL='C.UTF-8' # radix point '.'
 	TIMEFORMAT='%1U' # catch -1.99 bug as well by getting user time
 	redirect 2>&1
 	time sleep 0
 )
 eu=$(
-	LC_ALL='C-EU.UTF-8' # radix point `,`
+	LC_ALL='C-EU.UTF-8' # radix point ','
 	TIMEFORMAT='%1U'
 	redirect 2>&1
 	time sleep 0
