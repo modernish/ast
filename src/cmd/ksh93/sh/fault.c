@@ -519,7 +519,7 @@ void sh_exit(register int xno)
 	if(pp && pp->mode>1)
 		cursig = -1;
 #ifdef SIGTSTP
-	if(shp->trapnote&SH_SIGTSTP)
+	if((shp->trapnote&SH_SIGTSTP) && job.jobcontrol)
 	{
 		/* ^Z detected by the shell */
 		shp->trapnote = 0;

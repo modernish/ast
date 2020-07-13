@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-07-13:
+
+- Fixed a fork bomb that could occur when the vi editor was sent SIGTSTP
+  while running in a ksh script.
+
 2020-07-10:
 
 - Fixed a bug that caused types created with 'typeset -T' to throw an error
