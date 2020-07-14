@@ -295,6 +295,9 @@ static void p_time(Shell_t *shp, Sfio_t *out, const char *format, clock_t *tm)
 			continue;
 		unsigned char l_modifier = 0;
 		int precision = 3;
+#ifndef timeofday
+		n = 0;
+#endif
 
 		sfwrite(stkp, first, format-first);
 		c = *++format;
