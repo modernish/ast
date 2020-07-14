@@ -348,6 +348,7 @@ int job_reap(register int sig)
 	Cojob_t		*cjp;
 	int		cojobs;
 	long		cotimeout = sig?0:-1;
+	int was_ttywait_on = sh_isstate(SH_TTYWAIT); /* save tty wait state */
 	for(pw=job.pwlist;pw;pw=pw->p_nxtjob)
 	{
 		if(pw->p_cojob && !(pw->p_flag&P_DONE))
@@ -374,7 +375,6 @@ int job_reap(register int sig)
 		flags = WUNTRACED|wcontinued;
 	shp->gd->waitevent = 0;
 	oerrno = errno;
-	int was_ttywait_on = sh_isstate(SH_TTYWAIT); /* save tty wait state */
 	while(1)
 	{
 		if(!(flags&WNOHANG) && !sh.intrap && job.pwlist)

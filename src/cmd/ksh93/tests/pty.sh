@@ -557,7 +557,6 @@ L notify job state changes
 
 p :test-1:
 w set -b; sleep .01 &
-s 20
 u Done
 !
 
