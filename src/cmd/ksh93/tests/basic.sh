@@ -581,7 +581,7 @@ us=$(
 	time sleep 0
 )
 eu=$(
-	LC_ALL='C-EU.UTF-8' # radix point ','
+	LC_ALL='C_EU.UTF-8' # radix point ','
 	TIMEFORMAT='%1U'
 	redirect 2>&1
 	time sleep 0
