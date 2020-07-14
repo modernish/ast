@@ -549,5 +549,17 @@ r ^:test-2: true string\\r\\n$
 !
 done
 
+# err_exit #
+tst $LINENO <<"!"
+L notify job state changes
+
+# 'set -b' should immediately notify the user about job state changes.
+
+p :test-1:
+w set -b; sleep .01 &
+s 20
+u Done
+!
+
 # ======
 exit $((Errors<125?Errors:125))

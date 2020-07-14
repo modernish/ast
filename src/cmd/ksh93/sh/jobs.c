@@ -374,11 +374,13 @@ int job_reap(register int sig)
 		flags = WUNTRACED|wcontinued;
 	shp->gd->waitevent = 0;
 	oerrno = errno;
+	int was_ttywait_on = sh_isstate(SH_TTYWAIT); /* save tty wait state */
 	while(1)
 	{
 		if(!(flags&WNOHANG) && !sh.intrap && job.pwlist)
 		{
-			sh_onstate(SH_TTYWAIT);
+			if(!was_ttywait_on)
+				sh_onstate(SH_TTYWAIT);
 			if(waitevent && (*waitevent)(-1,-1L,0))
 				flags |= WNOHANG;
 		}
@@ -404,7 +406,8 @@ int job_reap(register int sig)
 		}
 #endif /* SHOPT_COSHELL */
 		pid = waitpid((pid_t)-1,&wstat,flags);
-		sh_offstate(SH_TTYWAIT);
+		if(!was_ttywait_on)
+			sh_offstate(SH_TTYWAIT);
 #if SHOPT_COSHELL
 	cojob:
 #endif /* SHOPT_COSHELL */
@@ -559,6 +562,10 @@ int job_reap(register int sig)
 		}
 #endif
 	}
+#if SHOPT_COSHELL
+	if(!was_ttywait_on)
+		sh_offstate(SH_TTYWAIT); /* only required after 'goto cojob' in the while loop */
+#endif
 	if(errno==ECHILD)
 	{
 		errno = oerrno;
