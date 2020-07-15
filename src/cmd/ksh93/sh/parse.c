@@ -1478,7 +1478,7 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 					if(nv_isattr(np,BLT_DCL))
 					{
 						assignment = 1;
-						if(np==SYSTYPESET)
+						if(np >= SYSTYPESET && np <= SYSTYPESET_END)
 							lexp->intypeset = 1;
 						key_on = 1;
 					}
@@ -1517,7 +1517,9 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 				int intypeset = lexp->intypeset;
 				int type = 0;
 				lexp->intypeset = 0;
-				if(t->comnamp==SYSTYPESET)
+				if(t->comnamp == SYSCOMPOUND)
+					type = NV_COMVAR;
+				else if((Namval_t*)t->comnamp >= SYSTYPESET && (Namval_t*)t->comnamp <= SYSTYPESET_END)
 				{
 					struct argnod  *ap;
 					for(ap=t->comarg->argnxt.ap;ap;ap=ap->argnxt.ap)

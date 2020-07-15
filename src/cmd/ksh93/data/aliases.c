@@ -29,13 +29,7 @@
 
 const struct shtable2 shtab_aliases[] =
 {
-	"autoload",	NV_NOFREE,		"typeset -fu",
-	"compound",	NV_NOFREE|BLT_DCL,	"typeset -C",
-	"float",	NV_NOFREE|BLT_DCL,	"typeset -lE",
-	"functions",	NV_NOFREE,		"typeset -f",
 	"history",	NV_NOFREE,		"hist -l",
-	"integer",	NV_NOFREE|BLT_DCL,	"typeset -li",
-	"nameref",	NV_NOFREE|BLT_DCL,	"typeset -n",
 	"r",		NV_NOFREE,		"hist -s",
 	"",		0,			(char*)0
 };

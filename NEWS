@@ -5,6 +5,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-07-15:
 
+- The 'autoload', 'compound', 'float', 'functions', 'integer' and 'nameref'
+  default aliases have been converted into regular built-in commands, so
+  that 'unalias -a' does not remove them. Shell functions can now use
+  these names, which improves compatibility with POSIX shell scripts.
+
 - The End key escape sequence '^[[F' is now handled in the emacs and vi editing
   modes. The End key moves the cursor to the end of the line (in contrast to
   the Home key doing the opposite).

@@ -68,6 +68,12 @@ const struct shtable3 shtab_builtins[] =
 	"break",	NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(break),
 	"continue",	NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(break),
 	"typeset",	NV_BLTIN|BLT_ENV|BLT_SPC|BLT_DCL,bltin(typeset),
+	"autoload",	NV_BLTIN|BLT_ENV,		bltin(typeset),
+	"compound",	NV_BLTIN|BLT_ENV|BLT_DCL,	bltin(typeset),
+	"float",	NV_BLTIN|BLT_ENV|BLT_DCL,	bltin(typeset),
+	"functions",	NV_BLTIN|BLT_ENV,		bltin(typeset),
+	"integer",	NV_BLTIN|BLT_ENV|BLT_DCL,	bltin(typeset),
+	"nameref",	NV_BLTIN|BLT_ENV|BLT_DCL,	bltin(typeset),
 	"test",		NV_BLTIN|BLT_ENV,		bltin(test),
 	"[",		NV_BLTIN|BLT_ENV,		bltin(test),
 	"let",		NV_BLTIN|BLT_ENV,		bltin(let),
@@ -1745,29 +1751,30 @@ USAGE_LICENSE
 ;
 
 const char sh_opttypeset[] =
-"+[-1c?\n@(#)$Id: typeset (AT&T Research) 2010-12-08 $\n]"
+"+[-1c?\n@(#)$Id: typeset (AT&T Research/ksh93) 2020-07-15 $\n]"
 USAGE_LICENSE
-"[+NAME?\f?\f - declare or display variables with attributes]"
-"[+DESCRIPTION?Without the \b-f\b option, \b\f?\f\b sets, unsets, "
+"[+NAME?typeset - declare or display variables with attributes]"
+"[+DESCRIPTION?Without the \b-f\b option, \btypeset\b sets, unsets, "
 	"or displays attributes of variables as specified with the "
 	"options.  If the first option is specified with a \b-\b "
 	"then the attributes are set for each of the given \aname\as. "
 	"If the first option is specified with a \b+\b, then the specified "
 	"attributes are unset.  If \b=\b\avalue\a is specified value is "
 	"assigned before the attributes are set.]"
-"[+?When \b\f?\f\b is called inside a function defined with the "
+"[+?When \btypeset\b is called inside a function defined with the "
 	"\bfunction\b reserved word, and \aname\a does not contain a "
 	"\b.\b, then a local variable statically scoped to  that function "
 	"will be created.]"
 "[+?Not all option combinations are possible.  For example, the numeric "
 	"options \b-i\b, \b-E\b, and \b-F\b cannot be specified with "
 	"the justification options \b-L\b, \b-R\b, and \b-Z\b.]"
-"[+?Note that the following preset aliases are set by the shell:]{"
-	"[+compound?\b\f?\f -C\b.]"
-	"[+float?\b\f?\f -lE\b.]"
-	"[+functions?\b\f?\f -f\b.]"
-	"[+integer?\b\f?\f -li\b.]"
-	"[+nameref?\b\f?\f -n\b.]"
+"[+?Note also the following builtin command equivalents:]{"
+	"[+autoload?\btypeset -fu\b]"
+	"[+compound?\btypeset -C\b]"
+	"[+float?\btypeset -lE\b]"
+	"[+functions?\btypeset -f\b]"
+	"[+integer?\btypeset -li\b]"
+	"[+nameref?\btypeset -n\b]"
 "}"
 "[+?If no \aname\as are specified then variables that have the specified "
 	"options are displayed.  If the first option is specified with "
@@ -1780,7 +1787,7 @@ USAGE_LICENSE
 "[+?If \b-f\b is specified, then each \aname\a refers to a function "
 	"and the only valid options are \b-u\b and \b-t\b.  In this "
 	"case no \b=\b\avalue\a can be specified.]"
-"[+?\b\f?\f\b is built-in to the shell as a declaration command so that "
+"[+?\btypeset\b is built in to the shell as a declaration command so that "
 	"field splitting and pathname expansion are not performed on "
 	"the arguments.  Tilde expansion occurs on \avalue\a.]"
 #if 1

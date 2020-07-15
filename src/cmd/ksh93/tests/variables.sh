@@ -496,8 +496,9 @@ chmod +x $tmp/script
 )
 TIMEFORMAT='this is a test'
 [[ $(set +x; { { time :;} 2>&1;}) == "$TIMEFORMAT" ]] || err_exit 'TIMEFORMAT not working'
+alias _test_alias=true
 : ${.sh.version}
-[[ $(alias integer) == *.sh.* ]] && err_exit '.sh. prefixed to alias name'
+[[ $(alias _test_alias) == *.sh.* ]] && err_exit '.sh. prefixed to alias name'
 : ${.sh.version}
 [[ $(whence rm) == *.sh.* ]] && err_exit '.sh. prefixed to tracked alias name'
 : ${.sh.version}

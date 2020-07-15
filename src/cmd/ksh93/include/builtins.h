@@ -41,16 +41,25 @@
 #define SYSCD		(shgd->bltin_cmds+6)	/* cd */
 #define SYSBREAK	(shgd->bltin_cmds+7)	/* break */
 #define SYSCONT		(shgd->bltin_cmds+8)	/* continue */
-#define SYSTYPESET	(shgd->bltin_cmds+9)	/* typeset */
-#define SYSTEST		(shgd->bltin_cmds+10)	/* test */
-#define SYSBRACKET	(shgd->bltin_cmds+11)	/* [ */
-#define SYSLET		(shgd->bltin_cmds+12)	/* let */
-#define SYSEXPORT	(shgd->bltin_cmds+13)	/* export */
-#define SYSDOT		(shgd->bltin_cmds+14)	/* . */
-#define SYSSOURCE	(shgd->bltin_cmds+15)	/* source */
-#define SYSRETURN	(shgd->bltin_cmds+16)	/* return */
+
+#define SYSTYPESET	(shgd->bltin_cmds+9)	/* typeset     \		*/
+						/* autoload	|		*/
+#define SYSCOMPOUND	(shgd->bltin_cmds+11)	/* compound	|		*/
+						/* float	 >typeset range	*/
+						/* functions	|		*/
+						/* integer	|		*/
+#define SYSNAMEREF	(shgd->bltin_cmds+15)	/* nameref      |		*/
+#define SYSTYPESET_END	(shgd->bltin_cmds+15)	/*	       /		*/
+
+#define SYSTEST		(shgd->bltin_cmds+16)	/* test */
+#define SYSBRACKET	(shgd->bltin_cmds+17)	/* [ */
+#define SYSLET		(shgd->bltin_cmds+18)	/* let */
+#define SYSEXPORT	(shgd->bltin_cmds+19)	/* export */
+#define SYSDOT		(shgd->bltin_cmds+20)	/* . */
+#define SYSSOURCE	(shgd->bltin_cmds+21)	/* source */
+#define SYSRETURN	(shgd->bltin_cmds+22)	/* return */
 #if SHOPT_BASH
-#   define SYSLOCAL	(shgd->bltin_cmds+17)	/* local */
+#   define SYSLOCAL	(shgd->bltin_cmds+23)	/* local */
 #else
 #   define SYSLOCAL	0
 #endif

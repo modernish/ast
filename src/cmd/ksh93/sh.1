@@ -788,19 +788,7 @@ but can be unset or redefined:
 .RS 20
 .PD 0
 .TP
-.B "autoload=\(fmtypeset \-fu\(fm"
-.TP
-.B "compound=\(fmtypeset \-C\(fm"
-.TP
-.B "float=\(fmtypeset \-lE\(fm"
-.TP
-.B "functions=\(fmtypeset \-f\(fm"
-.TP
 .B "history=\(fmhist \-l\(fm"
-.TP
-.B "integer=\(fmtypeset \-li\(fm"
-.TP
-.B "nameref=\(fmtypeset \-n\(fm"
 .TP
 .B "r=\(fmhist \-s\(fm"
 .PD
@@ -5476,10 +5464,10 @@ section from their manual page, and
 as a request to print a brief usage message.
 All these are printed on standard error.
 There are advanced output options as well; see
-.B getopts --man
+.B getopts \-\-man
 for more information.
 .PP
-Commands that are preceded by one or two \(dg symbols below are
+Commands that are preceded by a \(dg symbol below are
 .I special\ built-in\ commands
 and are treated specially in the following ways:
 .PD 0
@@ -5498,10 +5486,10 @@ that contains them to abort.
 .TP
 4.
 They are not valid function names.
-.TP
-5.
-Words
-following a command preceded by \(dg\(dg
+.PP
+Commands that are preceded by a \(dd symbol below are
+.IR declaration\ commands .
+Any following words
 that are in the format of a variable assignment
 are expanded with the same rules as a variable assignment.
 This means that
@@ -5509,9 +5497,6 @@ tilde substitution is performed after the
 .B =
 sign and field splitting and file name generation are not
 performed.
-These are called
-.I declaration\^
-built-ins.
 .PD
 .TP
 \(dg \f3:\fP \*(OK \f2arg\^\fP .\|.\|. \*(CK
@@ -5599,6 +5584,12 @@ The exit status is non-zero if a
 .I name\^
 is given, but no value, and no alias has been defined for the
 .IR name\^ .
+.TP
+\f3autoload\fP \f2name\^\fP .\|.\|.
+Marks each \f2name\fP undefined so that the \f3FPATH\fP variable will be
+searched to find the function definition when the function is referenced.
+The same as
+.BR typeset\ \-fu .
 .TP
 \f3bg\fP \*(OK \f2job\^\fP.\|.\|. \*(CK
 This command is only on systems that support job control.
@@ -5830,6 +5821,13 @@ option causes
 to act like
 .BR "whence \-v" .
 .TP
+\(dd \f3compound\fP \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK .\|.\|.
+Causes each
+.I vname\^
+to be a compound variable.
+The same as
+.BR typeset\ \-C .
+.TP
 \(dg \f3continue\fP \*(OK \f2n\^\fP \*(CK
 Resume the next iteration of the enclosing
 .BR for\^ ,
@@ -5874,7 +5872,7 @@ See
 .IR echo (1)
 for usage and description.
 .TP
-\(dg\(dg \f3enum\fP \*(OK \f3\-i\fP  \*(CK \f2type\^\fP\*(OK=(\f2value\^\fP .\|.\|.) \*(CK
+\(dd \f3enum\fP \*(OK \f3\-i\fP  \*(CK \f2type\^\fP\*(OK=(\f2value\^\fP .\|.\|.) \*(CK
 Creates a declaration command named \f2type\^\fP that is an
 integer type that allows one of the specified \f2value\fPs as
 enumeration names.  If \f3=(\fP\f2value\^\ .\|.\|.\|\fP\f3)\fP is
@@ -5883,6 +5881,8 @@ least two elements and the values are taken from this array variable.
 If
 .B -i
 is specified the values are case insensitive.
+Declaration commands are created as special builtins that cannot be
+removed or overridden by shell functions.
 .TP
 \(dg \f3eval\fP \*(OK \f2arg\^\fP .\|.\|. \*(CK
 The arguments are read as input
@@ -5934,7 +5934,7 @@ option (see
 .B set
 below) turned on.
 .TP
-\(dg\(dg \f3export\fP \*(OK \f3\-p\fP \*(CK \*(OK \f2name\^\fP\*(OK\f3=\fP\f2value\^\fP\*(CK \*(CK .\|.\|.
+\(dg\(dd \f3export\fP \*(OK \f3\-p\fP \*(CK \*(OK \f2name\^\fP\*(OK\f3=\fP\f2value\^\fP\*(CK \*(CK .\|.\|.
 If
 .I name\^
 is not given,
@@ -5987,6 +5987,16 @@ See
 .I Jobs
 for a description of the format of
 .IR job .
+.TP
+\(dd \f3float\fP \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK .\|.\|.
+Declares each \f2vname\fP to be a long floating point number.
+The same as
+.BR typeset\ \-lE .
+.TP
+\f3functions\fP \*(OK \f3\-Stux\^\fP \*(CK \*(OK \f2name\^\fP .\|.\|. \*(CK
+Lists functions.
+The same as
+.BR typeset\ \-f .
 .TP
 \f3getconf\fP \*(OK \f2name\^\fP \*(OK \f2pathname\^\fP \*(CK \*(CK
 Prints the current value of the configuration parameter given by
@@ -6201,6 +6211,11 @@ after the optional substitution
 \f2old\^\fP\f3=\fP\f2new\^\fP
 is performed.
 .TP
+\(dd \f3integer\fP \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK .\|.\|.
+Declares each \f2vname\fP to be a long integer number.
+The same as
+.BR typeset\ \-li .
+.TP
 \f3jobs\fP \*(OK \f3\-lnp\^\fP \*(CK \*(OK \f2job\^\fP \.\|.\|. \*(CK
 Lists information about each given job; or all active jobs if
 .I job
@@ -6301,6 +6316,11 @@ above, for a description of arithmetic expression evaluation.
 The exit status is
 0 if the value of the last expression
 is non-zero, and 1 otherwise.
+.TP
+\(dd \f3nameref\fP \f2vname\fP\*(OK\f3=\fP\f2refname\^\fP\*(CK .\|.\|.
+Declares each \f2vname\fP to be a variable name reference.
+The same as
+.BR typeset\ \-n .
 .TP
 \f3print\fP \*(OK \f3\-CRenprsv\^\fP \*(CK \*(OK \f3\-u\fP \f2unit \^\fP\*(CK \*(OK \f3\-f\fP \f2format\^\fP \*(CK \*(OK \f2arg\^\fP .\|.\|. \*(CK
 With no options or with option
@@ -6730,7 +6750,7 @@ or
 .B read
 has timed out.
 .TP
-\(dg\(dg \f3readonly\fP \*(OK \f3\-p\fP \*(CK \*(OK \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK \*(CK .\|.\|.
+\(dg\(dd \f3readonly\fP \*(OK \f3\-p\fP \*(CK \*(OK \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK \*(CK .\|.\|.
 If
 .I vname\^
 is not given,
@@ -7299,9 +7319,9 @@ for infinite loops.
 .TP
 \f3type\fP \*(OK \f3\-afp\fP \*(CK \f2name\^\fP .\|.\|.
 The same as
-.BR whence\ -v .
+.BR whence\ \-v .
 .TP
-\(dg\(dg \f3typeset\fP \*(OK \f3\(+-ACHSfblmnprtux\^\fP \*(CK \*(OK \f3\(+-EFLRXZi\*(OK\f2n\^\fP\*(CK \*(CK   \*(OK \f3\+-M  \*(OK \f2mapname\fP \*(CK \*(CK \*(OK \f3\-T  \*(OK \f2tname\fP=(\f2assign_list\fP) \*(CK \*(CK \*(OK \f3\-h \f2str\fP \*(CK \*(OK \f3\-a\fP \*(OK\f2type\fP\*(CK \*(CK \*(OK \f2vname\^\fP\*(OK\f3=\fP\f2value\^\fP \*(CK \^ \*(CK .\|.\|.
+\(dg\(dd \f3typeset\fP \*(OK \f3\(+-ACHSfblmnprtux\^\fP \*(CK \*(OK \f3\(+-EFLRXZi\*(OK\f2n\^\fP\*(CK \*(CK   \*(OK \f3\+-M  \*(OK \f2mapname\fP \*(CK \*(CK \*(OK \f3\-T  \*(OK \f2tname\fP=(\f2assign_list\fP) \*(CK \*(CK \*(OK \f3\-h \f2str\fP \*(CK \*(OK \f3\-a\fP \*(OK\f2type\fP\*(CK \*(CK \*(OK \f2vname\^\fP\*(OK\f3=\fP\f2value\^\fP \*(CK \^ \*(CK .\|.\|.
 Sets attributes and values for shell variables and functions.
 When invoked inside a function defined with the
 .B function
@@ -7326,9 +7346,9 @@ expressions.
 .B \-C
 causes each
 .I vname\^
-to be a compound variable.
+to be a compound variable. If
 .I value\^
-names a compound variable it is copied into
+names a compound variable, it is copied into
 .IR vname .
 Otherwise, it unsets each
 .IR vname .

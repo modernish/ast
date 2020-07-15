@@ -1295,20 +1295,21 @@ int sh_exec(register const Shnode_t *t, int flags)
 			
 					}
 #endif /* SHOPT_BASH */
-					if(np==SYSTYPESET ||  (np && np->nvalue.bfp==SYSTYPESET->nvalue.bfp))
+					if(np && np->nvalue.bfp==SYSTYPESET->nvalue.bfp)
 					{
-						if(np!=SYSTYPESET)
+						/* command calls b_typeset(); treat as a typeset variant */
+						if(np < SYSTYPESET || np > SYSTYPESET_END)
 						{
 							shp->typeinit = np;
 							tp = nv_type(np);
 						}
-						if(checkopt(com,'C'))
+						if(np==SYSCOMPOUND || checkopt(com,'C'))
 							flgs |= NV_COMVAR;
 						if(checkopt(com,'S'))
 							flgs |= NV_STATIC;
 						if(checkopt(com,'m'))
 							flgs |= NV_MOVE;
-						if(checkopt(com,'n'))
+						if(np==SYSNAMEREF || checkopt(com,'n'))
 							flgs |= NV_NOREF;
 #if SHOPT_TYPEDEF
 						else if(argn>=3 && checkopt(com,'T'))

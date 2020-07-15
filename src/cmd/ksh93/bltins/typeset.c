@@ -210,16 +210,39 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 	Namdecl_t 	*ntp = (Namdecl_t*)context->ptr;
 	Dt_t		*troot;
 	int		isfloat=0, shortint=0, sflag=0;
-	NOT_USED(argc);
+	char		*new_argv[argc + 1];
+
 	memset((void*)&tdata,0,sizeof(tdata));
 	tdata.sh = context->shp;
-	if(ntp)
+	troot = tdata.sh->var_tree;
+	if(ntp)					/* custom declaration command added using enum */
 	{
 		tdata.tp = ntp->tp;
 		opt_info.disc = (Optdisc_t*)ntp->optinfof;
 		optstring = ntp->optstring;
 	}
-	troot = tdata.sh->var_tree;
+	else if(argv[0][0] != 't')		/* not <t>ypeset */
+	{
+		new_argv[0] = "typeset";
+		if(argv[0][0] == 'a')		/* <a>utoload == typeset -fu */
+			new_argv[1] = "-fu";
+		else if(argv[0][0] == 'c')	/* <c>ompound == typeset -C */
+			new_argv[1] = "-C";
+		else if(argv[0][1] == 'l')	/* f<l>oat == typeset -lE */
+			new_argv[1] = "-lE";
+		else if(argv[0][1] == 'u')	/* f<u>nctions == typeset -f */
+			new_argv[1] = "-f";
+		else if(argv[0][0] == 'i')	/* <i>nteger == typeset -li */
+			new_argv[1] = "-li";
+		else if(argv[0][0] == 'n')	/* <n>ameref == typeset -n */
+			new_argv[1] = "-n";
+		else
+			errormsg(SH_DICT, ERROR_exit(128), "internal error");
+		for (n = 1; n <= argc; n++)
+			new_argv[n + 1] = argv[n];
+		argc++;
+		argv = new_argv;
+	}
 	while((n = optget(argv,optstring)))
 	{
 		if(tdata.aflag==0)
