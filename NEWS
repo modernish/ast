@@ -3,6 +3,12 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-07-15:
+
+- The End key escape sequence '^[[F' is now handled in the emacs and vi editing
+  modes. The End key moves the cursor to the end of the line (in contrast to
+  the Home key doing the opposite).
+
 2020-07-14:
 
 - Fixed a bug that caused 'set -b' to have no effect.

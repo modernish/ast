@@ -1105,6 +1105,7 @@ static int escape(register Emacs_t* ep,register genchar *out,int count)
 			    case 'H':
 				ed_ungetchar(ep->ed,cntl('A'));
 				return(-1);
+			    case 'F':
 			    case 'Y':
 				ed_ungetchar(ep->ed,cntl('E'));
 				return(-1);

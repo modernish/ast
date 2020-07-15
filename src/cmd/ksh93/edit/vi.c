@@ -1669,6 +1669,7 @@ static int mvcursor(register Vi_t* vp,register int motion)
 		    case 'H':
 			tcur_virt = 0;
 			break;
+		    case 'F':
 		    case 'Y':
 			tcur_virt = last_virt;
 			break;
