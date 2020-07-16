@@ -58,6 +58,13 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 	NOT_USED(argc);
 	if(!sh_histinit((void*)shp))
 		errormsg(SH_DICT,ERROR_system(1),e_histopen);
+
+	/* 'history' and 'r' builtins */
+	if(argv[0][4] == 'o')		/* hist<o>ry */
+		lflag = 1;
+	else if(argv[0][0] == 'r')	/* <r> */
+		edit = "-";
+
 	hp = shp->gd->hist_ptr;
 	while((flag = optget(argv,sh_opthist))) switch(flag)
 	{
@@ -68,7 +75,7 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 		nflag++;
 		break;
 	    case 'l':
-		lflag++;
+		lflag = 1;
 		break;
 	    case 'r':
 		rflag++;

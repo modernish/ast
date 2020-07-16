@@ -1328,12 +1328,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 			}
 			/* The alias has been unset by call to _nv_unset, remove it from the tree */
 			else if(troot==shp->alias_tree)
-			{
-				if(nv_isattr(np, NV_NOFREE))
-					nv_delete(np,troot,NV_NOFREE); /* The alias is in read-only memory (shtab_aliases) */
-				else
-					nv_delete(np,troot,0);
-			}
+				nv_delete(np,troot,0);
 #if 0
 			/* causes unsetting local variable to expose global */
 			else if(shp->var_tree==troot && shp->var_tree!=shp->var_base && nv_search((char*)np,shp->var_tree,HASH_BUCKET|HASH_NOSCOPE))

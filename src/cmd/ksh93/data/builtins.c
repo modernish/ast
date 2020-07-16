@@ -94,6 +94,8 @@ const struct shtable3 shtab_builtins[] =
 	"exit",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(return),
 	"fc",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
 	"hist",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
+	"history",	NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
+	"r",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
 	"readonly",	NV_BLTIN|BLT_ENV|BLT_SPC|BLT_DCL,bltin(readonly),
 	"shift",	NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(shift),
 	"trap",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(trap),

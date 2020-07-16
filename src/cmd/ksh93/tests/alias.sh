@@ -109,8 +109,5 @@ alias foo=bar
 unalias foo
 unalias foo && err_exit 'unalias should return non-zero when a previously set alias is unaliased twice'
 
-# Removing a predefined alias should work without an error from free(3)
-$SHELL -i -c 'unalias history' 2> /dev/null || err_exit 'removing a predefined alias does not work'
-
 # ======
 exit $((Errors<125?Errors:125))

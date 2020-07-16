@@ -777,20 +777,9 @@ not while they are executed.
 Therefore,
 for an alias to take effect,
 the
-.B
-alias
+.B alias
 definition command has to be executed before
 the command which references the alias is read.
-.PP
-The following aliases
-are compiled into the shell
-but can be unset or redefined:
-.RS 20
-.PD 0
-.TP
-.B "history=\(fmhist \-l\(fm"
-.TP
-.B "r=\(fmhist \-s\(fm"
 .PD
 .RE
 .SS Tilde Substitution.
@@ -4367,9 +4356,9 @@ to re-execute the command.
 In this case a substitution parameter of the form
 \f2old\fP\f3=\fP\f2new\fP
 can be used to modify the command before execution.
-For example, with the preset alias
+For example, with the builtin
 .BR r ,
-which is aliased to
+which is functionally equivalent to
 .BR "\(fmhist \-s\(fm" ,
 typing
 `\f3r bad=good c\fP'
@@ -6211,6 +6200,11 @@ after the optional substitution
 \f2old\^\fP\f3=\fP\f2new\^\fP
 is performed.
 .TP
+\f3history\fP \*(OK \f3\-nr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
+Lists commands in the history file.
+The same as
+.BR hist\ \-l .
+.TP
 \(dd \f3integer\fP \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK .\|.\|.
 Declares each \f2vname\fP to be a long integer number.
 The same as
@@ -6623,6 +6617,11 @@ or
 .B \-P
 on the command line
 determines which method is used.
+.TP
+\f3r\fP \*(OK \f2old\fP\f3\=\fP\f2new\^\fP \*(CK \*(OK \f2command\^\fP \*(CK
+Reexecutes a command in the history file.
+The same as
+.BR hist\ \-s .
 .TP
 \f3read\fP \*(OK \f3\-ACSprsv\^\fP \*(CK \*(OK \f3\-d\fP \f2delim \^\fP\*(CK \*(OK \f3\-n\fP \f2n \^\fP\*(CK \*(OK \*(OK \f3\-N\fP \f2n \^\fP\*(CK \*(OK \f3\-t\fP \f2timeout \^\fP\*(CK \*(OK \f3\-u\fP \f2unit \^\fP\*(CK \*(OK \f2vname\f3?\f2prompt\^\f1 \*(CK \*(OK \f2vname\^\fP .\|.\|. \*(CK
 The shell input mechanism.

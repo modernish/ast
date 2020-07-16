@@ -176,8 +176,6 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 		{
 			sh_onoption(SH_BGNICE);
 			sh_onoption(SH_RC);
-			free(shp->alias_tree);
-			shp->alias_tree = sh_inittree(shp,shtab_aliases);
 		}
 		if(!sh_isoption(SH_RC) && (sh_isoption(SH_BASH) && !sh_isoption(SH_POSIX)
 #if SHOPT_REMOTE

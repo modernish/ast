@@ -156,7 +156,7 @@ end
 $(SH) :: sh.1 pmain.c $(LIBS_req)
 
 DATAFILES = limits.c msg.c strdata.c testops.c keywords.c options.c \
-                 signals.c aliases.c builtins.c variables.c lexstates.c
+                 signals.c builtins.c variables.c lexstates.c
 
 shell$(RELEASE) $(VERSION) id=shell :LIBRARY: shell.3 nval.3 alarm.c cd_pwd.c cflow.c deparse.c \
 	enum.c getopts.c hist.c misc.c print.c read.c sleep.c trap.c test.c \

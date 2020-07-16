@@ -217,6 +217,7 @@ static int		lctype;
 static int		nbltins;
 static void		env_init(Shell_t*);
 static Init_t		*nv_init(Shell_t*);
+static Dt_t		*sh_inittree(Shell_t*,const struct shtable2*);
 static int		shlvl;
 
 #ifdef _WINIX
@@ -1560,7 +1561,7 @@ int sh_reinit(char *argv[])
 		nv_delete(np,dp,NV_NOFREE);
 	}
 	dtclose(shp->alias_tree);
-	shp->alias_tree = sh_inittree(shp,shtab_noaliases);
+	shp->alias_tree = dtopen(&_Nvdisc,Dtoset);
 	shp->last_root = shp->var_tree;
 	shp->inuse_bits = 0;
 	if(shp->userinit)
@@ -1852,9 +1853,9 @@ static Init_t *nv_init(Shell_t *shp)
 	(MCHKNOD)->nvalue.lp = (&sh_mailchk);
 	(OPTINDNOD)->nvalue.lp = (&shp->st.optindex);
 	/* set up the seconds clock */
-	shp->alias_tree = sh_inittree(shp,shtab_noaliases);
 	shp->track_tree = dtopen(&_Nvdisc,Dtset);
 	shp->bltin_tree = sh_inittree(shp,(const struct shtable2*)shtab_builtins);
+	shp->alias_tree = dtopen(&_Nvdisc,Dtoset);
 	shp->fun_tree = dtopen(&_Nvdisc,Dtoset);
 	dtview(shp->fun_tree,shp->bltin_tree);
 	nv_mount(DOTSHNOD, "type", shp->typedict=dtopen(&_Nvdisc,Dtoset));
@@ -1877,7 +1878,7 @@ static Init_t *nv_init(Shell_t *shp)
  * initialize name-value pairs
  */
 
-Dt_t *sh_inittree(Shell_t *shp,const struct shtable2 *name_vals)
+static Dt_t *sh_inittree(Shell_t *shp,const struct shtable2 *name_vals)
 {
 	register Namval_t *np;
 	register const struct shtable2 *tp;

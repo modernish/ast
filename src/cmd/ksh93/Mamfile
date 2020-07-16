@@ -1238,16 +1238,6 @@ meta signals.o %.c>%.o data/signals.c signals
 prev data/signals.c
 exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DSHOPT_STATS -DSHOPT_NAMESPACE -DSHOPT_COSHELL -DSHOPT_PFSH -DSHOPT_HISTEXPAND -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -DSHOPT_FIXEDARRAY -DSHOPT_ESH -DSHOPT_MULTIBYTE -c data/signals.c
 done signals.o generated
-make aliases.o
-make data/aliases.c
-prev FEATURE/dynamic implicit
-prev FEATURE/options implicit
-prev include/defs.h implicit
-done data/aliases.c
-meta aliases.o %.c>%.o data/aliases.c aliases
-prev data/aliases.c
-exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DSHOPT_DYNAMIC -DSHOPT_MULTIBYTE -D_PACKAGE_ast -DSHOPT_PFSH -DSHOPT_STATS -DSHOPT_NAMESPACE -DSHOPT_COSHELL -DSHOPT_HISTEXPAND -D_BLD_shell -D_API_ast=20100309 -DERROR_CONTEXT_T=Error_context_t -DSHOPT_FIXEDARRAY -DSHOPT_ESH -c data/aliases.c
-done aliases.o generated
 make builtins.o
 make data/builtins.c
 prev FEATURE/cmds implicit
@@ -1329,7 +1319,7 @@ prev edit/hexpand.c
 exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DSHOPT_HISTEXPAND -DSHOPT_EDPREDICT -DSHOPT_MULTIBYTE -DKSHELL -DSHOPT_ESH -DSHOPT_VSH -D_PACKAGE_ast -DSHOPT_PFSH -DSHOPT_STATS -DSHOPT_NAMESPACE -DSHOPT_COSHELL -D_BLD_shell -D_API_ast=20100309 -DERROR_CONTEXT_T=Error_context_t -DSHOPT_FIXEDARRAY -c edit/hexpand.c
 done hexpand.o generated
 exec - ${AR} rc libshell.a alarm.o cd_pwd.o cflow.o deparse.o enum.o getopts.o hist.o misc.o print.o read.o sleep.o trap.o test.o typeset.o ulimit.o umask.o whence.o main.o nvdisc.o nvtype.o arith.o args.o array.o completion.o defs.o edit.o expand.o regress.o fault.o fcin.o
-exec - ${AR} rc libshell.a history.o init.o io.o jobs.o lex.o macro.o name.o nvtree.o parse.o path.o string.o streval.o subshell.o tdump.o timers.o trestore.o waitevent.o xec.o env.o limits.o msg.o strdata.o testops.o keywords.o options.o signals.o aliases.o builtins.o variables.o lexstates.o emacs.o vi.o hexpand.o
+exec - ${AR} rc libshell.a history.o init.o io.o jobs.o lex.o macro.o name.o nvtree.o parse.o path.o string.o streval.o subshell.o tdump.o timers.o trestore.o waitevent.o xec.o env.o limits.o msg.o strdata.o testops.o keywords.o options.o signals.o builtins.o variables.o lexstates.o emacs.o vi.o hexpand.o
 exec - (ranlib libshell.a) >/dev/null 2>&1 || true
 done libshell.a generated
 bind -lshell
