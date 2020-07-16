@@ -58,7 +58,7 @@ option ] .\|.\|. [
 .B rksh93
 .\}
 [
-.B \(+-abcefhikmnoprstuvxBCD
+.B \(+-abcefhiklmnopstuvxBCDEGH
 ] [
 .B \-R
 file ] [
@@ -732,6 +732,8 @@ A word beginning with
 .B #
 causes that word and all the following characters up to a new-line
 to be ignored.
+.PD
+.RE
 .SS Aliasing.
 The first word of each command is replaced by the text of an
 .B alias
@@ -1659,7 +1661,7 @@ is assigned a new value.
 Used for defining arithmetic functions
 (see
 .I "Arithmetic evaluation"
-below).
+below)
 and stores the list of user defined arithmetic functions.
 .TP
 .B .sh.name
@@ -7981,7 +7983,7 @@ No commands will be executed.
 Reads the file named by the
 .B ENV
 variable or by
-\s-1$HOME\s+1/\f3.\fPkshrc
+.B \s-1$HOME\s+1/\f3.\fPkshrc
 if not defined after the profiles.
 .TP 8
 .BI \-c
@@ -8043,6 +8045,8 @@ option is used
 to generate a cross reference database
 that can be used by a separate utility
 to find definitions and references for variables and commands.
+The filename argument specifies the generated database. A script file must be
+provided on the command line as well.
 .PP
 The remaining options and arguments are described under the
 .B set

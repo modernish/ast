@@ -151,7 +151,7 @@ USAGE_LICENSE
 "			\"%?%l\"; export TM_OPTIONS=\"format='\aoverride\a'\""
 "			to override the default]"
 "}"
-"[i:incremental|adjust?Set the system time in incrementatl adjustments to"
+"[i:incremental|adjust?Set the system time in incremental adjustments to"
 "	avoid complete time shift shock. Negative adjustments still maintain"
 "	monotonic increasing time. Not available on all systems.]"
 "[L:last?List only the last time for multiple \adate\a operands.]"

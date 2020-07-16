@@ -61,7 +61,7 @@ static const char usage_cp[] =
 "[L:logical|dereference?Follow symbolic links and copy the files they "
     "point to.]"
 "[P|d:physical|nodereference?Don't follow symbolic links; copy symbolic "
-    "rather than the files they point to.]"
+    "links rather than the files they point to.]"
 ;
 
 static const char usage_ln[] =

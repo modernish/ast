@@ -3,7 +3,6 @@ TODO for AT&T ksh93, 93u+m bugfix branch
 ______
 Fix regression test failures:
 
-- On FreeBSD, there is a test failure in [[ -N file ]] in bracket.sh.
 - On OpenBSD, there are 15 locale-related test failures in variables.sh.
 
 ______

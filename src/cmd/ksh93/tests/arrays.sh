@@ -663,8 +663,8 @@ arr5=(foo bar)
 [[ $(typeset -p arr5) == 'typeset -a arr5=(foo bar)' ]] || err_exit 'typeset expanding non-declaration aliases'
 
 typeset -A Foo
-Foo=( [a]=AA;[b]=BB)
-[[ ${Foo[a]} == AA ]] || err_exit 'Fooa[a] is {Foo[a]} not AA' 
+Foo=([a]=AA;[b]=BB)
+[[ ${Foo[a]} == AA ]] || err_exit 'Foo[a] is {Foo[a]} not AA'
 
 # ======
 # Crash when listing an indexed array

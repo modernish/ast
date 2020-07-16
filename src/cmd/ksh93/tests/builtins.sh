@@ -694,7 +694,7 @@ actual=$(
 expect='1'
 if [[ $actual != "$expect" ]]
 then
-    err_exit "I/O error not detected: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+    err_exit "I/O error not detected: expected $(printf %q "$expect"), got $(printf %q "$actual")"
 fi
 
 # ======
@@ -702,11 +702,11 @@ fi
 
 expect=$'0m00.0[0-9][0-9]s 0m00.0[0-9][0-9]s\n0m00.000s 0m00.000s'
 actual=$("$SHELL" -c times)
-[[ $actual == $expect ]] || err_exit "times output: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+[[ $actual == $expect ]] || err_exit "times output: expected $(printf %q "$expect"), got $(printf %q "$actual")"
 
 expect=$'*: times: too many operands'
 actual=$(set +x; eval 'times Extra Args' 2>&1)
-[[ $actual == $expect ]] || err_exit "times with args: expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+[[ $actual == $expect ]] || err_exit "times with args: expected $(printf %q "$expect"), got $(printf %q "$actual")"
 
 # ======
 # 'whence' builtin

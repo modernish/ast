@@ -447,7 +447,7 @@ typeset -l x=
 
 unset x
 typeset -L4 x=$'\001abcdef'
-[[ ${#x} == 5 ]] || err_exit "width of character '\01' is not zero" 
+[[ ${#x} == 5 ]] || err_exit "width of character '\001' is not zero"
 
 unset x
 typeset -L x=-1

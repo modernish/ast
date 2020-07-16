@@ -448,7 +448,7 @@ r echo repeat-3
 !
 
 # Following test is disabled because a bug in pty causes it to fail on too
-# many operating systems. Apparently pty doesn't handle SIGSTP correctly:
+# many operating systems. Apparently pty doesn't handle SIGTSTP correctly:
 # https://github.com/att/ast/issues/375
 # TODO: fix pty and re-enable this test.
 : <<\end_disabled

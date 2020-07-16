@@ -1418,7 +1418,7 @@ USAGE_LICENSE
 	"a terminal or pipe.]"
 "[n]#[count?Read at most \acount\a characters.  For binary fields \acount\a "
 	"is the number of bytes.]"
-"[N]#[count?Read exactly \ancount\a characters.  For binary fields \acount\a "
+"[N]#[count?Read exactly \acount\a characters.  For binary fields \acount\a "
 	"is the number of bytes.]"
 "[v?When reading from a terminal the value of the first variable is displayed "
 	"and used as a default value.]"

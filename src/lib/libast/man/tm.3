@@ -70,7 +70,7 @@ are used to determine local time zone and savings time information.
 .PP
 .L time_t
 values are the number of seconds since the epoch,
-.BR "Jan 1 00:00:00 GMT 1970" ,
+.BR "Jan 1 00:00:00 UTC 1970" ,
 with leap seconds omitted.
 .PP
 The global variable
@@ -433,7 +433,7 @@ that includes the hours and minutes.
 .B z
 Time zone
 .I SHHMM
-west of GMT offset where
+west of UTC offset where
 .I S
 is
 .B +
@@ -614,7 +614,7 @@ Meridian names: AM, PM.
 .TP
 .B 43-46
 .B UTC
-time zone names: GMT, UTC, UCT, CUT.
+time zone names: UTC, UCT, CUT, GMT.
 .TP
 .B 47-50
 Daylight savings time suffix names: DST.
