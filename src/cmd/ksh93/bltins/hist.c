@@ -60,10 +60,10 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 		errormsg(SH_DICT,ERROR_system(1),e_histopen);
 
 	/* 'history' and 'r' builtins */
-	if(argv[0][4] == 'o')		/* hist<o>ry */
-		lflag = 1;
-	else if(argv[0][0] == 'r')	/* <r> */
+	if(argv[0][0] == 'r')  /* <r> */
 		edit = "-";
+	else if(argv[0][0] == 'h' && argv[0][4] == 'o')  /* hist<o>ry */
+		lflag = 1;
 
 	hp = shp->gd->hist_ptr;
 	while((flag = optget(argv,sh_opthist))) switch(flag)
