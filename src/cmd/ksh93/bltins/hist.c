@@ -62,7 +62,7 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 	/* 'history' and 'r' builtins */
 	if(argv[0][0] == 'r')  /* <r> */
 		edit = "-";
-	else if(argv[0][0] == 'h' && argv[0][4] == 'o')  /* hist<o>ry */
+	else if(argv[0][0] == 'h' && argv[0][4] == 'o')  /* hist<o>ry (argv[0][4] is zero when called as 'hist') */
 		lflag = 1;
 
 	hp = shp->gd->hist_ptr;
