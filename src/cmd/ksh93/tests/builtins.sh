@@ -847,4 +847,20 @@ IMPLEMENTATION
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
+# 'sleep -s' should work in interactive shells when seconds > 30.
+sleepsig="$tmp/sleepsig.sh"
+cat >| "$sleepsig" << 'EOF'
+sleep -s 31 &
+sleep .001
+kill -CONT $!
+if kill -0 $!; then
+	kill -TERM $! # Don't leave a lingering background process
+	exit 1
+else
+	exit 0
+fi
+EOF
+"$SHELL" -i "$sleepsig" 2> /dev/null || err_exit "'sleep -s' doesn't work with intervals of more than 30 seconds"
+
+# ======
 exit $((Errors<125?Errors:125))

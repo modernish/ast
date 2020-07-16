@@ -8,6 +8,13 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - The 'history' and 'r' default aliases have been made regular built-ins,
   leaving zero default aliases.
 
+- Fixed a bug that caused 'sleep -s' to have no effect with intervals longer
+  than 30 seconds.
+
+- The accuracy of the sleep builtin has been improved. It no longer ignores
+  microseconds and doesn't add extra milliseconds when the interval is less
+  than 31 seconds.
+
 2020-07-15:
 
 - The 'autoload', 'compound', 'float', 'functions', 'integer' and 'nameref'

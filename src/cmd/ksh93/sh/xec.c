@@ -214,7 +214,7 @@ static void iounpipe(Shell_t *shp)
 				job.in_critical--;
 				break;
 			}
-			sh_delay(1);
+			sh_delay(1,0);
 		}
 		if((n = read(subpipe[0],buff,sizeof(buff)))==0)
 			break;
@@ -1935,7 +1935,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 					timerdel(fifo_timer);
 					sh_iorenumber(shp,fn,fd);
 					sh_close(fn);
-					sh_delay(.001);
+					sh_delay(.001,0);
 					unlink(shp->fifo);
 					free(shp->fifo);
 					shp->fifo = 0;

@@ -48,7 +48,7 @@ Shscope_t	*sh_setscope(Shscope_t *\fIscope\fP);
 int	(*sh_fdnotify(int(*\fIfn\fP)(int,int)))(int,int);
 char	*sh_fmtq(const char *\fIstring\fP);
 void	*sh_waitnotify(Shwait_f \fIfn\fP);
-void 	sh_delay(double \fIsec\fP);
+void 	sh_delay(double \fIsec\fP, int \fIsflag\fP);
 Sfio_t 	*sh_iogetiop(int  \fIfd\fP, int \fImode\fP);
 int	sh_sigcheck(void);
 .ft R
@@ -349,6 +349,9 @@ where the most recent built-in was invoked, or where
 .PP
 The \f5sh_delay()\fP function is used to cause the
 shell to sleep for a period of time defined by \fIsec\fP.
+If \fIsflag\fP is true, the shell will stop sleeping when
+any signal is received; otherwise signals such as \f5SIGCONT\fP
+and \f5SIGINFO\fP are treated normally.
 .PP
 The \f5sh_fmtq()\fP function can be used to convert a string
 into a string that is quoted so that it can be reinput

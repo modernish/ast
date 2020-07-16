@@ -176,7 +176,7 @@ extern void		sh_subfork(void);
 extern Shell_t		*sh_init(int,char*[],Shinit_f);
 extern int		sh_reinit(char*[]);
 extern int 		sh_eval(Sfio_t*,int);
-extern void 		sh_delay(double);
+extern void 		sh_delay(double,int);
 extern void		*sh_parse(Shell_t*, Sfio_t*,int);
 extern int 		sh_trap(const char*,int);
 extern int 		sh_fun(Namval_t*,Namval_t*, char*[]);

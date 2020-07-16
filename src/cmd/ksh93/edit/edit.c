@@ -855,7 +855,7 @@ int ed_read(void *context, int fd, char *buff, int size, int reedit)
 			}
 	                ep->sh->winch = 0;
 			ed_flush(ep);
-			sh_delay(.05);
+			sh_delay(.05,0);
 			astwinsize(2,&rows,&newsize);
 			ep->e_winsz = newsize-1;
 			if(ep->e_winsz < MINWINDOW)
