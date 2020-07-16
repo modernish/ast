@@ -955,11 +955,15 @@ const char sh_opthash[] =
 ;
 
 const char sh_opthist[]	= 
-"[-1cn?@(#)$Id: hist (AT&T Research) 2000-04-02 $\n]"
+"[-1cn?@(#)$Id: hist (AT&T Research/ksh93) 2020-07-16 $\n]"
 USAGE_LICENSE
-"[+NAME?\f?\f - process command history list]"
-"[+DESCRIPTION?\b\f?\f\b lists, edits, or re-executes, commands  "
+"[+NAME?fc, hist, history, r - process command history list]"
+"[+DESCRIPTION?\bhist\b lists, edits, or re-executes commands  "
 	"previously entered into the current shell environment.]"
+"[+?The following command equivalents exist: "
+	"\bfc\b is \bhist\b; "
+	"\bhistory\b is \bhist -l\b (list history); "
+	"and \br\b is \bhist -s\b (reexecute command).]"
 "[+?The command history list references commands by number. The first number "
 	"in the list is selected arbitrarily.  The relationship of a number "
 	"to its command does not change during a login session.  When the "
@@ -967,11 +971,11 @@ USAGE_LICENSE
 	"maintains the ordering.]"
 "[+?When commands are edited (when the \b-l\b option is not specified), the "
 	"resulting lines will be entered at the end of the history list and "
-	"then reexecuted by the current shell.  The \b\f?\f\b command that "
+	"then reexecuted by the current shell.  The \bhist\b command that "
 	"caused the editing will not be entered into the history list.  If the "
 	"editor returns a non-zero exit status, this will suppress the "
 	"entry into the history list and the command reexecution.  Command "
-	"line variable assignments and redirections affect both the \f?\f "
+	"line variable assignments and redirections affect both the \bhist\b "
 	"command and the commands that are reexecuted.]"
 "[+?\afirst\a and \alast\a define the range of commands. \afirst\a and "
 		"\alast\a can be one of the following:]{"
