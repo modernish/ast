@@ -563,5 +563,9 @@ result=$("$SHELL" -ic 'echo >(true) >/dev/null' 2>&1)
 "$SHELL" -c 'read -u-2000000' 2> /dev/null
 [[ $? == 1 ]] || err_exit "Negative file descriptors cause 'read -u' to crash"
 
+# An out of range fd shouldn't segfault with redirections
+"$SHELL" -c 'true 20000>&20000000000000000000' 2> /dev/null
+[[ $? == 1 ]] || err_exit "Out of range file descriptors cause redirections to segfault"
+
 # ======
 exit $((Errors<125?Errors:125))

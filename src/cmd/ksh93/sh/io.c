@@ -1194,7 +1194,7 @@ int	sh_redirect(Shell_t *shp,struct ionod *iop, int flag)
 						toclose = dupfd;
 						number++;
 					}
-					if(*number || dupfd > IOUFD)
+					if(*number || !sh_iovalidfd(shp,dupfd) || dupfd > IOUFD)
 					{
 						message = e_file;
 						goto fail;

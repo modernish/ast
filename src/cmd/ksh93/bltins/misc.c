@@ -279,7 +279,7 @@ int    b_dot_cmd(register int n,char *argv[],Shbltin_t *context)
 	shp->topscope = (Shscope_t*)shp->st.self;
 	prevscope->save_tree = shp->var_tree;
 	if(np)
-		shp->st.filename = np->nvalue.rp->fname;
+		shp->st.filename = np->nvalue.rp->fname ? strdup(np->nvalue.rp->fname) : 0;
 	nv_putval(SH_PATHNAMENOD, shp->st.filename ,NV_NOFREE);
 	shp->posix_fun = 0;
 	if(np || argv[1])
