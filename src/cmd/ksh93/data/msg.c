@@ -178,8 +178,13 @@ const char e_traceprompt[]	= "+ ";
 const char e_supprompt[]	= "# ";
 const char e_stdprompt[]	= "$ ";
 const char e_profile[]		= "$HOME/.profile";
+#ifdef BUILD_DTKSH
+const char e_sysprofile[] = PROFILEPATH;
+const char e_suidprofile[] = SUIDPROFILEPATH;
+#else
 const char e_sysprofile[]	= "/etc/profile";
 const char e_suidprofile[]	= "/etc/suid_profile";
+#endif
 #if SHOPT_SYSRC
 const char e_sysrc[]		= "/etc/ksh.kshrc";
 #endif
@@ -194,9 +199,13 @@ const char e_bash_profile[]	= "$HOME/.bash_profile";
 #endif
 const char e_crondir[]		= "/usr/spool/cron/atjobs";
 const char e_prohibited[]	= "login setuid/setgid shells prohibited";
+#ifdef BUILD_DTKSH
+   const char e_suidexec[]      = SUIDEXECPATH;
+#else
 #if SHOPT_SUID_EXEC
    const char e_suidexec[]	= "/etc/suid_exec";
 #endif /* SHOPT_SUID_EXEC */
+#endif
 const char hist_fname[]		= "/.sh_history";
 const char e_dot[]		= ".";
 const char e_envmarker[]	= "A__z";

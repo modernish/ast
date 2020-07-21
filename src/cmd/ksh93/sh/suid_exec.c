@@ -62,7 +62,11 @@
 #define FDVERIFY	12	/* used to validate /tmp process */
 #undef BLKSIZE 
 #define BLKSIZE		sizeof(char*)*1024
+#if BUILD_DTKSH
+#define THISPROG	SUIDEXECPATH
+#else
 #define THISPROG	"/etc/suid_exec"
+#endif
 #define DEFSHELL	"/bin/sh"
 
 static void error_exit(const char*);
@@ -235,6 +239,9 @@ exec:
 	/* only use SHELL if file is in trusted directory and ends in sh */
 	shell = getenv("SHELL");
 	if(shell == 0 || !endsh(shell) || (
+#ifdef BUILD_DTKSH
+		!in_dir(CDE_INSTALLATION_TOP"/bin",shell) &&
+#endif
 		!in_dir("/bin",shell) &&
 		!in_dir("/usr/bin",shell) &&
 		!in_dir("/usr/lbin",shell) &&

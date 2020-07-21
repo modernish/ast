@@ -33,6 +33,10 @@
 #include	<cdt.h>
 #include	<option.h>
 
+#ifdef BUILD_DTKSH
+#include       <hash.h>
+#endif
+
 /* for compatibility with old hash library */
 #define Hashtab_t	Dt_t
 #define HASH_BUCKET	1
@@ -111,6 +115,9 @@ struct Namdecl
 /* This defines the attributes for an attributed name-value pair node */
 struct Namval
 {
+#if BUILD_DTKSH
+	HASH_HEADER;                    /* space for hash library */
+#endif
 	Dtlink_t	nvlink;		/* space for cdt links */
 	char		*nvname;	/* pointer to name of the node */
 #if _ast_sizeof_pointer == 8
