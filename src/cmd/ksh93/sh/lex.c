@@ -1563,6 +1563,7 @@ static int comsub(register Lex_t *lp, int endtok)
 {
 	register int	n,c,count=1;
 	register int	line=lp->sh->inlineno;
+	struct ionod	*inheredoc = lp->heredoc;
 	char *first,*cp=fcseek(0),word[5];
 	int off, messages=0, assignok=lp->assignok, csub;
 	struct lexstate	save;
@@ -1689,7 +1690,7 @@ done:
 	lp->lexd.dolparen--;
 	lp->lex = save;
 	lp->assignok = (endchar(lp)==RBRACT?assignok:0);
-	if(lp->heredoc)
+	if(lp->heredoc && !inheredoc)
 		errormsg(SH_DICT,ERROR_exit(SYNBAD),e_lexsyntax5,lp->sh->inlineno,lp->heredoc->ioname);
 	return(messages);
 }
