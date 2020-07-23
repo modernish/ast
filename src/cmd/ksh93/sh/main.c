@@ -273,7 +273,7 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 					 * try to undo effect of solaris 2.5+
 					 * change for argv for setuid scripts
 					 */
-					if(((type = sh_type(cp = av[0])) & SH_TYPE_SH) && (!(name = nv_getval(L_ARGNOD)) || !((type = sh_type(cp = name)) & SH_TYPE_SH)))
+					if(((type = sh_type(cp = av[0])) & SH_TYPE_SH) && (name = nv_getval(L_ARGNOD)) && (!((type = sh_type(cp = name)) & SH_TYPE_SH)))
 					{
 						av[0] = (type & SH_TYPE_LOGIN) ? cp : path_basename(cp);
 						/*  exec to change $0 for ps */
