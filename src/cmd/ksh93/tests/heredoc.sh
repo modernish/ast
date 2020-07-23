@@ -498,4 +498,16 @@ print foo > $tmp/foofile
 x=$( $SHELL 2> /dev/null 'read <<< $(<'"$tmp"'/foofile) 2> /dev/null;print -r "$REPLY"')
 [[ $x == foo ]] || err_exit '<<< $(<file) not working'
 
+# ======
+# A syntax error should not occur if a command substitution is run on the same line
+# as a here document.
+$SHELL -c 'true << EOF || true "$(true)"
+EOF' || err_exit 'placing a command substitution and here-doc on the same line causes a syntax error'
+
+# A here-document in a command substitution should cause a syntax error if it isn't
+# completed inside of the command substitution.
+$SHELL -c '$(true << !)
+!' 2> /dev/null && err_exit "a here-doc that isn't completed before the closing ) in a command substitution doesn't cause an error"
+
+# ======
 exit $((Errors<125?Errors:125))

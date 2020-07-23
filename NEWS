@@ -7,6 +7,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Fixed an infinite loop that could occur when ksh is the system's /bin/sh.
 
+- A command substitution that is run on the same line as a here-document
+  will no longer cause a syntax error.
+
 2020-07-22:
 
 - Fixed two race conditions when running external commands on
