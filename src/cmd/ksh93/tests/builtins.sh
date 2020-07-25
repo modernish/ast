@@ -885,5 +885,16 @@ fi
 EOF
 "$SHELL" -i "$sleepsig" 2> /dev/null || err_exit "'sleep -s' doesn't work with intervals of more than 30 seconds"
 
+# ==========
+# Builtins should handle unrecognized options correctly
+(
+	builtin $(builtin -l | awk -F "/" '/\/opt/ {print $5}') # Load all /opt/ast/bin builtins
+	for name in $(builtin -l | grep -Ev '(echo|/opt|test|true|false|getconf|uname|\[|:)'); do
+	    actual="$($name --this-option-does-not-exist 2>&1)"
+	    expect="Usage: $name"
+	    [[ $actual =~ $expect ]] || err_exit "$name should show usage info on unrecognized options (expected $expect, got $actual)"
+	done
+)
+
 # ======
 exit $((Errors<125?Errors:125))

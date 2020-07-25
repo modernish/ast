@@ -249,8 +249,19 @@ endopts:
 int	b_suspend(int argc,char *argv[],Shbltin_t *context)
 {
 	NOT_USED(argc);
-	if(optget(argv, sh_optsuspend))	/* no options supported (except AST --man, etc.) */
-		errormsg(SH_DICT, ERROR_exit(2), "%s", opt_info.arg);
+
+	int n;
+	while((n = optget(argv, sh_optsuspend))) switch(n)
+	{
+		case ':':
+			errormsg(SH_DICT,2, "%s", opt_info.arg);
+			break;
+		case '?':
+			errormsg(SH_DICT,ERROR_usage(2), "%s", opt_info.arg);
+			break;
+	}
+	if(error_info.errors)	/* no options supported (except AST --man, etc.) */
+		errormsg(SH_DICT,ERROR_usage(2),"%s", optusage((char*)0));
 	if(argv[opt_info.index])	/* no operands supported */
 		errormsg(SH_DICT, ERROR_exit(2), e_toomanyops);
 	if(sh_isoption(SH_LOGIN_SHELL))

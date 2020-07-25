@@ -62,6 +62,8 @@ int	b_sleep(register int argc,char *argv[],Shbltin_t *context)
 			errormsg(SH_DICT,ERROR_usage(2), "%s", opt_info.arg);
 			break;
 	}
+	if(error_info.errors)
+		errormsg(SH_DICT, ERROR_usage(2), "%s", optusage(NULL));
 	argv += opt_info.index;
 	if(cp = *argv)
 	{

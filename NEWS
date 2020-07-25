@@ -11,6 +11,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   based on the incorrect assumption the IFS would never be larger
   than a single byte.
 
+- Fixed a bug that caused the sleep builtin to continue after being given
+  an unrecognized option. 'sleep -: 1' will now show a usage message and
+  exit instead of sleep for one second.
+
 2020-07-23:
 
 - Fixed an infinite loop that could occur when ksh is the system's /bin/sh.
