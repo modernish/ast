@@ -435,6 +435,39 @@ case $(unset IFS; set -- $v; print $#) in
 *)	err_exit 'BUG_KUNSETIFS detection failed'
 esac
 
+# The IFS should work with multi-byte characters
+(
+	LC_ALL=C.UTF-8  # The multi-byte tests are pointless without UTF-8
+
+	# Test the following characters:
+	# Lowercase accented e  (two bytes)
+	# Roman sestertius sign (four bytes)
+	for delim in é 𐆘; do
+		IFS="$delim"
+		set : :
+		[ "$*" == ":$delim:" ] || err_exit "IFS failed with multi-byte character $delim (expected :$delim:, got $*)"
+
+		read -r first second third <<< "one${delim}two${delim}three"
+		[[ "$first" == "one" ]] || err_exit "IFS failed with multi-byte character $delim (expected one, got $first)"
+		[[ "$second" == "two" ]] || err_exit "IFS failed with multi-byte character $delim (expected two, got $second)"
+		[[ "$third" == "three" ]] || err_exit "IFS failed with multi-byte character $delim (expected three, got $three)"
+
+		# Ensure subshells don't get corrupted when IFS becomes a multi-byte character
+		expected_output="$(printf ":$delim:\\ntrap -- 'echo end' EXIT\\nend")"
+		output="$(LANG=C.UTF-8; IFS=$delim; set : :; echo "$*"; trap "echo end" EXIT; trap)"
+		[[ $output == $expected_output ]] || err_exit "IFS in subshell failed with multi-byte character $delim (expected $expected_output, got $output)"
+	done
+
+	# Multibyte characters with the same initial byte shouldn't be parsed as the same
+	# character if they are different. The regression test below tests two characters
+	# with the same initial byte (0xC2).
+	IFS='£'  # £ = C2 A3
+	v='abc§def ghi§jkl'  # § = C2 A7 (same initial byte)
+	set -- $v
+	v="${#},${1-},${2-},${3-}"
+	[[ $v == '1,abc§def ghi§jkl,,' ]] || err_exit "IFS treats £ (C2 A3) and § (C2 A7) as the same character"
+)
+
 # ^^^ end: IFS tests ^^^
 # restore default split:
 unset IFS

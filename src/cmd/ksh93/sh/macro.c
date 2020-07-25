@@ -1954,10 +1954,34 @@ retry2:
 			}
 			else if(d)
 			{
+#if SHOPT_MULTIBYTE
+				Sfio_t *sfio_ptr = (mp->sp) ? mp->sp : stkp;
+
+				/*
+				 * We know from above that if we are not performing @-expansion
+				 * then we assigned `d` the value of `mp->ifs`, here we check
+				 * whether or not we have a valid string of IFS characters to
+				 * write as it is possible for `d` to be set to `mp->ifs` and
+				 * yet `mp->ifsp` to be NULL.
+				 */
+				if(mode != '@' && mp->ifsp)
+				{
+					/*
+					 * Handle multi-byte characters being used for the internal
+					 * field separator (IFS).
+					 */
+					int i;
+					for(i = 0; i < mbsize(mp->ifsp); i++)
+						sfputc(sfio_ptr,mp->ifsp[i]);
+				}
+				else
+					sfputc(sfio_ptr,d);
+#else
 				if(mp->sp)
 					sfputc(mp->sp,d);
 				else
 					sfputc(stkp,d);
+#endif
 			}
 		}
 		if(arrmax)
@@ -2403,7 +2427,16 @@ static void mac_copy(register Mac_t *mp,register const char *str, register int s
 				if(n==S_MBYTE)
 				{
 					if(sh_strchr(mp->ifsp,cp-1)<0)
+					{
+						/*
+						 * The multi-byte character that was found has the same initial
+						 * byte as the IFS delimiter, but it's a different character. Put
+						 * the first byte onto the stack and continue; multi-byte characters
+						 * otherwise lose their initial byte.
+						 */
+						sfputc(stkp,c);
 						continue;
+					}
 					n = mbsize(cp-1) - 1;
 					if(n==-2)
 						n = 0;

@@ -54,9 +54,3 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   between 'while'/'until' and 'do'), the exit status passed down from the
   previous command is ignored and the function returns with status 0
   instead.
-
-- BUG_MULTIBIFS: We're on a UTF-8 locale and the shell supports UTF-8
-  characters in general (i.e. we don't have WRN_MULTIBYTE) – however, using
-  multi-byte characters as IFS field delimiters still doesn't work. For
-  example, "$*" joins positional parameters on the first byte of IFS instead
-  of the first character.

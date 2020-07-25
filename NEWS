@@ -3,6 +3,14 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-07-25:
+
+- Fixed BUG_MULTIBIFS: Multibyte characters can now be used as IFS
+  delimiters. "$*" was incorrectly joining positional parameters on
+  the first byte of a multibyte character. This was due to truncation
+  based on the incorrect assumption the IFS would never be larger
+  than a single byte.
+
 2020-07-23:
 
 - Fixed an infinite loop that could occur when ksh is the system's /bin/sh.
