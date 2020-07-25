@@ -435,7 +435,7 @@ case $(unset IFS; set -- $v; print $#) in
 *)	err_exit 'BUG_KUNSETIFS detection failed'
 esac
 
-# The IFS should work with multi-byte characters
+# Multi-byte characters should work with $IFS
 (
 	LC_ALL=C.UTF-8  # The multi-byte tests are pointless without UTF-8
 
@@ -448,9 +448,9 @@ esac
 		[ "$*" == ":$delim:" ] || err_exit "IFS failed with multi-byte character $delim (expected :$delim:, got $*)"
 
 		read -r first second third <<< "one${delim}two${delim}three"
-		[[ "$first" == "one" ]] || err_exit "IFS failed with multi-byte character $delim (expected one, got $first)"
-		[[ "$second" == "two" ]] || err_exit "IFS failed with multi-byte character $delim (expected two, got $second)"
-		[[ "$third" == "three" ]] || err_exit "IFS failed with multi-byte character $delim (expected three, got $three)"
+		[[ $first == one ]] || err_exit "IFS failed with multi-byte character $delim (expected one, got $first)"
+		[[ $second == two ]] || err_exit "IFS failed with multi-byte character $delim (expected two, got $second)"
+		[[ $third == three ]] || err_exit "IFS failed with multi-byte character $delim (expected three, got $three)"
 
 		# Ensure subshells don't get corrupted when IFS becomes a multi-byte character
 		expected_output="$(printf ":$delim:\\ntrap -- 'echo end' EXIT\\nend")"
