@@ -892,7 +892,7 @@ EOF
 	for name in $(builtin -l | grep -Ev '(echo|/opt|test|true|false|getconf|uname|\[|:)'); do
 	    actual="$($name --this-option-does-not-exist 2>&1)"
 	    expect="Usage: $name"
-	    [[ $actual =~ $expect ]] || err_exit "$name should show usage info on unrecognized options (expected $expect, got $actual)"
+	    [[ $actual =~ $expect ]] || err_exit "$name should show usage info on unrecognized options (expected $(printf '%q' "$expect"), got $(printf '%q' "$actual"))"
 	done
 )
 
