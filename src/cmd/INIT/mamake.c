@@ -118,7 +118,7 @@ USAGE_LICENSE
 #define set(b,o)	((b)->nxt=(b)->buf+(o))
 #define use(b)		(*(b)->nxt=0,(b)->nxt=(b)->buf)
 
-#define CHUNK		1024
+#define CHUNK		4096
 #define KEY(a,b,c,d)	((((unsigned long)(a))<<15)|(((unsigned long)(b))<<10)|(((unsigned long)(c))<<5)|(((unsigned long)(d))))
 #define NOW		((unsigned long)time((time_t*)0))
 #define ROTATE(p,l,r,t)	((t)=(p)->l,(p)->l=(t)->r,(t)->r=(p),(p)=(t))
