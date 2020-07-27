@@ -1673,6 +1673,13 @@ hostinfo() # attribute ...
 			continue
 			;;
 		esac
+		cpu=`sysctl -n hw.ncpu`
+		case $cpu in
+		[123456789]*)
+			_hostinfo_="$_hostinfo_ $cpu"
+			continue
+			;;
+		esac
 		cpu=`grep -ic '^processor[ 	][ 	]*:[ 	]*[0123456789]' /proc/cpuinfo`
 		case $cpu in
 		[123456789]*)
