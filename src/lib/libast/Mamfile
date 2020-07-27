@@ -357,9 +357,9 @@ prev std/endian.h implicit
 done port/astmath.c
 exec - X=1
 exec - for N in 1 2 3 4 5 6 8
-exec - do if ${CC} -DN=$N -DIS ${mam_cc_FLAGS} ${CCFLAGS} -I. -Istd -o astmath.exe port/astmath.c 2>/dev/null
+exec - do if ${CC} ${CCLDFLAGS} -DN=$N -DIS ${mam_cc_FLAGS} ${CCFLAGS} -I. -Istd ${LDFLAGS} -o astmath.exe port/astmath.c 2>/dev/null
 exec - then : implicit math function N=$N :
-exec - elif ${CC} -DN=$N -DIS ${mam_cc_FLAGS} ${CCFLAGS} -I. -Istd -o astmath.exe port/astmath.c -lm 2>/dev/null
+exec - elif ${CC} ${CCLDFLAGS} -DN=$N -DIS ${mam_cc_FLAGS} ${CCFLAGS} -I. -Istd ${LDFLAGS} -o astmath.exe port/astmath.c -lm 2>/dev/null
 exec - then : math function N=$N requires -lm :
 exec - X=0
 exec - break
@@ -532,7 +532,7 @@ done misc/findlib.h
 done misc/fastfind.c
 meta fastfind.o %.c>%.o misc/fastfind.c fastfind
 prev misc/fastfind.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Imisc -Iinclude -Istd -D_PACKAGE_ast -c misc/fastfind.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Imisc -Iinclude -Istd -D_PACKAGE_ast -c misc/fastfind.c
 done fastfind.o generated
 make hashalloc.o
 make hash/hashalloc.c
@@ -999,7 +999,7 @@ make lcgen
 make port/lcgen.c
 prev std/stdio.h implicit
 done port/lcgen.c
-exec - ${CC} -o lcgen port/lcgen.c
+exec - ${CC} ${CCLDFLAGS} ${CCFLAGS} ${LDFLAGS} -o lcgen port/lcgen.c
 done lcgen generated
 make port/lc.tab
 done port/lc.tab
@@ -1625,7 +1625,7 @@ done sfio/sfhdr.h
 done port/mc.c
 meta mc.o %.c>%.o port/mc.c mc
 prev port/mc.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c port/mc.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c port/mc.c
 done mc.o generated
 make base64.o
 make string/base64.c
@@ -2333,7 +2333,7 @@ prev tmx.h implicit
 done tm/tmxfmt.c
 meta tmxfmt.o %.c>%.o tm/tmxfmt.c tmxfmt
 prev tm/tmxfmt.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iinclude -Istd -D_PACKAGE_ast -c tm/tmxfmt.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iinclude -Istd -D_PACKAGE_ast -c tm/tmxfmt.c
 done tmxfmt.o generated
 make tmxgettime.o
 make tm/tmxgettime.c
@@ -2995,7 +2995,7 @@ prev include/ast.h implicit
 done comp/spawnveg.c
 meta spawnveg.o %.c>%.o comp/spawnveg.c spawnveg
 prev comp/spawnveg.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iinclude -Istd -D_PACKAGE_ast -c comp/spawnveg.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iinclude -Istd -D_PACKAGE_ast -c comp/spawnveg.c
 done spawnveg.o generated
 make vfork.o
 make comp/vfork.c
@@ -3796,7 +3796,7 @@ prev regex/reglib.h implicit
 done regex/regcomp.c
 meta regcomp.o %.c>%.o regex/regcomp.c regcomp
 prev regex/regcomp.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iport -Iregex -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c regex/regcomp.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -Icomp -Iport -Iregex -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c regex/regcomp.c
 done regcomp.o generated
 make regcache.o
 make regex/regcache.c
@@ -4235,7 +4235,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfprintf.c
 meta sfprintf.o %.c>%.o sfio/sfprintf.c sfprintf
 prev sfio/sfprintf.c
-exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfprintf.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfprintf.c
 done sfprintf.o generated
 make sfputd.o
 make sfio/sfputd.c
@@ -4275,7 +4275,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfrd.c
 meta sfrd.o %.c>%.o sfio/sfrd.c sfrd
 prev sfio/sfrd.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfrd.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfrd.c
 done sfrd.o generated
 make sfread.o
 make sfio/sfread.c
@@ -4299,7 +4299,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfscanf.c
 meta sfscanf.o %.c>%.o sfio/sfscanf.c sfscanf
 prev sfio/sfscanf.c
-exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfscanf.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfscanf.c
 done sfscanf.o generated
 make sfseek.o
 make sfio/sfseek.c
@@ -4315,7 +4315,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfset.c
 meta sfset.o %.c>%.o sfio/sfset.c sfset
 prev sfio/sfset.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfset.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfset.c
 done sfset.o generated
 make sfsetbuf.o
 make sfio/sfsetbuf.c
@@ -4429,7 +4429,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfvprintf.c
 meta sfvprintf.o %.c>%.o sfio/sfvprintf.c sfvprintf
 prev sfio/sfvprintf.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${mam_cc_NOPROTECT} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfvprintf.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${mam_cc_NOPROTECT} ${DEBUG+-DDEBUG=${DEBUG}} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfvprintf.c
 done sfvprintf.o generated
 make sfvscanf.o
 make sfio/sfvscanf.c
@@ -4438,7 +4438,7 @@ prev sfio/sfhdr.h implicit
 done sfio/sfvscanf.c
 meta sfvscanf.o %.c>%.o sfio/sfvscanf.c sfvscanf
 prev sfio/sfvscanf.c
-exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfvscanf.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${CCFLAGS.FORCE} ${mam_cc_NOPROTECT} -I. -Icomp -Iport -Isfio -Iinclude -Istd -I${INSTALLROOT}/include -D_PACKAGE_ast -c sfio/sfvscanf.c
 done sfvscanf.o generated
 make sfwr.o
 make sfio/sfwr.c

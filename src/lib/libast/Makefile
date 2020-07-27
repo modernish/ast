@@ -262,7 +262,7 @@ $(HEADERGEN) :COPY: FEATURE/$$(<:B:/$(ID)_//)
 ast_namval.h :COPY: namval.h
 
 lcgen : lcgen.c
-	$(CC.NATIVE|CC) -o $(<) $(*)
+	$(CC.NATIVE|CC) $(CCLDFLAGS) $(CCFLAGS) $(LDFLAGS) -o $(<) $(*)
 
 lc.h lctab.c :JOINT: lcgen lc.tab
 	$(*:O=1:C,^[^/],./&,) $(tmp).1 $(tmp).2 < $(*:O=2) # :P=E: in 2006
@@ -354,9 +354,9 @@ end
 astmath.exe : .DONTCARE astmath.c
 	X=1
 	for N in 1 2 3 4 5 6 8
-	do	if	$(CC) -DN=$N -DIS $(CCFLAGS) -o $(*:N=*.c:B:S=.exe) $(*) 2>/dev/null
+	do	if	$(CC) $(CCLDFLAGS) -DN=$N -DIS $(CCFLAGS) $(LDFLAGS) -o $(*:N=*.c:B:S=.exe) $(*) 2>/dev/null
 		then	: implicit math function N=$N :
-		elif	$(CC) -DN=$N -DIS $(CCFLAGS) -o $(*:N=*.c:B:S=.exe) $(*) -lm 2>/dev/null
+		elif	$(CC) $(CCLDFLAGS) -DN=$N -DIS $(CCFLAGS) $(LDFLAGS) -o $(*:N=*.c:B:S=.exe) $(*) -lm 2>/dev/null
 		then	: math function N=$N requires -lm :
 			X=0
 			break

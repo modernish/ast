@@ -259,7 +259,7 @@ prev ${PACKAGE_ast_INCLUDE}/ast.h implicit
 done dllscan.c
 meta dllscan.o %.c>%.o dllscan.c dllscan
 prev dllscan.c
-exec - ${CC} ${mam_cc_FLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -I${PACKAGE_ast_INCLUDE} -D_BLD_dll -D_PACKAGE_ast -c dllscan.c
+exec - ${CC} ${mam_cc_FLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} -I. -I${PACKAGE_ast_INCLUDE} -D_BLD_dll -D_PACKAGE_ast -c dllscan.c
 done dllscan.o generated
 make dllcheck.o
 make dllcheck.c
