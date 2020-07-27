@@ -31,7 +31,7 @@ esac
 checksh()
 {
 	egrep 'Version.*(88|1993)' $1 >/dev/null 2>&1 ||
-	$1 -c '(( 2 + 2 ))' >/dev/null 2>&1 &&
+	PATH=/dev/null $1 -c '(( 2 + 2 ))' >/dev/null 2>&1 &&
 	$1 -c '(( .sh.version >= 20111111 ))' >/dev/null 2>&1
 }
 
