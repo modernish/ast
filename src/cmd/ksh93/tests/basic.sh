@@ -615,5 +615,18 @@ then	actual=$(
 		"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 fi
 
+#"======
+# Expansion of multibyte characters after expansion of single-character names $1..$9, $?, $!, $-, etc.
+function exptest
+{
+	print -r "$1テスト"
+	print -r "$?テスト"
+	print -r "$#テスト"
+}
+expect=$'fooテスト\n0テスト\n1テスト'
+actual=$(exptest foo)
+[[ $actual == "$expect" ]] || err_exit 'Corruption of multibyte char following expansion of single-char name' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
 # ======
 exit $((Errors<125?Errors:125))
