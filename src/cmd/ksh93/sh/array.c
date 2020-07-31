@@ -1003,7 +1003,7 @@ Namarr_t *nv_setarray(Namval_t *np, void *(*fun)(Namval_t*,const char*,int))
 		ap->nelem = nelem;
 		ap->fun = fun;
 		nv_onattr(np,NV_ARRAY);
-		if(fp || value)
+		if(fp || (value && value!=Empty))
 		{
 			nv_putsub(np, "0", ARRAY_ADD);
 			if(value)

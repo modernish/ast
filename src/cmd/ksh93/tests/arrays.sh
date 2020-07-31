@@ -708,4 +708,14 @@ unset foo
 [[ -n ${ typeset -p foo; } ]] && err_exit 'Associative array leaks out of subshell'
 
 # ======
+# Multidimensional associative arrays shouldn't be created with an extra 0 element
+unset foo
+typeset -A foo
+typeset -A foo[bar]
+expect="typeset -A foo=([bar]=() )"
+actual="$(typeset -p foo)"
+# $expect and $actual are quoted intentionally
+[[ "$expect" == "$actual" ]] || err_exit "Multidimensional associative arrays are created with an extra array member (expected $expect, got $actual)"
+
+# ======
 exit $((Errors<125?Errors:125))
