@@ -5,8 +5,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-07-31:
 
-- Fix a bug that caused multidimensional associative arrays to be created with
-  an extra array member.
+- Fixed a bug that caused multidimensional associative arrays to be created
+  with an extra array member.
 
 2020-07-29:
 
