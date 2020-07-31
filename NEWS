@@ -8,6 +8,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a bug that caused multidimensional associative arrays to be created
   with an extra array member.
 
+- Fixed a bug that caused the expansions of positional parameters $1 - $9,
+  as well as special parameters such as $? and $-, to corrupt any multibyte
+  characters immediately following the expansion if a UTF-8 locale is active.
+
 2020-07-29:
 
 - On a ksh compiled to use fork(2) to run external commands, a bug has been
