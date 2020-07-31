@@ -1506,7 +1506,10 @@ retry1:
 	    default:
 		goto nosub;
 	}
-	c = fcmbget(&LEN);
+	if(type)
+		c = fcmbget(&LEN);
+	else
+		c = fcget();
 	if(type>M_TREE)
 	{
 		if(c!=RBRACE)
