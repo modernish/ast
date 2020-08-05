@@ -1508,7 +1508,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 						unset_instance(nq,&node,&nr,mode);
 					sh_funstaks(slp->slchild,-1);
 					stakdelete(slp->slptr);
-					if(jmpval > SH_JMPFUN)
+					if(jmpval > SH_JMPFUN || (io && jmpval > SH_JMPIO))
 						siglongjmp(*shp->jmplist,jmpval);
 					goto setexit;
 				}

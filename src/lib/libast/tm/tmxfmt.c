@@ -316,9 +316,9 @@ tmxfmt(char* buf, size_t len, const char* format, Time_t t)
 		case 'J':	/* Julian date (0 offset) */
 			cp = number(cp, ep, (long)tm->tm_yday, 3, width, pad);
 			continue;
-		case 'k':	/* hour (0 - 23) with blank padding */
-			p = "%_H";
-			goto push;
+		case 'k':	/* hour (0 - 23) with blank padding (can't be an alias to %_H) */
+			cp = number(cp, ep, (long)tm->tm_hour, -2, width, pad);
+			continue;
 		case 'K':	/* (AST) largest to smallest */
 			switch (alt)
 			{
@@ -333,9 +333,11 @@ tmxfmt(char* buf, size_t len, const char* format, Time_t t)
 				break;
 			}
 			goto push;
-		case 'l':	/* hour (0 - 12) with blank padding */
-			p = "%_I";
-			goto push;
+		case 'l':	/* hour (0 - 12) with blank padding (can't be an alias to %_I) */
+			if ((n = tm->tm_hour) > 12) n -= 12;
+			else if (n == 0) n = 12;
+			cp = number(cp, ep, (long)n, -2, width, pad);
+			continue;
 		case 'L':	/* (AST) OBSOLETE use %Ql */
 			p = "%Ql";
 			goto push;
