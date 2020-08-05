@@ -238,7 +238,7 @@ function foo {
 }
 foo
 EOF
-ksh "$multiarray_unset" > /dev/null || err_exit 'Multidimensional arrays with an unset method crash ksh'
+$SHELL "$multiarray_unset" > /dev/null || err_exit 'Multidimensional arrays with an unset method crash ksh'
 
 # ======
 exit $((Errors<125?Errors:125))
