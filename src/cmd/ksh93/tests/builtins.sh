@@ -797,6 +797,25 @@ unset foo
 [[ $(printf '%(%f)T') == $(printf '%(%Y.%m.%d-%H:%M:%S)T') ]] || err_exit 'date format %f is not the same as %Y.%m.%d-%H:%M:%S'
 [[ $(printf '%(%q)T') == $(printf '%(%Qz)T') ]] && err_exit 'date format %q is the same as %Qz'
 
+# Test manually specified blank and zero padding with 'printf  %T'
+(
+	IFS=$'\n\t' # Preserve spaces in output
+	for i in d e H I j J k l m M N S U V W y; do
+		for f in ' ' 0; do
+			if [[ $f == ' ' ]]; then
+				padding='blank'
+				specify='_'
+			else
+				padding='zero'
+				specify='0'
+			fi
+			actual="$(printf "%(%${specify}${i})T" 'January 1 6AM 2001')"
+			expect="${f}${actual:1}"
+			[[ $expect != $actual ]] && err_exit "Specifying $padding padding with format '%$i' doesn't work (expected '$expect', got '$actual')"
+		done
+	done
+)
+
 # ======
 # Test various AST getopts usage/manual outputs
 
