@@ -904,18 +904,9 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 
 typedef void (*Libinit_f)(int,void*);
 
-typedef struct Libcomp_s
-{
-	void*		dll;
-	char*		lib;
-	dev_t		dev;
-	ino_t		ino;
-	unsigned int	attr;
-} Libcomp_t;
-
 #define GROWLIB	4
 
-static Libcomp_t	*liblist;
+Libcomp_t	*liblist;
 static int		nlib;
 static int		maxlib;
 

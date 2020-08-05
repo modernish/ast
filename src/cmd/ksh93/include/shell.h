@@ -150,6 +150,17 @@ struct Shell_s
 #endif /* _SH_PRIVATE */
 };
 
+/* used for builtins */
+typedef struct Libcomp_s
+{
+	void*		dll;
+	char*		lib;
+	dev_t		dev;
+	ino_t		ino;
+	unsigned int	attr;
+} Libcomp_t;
+extern Libcomp_t *liblist;
+
 /* flags for sh_parse */
 #define SH_NL		1	/* Treat new-lines as ; */
 #define SH_EOF		2	/* EOF causes syntax error */
