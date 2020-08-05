@@ -1262,7 +1262,7 @@ function f1 { f2; env | grep -q "^foo" || err_exit "Environment variable is not 
 foo=bar f1
 
 # ======
-# Over-shifting in a function should terminate the script
+# Over-shifting in a POSIX function should terminate the script
 $SHELL <<- \EOF
 	fun() {
 		shift 10
@@ -1273,7 +1273,7 @@ $SHELL <<- \EOF
 		[[ $i == b ]] && exit 2
 	done
 EOF
-[[ $? == 2 ]] && err_exit 'Over-shifting in a function does not terminate the script if the function call has a redirection'
+[[ $? == 2 ]] && err_exit 'Over-shifting in a POSIX function does not terminate the script if the function call has a redirection'
 
 # ======
 exit $((Errors<125?Errors:125))
