@@ -331,12 +331,17 @@ static void	assign(Namval_t *np,const char* val,int flags,Namfun_t *handle)
 	else if(!nq || !isblocked(bp,type))
 	{
 		Dt_t *root = sh_subfuntree(1);
+		Namval_t *pp=0;
 		int n;
 		Namarr_t *ap;
 		block(bp,type);
 		nv_disc(np,handle,NV_POP);
+		if(!nv_isattr(np,NV_MINIMAL))
+			pp = (Namval_t*)np->nvenv;
 		nv_putv(np, val, flags, handle);
 		if(sh.subshell)
+			goto done;
+		if(pp && nv_isarray(pp))
 			goto done;
 		if(nv_isarray(np) && (ap=nv_arrayptr(np)) && ap->nelem>0)
 			goto done;

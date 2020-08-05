@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-08-05:
+
+- Fixed a bug in functions that caused ksh to crash when an array with an
+  unset method was turned into a multidimensional array.
+
 2020-07-31:
 
 - Fixed a bug that caused multidimensional associative arrays to be created

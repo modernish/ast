@@ -224,4 +224,21 @@ print -v cx > /dev/null
 print -v cx | read -C l 2> /dev/null || err_exit 'read -C fails from output of print -v'
 [[ ${cx%cx=} ==  "${l%l=}" ]] || err_exit 'print -v for compound variable with fixed 2d array not working'
 
+# ======
+# Multidimensional arrays with an unset method shouldn't cause a crash.
+# The test itself must be run inside of a function.
+multiarray_unset="$tmp/multiarray_unset.sh"
+cat >| "$multiarray_unset" << EOF
+function foo {
+	typeset -a a
+	a.unset() {
+		print unset
+	}
+	a[3][6][11][20]=7
+}
+foo
+EOF
+ksh "$multiarray_unset" > /dev/null || err_exit 'Multidimensional arrays with an unset method crash ksh'
+
+# ======
 exit $((Errors<125?Errors:125))
