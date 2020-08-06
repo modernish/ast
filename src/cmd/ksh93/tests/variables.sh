@@ -915,6 +915,7 @@ set -- \
 	".sh.stats" \
 	".sh.math" \
 	".sh.pool" \
+	".sh.pid" \
 	"SHLVL" \
 	"CSWIDTH"
 
@@ -990,6 +991,21 @@ $SHELL -c '
 ' readonly_test "$@"
 e=$?
 ((e == 1)) || err_exit "Failure in making one or more special variables readonly in a subshell (exit status $e)"
+
+# ======
+# ${.sh.pid} should be the forked subshell's PID
+(
+	ulimit -t unlimited
+	[[ ${.sh.pid} == $$ ]]
+) && err_exit '${.sh.pid} is the same as $$'
+
+# ${.sh.pid} should be the PID of the running job
+echo ${.sh.pid} > "$tmp/jobpid" &
+wait
+[[ $(cat "$tmp/jobpid") == ${.sh.pid} ]] && err_exit $'${.sh.pid} is not set to a job\'s PID'
+
+# ${.sh.pid} should be the same as $$ in the parent shell
+[[ $$ == ${.sh.pid} ]] || err_exit '${.sh.pid} and $$ differ in the parent shell'
 
 # ======
 exit $((Errors<125?Errors:125))

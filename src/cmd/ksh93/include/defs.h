@@ -122,7 +122,8 @@ struct shared
 	gid_t		groupid;
 	gid_t		egroupid;
 	pid_t		pid;
-	int32_t		ppid;
+	pid_t		ppid;
+	pid_t		current_pid;  /* pid of the current ksh instance */
 	unsigned char	sigruntime[2];
 	Namval_t	*bltin_nodes;
 	Namval_t	*bltin_cmds;

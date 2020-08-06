@@ -2917,6 +2917,9 @@ pid_t _sh_fork(Shell_t *shp,register pid_t parent,int flags,int *jobid)
 	sh_onstate(SH_NOLOG);
 	if (shp->fn_reset)
 		shp->fn_depth = shp->fn_reset = 0;
+	/* Set ${.sh.pid} to the child process ID */
+	shp->gd->current_pid = getpid();
+	SH_PIDNOD->nvalue.lp = &shp->gd->current_pid;
 #if SHOPT_ACCT
 	sh_accsusp();
 #endif	/* SHOPT_ACCT */

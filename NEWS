@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-08-06:
+
+- Added '${.sh.pid}' for obtaining the process ID of the current ksh instance.
+  It serves the same purpose as Bash's '$BASHPID'.
+
 2020-08-05:
 
 - Fixed a bug in functions that caused ksh to crash when an array with an

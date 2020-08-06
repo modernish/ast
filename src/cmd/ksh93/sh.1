@@ -1664,6 +1664,16 @@ discipline function is invoked.
 .B .sh.subshell
 The current depth for subshells and command substitution.
 .TP
+.B .sh.pid
+Set to the process ID of the current shell.
+This is distinct from
+.B $$
+as in forked subshells this is set to the process ID of the
+subshell instead of the parent shell's process ID.
+In virtual subshells
+.B .sh.pid
+retains its previous value.
+.TP
 .B .sh.value
 Set to the value of the variable at the time that the
 .B set

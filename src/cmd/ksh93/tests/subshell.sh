@@ -747,14 +747,13 @@ v=$($SHELL $testvars) && [[ "$v" == "a= b= c=0" ]] || err_exit 'variables set in
 
 # ======
 # Setting PATH in virtual subshell should trigger a fork; restoring PATH after leaving virtual subshell should not.
-# TODO: it would be really nice to have a ${.sh.pid} for this sort of test (like $BASHPID on bash)...
 SHELL=$SHELL "$SHELL" -c '
 	(
-		"$SHELL" -c "echo DEBUG \$PPID"
+		echo "DEBUG ${.sh.pid}"
 		readonly PATH
-		"$SHELL" -c "echo DEBUG \$PPID"
+		echo "DEBUG ${.sh.pid}"
 	)
-	"$SHELL" -c "echo DEBUG \$PPID"
+	echo "DEBUG ${.sh.pid}"
 	: extra command to disable "-c" exec optimization
 ' | awk '/^DEBUG/ { pid[NR] = $2; }  END { exit !(pid[1] == pid[2] && pid[2] == pid[3]); }' \
 || err_exit "setting PATH to readonly in subshell triggers an erroneous fork"

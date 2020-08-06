@@ -1220,7 +1220,7 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 		beenhere = 1;
 		shp = &sh;
 		shgd = newof(0,struct shared,1,0);
-		shgd->pid = getpid();
+		shgd->current_pid = shgd->pid = getpid();
 		shgd->ppid = getppid();
 		shgd->userid=getuid();
 		shgd->euserid=geteuid();
@@ -1832,6 +1832,7 @@ static Init_t *nv_init(Shell_t *shp)
 	nv_stack(LANGNOD, &ip->LANG_init);
 #endif /* _hdr_locale */
 	(PPIDNOD)->nvalue.lp = (&shp->gd->ppid);
+	(SH_PIDNOD)->nvalue.lp = (&shp->gd->current_pid);
 	(TMOUTNOD)->nvalue.lp = (&shp->st.tmout);
 	(MCHKNOD)->nvalue.lp = (&sh_mailchk);
 	(OPTINDNOD)->nvalue.lp = (&shp->st.optindex);
