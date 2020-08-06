@@ -114,7 +114,7 @@ The \fIuserf\fP prototype is:
     char*          path;    /* full pathname */
     short          pathlen; /* strlen(path) */
     unsigned short info;    /* type of object */
-    unsigned short status;  /* status of object */ 
+    unsigned short status;  /* status of object */
     short          level;   /* depth of object on the search path */
     short          namelen; /* strlen(name) */
     char           name[];  /* file name of object */
@@ -206,7 +206,7 @@ The \fIcomparf\fP prototype is:
 \fIFtwalk\fR normally returns 0.
 On hard errors such as running out of memory, it returns -1.
 \fIFtwalk\fR may also return other values as discussed with respect
-to \fIuserf\fR. 
+to \fIuserf\fR.
 .PP
 \fIFtwflags\fR returns a combination of \fB0, FTW_META, FTW_PHYSICAL\fR
 according to the

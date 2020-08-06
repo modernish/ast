@@ -92,7 +92,7 @@ can be used.  Unlike (and ) which are always special, the { and } are
 reserved words and require the space after { and a newline or ; before }.
 Unlike $(), the ${ ;} command substitution executes the command in
 the current shell context saving the need to save and restore
-changes, therefore also allowing side effects. 
+changes, therefore also allowing side effects.
 
 When trying to expand an element of a type, if the element does not exist,
 ksh will look for a discipline function with that name and treat this as if

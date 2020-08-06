@@ -3,7 +3,7 @@ of ksh.
 
 1.  New features in 12/28/93
     a.	Associative arrays.  The new version of ksh supports both
-        associate arrays and the older indexed arrays with the same
+        associative arrays and the older indexed arrays with the same
 	array syntax.  A new -A option of typeset is used to declare
 	an array to be associative.  As with indexed arrays, $name is
 	equivalent to ${name[0]}.  The prefix operator ! was added
@@ -72,10 +72,10 @@ of ksh.
 	assignment_list can be one of the following:
 	1.  A list of words.  In this case each word is expanded as
 	    in a for list and the resulting items become elements
-	    of the indexed array varname. 
+	    of the indexed array varname.
 	2.  A list of subscript assignments in the form
-	    [subscript]=value.  In this, these elements become 
-	    elements of the associative array varname. 
+	    [subscript]=value.  In this, these elements become
+	    elements of the associative array varname.
 	3.  A list of assignments; simple or compound.  In this
 	    case, each assignment is made to varname.name, where
 	    name is the name of the enclosed assignment.
@@ -103,7 +103,7 @@ of ksh.
 
     h.	On systems that support dynamic loading with dlopen(), it is
 	now possible to add built-in commands at runtime with the
-	a builtin command named builtin. 
+	a builtin command named builtin.
 
     i.	The following builtins have been added:
 	1.  command name [ ... ]
@@ -314,7 +314,7 @@ of ksh.
 	
     n.	The trap command has been changed as follows:
 	1.  Trap names can be either upper case or lower case.
-	2.  Trap -p cause only the specified trap values to be displayed. 
+	2.  Trap -p only causes the specified trap values to be displayed.
 	3.  The value of trap in a subshell will be the value in the parent
 	    shell until a call to trap which changes the trap settings has
 	    been made.  Thus, savetraps=$(trap) works as required by the
@@ -339,7 +339,7 @@ of ksh.
 	uses for the given command name to be reported.
 
     u.  unalias has -a option to clear all the aliases.
- 
+
     v.	The times built-in command has been removed.  The time
 	reserved word, without a command, gives time cumulative
 	time for the shell and its children.  A built-in alias

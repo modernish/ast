@@ -69,9 +69,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-07-19:
 
-- Fixed a crash that occured in the '.' command when using kshdb.
+- Fixed a crash that occurred in the '.' command when using kshdb.
 
-- Fixed a crash that occured when attempting to use redirection with an
+- Fixed a crash that occurred when attempting to use redirection with an
   invalid file descriptor.
 
 2020-07-16:

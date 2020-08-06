@@ -49,7 +49,7 @@ char* getcwd(char* \fIbuf\fP, size_t \fIlen\fP);
 .L getcwd
 copies the absolute path name of the current directory info into
 .I buf
-of length 
+of length
 .IR len .
 The return path may be longer than
 .LR PATH_MAX .
@@ -57,10 +57,10 @@ If
 .I "buff == 0"
 then space is allocated via
 .IR malloc (3)
-and 
+and
 .I len
 extra characters are reserved after the generated path name.
-A pointer to the path name is returned, 
+A pointer to the path name is returned,
 .L 0
 on error.
 .SH "SEE ALSO"

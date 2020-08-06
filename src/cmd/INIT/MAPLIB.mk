@@ -6,7 +6,7 @@
  * if Giji not specified then G11 == L
  * the first Ti.c that compiles/links with group -lGi1 ... -lGin
  * but does not compile/link with no libraries maps
- * -lL to to require -lGi1 ... -lGin
+ * -lL to require -lGi1 ... -lGin
  * otherwise -lL is not required and maps to "no library required"
  */
 

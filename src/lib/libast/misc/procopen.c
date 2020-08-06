@@ -599,7 +599,7 @@ procopen(const char* cmd, char** argv, char** envv, long* modv, int flags)
 			if (!fork())
 			{
 				sfsprintf(path, sizeof(path), "%d", getppid());
-				execlp("trace", "trace", "-p", path, NiL);
+				execlp("trace", "trace", "-p", path, NULL);
 				_exit(EXIT_NOTFOUND);
 			}
 			sleep(2);

@@ -84,7 +84,7 @@ then it will point to the next unread character in
 on return.
 The number of scanned tokens is returned.
 .L \-1
-is returned if 
+is returned if
 .L string
 was not empty and
 .L format
@@ -116,7 +116,7 @@ is a line splice.
 .L %
 in
 .L format
-prefixes format conversion characters; each conversion character 
+prefixes format conversion characters; each conversion character
 corresponds to a
 .L tokscan
 argument following the
@@ -125,7 +125,7 @@ argument.
 The format conversions are:
 .TP
 .L %c
-A single 
+A single
 .LR char .
 .TP
 .L "%hd %d %ld"
@@ -185,7 +185,7 @@ to
 .L tokscan
 above converts quoted
 .I carriage-return
-back to 
+back to
 .IR newline ),
 and deletes
 .I "# ... newline"
@@ -206,7 +206,7 @@ then
 is a 0 terminated string;
 otherwise
 .L input
-is an open 
+is an open
 .L Sfio_t*
 stream.
 If

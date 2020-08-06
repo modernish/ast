@@ -3024,7 +3024,7 @@ Sfdouble_t sh_mathfun(Shell_t *shp,void *fp, int nargs, Sfdouble_t *arg)
 /*
  * This routine is used to execute the given function <fun> in a new scope
  * If <fun> is NULL, then arg points to a structure containing a pointer
- *  to a function that will be executed in the current environment.
+ * to a function that will be executed in the current environment.
  */
 int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 {

@@ -529,7 +529,7 @@ runve(int mode, const char* path, char* const* argv, char* const* envv)
 	 *	(3) /c/(WINNT|WINDOWS)/system32 /c/(WINNT|WINDOWS)
 	 *	(4) the directories on $PATH
 	 * there are no cygwin dlls in (3), so if (1) and (2) fail
-	 * to produce the required dlls its up to (4)
+	 * to produce the required dlls it's up to (4)
 	 *
 	 * the standard allows PATH to be anything once the path
 	 * to an executable is determined; this code ensures that PATH

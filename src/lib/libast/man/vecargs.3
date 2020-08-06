@@ -53,7 +53,7 @@ loads a string vector from lines in
 .LR string .
 .L string
 may be modified upon return.
-Each line in 
+Each line in
 .L string
 is treated as a new vector element.
 Lines with
@@ -64,15 +64,15 @@ joins consecutive lines.
 A string vector pointer is returned, 0 on error.
 .PP
 .L vecfile
-constructs a string vector by calling 
-.L vecload 
+constructs a string vector by calling
+.L vecload
 on the contents of the file named by
 .LR path .
 The string vector pointer is returned, 0 on error.
 .PP
 .L vecstring
-constructs a string vector by calling 
-.L vecload 
+constructs a string vector by calling
+.L vecload
 on a copy of
 .LR string .
 The string vector pointer is returned, 0 on error.
@@ -92,7 +92,7 @@ inserts the string vector
 .L vecload
 or
 .LR vecstring )
-between 
+between
 .L "(*argvp)[0]"
 and
 .LR "(*argvp)[1]" ,
@@ -108,7 +108,7 @@ is called before the return.
 is returned if the insertion failed.
 .SH EXAMPLES
 .L vecargs
-is commonly used to modify command 
+is commonly used to modify command
 .L argv
 from fixed files.
 For example,

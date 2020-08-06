@@ -26,7 +26,7 @@
 10-06-14 rm.c: fix -rfu logic
 10-06-12 paste.c: repeat after me: do not modify argv[i]
 10-06-01 sync with ast api 20100601
-10-05-09 tail.c: fix -0f bug that inially listed the entire file
+10-05-09 tail.c: fix -0f bug that initially listed the entire file
 10-05-06 basename.c: add { -a,--all -s,--suffux=suffix } from BSD
 10-04-12 cat.c: fix -v bug that dumped core and make consistent with cmp --print-chars
 10-04-11 cmp.c: add --print-bytes, --count=n, --differences=n
@@ -77,12 +77,12 @@
 09-02-02 mktemp.c: add
 09-02-02 features/utsname: UWIN _UNAME_os_DEFAULT => UWIN
 09-01-31 dirname.c: add experimental { -f -r -x } for pathpath(3)
-09-01-05 cmp.c: fix EOF diagnostic to conform to posix
+09-01-05 cmp.c: fix EOF diagnostic to conform to POSIX
 09-01-03 mkfifo.c: fix --mode=mode logic
 08-12-07 date.c: add %[_][EO]K for [space pad] [full|long] iso docs
 08-11-10 stty.c: check for -t grouping so -tostop != -t -ostop
 08-10-15 rm.c: handle 'rm -f x x' => exit 0
-08-09-08 stty.c: #ifdef guard TAB[012] -- freebsd: damn the posix, full speed ahead
+08-09-08 stty.c: #ifdef guard TAB[012] -- FreeBSD: damn the POSIX, full speed ahead
 08-06-17 shcmd.h: move to libast
 08-04-24 uniq.c: add optget() 'n' option for -1 => -f1
 08-04-24 getconf.c: clarify diffs between "name - value" and "name = value"
@@ -135,8 +135,8 @@
 06-11-11 getconf.c: fix deferred getconf path search
 06-11-11 fmt.c: handle two char { \t \n } in --usage output
 06-10-31 global edit to eliminate most non-const static data0
-06-10-31 use <cmd.h> for all b_*() implementations; drop <cmdlib.h> 
-06-10-31 cmd.h: add CMD_ prefix to { BUILTIN DYNAMIC STANDALONE } 
+06-10-31 use <cmd.h> for all b_*() implementations; drop <cmdlib.h>
+06-10-31 cmd.h: add CMD_ prefix to { BUILTIN DYNAMIC STANDALONE }
 06-10-31 join.c: tone down /tmp usage vi SFSK_DISCARD
 06-10-31 cp.c,rm.c: update to <fts.h> to accommodate non-static data
 06-10-29 date.c: "...%H%..." => "...%H" "%..." to avoid SCCS conflict
@@ -162,7 +162,7 @@
 06-07-17 cut.c: handle last line with no newline
 06-07-17 cut.c: --output-delimiter == --line-delimiter
 06-06-25 chmod.c: mask -c output with S_IPERM
-06-05-09 uname.c: add -o; change -a to match linux
+06-05-09 uname.c: add -o; change -a to match Linux
 06-05-03 date.c: add --last -L to list last of multiple time args
 06-02-14 tail.c: fix -f bug that lost fast stream data
 06-02-11 getconf.c: exit 1 if name invalid -- duh
@@ -231,7 +231,7 @@
 02-08-19 chgrp.c: convert to use <cdt.h>
 02-07-23 join.c: fix comm snarf typo
 02-04-05 date.c: add %u
-02-01-24 stty.c: ifdef a few more macros for uts (yes, its still running)
+02-01-24 stty.c: ifdef a few more macros for uts (yes, it's still running)
 01-12-14 date.c: clarify %z doc
 01-10-31 mkdir.c: mkdir() on existing dir could fail with errno!=EEXIST
 	 uname.c: add execve() loop check for unknown options

@@ -93,7 +93,7 @@ command interpreter
 .if \nZ=0 .IR sh ;
 .if \nZ=1 .IR ksh ;
 .if \nZ=2 .IR ksh93 ;
-it is used to to execute commands with the attributes specified by
+it is used to execute commands with the attributes specified by
 the user's profiles (see
 .IR pfexec (1)).
 See
@@ -106,7 +106,7 @@ A
 is one of the following characters:
 .PP
 .RS
-\f3;   &   (   )   \(bv   <   >   new-line   space   tab\fP
+\f3;   &   (   )   |   <   >   new-line   space   tab\fP
 .RE
 .PP
 A
@@ -197,7 +197,7 @@ A
 is a sequence of one or more
 .I commands\^
 separated by
-.BR \(bv .
+.BR | .
 The standard output of each command but the last
 is connected by a
 .IR pipe (2)
@@ -224,29 +224,29 @@ pipelines
 separated by
 .BR ; ,
 .BR & ,
-.BR \(bv& ,
+.BR |& ,
 .BR && ,
 or
-.BR \(bv\|\(bv ,
+.BR |\|| ,
 and optionally terminated by
 .BR ; ,
 .BR & ,
 or
-.BR \(bv& .
+.BR |& .
 Of these five symbols,
 .BR ; ,
 .BR & ,
 and
-.B \(bv&
+.B |&
 have equal precedence,
 which is lower than that of
 .B &&
 and
-.BR \(bv\|\(bv .
+.BR |\|| .
 The symbols
 .B &&
 and
-.B \(bv\|\(bv
+.B |\||
 also have equal precedence.
 A semicolon
 .RB ( ; )
@@ -256,7 +256,7 @@ causes asynchronous execution of the preceding pipeline (i.e., the shell does
 .I not\^
 wait for that pipeline to finish).
 The symbol
-.B \(bv&
+.B |&
 causes asynchronous execution of the preceding pipeline
 with a two-way pipe established to the parent shell;
 the standard input and output of the spawned pipeline
@@ -278,7 +278,7 @@ and
 described later.
 The symbol
 .B &&
-.RB (\| \(bv\|\(bv \^)
+.RB (\| |\|| \^)
 causes the
 .I list\^
 following it to be executed only if the preceding
@@ -421,7 +421,7 @@ displaying the
 .B PS3
 prompt for the next selection.
 .TP
-\f3case\fP \f2word\^\fP \f3in\fP \*(OK \*(OK\f3(\fP\*(CK\f2pattern\^\fP \*(OK \(bv \f2pattern\^\fP \*(CK .\|.\|. \f3)\fP \f2list\^\fP \f3;;\fP \*(CK .\|.\|. \f3esac\fP
+\f3case\fP \f2word\^\fP \f3in\fP \*(OK \*(OK\f3(\fP\*(CK\f2pattern\^\fP \*(OK | \f2pattern\^\fP \*(CK .\|.\|. \f3)\fP \f2list\^\fP \f3;;\fP \*(CK .\|.\|. \f3esac\fP
 A
 .B case
 command executes the
@@ -945,7 +945,7 @@ is a
 .IR variable ,
 one or more digits,
 or any of the characters
-.BR \(** ,
+.BR * ,
 .BR @ ,
 .BR # ,
 .BR ? ,
@@ -1164,7 +1164,7 @@ enclosed in braces.
 If
 .I parameter\^
 is
-.B \(**
+.B *
 or
 .BR @ ,
 then all the positional
@@ -1175,7 +1175,7 @@ are substituted
 If an array
 .I vname\^
 with last subscript
-.B \(**
+.B *
 .BR @ ,
 or for index arrays of the form
 .I sub1\^
@@ -1189,7 +1189,7 @@ elements between
 and
 .I sub2\^
 inclusive (or all elements for
-.B \(**
+.B *
 and
 .BR @ )
 is substituted,
@@ -1203,7 +1203,7 @@ the value of
 If
 .I parameter\^
 is
-.B \(**
+.B *
 or
 .BR @ ,
 the number of positional parameters is substituted.
@@ -1362,11 +1362,11 @@ to prevent the shell from interpreting the operator as
 If
 .I parameter\^
 is
-.B \(**
+.B *
 or
 .BR @ ,
 or is an array name indexed by
-.B \(**
+.B *
 or
 .BR @ ,
 then
@@ -1379,7 +1379,7 @@ A negative
 .I offset\^
 is taken relative to one greater than the highest subscript
 for indexed arrays.
-The order for associate arrays is unspecified.
+The order for associative arrays is unspecified.
 .TP
 .PD 0
 \f3${\fP\f2parameter\^\fP\f3#\fP\f2pattern\^\fP\f3}\fP
@@ -1911,7 +1911,7 @@ The first character of the
 .B IFS
 variable is used to separate arguments for the
 .B
-"$\(**"
+"$*"
 substitution (see
 .I Quoting
 below).
@@ -2399,7 +2399,7 @@ and
 .BR z04cx .
 .SS File Name Generation.
 Following splitting, each field is scanned for the characters
-.BR \(** ,
+.BR * ,
 .BR ? ,
 .BR ( ,
 and
@@ -2455,14 +2455,13 @@ are not treated specially.
 .PD 0
 .RS
 .TP
-.B \(**
+.B *
 Matches any string, including the null string.
 When used for filename expansion,
 if the
 .B globstar
-option is on, two adjacent
-.BR \(** 's
-by itself
+option is on, an isolated pattern of two adjacent
+.BR * 's
 will match all files and zero or more directories
 and subdirectories.
 If followed by a
@@ -2526,11 +2525,11 @@ is a list of one or more patterns separated from each other
 with a
 .B &
 or
-.BR \(bv .
+.BR | .
 A
 .B &
 signifies that all patterns must be matched whereas
-.BR \(bv
+.BR |
 requires that only one pattern be matched.
 Composite patterns can be formed with one or more of the following sub-patterns:
 .PD 0
@@ -2607,7 +2606,7 @@ Each
 is a two character sequence which cannot contain
 .B &
 or
-.BR \(bv .
+.BR | .
 The first
 .I pattern-pair\^
 specifies the starting and ending characters for the match.
@@ -2814,14 +2813,14 @@ in front of a double quoted string will be ignored
 in the "C" or "POSIX" locale, and may cause
 the string to be replaced by a locale specific string otherwise.
 The meaning of
-.B "$\(**"
+.B "$*"
 and
 .B "$@"
 is identical when not quoted or when used as a variable assignment value
 or as a file name.
 However, when used as a command argument,
 .B
-"$\(**"
+"$*"
 is equivalent to
 \f3"$1\fP\f2d\fP\f3\|$2\fP\f2d\fP\|.\|.\|.\f3"\fP,
 where
@@ -2922,7 +2921,7 @@ can be used within an arithmetic expression:
 .if n abs acos acosh asin asinh atan atan2 atanh cbrt ceil copysign cos cosh erf erfc exp exp2 expm1 fabs fpclassify fdim finite floor fma fmax fmin fmod hypot ilogb int isfinite sinf isnan isnormal issubnormal issubordered iszero j0 j1 jn lgamma log log10 log2 logb nearbyint nextafter nexttoward pow remainder rint round scanb signbit sin sinh sqrt tan tanh tgamma trunc y0 y1 yn
 .if t abs   acos   acosh   asin   asinh   atan   atan2   atanh   cbrt   ceil copysign   cos   cosh   erf  erfc   exp   exp2   expm1   fabs   fpclassify fdim   finite   floor  fma   fmax   fmod   j0      j1      jn      hypot   ilogb   int   isfinite   isinf   isnan   isnormal  issubnormal   issubordered   iszero lgamma   log   log10 log2   logb   nearbyint   nextafter   nexttoward  pow   rint   round   scalb   signbit sin   sinh   sqrt   tan   tanh   tgamma   trunc   y0      y1      yn
 .if t .RE
-In addition, arithmetic functions can be define as shell functions with a
+In addition, arithmetic functions can be defined as shell functions with a
 variant of the
 .B function
 .I name\^
@@ -2965,7 +2964,7 @@ option causes the expansion to be represented as a floating decimal number
 when it is expanded.
 The
 .B \-X
-option cause the expansion to be represented using the
+option causes the expansion to be represented using the
 .B %a
 format defined by ISO C-99.
 The optional option argument
@@ -3328,7 +3327,7 @@ and
 .I expression2\^
 are both true.
 .TP
-\f2expression1\fP \f3\(bv\(bv\fP \f2expression2\fP
+\f2expression1\fP \f3||\fP \f2expression2\fP
 True, if either
 .I expression1\^
 or
@@ -4430,7 +4429,7 @@ or commands that match a partially entered word.
 When applied to the first word on the line,
 or the first word after a
 .BR ; ,
-.BR \(bv ,
+.BR | ,
 .BR & ,
 or
 .BR ( ,
@@ -5097,7 +5096,7 @@ Cursor backward one word.
 [\f2count\fP]\f3B\fP
 Cursor to preceding blank separated word.
 .TP 10
-[\f2count\fP]\f3\(bv\fP
+[\f2count\fP]\f3|\fP
 Cursor to column
 .IR count .
 .TP 10
@@ -5631,7 +5630,7 @@ A built-in specified by a pathname will only be executed when that pathname
 would be found during the path search.  Built-ins found in libraries loaded
 via the
 .B .paths
-file will be associate with the pathname of the directory containing the
+file will associate with the pathname of the directory containing the
 .B .paths
 file.
 .P
@@ -5959,7 +5958,7 @@ Does nothing, and exits 1. Used with
 for infinite loops.
 .TP
 .PD 0
-\f3fc\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
+\f3fc\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-N\fP \f2num\^\fP \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
 .TP
 \f3fc \-s \fP \*(OK \f2old\fP\f3\=\fP\f2new\^\fP \*(CK \*(OK \f2command\^\fP \*(CK
 .PD
@@ -6128,7 +6127,7 @@ option empties the hash table. This can also be achieved by resetting
 .BR PATH.
 .TP
 .PD 0
-\f3hist\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
+\f3hist\fP \*(OK \f3\-e\fP \f2ename\^\fP \ \*(CK \*(OK \f3\-N\fP \f2num\^\fP \*(CK \*(OK \f3\-nlr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
 .TP
 \f3hist \-s \fP \*(OK \f2old\fP\f3\=\fP\f2new\^\fP \*(CK \*(OK \f2command\^\fP \*(CK
 .PD
@@ -6201,8 +6200,15 @@ The resulting command is executed
 after the optional substitution
 \f2old\^\fP\f3=\fP\f2new\^\fP
 is performed.
+The option
+.B \-N
+causes
+.BR hist
+to start
+.I num
+commands back.
 .TP
-\f3history\fP \*(OK \f3\-nr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
+\f3history\fP \*(OK \f3\-N\fP \f2num\^\fP \*(CK \*(OK \f3\-nr\^\fP \*(CK \*(OK \f2first\^\fP \*(OK \f2last\^\fP \*(CK \*(CK
 Lists commands in the history file.
 The same as
 .BR hist\ \-l .
@@ -6412,7 +6418,7 @@ The
 option causes the
 arguments to be written onto the pipe
 of the process spawned with
-.B \(bv&
+.B |&
 instead of standard output.
 The
 .B \-v
@@ -6708,7 +6714,7 @@ option causes the input line
 to be taken from the input pipe
 of a process spawned by the shell
 using
-.BR \(bv& .
+.BR |& .
 If the
 .B \-s
 option is present,
@@ -6838,10 +6844,6 @@ is used, the variable
 is not unset first.
 .TP 8
 .B \-B
-Enable brace pattern field generation.
-This is the default behavior.
-.TP 8
-.B \-B
 Enable brace group expansion.  On by default.
 .TP 8
 .B \-C
@@ -6850,12 +6852,12 @@ Prevents redirection
 from truncating existing files.
 Files that are created are opened with the O_EXCL mode.
 Requires
-.B >\(bv
+.B >|
 to truncate a file when turned on.
 .TP 8
 .B \-G
 Causes the pattern
-.B \(**\(**
+.B **
 by itself to match files and zero or more directories and sub-directories
 when used for file name generation.
 If followed by a
@@ -6876,7 +6878,7 @@ state rather than waiting for the next prompt.
 .TP 8
 .B \-e
 Unless contained in a
-.B \(bv\(bv
+.B ||
 or
 .B &&
 command, or the command following an
@@ -7086,7 +7088,7 @@ Sort the positional parameters lexicographically.
 Treat unset parameters as an error when substituting.
 .B "$@"
 and
-.B "$\(**"
+.B "$*"
 are exempt.
 .TP 8
 .B \-v
@@ -7152,10 +7154,22 @@ can be any arithmetic expression that evaluates to a non-negative
 number less than or equal to
 .BR $# .
 .TP
-\f3sleep\fP \f2seconds\^\fP
+\f3sleep\fP \*(OK \f3\-s\^\fP \*(CK \f2duration\^\fP
 Suspends execution for the number of decimal seconds or fractions of a
 second given by
-.IR seconds .
+.IR duration .
+.I duration
+can be an integer, floating point value or ISO 8601 duration specifying
+the length of time to sleep.
+The option
+.B \-s
+causes the sleep builtin to terminate when it receives any signal.
+If
+.I duration
+is not specified in conjunction with
+.BR \-s ,
+.BR sleep
+will wait for a signal indefinitely.
 .TP
 \f3source\fP \f2name\^\fP \*(OK \f2arg\^\fP .\|.\|. \*(CK
 Same as
@@ -7318,7 +7332,7 @@ Does nothing, and exits 0. Used with
 .B while
 for infinite loops.
 .TP
-\f3type\fP \*(OK \f3\-afp\fP \*(CK \f2name\^\fP .\|.\|.
+\f3type\fP \*(OK \f3\-afpq\fP \*(CK \f2name\^\fP .\|.\|.
 The same as
 .BR whence\ \-v .
 .TP
@@ -7703,7 +7717,7 @@ that have attributes
 are printed.
 .RE
 .TP
-\f3ulimit\fP \*(OK \f3\-HSacdfmnpstv\fP \*(CK \*(OK \f2limit\^\fP \*(CK
+\f3ulimit\fP \*(OK \f3\-HSaMctdfxlqenupmrbiswTv\fP \*(CK \*(OK \f2limit\^\fP \*(CK
 Set or display a resource limit.
 The available resource limits are listed below.
 Many systems do not support one or more of these limits.
@@ -7742,15 +7756,30 @@ name and unit is printed before the value.
 .B \-a
 Lists all of the current resource limits.
 .TP
+.B \-b
+The socket buffer size in bytes.
+.TP
 .B \-c
 The number of 512-byte blocks on the size of core dumps.
 .TP
 .B \-d
 The number of K-bytes on the size of the data area.
 .TP
+.B \-e
+The scheduling priority.
+.TP
 .B \-f
 The number of 512-byte blocks on files that can be written by the
 current process or by child processes (files of any size may be read).
+.TP
+.B \-i
+The signal queue size.
+.TP
+.B \-l
+The locked address space in K-bytes.
+.TP
+.B \-M
+The address space limit in K-bytes.
 .TP
 .B \-m
 The number of K-bytes on the size of physical memory.
@@ -7761,14 +7790,32 @@ The number of file descriptors plus 1.
 .B \-p
 The number of 512-byte blocks for pipe buffering.
 .TP
+.B \-q
+The message queue size in K-bytes.
+.TP
+.B \-r
+The max real time priority.
+.TP
 .B \-s
 The number of K-bytes on the size of the stack area.
+.TP
+.B \-T
+The number of threads.
 .TP
 .B \-t
 The number of CPU seconds to be used by each process.
 .TP
+.B \-u
+The number of processes.
+.TP
 .B \-v
 The number of K-bytes for virtual memory.
+.TP
+.B \-w
+The swap size in K-bytes.
+.TP
+.B \-x
+The number of file locks.
 .PD
 .PP
 If no option is given,
@@ -7883,7 +7930,7 @@ See
 for a description of the format of
 .IR job .
 .TP
-\f3whence\fP \*(OK \f3\-afpv\fP \*(CK \f2name\^\fP .\|.\|.
+\f3whence\fP \*(OK \f3\-afpqv\fP \*(CK \f2name\^\fP .\|.\|.
 For each
 .IR name ,
 indicate how it
@@ -7907,6 +7954,14 @@ The
 option turns off the
 .B \-v
 option.
+The
+.B \-q
+option causes
+.BR whence
+to enter quiet mode.
+.BR whence
+will return zero if all arguments are built-ins, functions, or
+are programs found on the path.
 The
 .B \-a
 option
@@ -8251,7 +8306,7 @@ command to correct this situation.
 Some very old shell scripts contain a
 .B ^
 as a synonym for the pipe character
-.BR \(bv .
+.BR | .
 .PP
 Using the
 .B hist\^

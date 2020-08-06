@@ -134,7 +134,7 @@ on the same \f5dest\fP with values, say \fIv1\fP and \fIv2\fP.
 The eventual value in \f5dest\fP
 will be as if \f5*dest += 2\fP was performed in a single-threaded execution.
 
-That should be constrasted with a situation where, instead of \f5asoinc32()\fP or \f5asodec32()\fP,
+That should be contrasted with a situation where, instead of \f5asoinc32()\fP or \f5asodec32()\fP,
 only normal increment (++) or decrement (--) were used.
 Then, the end result could be either \f5*dest += 1\fP or \f5*dest += 2\fP,
 depending on states of the hardware cache and process scheduling.

@@ -292,7 +292,7 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 	    {
 		register int c = shbuf[0];
 
-		/*** Save and remove the last character if its an eol, ***/
+		/*** Save and remove the last character if it's an eol, ***/
 		/* changing '\r' to '\n' */
 
 		if( i == 0 )

@@ -38,7 +38,7 @@ memmove(void* to, const void* from, register size_t n)
 	if (n <= 0)	/* works if size_t is signed or not */
 		;
 	else if (in + n <= out || out + n <= in)
-		return(memcpy(to, from, n));	/* hope it's fast*/
+		return(memcpy(to, from, n));	/* hope it's fast */
 	else if (out < in)
 		do *out++ = *in++; while (--n > 0);
 	else

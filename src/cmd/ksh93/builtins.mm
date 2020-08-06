@@ -464,7 +464,7 @@ be freed before returning from you built-in, because by default,
 \f5ksh\fP will terminate you built-in in the event of an
 interrupt and the memory will not be freed.
 .P
-The best way to to allocate variable sized storage is
+The best way to allocate variable sized storage is
 through calls to the \fBstak\fP library
 which is included in \fBlibast\fP
 and which is used extensively by \f5ksh\fP itself.

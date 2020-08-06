@@ -73,7 +73,7 @@ A
 is appended to the message text, so none should appear in the
 .L printf
 format.
-If 
+If
 .I error_info.id
 is not
 .L 0
@@ -92,7 +92,7 @@ returns the
 argument, but on some systems it may do language translation via lookup
 on the original source text.
 .RL ( error
-calls 
+calls
 .L ERROR_translate
 with a 0
 .L flag
@@ -107,7 +107,7 @@ Debug messages are prefixed with
 .BI debug level.
 If
 .I "errno != error_info.last_errno"
-then 
+then
 .I error_info.last_errno
 is set to
 .I errno
@@ -164,7 +164,7 @@ to the message after
 A usage message is emitted.
 .TP
 .L ERROR_PROMPT
-The trailing 
+The trailing
 .I newline
 is suppressed.
 .TP
@@ -179,7 +179,7 @@ The message is from a library routine.
 The elements of the global struct
 .I error_info
 control error output and actions.
-Parts of 
+Parts of
 .I error_info
 can be initialized from the
 .L ERROR_OPTIONS
@@ -192,14 +192,14 @@ options, described below.
 .I "int core"
 If
 .I "error_info.core != 0"
-then 
+then
 .I "level >= error_info.core"
 generates a core dump.
 Initialized by
 .EX
 ERROR_OPTIONS="core=\fIlevel\fP"
 .EE
-where 
+where
 .I level
 can be a number or one of
 .LR error ,
@@ -247,7 +247,7 @@ are defined
 .RL ( _TRACE_
 is defined by
 .I makerules
-when 
+when
 .L CCFLAGS
 contains
 .LR \-g ).
@@ -264,7 +264,7 @@ and
 .L message
 call
 .L liberror
-and 
+and
 .L error
 respectively if
 .IR "error_info.trace<0" .

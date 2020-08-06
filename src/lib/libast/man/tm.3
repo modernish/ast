@@ -46,7 +46,7 @@ The
 .I tm
 library supports conversion between
 string date specifications,
-seconds reolution
+seconds resolution
 .L time_t
 clock values and
 .LR Tm_t .
@@ -356,7 +356,7 @@ The nanosecond part of the time.
 \fB%Q\fP\fI<delim>recent<delim>distant<delim>\fP
 Recent dates are formatted with
 .I recent
-and distand dates are formatted with
+and distant dates are formatted with
 .IR distant ,
 where
 .I <delim>
@@ -400,7 +400,7 @@ character.
 .IR hh : mm : ss .
 .TP
 .B u
-Weeday number with 1 for Monday, 7 for Sunday.
+Weekday number with 1 for Monday, 7 for Sunday.
 .TP
 .B U
 Week number with Sunday as the first day.
@@ -507,9 +507,9 @@ then it specifies a time zone other that the local time zone.
 .TP
 .L "void tmset(Tm_zone_t* zone);"
 .L tmset
-sets the reference timezoe to
+sets the reference timezone to
 .LR zone .
-.L tm_info.local 
+.L tm_info.local
 points to the local timezone and
 .L tm_info.zone
 points to the current reference timezone.

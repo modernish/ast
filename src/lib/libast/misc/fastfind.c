@@ -24,7 +24,7 @@
  *	FF_dir	FF_gnu with sfgetl/sfputl and trailing / on dirs (FF_dir_magic)
  *	FF_typ	FF_dir with (mime) types (FF_typ_magic)
  *
- * the bigram encoding steals the eighth bit (that's why its FF_old)
+ * the bigram encoding steals the eighth bit (that's why it's FF_old)
  * maybe one day we'll limit it to readonly:
  *
  * 0-2*FF_OFF	 likeliest differential counts + offset to make nonnegative 

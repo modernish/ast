@@ -34,7 +34,7 @@ hash:			generic, scoped hash table support
 
 include/ast:		libast support headers
 
-	align.h		compile time type alignmnent support
+	align.h		compile time type alignment support
 	dirent.h	POSIX directory(3) interface definitions
 	error.h		error() interface definitions
 	ftw.h		ftwalk() interface definitions

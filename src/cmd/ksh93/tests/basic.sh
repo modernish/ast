@@ -601,7 +601,7 @@ then	actual=$(
 		"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 fi
 
-#"======
+# ======
 # Expansion of multibyte characters after expansion of single-character names $1..$9, $?, $!, $-, etc.
 function exptest
 {

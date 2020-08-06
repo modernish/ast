@@ -53,7 +53,7 @@ vmalloc \- virtual memory allocation
 .MW "int vmstat(Vmalloc_t* vm, Vmstat_t* statb);"
 .MW "int vmtrace(int fd);"
 .MW "int vmtrbusy(Vmalloc_t* vm);"
-.MW "Void_t* vmdata(Vmalloc_t* vm);" 
+.MW "Void_t* vmdata(Vmalloc_t* vm);"
 .fi
 .SS "Malloc-compatible functions"
 .nf
@@ -268,7 +268,7 @@ a structure with these members:
 .fi
 .in -.5i
 .TP
-.MW round 
+.MW round
 If this value is positive, all size arguments to the
 \f5memoryf\fP function will be multiples of it.
 .TP
@@ -410,7 +410,7 @@ By default, this file descriptor is 2, the standard error.
 checks a region using \f5Vmdebug\fP or \f5Vmbest\fP for integrity.
 If \f5Vmdebug\fP, this also checks for block overwriting errors.
 On errors, \fIvmdbwarn\fP is called.
-If flag \f5VM_DBCHECK\fP is on, 
+If flag \f5VM_DBCHECK\fP is on,
 \fIvmdbcheck\fP is called at each invocation of
 \fIvmalloc\fP, \fIvmfree\fP, or \fIvmresize\fP.
 .PP

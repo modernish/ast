@@ -340,7 +340,7 @@ the key as defined by the \f5Dtdisc_t.size\fP field.
 .PP
 .Ss "  Void_t* (*memoryf)(Dt_t* dt, Void_t* addr, size_t size, Dtdisc_t* disc)"
 If not \f5NULL\fP, \f5memoryf\fP is used to allocate and free memory.
-When \f5addr\fP is \f5NULL\fP, a memory segment of size \f5size\fP is requested. 
+When \f5addr\fP is \f5NULL\fP, a memory segment of size \f5size\fP is requested.
 If \f5addr\fP is not \f5NULL\fP and \f5size\fP is zero, \f5addr\fP is to be freed.
 If \f5addr\fP is not \f5NULL\fP and \f5size\fP is positive,
 \f5addr\fP is to be resized to the given size.
@@ -485,7 +485,7 @@ For \f5Dtset\fP, \f5Dtbag\fP, \f5Dtrhset\fP and \f5Dtrhbag\fP,
 objects are ordered by some internal order defined at the time when these
 functions are called.
 
-Objects in a dictionary or a viewpath can be walked using 
+Objects in a dictionary or a viewpath can be walked using
 a \f5for(;;)\fP loop as below.
 .Cs
     for(obj = dtfirst(dt); obj; obj = dtnext(dt,obj))

@@ -241,7 +241,7 @@ tst	real_vfork note{ vfork child shares data with parent }end execute{
 	}
 }end
 
-tst	lib_posix_spawn unistd.h stdlib.h spawn.h -Dfork=______fork note{ posix_spawn exists and it works and its worth using }end status{
+tst	lib_posix_spawn unistd.h stdlib.h spawn.h -Dfork=______fork note{ posix_spawn exists, it works and it's worth using }end status{
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	#include <sys/wait.h>
@@ -304,7 +304,7 @@ tst	lib_posix_spawn unistd.h stdlib.h spawn.h -Dfork=______fork note{ posix_spaw
 			NOTE("SIGHUP ignored in parent not ignored in child");
 			_exit(0);
 		}
-		/* must return exec-type errors or its useless to us *unless* there is no [v]fork() */
+		/* must return exec-type errors or it's useless to us *unless* there is no [v]fork() */
 		n = strlen(cmd[0]);
 		if (n >= (sizeof(tmp) - 3))
 		{

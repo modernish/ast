@@ -3522,7 +3522,7 @@ void nv_setref(register Namval_t *np, Dt_t *hp, int flags)
 
 /*
  * get the scope corresponding to <index>
- * whence uses the same values as lseeek()
+ * whence uses the same values as lseek()
  */
 Shscope_t *sh_getscope(int index, int whence)
 {

@@ -338,7 +338,7 @@ socket :MAPLIB: socket.c nsl.c
  * this is why unix is starting to look like windows
  * this map allows makefiles to use -ldbm on all systems
  *
- * and this just in: sometimes its <gdbm-ndbm.h> and possibly -lgdbm_compat
+ * and this just in: sometimes it's <gdbm-ndbm.h> and possibly -lgdbm_compat
  *
  * at least the -l* buck stops here
  */

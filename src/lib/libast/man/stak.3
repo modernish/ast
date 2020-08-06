@@ -56,14 +56,14 @@ install it as the active stack.
 A stack is created with the \f5stakcreate\fP() function.
 A \fIflags\fP argument of \f5STAK_SMALL\fP indicates that unused
 space on the stack should be freed whenever this stack ceases
-to be the active stack. 
+to be the active stack.
 If successful,
 \f5stakcreate\fP() returns a pointer to a stack whose reference
 count is 1.
 Otherwise, \f5stakcreate\fP() returns a null pointer.
 The \f5staklink\fP() function increases the reference count for the
 given \fIstack\fP.
-The \f5stakinstall\fP() function 
+The \f5stakinstall\fP() function
 makes the specified \fIstack\fP the active stack and returns a pointer
 to the previous active stack.
 When the \fIoverflow\fP argument is not null,
@@ -113,7 +113,7 @@ If \fIaddress\fP is not the address of an object on the
 stack the result is undefined.
 .PP
 The remaining functions are used to build the current object incrementally.
-An object that is built incrementally on the stack will  
+An object that is built incrementally on the stack will
 always occupy contiguous memory within a stack frame but
 until \f5stakfreeze\fP() is called,
 the location in memory for the object can change.
@@ -123,7 +123,7 @@ Initially, this offset is zero, and the offset changes as a result
 of the operations you specify.
 The \f5stakseek\fP() function is used set the offset for the
 current object.
-The \fIoffset\fP argument to \f5stakseek\fP() specifies the new 
+The \fIoffset\fP argument to \f5stakseek\fP() specifies the new
 offset for the current object.
 The frame will be extended or moved
 if \f5offset\fP causes the new current offset to extend beyond the
