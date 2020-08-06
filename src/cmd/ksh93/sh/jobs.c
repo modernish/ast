@@ -460,7 +460,7 @@ int job_reap(register int sig)
 		nochild = 1;
 	}
 	shp->gd->waitevent = waitevent;
-	if(sh_isoption(SH_NOTIFY) && sh_isstate(SH_TTYWAIT))
+	if(job.jobcontrol && sh_isoption(SH_NOTIFY) && sh_isstate(SH_TTYWAIT))
 	{
 		outfile = sfstderr;
 		job_list(pw,JOB_NFLAG|JOB_NLFLAG);
