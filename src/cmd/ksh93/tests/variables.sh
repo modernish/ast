@@ -997,15 +997,15 @@ e=$?
 (
 	ulimit -t unlimited
 	[[ ${.sh.pid} == $$ ]]
-) && err_exit '${.sh.pid} is the same as $$'
+) && err_exit "\${.sh.pid} is the same as \$$ (both are $$)"
 
 # ${.sh.pid} should be the PID of the running job
 echo ${.sh.pid} > "$tmp/jobpid" &
 wait
-[[ $(cat "$tmp/jobpid") == ${.sh.pid} ]] && err_exit $'${.sh.pid} is not set to a job\'s PID'
+[[ $(cat "$tmp/jobpid") == ${.sh.pid} ]] && err_exit "\${.sh.pid} is not set to a job's PID (expected $!, got $(cat "$tmp/jobpid"))"
 
 # ${.sh.pid} should be the same as $$ in the parent shell
-[[ $$ == ${.sh.pid} ]] || err_exit '${.sh.pid} and $$ differ in the parent shell'
+[[ $$ == ${.sh.pid} ]] || err_exit "\${.sh.pid} and \$$ differ in the parent shell (expected $$, got ${.sh.pid})"
 
 # ======
 exit $((Errors<125?Errors:125))
