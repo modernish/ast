@@ -5,8 +5,11 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2020-08-06:
 
-- Added '${.sh.pid}' for obtaining the process ID of the current ksh instance.
-  It serves the same purpose as Bash's '$BASHPID'.
+- Added the '${.sh.pid}' variable as an alternative to Bash's '$BASHPID'.
+  This variable is set to the current shell's PID, unlike '$$' (which is
+  set to the parent shell's PID). In virtual subshells '${.sh.pid}' is not
+  changed from its previous value, while in forked subshells '${.sh.pid}'
+  is set to the subshell's process ID.
 
 2020-08-05:
 
