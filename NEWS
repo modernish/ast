@@ -20,6 +20,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a crash that occurred intermittently after running an external
   command from a command substitution expanded from the $PS1 shell prompt.
 
+- Partially fixed a crash that could occur after running a large number of
+  subshells in a script. Due to a bug in vmalloc this only applies when ksh
+  is compiled with -D_std_malloc.
+
 2020-08-09:
 
 - File name generation (a.k.a. pathname expansion, a.k.a. globbing) now

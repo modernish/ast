@@ -103,7 +103,7 @@ static struct subshell
 	char		pwdclose;
 } *subshell_data;
 
-static int subenv;
+static long subenv;
 
 
 /*
@@ -176,7 +176,7 @@ void sh_subfork(void)
 {
 	register struct subshell *sp = subshell_data;
 	Shell_t	*shp = sp->shp;
-	int	curenv = shp->curenv;
+	long curenv = shp->curenv;
 	pid_t pid;
 	char *trap = shp->st.trapcom[0];
 	if(trap)
@@ -456,7 +456,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	struct subshell sub_data;
 	register struct subshell *sp = &sub_data;
 	int jmpval,nsig=0,duped=0;
-	int savecurenv = shp->curenv;
+	long savecurenv = shp->curenv;
 	int savejobpgid = job.curpgid;
 	int *saveexitval = job.exitval;
 	char *savsig;
