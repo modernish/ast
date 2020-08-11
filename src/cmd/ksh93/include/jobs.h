@@ -68,7 +68,7 @@ struct process
 	unsigned short	p_exit;		/* exit value or signal number */
 	unsigned short	p_exitmin;	/* minimum exit value for xargs */
 	unsigned short	p_flag;		/* flags - see below */
-	long		p_env;		/* subshell environment number */
+	unsigned int	p_env;		/* subshell environment number */
 #ifdef JOBS
 	off_t		p_name;		/* history file offset for command */
 	struct termios	p_stty;		/* terminal state for job */

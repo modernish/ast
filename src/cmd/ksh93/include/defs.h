@@ -167,8 +167,8 @@ struct shared
 	Namval_t	*prev_table;	/* previous table used in nv_open  */ \
 	Sfio_t		*outpool;	/* output stream pool */ \
 	long		timeout;	/* read timeout */ \
-	long		curenv;		/* current subshell number */ \
-	long		jobenv;		/* subshell number for jobs */ \
+	unsigned int	curenv;		/* current subshell number */ \
+	unsigned int	jobenv;		/* subshell number for jobs */ \
 	int		infd;		/* input file descriptor */ \
 	short		nextprompt;	/* next prompt is PS<nextprompt> */ \
 	short		poolfiles; \
