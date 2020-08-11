@@ -17,4 +17,4 @@
 *                  David Korn <dgk@research.att.com>                   *
 *                                                                      *
 ***********************************************************************/
-#define SH_RELEASE	"93u+m 2020-08-10"
+#define SH_RELEASE	"93u+m 2020-08-11"
