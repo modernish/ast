@@ -251,7 +251,7 @@ Namval_t *sh_assignok(register Namval_t *np,int add)
 	Dt_t			*dp= shp->var_tree;
 	Namval_t		*mpnext;
 	Namarr_t		*ap;
-	int			save;
+	unsigned int	save;
 	/* don't bother to save if in a ${ subshare; } */
 	if(sp->subshare)
 		return(np);

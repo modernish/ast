@@ -2464,7 +2464,7 @@ static void table_unset(Shell_t *shp, register Dt_t *root, int flags, Dt_t *oroo
 		{
 			if(nv_cover(nq))
 			{
-				int subshell = shp->subshell;
+				unsigned int subshell = shp->subshell;
 				shp->subshell = 0;
 				if(nv_isattr(nq, NV_INTEGER))
 				{

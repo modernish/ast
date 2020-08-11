@@ -2716,6 +2716,7 @@ static char *sh_tilde(Shell_t *shp,register const char *string)
 	register int		c;
 	register struct passwd	*pw;
 	register Namval_t *np=0;
+	unsigned int save;
 	static Dt_t *logins_tree;
 	if(*string++!='~')
 		return(NIL(char*));
@@ -2771,10 +2772,10 @@ skip:
 		logins_tree = dtopen(&_Nvdisc,Dtbag);
 	if(np=nv_search(string,logins_tree,NV_ADD))
 	{
-		c = shp->subshell;
+		save = shp->subshell;
 		shp->subshell = 0;
 		nv_putval(np, pw->pw_dir,0);
-		shp->subshell = c;
+		shp->subshell = save;
 	}
 	return(pw->pw_dir);
 }

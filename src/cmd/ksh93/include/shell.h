@@ -143,7 +143,7 @@ struct Shell_s
 	int		exitval;	/* most recent exit value */
 	unsigned char	trapnote;	/* set when trap/signal is pending */
 	char		shcomp;		/* set when running shcomp */
-	short		subshell;	/* set for virtual subshell */
+	unsigned int	subshell;	/* set for virtual subshell */
 #ifdef _SH_PRIVATE
 	_SH_PRIVATE
 #endif /* _SH_PRIVATE */
