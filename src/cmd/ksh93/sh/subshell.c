@@ -103,8 +103,6 @@ static struct subshell
 	char		pwdclose;
 } *subshell_data;
 
-static unsigned int subenv;
-
 
 /*
  * This routine will turn the sftmp() file into a real /tmp file or pipe
@@ -474,12 +472,11 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	if(shp->curenv==0)
 	{
 		subshell_data=0;
-		subenv = 0;
+		shp->subshell = 0;
 	}
-	shp->curenv = ++subenv;
+	shp->curenv = ++shp->subshell; /* increase level of virtual subshells */
 	savst = shp->st;
 	sh_pushcontext(shp,&buff,SH_JMPSUB);
-	shp->subshell++;		/* increase level of virtual subshells */
 	SH_SUBSHELLNOD->nvalue.s++;	/* increase ${.sh.subshell} */
 	sp->prev = subshell_data;
 	sp->shp = shp;
@@ -756,7 +753,6 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	{
 		shp->subshell--;		/* decrease level of virtual subshells */
 		SH_SUBSHELLNOD->nvalue.s--;	/* decrease ${.sh.subshell} */
-		subenv--;
 	}
 	subshell_data = sp->prev;
 	if(!argsav  ||  argsav->dolrefcnt==argcnt)
