@@ -529,7 +529,8 @@ err() { return $1; }
 ( err 12 ) & pid=$!
 : $( $date)
 wait $pid
-[[ $? == 12 ]] || err_exit 'exit status from subshells not being preserved'
+exit_status=$?
+[[ $exit_status == 12 ]] || err_exit "exit status from subshells not being preserved (expected 12, got $exit_status)"
 
 if	cat /dev/fd/3 3</dev/null >/dev/null 2>&1 || whence mkfifo > /dev/null
 then	x="$(sed 's/^/Hello /' <(print "Fred" | sort))"
