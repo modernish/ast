@@ -749,7 +749,7 @@ void sh_setmatch(Shell_t *shp,const char *v, int vsize, int nmatch, regoff_t mat
 	struct match	*mp = &ip->SH_MATCH_init;
 	Namval_t	*np = nv_namptr(mp->node,0); 
 	register int	i,n,x;
-	unsigned int savesub=shp->subshell;
+	unsigned int	savesub = shp->subshell;
 	Namarr_t	*ap = nv_arrayptr(SH_MATCHNOD);
 	shp->subshell = 0;
 #ifndef SHOPT_2DMATCH

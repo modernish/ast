@@ -1318,8 +1318,8 @@ int nv_settype(Namval_t* np, Namval_t *tp, int flags)
 	char		*val=0;
 	Namarr_t	*ap=0;
 	Shell_t		*shp = sh_getinterp();
-	int		nelem=0;
-	unsigned int subshell=shp->subshell;
+	int		nelem = 0;
+	unsigned int	subshell = shp->subshell;
 #if SHOPT_TYPEDEF
 	Namval_t	*tq;
 	if(nv_type(np)==tp)
