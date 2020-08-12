@@ -6,8 +6,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 2020-08-11:
 
 - Partially fixed a crash that can occur after running a large number of
-  subshells in a script. Due to a bug in vmalloc this only applies when ksh
-  is compiled with -D_std_malloc.
+  subshells in a script. This only applies on Linux and FreeBSD when ksh
+  is compiled with -D_std_malloc; ksh still crashes on macOS and with
+  vmalloc after running a large number of subshells in some scenarios.
 
 2020-08-10:
 
