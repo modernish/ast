@@ -760,26 +760,4 @@ SHELL=$SHELL "$SHELL" -c '
 || err_exit "setting PATH to readonly in subshell triggers an erroneous fork"
 
 # ======
-# Ksh shouldn't crash after running a large number of subshells.
-# NOTE: This test is disabled because it crashes with vmalloc and
-# macOS malloc, although it does work on Linux and FreeBSD.
-: <<\end_disabled
-subshell_crash="$tmp/subshell_crash.sh"
-cat >| "$subshell_crash" << EOF
-(
-	for ((n=0; n != 50000; n++)) do
-		(
-			function foo {
-				(true)
-			}
-			foo
-		)
-	done
-)
-EOF
-"$SHELL" "$subshell_crash" || err_exit 'ksh crashes after running a large number of subshells'
-fi
-end_disabled
-
-# ======
 exit $((Errors<125?Errors:125))
