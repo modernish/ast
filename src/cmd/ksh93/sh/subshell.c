@@ -756,7 +756,6 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	{
 		shp->subshell--;		/* decrease level of virtual subshells */
 		SH_SUBSHELLNOD->nvalue.s--;	/* decrease ${.sh.subshell} */
-		subenv--;
 	}
 	subshell_data = sp->prev;
 	if(!argsav  ||  argsav->dolrefcnt==argcnt)
