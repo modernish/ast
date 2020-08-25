@@ -980,9 +980,9 @@ static int canexecute(Shell_t *shp,register char *path, int isfun)
 		errno = EISDIR;
 	else if((statb.st_mode&S_IXALL)==S_IXALL || sh_access(path,X_OK)>=0)
 		return(fd);
+err:
 	if(isfun && fd>=0)
 		sh_close(fd);
-err:
 	return(-1);
 }
 
