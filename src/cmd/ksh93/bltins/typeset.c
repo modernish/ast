@@ -813,7 +813,7 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 			if (tp->aflag && (tp->argnum>0 || (curflag!=newflag)))
 			{
 				if(shp->subshell)
-					sh_assignok(np,3);
+					sh_assignok(np,2);
 				if(troot!=shp->var_tree)
 					nv_setattr(np,newflag&~NV_ASSIGN);
 				else

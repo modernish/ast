@@ -90,6 +90,9 @@ static struct subshell
 	char		jobcontrol;
 	char		monitor;
 	unsigned char	fdstatus;
+	unsigned char	larg_readonly;
+	unsigned char	shname_readonly;
+	unsigned char	shsubscript_readonly;
 	int		fdsaved; /* bit make for saved files */
 	int		sig;	/* signal for $$ */
 	pid_t		bckpid;
@@ -239,8 +242,6 @@ int nv_subsaved(register Namval_t *np)
  * add == 1:    Create a copy of the node pointer in the current virtual subshell.
  * add == 2:    This will create a copy of the node pointer like 1, but it will disable the
  *              optimization for ${.sh.level}.
- * add == 3:    This is like 1, but it will never skip the following variables:
- *              ${.sh.level}, $_, ${.sh.subscript} and ${.sh.name}.
  */
 Namval_t *sh_assignok(register Namval_t *np,int add)
 {
@@ -256,7 +257,7 @@ Namval_t *sh_assignok(register Namval_t *np,int add)
 	if(sp->subshare)
 		return(np);
 	/* don't bother with this */
-	if(!sp->shpwd || (add != 3 && ((add != 2 && np==SH_LEVELNOD) || np==L_ARGNOD || np==SH_SUBSCRNOD || np==SH_NAMENOD)))
+	if(!sp->shpwd || (add != 2 && np==SH_LEVELNOD) || np==L_ARGNOD || np==SH_SUBSCRNOD || np==SH_NAMENOD)
 		return(np);
 	if((ap=nv_arrayptr(np)) && (mp=nv_opensub(np)))
 	{
@@ -496,6 +497,9 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	sp->options = shp->options;
 	sp->jobs = job_subsave();
 	sp->subdup = shp->subdup;
+	sp->larg_readonly = nv_isattr(L_ARGNOD, NV_RDONLY);
+	sp->shname_readonly = nv_isattr(SH_NAMENOD, NV_RDONLY);
+	sp->shsubscript_readonly = nv_isattr(SH_SUBSCRNOD, NV_RDONLY);
 	/* make sure initialization has occurred */ 
 	if(!shp->pathlist)
 	{
@@ -631,6 +635,12 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	}
 	if(!shp->savesig)
 		shp->savesig = -1;
+	if(!sp->larg_readonly)
+		nv_offattr(L_ARGNOD,NV_RDONLY);
+	if(!sp->shname_readonly)
+		nv_offattr(SH_NAMENOD,NV_RDONLY);
+	if(!sp->shsubscript_readonly)
+		nv_offattr(SH_SUBSCRNOD,NV_RDONLY);
 	nv_restore(sp);
 	if(comsub)
 	{
