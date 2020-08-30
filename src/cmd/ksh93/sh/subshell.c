@@ -497,6 +497,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	sp->options = shp->options;
 	sp->jobs = job_subsave();
 	sp->subdup = shp->subdup;
+	/* Save the state of NV_RDONLY for $_, ${.sh.name} and ${.sh.subscript} */
 	sp->larg_readonly = nv_isattr(L_ARGNOD, NV_RDONLY);
 	sp->shname_readonly = nv_isattr(SH_NAMENOD, NV_RDONLY);
 	sp->shsubscript_readonly = nv_isattr(SH_SUBSCRNOD, NV_RDONLY);
@@ -635,6 +636,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	}
 	if(!shp->savesig)
 		shp->savesig = -1;
+	/* If $_, ${.sh.name} or ${.sh.subscript} weren't originally readonly, unset NV_RDONLY */
 	if(!sp->larg_readonly)
 		nv_offattr(L_ARGNOD,NV_RDONLY);
 	if(!sp->shname_readonly)
