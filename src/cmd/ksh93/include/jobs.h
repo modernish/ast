@@ -120,6 +120,8 @@ extern struct jobs job;
 #else
 #define vmbusy()	(vmstat(0,0)!=0)
 #endif
+#else
+#define vmbusy()	0
 #endif
 
 #define job_lock()	(job.in_critical++)
