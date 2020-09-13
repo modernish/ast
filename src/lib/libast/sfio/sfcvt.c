@@ -287,7 +287,7 @@ int		format;		/* conversion format		*/
 
 			while(sp < ep)
 			{	/* generate fractional digits */
-				if(f <= 0.)
+				if(f <= 0. && *decpt >= 0)
 				{	/* fill with 0's */
 					do { *sp++ = '0'; } while(sp < ep);
 					goto done;
@@ -404,7 +404,7 @@ int		format;		/* conversion format		*/
 				}
 			} while(f >= (double)CVT_DBL_MAXINT);
 		}
-		else if(f > 0.0 && f < 1e-8)
+		else if(f > 0.0 && f < 0.1)
 		{	/* scale to avoid excessive multiply by 10 below */
 			v = SF_MAXEXP10-1;
 			do
@@ -459,7 +459,7 @@ int		format;		/* conversion format		*/
 
 			while(sp < ep)
 			{	/* generate fractional digits */
-				if(f <= 0.)
+				if(f <= 0. && *decpt >= 0)
 				{	/* fill with 0's */
 					do { *sp++ = '0'; } while(sp < ep);
 					goto done;
@@ -480,20 +480,30 @@ int		format;		/* conversion format		*/
 		ep = b+1;
 	else if(ep < endsp)
 	{	/* round the last digit */
-		*--sp += 5;
+	    if (!(format&SFFMT_EFORMAT) && *decpt < 0)
+	        sp += *decpt-1;
+	    else
+	        --sp;
+	    *sp += 5;
 		while(*sp > '9')
-		{	*sp = '0';
+		{	
 			if(sp > b)
+            {
+                *sp = '0';
 				*--sp += 1;
+            }
 			else
-			{	/* next power of 10 */
+			{	/* next power of 10 and at beginning */
 				*sp = '1';
 				*decpt += 1;
 				if(!(format&SFFMT_EFORMAT))
 				{	/* add one more 0 for %f precision */
-					ep[-1] = '0';
+					if (sp != &ep[-1])
+                        /* prevents overwriting the previous 1 with 0 */
+                        ep[-1] = '0';
 					ep += 1;
 				}
+                break;
 			}
 		}
 	}
