@@ -972,8 +972,6 @@ int sh_exec(register const Shnode_t *t, int flags)
 		if(was_monitor&flags)
 			sh_onstate(SH_MONITOR);
 		type = t->tre.tretyp;
-		if(!shp->intrap)
-			shp->oldexit=shp->exitval;
 		shp->exitval=0;
 		shp->lastsig = 0;
 		shp->lastpath = 0;
@@ -1013,7 +1011,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 #endif /* SHOPT_NAMESPACE */
 			com0 = com[0];
 			shp->xargexit = 0;
-			while(np==SYSCOMMAND)
+			while(np==SYSCOMMAND || !np && com0 && nv_search(com0,shp->fun_tree,0)==SYSCOMMAND)
 			{
 				register int n = b_command(0,com,&shp->bltindata);
 				if(n==0)

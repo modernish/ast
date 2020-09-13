@@ -514,6 +514,27 @@ function longline
 	do	print argument$i
 	done
 }
+# test that 'command' can result from expansion and can be overridden by a function
+expect=all\ ok
+c=command
+actual=$("$c" echo all ok 2>&1)
+[[ $actual == "$expect" ]] || err_exit '"command" utility from "$c" expansion not executed' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+set -- command echo all ok
+actual=$("$@" 2>&1)
+[[ $actual == "$expect" ]] || err_exit '"command" utility from "$@" expansion not executed' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+# must use 'eval' in following test as 'command' is integrated in parser and ksh likes to parse ahead
+actual=$(function command { echo all ok; }; eval 'command echo all wrong')
+[[ $actual == "$expect" ]] || err_exit '"command" failed to be overridden by function' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+actual=$(function command { echo all ok; }; "$c" echo all wrong)
+[[ $actual == "$expect" ]] || err_exit '"command" from "$c" expansion failed to be overridden by function' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+set -- command echo all wrong
+actual=$(function command { echo all ok; }; "$@")
+[[ $actual == "$expect" ]] || err_exit '"command" from "$@" expansion failed to be overridden by function' \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 # test command -x option
 integer sum=0 n=10000
 if	! ${SHELL:-ksh} -c 'print $#' count $(longline $n) > /dev/null  2>&1
@@ -917,14 +938,20 @@ EOF
 
 # ==========
 # Builtins should handle unrecognized options correctly
-(
-	builtin $(builtin -l | awk -F "/" '/\/opt/ {print $5}') # Load all /opt/ast/bin builtins
-	for name in $(builtin -l | grep -Ev '(echo|/opt|test|true|false|getconf|uname|\[|:)'); do
-	    actual=$({ "$name" --this-option-does-not-exist; } 2>&1)
-	    expect="Usage: $name"
-	    [[ $actual =~ $expect ]] || err_exit "$name should show usage info on unrecognized options (expected $(printf '%q' "$expect"), got $(printf '%q' "$actual"))"
-	done
-)
+while IFS= read -r bltin <&3
+do	case $bltin in
+	echo | test | true | false | \[ | : | getconf | */getconf | uname | */uname)
+		continue ;;
+	/*/*)	expect="Usage: ${bltin##*/} "
+		actual=$({ PATH=${bltin%/*}; "${bltin##*/}" --this-option-does-not-exist; } 2>&1) ;;
+	*/*)	err_exit "strange path name in 'builtin' output: $(printf %q "$bltin")"
+		continue ;;
+	*)	expect="Usage: $bltin "
+		actual=$({ "${bltin}" --this-option-does-not-exist; } 2>&1) ;;
+	esac
+	[[ $actual == *"$expect"* ]] || err_exit "$bltin should show usage info on unrecognized options" \
+			"(expected string containing $(printf %q "$expect"), got $(printf %q "$actual"))"
+done 3< <(builtin)
 
 # ======
 exit $((Errors<125?Errors:125))

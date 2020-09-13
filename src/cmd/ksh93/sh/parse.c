@@ -1456,7 +1456,7 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 							lexp->intypeset = 1;
 						key_on = 1;
 					}
-					else if(np==SYSCOMMAND)
+					else if(np==SYSCOMMAND && !sh_isoption(SH_POSIX))
 						cmdarg++;
 					else if(np==SYSEXEC)
 						lexp->inexec = 1;

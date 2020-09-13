@@ -428,6 +428,88 @@ if	env x-a=y >/dev/null 2>&1
 then	[[ $(env 'x-a=y'  $SHELL -c 'env | grep x-a') == *x-a=y* ]] || err_exit 'invalid environment variables not preserved'
 fi
 
+foo() { return; }
+false
+foo && err_exit "'return' within function does not preserve exit status"
+false
+foo & wait "$!" && err_exit "'return' within function does not preserve exit status (bg job)"
+
+foo() { false; return || :; }
+foo && err_exit "'return ||' does not preserve exit status"
+
+foo() { false; return && :; }
+foo && err_exit "'return &&' does not preserve exit status"
+
+foo() { false; while return; do true; done; }
+foo && err_exit "'while return' does not preserve exit status"
+
+foo() { false; while return; do true; done 2>&1; }
+foo && err_exit "'while return' with redirection does not preserve exit status"
+
+foo() { false; until return; do true; done; }
+foo && err_exit "'until return' does not preserve exit status"
+
+foo() { false; until return; do true; done 2>&1; }
+foo && err_exit "'until return' with redirection does not preserve exit status"
+
+foo() { false; for i in 1; do return; done; }
+foo && err_exit "'return' within 'for' does not preserve exit status"
+
+foo() { false; for i in 1; do return; done 2>&1; }
+foo && err_exit "'return' within 'for' with redirection does not preserve exit status"
+
+foo() { false; { return; } 2>&1; }
+foo && err_exit "'return' within { block; } with redirection does not preserve exit status"
+
+foo() ( exit )
+false
+foo && err_exit "'exit' within function does not preserve exit status"
+false
+foo & wait "$!" && err_exit "'exit' within function does not preserve exit status (bg job)"
+
+foo() ( false; exit || : )
+foo && err_exit "'exit ||' does not preserve exit status"
+
+foo() ( false; exit && : )
+foo && err_exit "'exit &&' does not preserve exit status"
+
+foo() ( false; while exit; do true; done )
+foo && err_exit "'while exit' does not preserve exit status"
+
+foo() ( false; while exit; do true; done 2>&1 )
+foo && err_exit "'while exit' with redirection does not preserve exit status"
+
+foo() ( false; until exit; do true; done )
+foo && err_exit "'until exit' does not preserve exit status"
+
+foo() ( false; until exit; do true; done 2>&1 )
+foo && err_exit "'until exit' with redirection does not preserve exit status"
+
+foo() ( false; for i in 1; do exit; done )
+foo && err_exit "'exit' within 'for' does not preserve exit status"
+
+foo() ( false; for i in 1; do exit; done 2>&1 )
+foo && err_exit "'exit' within 'for' with redirection does not preserve exit status"
+
+foo() ( false; { exit; } 2>&1 )
+foo && err_exit "'exit' within { block; } with redirection does not preserve exit status"
+
+set --
+false
+for i in "$@"; do :; done || err_exit 'empty loop does not reset exit status ("$@")'
+false
+for i do :; done || err_exit 'empty loop does not reset exit status ("$@" shorthand)'
+false
+for i in; do :; done || err_exit "empty loop does not reset exit status (empty 'in' list)"
+
+false
+case 1 in 1) ;; esac || err_exit "empty case does not reset exit status"
+false
+case 1 in 2) echo whoa ;; esac || err_exit "non-matching case does not reset exit status"
+
+false
+2>&1 || err_exit "lone redirection does not reset exit status"
+
 float s=SECONDS
 for i in .1 .2
 do      print $i

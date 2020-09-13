@@ -90,8 +90,6 @@ const struct shtable3 shtab_builtins[] =
 	"exit",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(return),
 	"fc",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
 	"hist",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
-	"history",	NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
-	"r",		NV_BLTIN|BLT_ENV|BLT_EXIT,	bltin(hist),
 	"readonly",	NV_BLTIN|BLT_ENV|BLT_SPC|BLT_DCL,bltin(readonly),
 	"shift",	NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(shift),
 	"trap",		NV_BLTIN|BLT_ENV|BLT_SPC,	bltin(trap),
@@ -470,18 +468,22 @@ USAGE_LICENSE
 ;
 
 const char sh_optcommand[] =
-"[-1c?\n@(#)$Id: command (AT&T Research) 2003-08-01 $\n]"
+"[-1c?\n@(#)$Id: command (AT&T Research/ksh93) 2020-09-09 $\n]"
 USAGE_LICENSE
-"[+NAME?command - execute a simple command]"
+"[+NAME?command - execute a simple command disabling special properties]"
 "[+DESCRIPTION?Without \b-v\b or \b-V\b,  \bcommand\b executes \acommand\a "
 	"with arguments given by \aarg\a, suppressing the shell function lookup "
-	"that normally occurs.  In addition, if \acommand\a is a special "
-	"built-in command, then the special properties are removed so that "
-	"failures will not cause the script that executes it to terminate.]"
+	"that normally occurs. If \acommand\a is a special built-in command, "
+	"then the special properties are removed so that failures will not "
+	"cause the script that executes it to terminate	and preceding "
+	"assignments will not persist beyond the command invocation. "
+	"If \acommand\a is a declaration built-in command and the "
+	"\b-o posix\b shell option is on, then the declaration properties are "
+	"removed so that arguments containing \b=\b are not treated specially.]"
 "[+?With the \b-v\b or \b-V\b options, \bcommand\b is equivalent to the "
 	"\bwhence\b(1) command.]"
-"[p?Causes a default path to be searched rather than the one defined by the "
-	"value of \bPATH\b.]"
+"[p?Instead of \b$PATH\b, search the OS's default utility path as output by "
+	"\bgetconf PATH\b.]"
 "[v?Equivalent to \bwhence\b \acommand\a [\aarg\a ...]].]"
 "[x?If \acommand\a fails because there are too many \aarg\as, it will be "
 	"invoked multiple times with a subset of the arguments on each "
@@ -921,15 +923,11 @@ const char sh_opthash[] =
 ;
 
 const char sh_opthist[]	= 
-"[-1cn?@(#)$Id: hist (AT&T Research/ksh93) 2020-07-16 $\n]"
+"[-1cn?@(#)$Id: hist (AT&T Research) 2000-04-02 $\n]"
 USAGE_LICENSE
-"[+NAME?fc, hist, history, r - process command history list]"
-"[+DESCRIPTION?\bhist\b lists, edits, or re-executes commands  "
+"[+NAME?\f?\f - process command history list]"
+"[+DESCRIPTION?\b\f?\f\b lists, edits, or re-executes, commands  "
 	"previously entered into the current shell environment.]"
-"[+?The following command equivalents exist: "
-	"\bfc\b is \bhist\b; "
-	"\bhistory\b is \bhist -l\b (list history); "
-	"and \br\b is \bhist -s\b (reexecute command).]"
 "[+?The command history list references commands by number. The first number "
 	"in the list is selected arbitrarily.  The relationship of a number "
 	"to its command does not change during a login session.  When the "
@@ -937,11 +935,11 @@ USAGE_LICENSE
 	"maintains the ordering.]"
 "[+?When commands are edited (when the \b-l\b option is not specified), the "
 	"resulting lines will be entered at the end of the history list and "
-	"then reexecuted by the current shell.  The \bhist\b command that "
+	"then reexecuted by the current shell.  The \b\f?\f\b command that "
 	"caused the editing will not be entered into the history list.  If the "
 	"editor returns a non-zero exit status, this will suppress the "
 	"entry into the history list and the command reexecution.  Command "
-	"line variable assignments and redirections affect both the \bhist\b "
+	"line variable assignments and redirections affect both the \f?\f "
 	"command and the commands that are reexecuted.]"
 "[+?\afirst\a and \alast\a define the range of commands. \afirst\a and "
 		"\alast\a can be one of the following:]{"

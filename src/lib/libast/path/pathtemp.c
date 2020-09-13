@@ -79,7 +79,7 @@
 #define TMP_ENV		"TMPDIR"
 #define TMP_PATH_ENV	"TMPPATH"
 #define TMP1		"/tmp"
-#define TMP2		"/usr/tmp"
+#define TMP2		"/var/tmp"
 
 #define VALID(d)	(*(d)&&!eaccess(d,W_OK|X_OK))
 

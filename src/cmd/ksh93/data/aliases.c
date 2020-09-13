@@ -17,4 +17,19 @@
 *                  David Korn <dgk@research.att.com>                   *
 *                                                                      *
 ***********************************************************************/
-#define SH_RELEASE	"93u+m 2020-09-11"
+#pragma prototyped
+#include	"defs.h"
+#include	<signal.h>
+#include	"FEATURE/options"
+#include	"FEATURE/dynamic"
+
+/*
+ * Table of built-in aliases for interactive shells.
+ */
+
+const struct shtable2 shtab_aliases[] =
+{
+	"history",	NV_NOFREE,		"hist -l",
+	"r",		NV_NOFREE,		"hist -s",
+	"",		0,			(char*)0
+};

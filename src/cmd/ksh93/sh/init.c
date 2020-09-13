@@ -201,7 +201,6 @@ static int		lctype;
 static int		nbltins;
 static void		env_init(Shell_t*,int);
 static Init_t		*nv_init(Shell_t*);
-static Dt_t		*inittree(Shell_t*,const struct shtable2*);
 static int		shlvl;
 
 #ifdef _WINIX
@@ -1709,7 +1708,7 @@ static Init_t *nv_init(Shell_t *shp)
 	shp->nvfun.last = (char*)shp;
 	shp->nvfun.nofree = 1;
 	ip->sh = shp;
-	shp->var_base = shp->var_tree = inittree(shp,shtab_variables);
+	shp->var_base = shp->var_tree = sh_inittree(shp,shtab_variables);
 	SHLVL->nvalue.ip = &shlvl;
 	ip->IFS_init.hdr.disc = &IFS_disc;
 	ip->PATH_init.disc = &RESTRICTED_disc;
@@ -1800,7 +1799,7 @@ static Init_t *nv_init(Shell_t *shp)
 	/* set up the seconds clock */
 	shp->alias_tree = dtopen(&_Nvdisc,Dtoset);
 	shp->track_tree = dtopen(&_Nvdisc,Dtset);
-	shp->bltin_tree = inittree(shp,(const struct shtable2*)shtab_builtins);
+	shp->bltin_tree = sh_inittree(shp,(const struct shtable2*)shtab_builtins);
 	shp->fun_tree = dtopen(&_Nvdisc,Dtoset);
 	dtview(shp->fun_tree,shp->bltin_tree);
 	nv_mount(DOTSHNOD, "type", shp->typedict=dtopen(&_Nvdisc,Dtoset));
@@ -1823,7 +1822,7 @@ static Init_t *nv_init(Shell_t *shp)
  * initialize name-value pairs
  */
 
-static Dt_t *inittree(Shell_t *shp,const struct shtable2 *name_vals)
+Dt_t *sh_inittree(Shell_t *shp,const struct shtable2 *name_vals)
 {
 	register Namval_t *np;
 	register const struct shtable2 *tp;

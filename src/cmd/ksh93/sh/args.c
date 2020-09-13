@@ -683,8 +683,13 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 	sh_pipe(pv);
 #else
 	pv[0] = -1;
-	shp->fifo = pathtemp(0,0,0,"ksh.fifo",0);
-	mkfifo(shp->fifo,S_IRUSR|S_IWUSR);
+	while((shp->fifo = pathtemp(0,0,0,"ksh.fifo",0), mkfifo(shp->fifo,0))<0)
+	{
+		if(errno==EEXIST || errno==EACCES || errno==ENOENT || errno==ENOTDIR || errno==EROFS)
+			continue;		/* lost race (name conflict or tmp dir change); try again */
+		errormsg(SH_DICT,ERROR_system(128),"process substitution: FIFO creation failed");
+	}
+	chmod(shp->fifo,S_IRUSR|S_IWUSR);	/* mkfifo + chmod works regardless of umask */
 	sfputr(shp->stk,shp->fifo,0);
 #endif /* SHOPT_DEVFD */
 	sfputr(shp->stk,fmtbase((long)pv[fd],10,0),0);

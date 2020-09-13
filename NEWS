@@ -3,6 +3,37 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-09-11:
+
+- The 'command' regular builtin utility (which runs a simple command, removing
+  special properties) has been made fully POSIX compliant.
+  1. The 'command' name can now result from an expansion (fixing BUG_CMDEXPAN),
+     e.g. 'c=command; "$c" ls' and 'set -- command ls; "$@"' now work.
+  2. If and only if the POSIX mode (the new -o posix shell option) is active,
+     then the 'command' utility now disables not only "special" but also
+     "declaration" properties of builtin commands that it invokes, meaning:
+     a. arguments that start with a variable name followed by '=' are
+	always treated as regular words subject to normal shell syntax;
+     b. 'command' can now stop the shell from exiting if a command that it
+	invokes tries to modify a readonly variable (fixing BUG_CMDSPEXIT).
+
+- The 'history' (== 'hist -l') and 'r' (== 'hist -s') interactive shell
+  history commands have reverted to preset aliases and are now only loaded if
+  the shell is interactive and not initialised in POSIX mode. This avoids
+  unneeded conflicts with external commands by these names, particularly 'r'.
+
+2020-09-09:
+
+- Fixed BUG_LOOPRET2 and related bugs. The 'exit' and 'return' commands without
+  an argument now correctly default to passing down the exit status of the
+  last-run command. Tests like the following, in which the last-run command is
+  'false', now correctly output 1 instead of 0:
+	fn() { return || true; }; false; fn; echo "$?"
+	fn() { while return; do true; done; }; false; fn; echo "$?"
+	fn() { for i in 1; do return; done; }; false; fn; echo "$?"
+	fn() { case 1 in 1) return ;; esac; }; false; fn; echo "$?"
+	fn() { { return; } 2>&1; }; false; fn; echo "$?"
+
 2020-09-05:
 
 - Fixed erroneous syntax errors in parameter expansions such as ${var:-wor)d}

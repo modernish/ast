@@ -336,7 +336,7 @@ macro{
 	<<"#endif">>
 	<<"#ifndef P_tmpdir">>
 	#ifndef P_tmpdir
-	#define P_tmpdir "/usr/tmp/"
+	#define P_tmpdir "/var/tmp/"
 	#endif
 	<<"#define P_tmpdir">> P_tmpdir <<"/*NOCATLITERAL*/">>
 	<<"#endif">>

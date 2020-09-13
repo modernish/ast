@@ -1044,7 +1044,7 @@ wait
 [[ $$ == ${.sh.pid} ]] || err_exit "\${.sh.pid} and \$$ differ in the parent shell (expected $$, got ${.sh.pid})"
 
 # ======
-# Parentheses after the '-', '+', and '=' expansion operators were causing syntax errors.
+# Parentheses after the '-', '+', '=', and '?' expansion operators were causing syntax errors.
 # Check both the unset variable case and the set variable case for each set of symbols.
 
 unset -v foo
@@ -1058,7 +1058,7 @@ do	for word in '(word)' 'w(or)d' '(wor)d' 'w(ord)' 'w(ord' 'wor)d'
 done
 
 foo=some_value
-for op in - :- = :=
+for op in - :- = := \? :\?
 do	for word in '(word)' 'w(or)d' '(wor)d' 'w(ord)' 'w(ord' 'wor)d'
 	do	exp=$(set +x; eval "echo \${foo${op}${word}}" 2>&1)
 		if	[[ $exp != "$foo" ]]
@@ -1073,6 +1073,16 @@ do	for word in '(word)' 'w(or)d' '(wor)d' 'w(ord)' 'w(ord' 'wor)d'
 	do	exp=$(set +x; eval "echo \${foo${op}${word}}" 2>&1)
 		if	[[ $exp != "" ]]
 		then	err_exit "\${foo${op}${word}} when foo is not set: expected null, got \"$exp\""
+		fi
+	done
+done
+
+unset -v foo
+for op in \? :\?
+do	for word in '(word)' 'w(or)d' '(wor)d' 'w(ord)' 'w(ord' 'wor)d'
+	do	exp=$(set +x; eval "echo \${foo${op}${word}}" 2>&1)
+		if	[[ $exp != *": foo: $word" ]]
+		then	err_exit "\${foo${op}${word}} when foo is not set: expected *\": foo: $word\", got \"$exp\""
 		fi
 	done
 done

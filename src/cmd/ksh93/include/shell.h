@@ -140,7 +140,8 @@ struct Shell_s
 	Dt_t		*bltin_tree;    /* for builtin commands */
 	Shscope_t	*topscope;	/* pointer to top-level scope */
 	int		inlineno;	/* line number of current input file */
-	int		exitval;	/* most recent exit value */
+	int		exitval;	/* exit status of the command currently being run */
+	int		savexit;	/* $? == exit status of the last command executed */
 	unsigned char	trapnote;	/* set when trap/signal is pending */
 	char		shcomp;		/* set when running shcomp */
 	unsigned int	subshell;	/* set for virtual subshell */

@@ -24,20 +24,6 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   initial ! (and, on some shells, ^) retains the meaning of negation, even
   in quoted strings within bracket patterns, including quoted variables.
 
-- BUG_CMDEXPAN: if the 'command' command results from an expansion, it acts
-  like 'command -v', showing the path of the command instead of executing it.
-  For example:
-	v=command; "$v" ls
-  or
-	set -- command ls; "$@"
-  don't work.
-  See also: https://github.com/att/ast/issues/963
-
-- BUG_CMDSPEXIT: preceding a "special builtin"[*] (other than 'eval', 'exec',
-  'return' or 'exit') with 'command' does not always stop it from exiting
-  the shell if the builtin encounters error.
-  [*] https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_14
-
 - BUG_CSUBSTDO: If standard output (file descriptor 1) is closed before
   entering a $(command substitution), and any other file descriptors are
   redirected within the command substitution, commands such as 'echo' will
@@ -49,9 +35,3 @@ https://github.com/modernish/modernish/tree/0.16/lib/modernish/cap/
   parameter expansion inserts any IFS separator characters, those characters
   are erroneously interpreted as wildcards when quoted "$*" is used as the
   glob pattern.
-
-- BUG_LOOPRET2: If a 'return' command is given without a status argument
-  within the set of conditional commands in a 'while' or 'until' loop (i.e.,
-  between 'while'/'until' and 'do'), the exit status passed down from the
-  previous command is ignored and the function returns with status 0
-  instead.

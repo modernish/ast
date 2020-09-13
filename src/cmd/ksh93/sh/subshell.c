@@ -610,7 +610,6 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		/* trap on EXIT not handled by child */
 		char *trap=shp->st.trapcom[0];
 		shp->st.trapcom[0] = 0;	/* prevent recursion */
-		shp->oldexit = shp->exitval;
 		sh_trap(trap,0);
 		free(trap);
 	}

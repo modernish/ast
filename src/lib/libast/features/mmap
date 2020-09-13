@@ -35,7 +35,7 @@ tst	lib_mmap note{ standard mmap interface that works }end execute{
 		/* create data file in a local fs if possible */
 		t = file;
 		if (access(f = "/tmp", 0) == 0 ||
-		    access(f = "/usr/tmp", 0) == 0)
+		    access(f = "/var/tmp", 0) == 0)
 		{
 			while (*t = *f++)
 				t++;

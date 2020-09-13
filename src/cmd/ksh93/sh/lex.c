@@ -998,31 +998,13 @@ int sh_lex(Lex_t* lp)
 				mode = ST_NESTED;
 				continue;
 			case S_MOD1:
-				if(oldmode(lp)==ST_QUOTE || oldmode(lp)==ST_NONE)
-				{
-					/* allow ' inside "${...}" */
-					if(c==':' && fcgetc(n)>0)
-					{
-						n = state[n];
-						fcseek(-LEN);
-					}
-					if(n==S_MOD1)
-					{
-						mode = ST_QUOTE;
-						continue;
-					}
-				}
-				/* FALL THRU */
+				mode = ST_QUOTE;
+				continue;
 			case S_MOD2:
 #if SHOPT_KIA
 				if(lp->kiafile)
 					refvar(lp,1);
 #endif /* SHOPT_KIA */
-				if(c == ':' || c == '-' || c == '+' || c == '=')
-				{
-					mode = ST_QUOTE;
-					continue;
-				}
 				if(c!=':' && fcgetc(n)>0)
 				{
 					if(n!=c)

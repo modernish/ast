@@ -38,6 +38,14 @@
 #   define mbwide()	0
 #endif
 
+/*
+ * Until a file descriptor leak with process substitution
+ * is fixed, disable /dev/fd use to avoid the problem.
+ * https://github.com/ksh93/ksh/issues/67
+ */
+#undef SHOPT_DEVFD
+#define SHOPT_DEVFD	0
+
 #include	<sfio.h>
 #include	<error.h>
 #include	"FEATURE/externs"
@@ -155,7 +163,6 @@ struct shared
 	Sfio_t		*heredocs;	/* current here-doc temp file */ \
 	Sfio_t		*funlog;	/* for logging function definitions */ \
 	int		**fdptrs;	/* pointer to file numbers */ \
-	int		savexit; \
 	char		*lastarg; \
 	char		*lastpath;	/* last alsolute path found */ \
 	int		path_err;	/* last error on path search */ \
@@ -181,7 +188,6 @@ struct shared
 	char		*prefix;	/* prefix for compound assignment */ \
 	sigjmp_buf	*jmplist;	/* longjmp return stack */ \
 	char		*fifo;		/* fifo name for process sub */ \
-	int		oldexit; \
 	pid_t		bckpid;		/* background process id */ \
 	pid_t		cpid; \
 	pid_t		spid; 		/* subshell process id */ \
