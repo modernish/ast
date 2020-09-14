@@ -480,18 +480,18 @@ int		format;		/* conversion format		*/
 		ep = b+1;
 	else if(ep < endsp)
 	{	/* round the last digit */
-	    if (!(format&SFFMT_EFORMAT) && *decpt < 0)
-	        sp += *decpt-1;
-	    else
-	        --sp;
-	    *sp += 5;
+		if (!(format&SFFMT_EFORMAT) && *decpt < 0)
+			sp += *decpt-1;
+		else
+			--sp;
+		*sp += 5;
 		while(*sp > '9')
-		{	
+		{
 			if(sp > b)
-            {
-                *sp = '0';
+			{
+				*sp = '0';
 				*--sp += 1;
-            }
+			}
 			else
 			{	/* next power of 10 and at beginning */
 				*sp = '1';
@@ -499,11 +499,12 @@ int		format;		/* conversion format		*/
 				if(!(format&SFFMT_EFORMAT))
 				{	/* add one more 0 for %f precision */
 					if (sp != &ep[-1])
-                        /* prevents overwriting the previous 1 with 0 */
-                        ep[-1] = '0';
+					{	/* prevents overwriting the previous 1 with 0 */
+						ep[-1] = '0';
+					}
 					ep += 1;
 				}
-                break;
+				break;
 			}
 		}
 	}
