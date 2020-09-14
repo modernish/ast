@@ -198,8 +198,7 @@ test_has_iszero
 # printf formatting options as well as checking for correct float scaling
 # of the fractional parts.
 
-unset i tf pf
-typeset -F 3 tf
+unset i tf pf; typeset -F 3 tf
 for i in {'','-'}{0..1}.{0,9}{0,9}{0,1,9}{0,1,9}
 do	tf=$i
 	pf=${ printf '%.3f' tf ;}
