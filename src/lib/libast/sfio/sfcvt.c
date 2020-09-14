@@ -486,10 +486,8 @@ int		format;		/* conversion format		*/
 			--sp;
 		*sp += 5;
 		while(*sp > '9')
-		{
-			if(sp > b)
-			{
-				*sp = '0';
+		{	if(sp > b)
+			{	*sp = '0';
 				*--sp += 1;
 			}
 			else
