@@ -1087,50 +1087,5 @@ do	for word in '(word)' 'w(or)d' '(wor)d' 'w(ord)' 'w(ord' 'wor)d'
 	done
 done
 
-# Validate that typeset -E/F formatting matches that of their equivalent
-# printf formatting options as well as checking for correct float scaling
-# of the fractional parts.
-unset i tf pf; typeset -F 3 tf
-for i in {'','-'}{0..1}.{0,9}{0,9}{0,1,9}{0,1,9}; do
-    tf=$i
-    pf=${ printf '%.3f' tf ;}
-    if [[ "$tf" != "$pf" ]]; then
-        err_exit "typeset -F formatted data does not match its printf." \
-        "typeset -F 3: $tf != $pf"
-        break;
-    fi
-done
-unset i tf pf; typeset -lF 3 tf
-for i in {'','-'}{0..1}.{0,9}{0,9}{0,1,9}{0,1,9}; do
-    tf=$i
-    pf=${ printf '%.3Lf' tf ;}
-    if [[ "$tf" != "$pf" ]]; then
-        err_exit "typeset -lF formatted data does not match its printf." \
-        "typeset -lF 3: $tf != $pf"
-        break;
-    fi
-done
-unset i tf pf; typeset -E 3 tf
-for i in {'','-'}{0..1}.{0,9}{0,9}{0,1,9}{0,1,9}; do
-    tf=$i
-    pf=${ printf '%.3g' tf ;}
-    if [[ "$tf" != "$pf" ]]; then
-        err_exit "typeset -E formatted data does not match its printf." \
-        "typeset -E 3: $tf != $pf"
-        break;
-    fi
-done
-unset i tf pf; typeset -lE 3 tf
-for i in {'','-'}{0..1}.{0,9}{0,9}{0,1,9}{0,1,9}; do
-    tf=$i
-    pf=${ printf '%.3Lg' tf ;}
-    if [[ "$tf" != "$pf" ]]; then
-        err_exit "typeset -lE formatted data does not match its printf." \
-        "typeset -lE 3: $tf != $pf"
-        break;
-    fi
-done
-unset i tf pf
-
 # ======
 exit $((Errors<125?Errors:125))
