@@ -109,9 +109,9 @@ alias foo=bar
 unalias foo
 unalias foo && err_exit 'unalias should return non-zero when a previously set alias is unaliased twice'
 
-# Removing a preset alias should work without an error from free(3)
-err=$(set +x; { "$SHELL" -i -c 'unalias history'; } 2>&1) && [[ -z $err ]] \
-|| err_exit "removing a preset alias does not work (got $(printf %q "$err"))"
+# Removing the history and r aliases should work without an error from free(3)
+err=$(set +x; { "$SHELL" -i -c 'unalias history; unalias r'; } 2>&1) && [[ -z $err ]] \
+|| err_exit "the 'history' and 'r' aliases can't be removed (got $(printf %q "$err"))"
 
 # ======
 exit $((Errors<125?Errors:125))

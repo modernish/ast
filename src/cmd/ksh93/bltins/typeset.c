@@ -1162,7 +1162,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 	register const char *name;
 	volatile int r;
 	Dt_t	*dp;
-	int nflag=0,all=0,isfun,jmpval;
+	int nflag=0,all=0,isfun,jmpval,nofree_attr;
 	struct checkpt buff;
 	NOT_USED(argc);
 	if(troot==shp->alias_tree)
@@ -1292,6 +1292,16 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 				}
 			}
 
+			/*
+			 * When aliases are removed from the tree, the NV_NOFREE attribute
+			 * must be used for the 'history' and 'r' aliases since those are
+			 * given the NV_NOFREE attribute. _nv_unset discards NV_NOFREE so
+			 * the status of NV_NOFREE is obtained now to prevent an invalid
+			 * free crash.
+			 */
+			if(troot==shp->alias_tree)
+				nofree_attr = nv_isattr(np,NV_NOFREE) ? NV_NOFREE : 0;
+
 			if(!nv_isnull(np) || nv_size(np) || nv_isattr(np,~(NV_MINIMAL|NV_NOFREE)))
 				_nv_unset(np,0);
 			if(troot==shp->var_tree && shp->st.real_fun && (dp=shp->var_tree->walk) && dp==shp->st.real_fun->sdict)
@@ -1311,7 +1321,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 			}
 			/* The alias has been unset by call to _nv_unset, remove it from the tree */
 			else if(troot==shp->alias_tree)
-				nv_delete(np,troot,nv_isattr(np,NV_NOFREE));
+				nv_delete(np,troot,nofree_attr);
 #if 0
 			/* causes unsetting local variable to expose global */
 			else if(shp->var_tree==troot && shp->var_tree!=shp->var_base && nv_search((char*)np,shp->var_tree,HASH_BUCKET|HASH_NOSCOPE))
