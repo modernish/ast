@@ -1293,14 +1293,12 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 			}
 
 			/*
-			 * When aliases are removed from the tree, the NV_NOFREE attribute
-			 * must be used for the 'history' and 'r' aliases since those are
-			 * given the NV_NOFREE attribute. _nv_unset discards NV_NOFREE so
-			 * the status of NV_NOFREE is obtained now to prevent an invalid
-			 * free crash.
+			 * When aliases are removed from the tree, the NV_NOFREE attribute must be used for
+			 * preset aliases since those are given the NV_NOFREE attribute. _nv_unset discards
+			 * NV_NOFREE so the status of NV_NOFREE is obtained now to prevent an invalid free crash.
 			 */
 			if(troot==shp->alias_tree)
-				nofree_attr = nv_isattr(np,NV_NOFREE) ? NV_NOFREE : 0;
+				nofree_attr = nv_isattr(np,NV_NOFREE);	/* note: returns bitmask, not boolean */
 
 			if(!nv_isnull(np) || nv_size(np) || nv_isattr(np,~(NV_MINIMAL|NV_NOFREE)))
 				_nv_unset(np,0);
