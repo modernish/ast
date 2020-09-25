@@ -741,8 +741,3 @@ char *sh_checkid(char *str, char *last)
 	}
 	return(last);
 }
-
-char *fmtident(const char *string)
-{
-	return((char*)string);
-}
