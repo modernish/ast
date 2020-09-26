@@ -243,9 +243,8 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 					cp = 0;
 			}
 			if(flags&Q_FLAG)
-			{ /* There is no reason to continue the loop when -q
-			     is passed since -a is ignored. If the exit status
-		 	     will be one, return. */
+			{
+				/* Since -q ignores -a, return on the first non-match */
 				if(!cp)
 					return(1);
 			}
