@@ -851,6 +851,17 @@ actual="$(type -f foo_bar 2>&1)"
 type -f foo_bar >/dev/null 2>&1 && err_exit "'type -f' doesn't ignore functions (got '$(printf %q "$actual")')"
 type -qf foo_bar && err_exit "'type -qf' doesn't ignore functions"
 
+# Test the exit status of 'whence -q'
+(
+	mkdir "$tmp/fakepath"
+	ln -s "${ whence -p cat ;}" "$tmp/fakepath"
+	ln -s "${ whence -p ls ;}" "$tmp/fakepath"
+	PATH="$tmp/fakepath"
+	whence -q cat nonexist ls && err_exit "'whence -q' has the wrong exit status"
+	whence -q cat nonexist && err_exit "'whence -q' has the wrong exit status"
+	whence -q nonexist && err_exit "'whence -q' has the wrong exit status"
+)
+
 # ======
 # 'cd ../.foo' should not exclude the '.' in '.foo'
 # https://bugzilla.redhat.com/889748

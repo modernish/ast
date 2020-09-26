@@ -243,9 +243,11 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 					cp = 0;
 			}
 			if(flags&Q_FLAG)
-			{
-				pp = 0;
-				ret = !cp;
+			{ /* There isn't any reason to continue the loop when -q
+			     is passed since -a is ignored. If the exit status will
+				 be one, return. */
+				if(!cp)
+					return(1);
 			}
 			else if(maybe_undef_fn)
 			{
