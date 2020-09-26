@@ -841,6 +841,16 @@ actual=$(hash -r; alias ls='echo ALL UR F1LEZ R G0N3'; hash ls; whence -a ls)
 [[ $actual == "$expect" ]] || err_exit "'whence -a' does not report tracked alias if alias exists" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
+# 'whence -f' should ignore functions
+foo_bar() { true; }
+actual="$(whence -f foo_bar)"
+whence -f foo_bar >/dev/null && err_exit "'whence -f' doesn't ignore functions (got '$(printf %q "$actual")')"
+
+# whence -vq/type -q must be tested as well
+actual="$(type -f foo_bar 2>&1)"
+type -f foo_bar >/dev/null 2>&1 && err_exit "'type -f' doesn't ignore functions (got '$(printf %q "$actual")')"
+type -qf foo_bar && err_exit "'type -qf' doesn't ignore functions"
+
 # ======
 # 'cd ../.foo' should not exclude the '.' in '.foo'
 # https://bugzilla.redhat.com/889748

@@ -3,6 +3,10 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-09-26:
+
+- 'whence -f' now completely ignores the existence of functions, as documented.
+
 2020-09-25:
 
 - whence -v/-a now reports the path to the file that an "undefined" (i.e.

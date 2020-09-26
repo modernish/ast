@@ -135,7 +135,7 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 	register const char *name;
 	register Namval_t *np;
 	register const char *cp;
-	register int aflag,r=0;
+	register int aflag, ret = 0;
 	register const char *msg;
 	Namval_t *nq;
 	char *notused;
@@ -230,7 +230,7 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 				cp = name;
 				if(*cp!='/')
 				{
-					if(flags&P_FLAG)
+					if(flags&(P_FLAG|F_FLAG)) /* Ignore functions when passed -f or -p */
 						cp = 0;
 					else
 						maybe_undef_fn = 1;
@@ -245,7 +245,7 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 			if(flags&Q_FLAG)
 			{
 				pp = 0;
-				r |= !cp;
+				ret = !cp;
 			}
 			else if(maybe_undef_fn)
 			{
@@ -286,7 +286,7 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 			}
 			else if(aflag<=1) 
 			{
-				r |= 1;
+				ret = 1;
 				if(flags&V_FLAG)
 					 errormsg(SH_DICT,ERROR_exit(0),e_found,sh_fmtq(name));
 			}
@@ -302,6 +302,6 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 				pp = 0;
 		} while(pp);
 	}
-	return(r);
+	return(ret);
 }
 
