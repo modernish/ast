@@ -320,7 +320,7 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 				troot = tdata.sh->fun_tree;
 				break;
 			case 'i':
-				if(!opt_info.arg || (tdata.argnum = opt_info.num) <0)
+				if(!opt_info.arg || (tdata.argnum = opt_info.num) <2 || tdata.argnum >64)
 					tdata.argnum = 10;
 				flag |= NV_INTEGER;
 				break;
@@ -806,15 +806,9 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 					nv_setattr(np,newflag&~NV_ASSIGN);
 				else
 				{
-					char *oldname=0;
-					int len=strlen(name);
-					if(tp->argnum==1 && newflag==NV_INTEGER && nv_isattr(np,NV_INTEGER))
-						tp->argnum = 10;
-					if(np->nvfun && !nv_isarray(np) && name[len-1]=='.')
+					if(np->nvfun && !nv_isarray(np) && name[strlen(name)-1]=='.')
 						newflag |= NV_NODISC;
 					nv_newattr (np, newflag&~NV_ASSIGN,tp->argnum);
-					if(oldname)
-						np->nvname = oldname;
 				}
 			}
 			if(tp->help && !nv_isattr(np,NV_MINIMAL|NV_EXPORT))

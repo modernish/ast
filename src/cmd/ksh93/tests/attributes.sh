@@ -552,5 +552,13 @@ do	unset foo
 done
 unset expect
 
+unset base
+for base in 0 1 65
+do	unset x
+	typeset -i $base x
+	[[ $(typeset -p x) == 'typeset -i x' ]] || err_exit "typeset -i base limits failed to default to 10 with base: $base."
+done
+unset x base
+
 # ======
 exit $((Errors<125?Errors:125))
