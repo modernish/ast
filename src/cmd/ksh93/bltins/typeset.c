@@ -94,7 +94,6 @@ int    b_readonly(int argc,char *argv[],Shbltin_t *context)
 	memset((void*)&tdata,0,sizeof(tdata));
 	tdata.sh = context->shp;
 	tdata.aflag = '-';
-	tdata.argnum = -1;  /* tell nv_newattr() that we should not change size */
 	while((flag = optget(argv,*command=='e'?sh_optexport:sh_optreadonly))) switch(flag)
 	{
 		case 'p':

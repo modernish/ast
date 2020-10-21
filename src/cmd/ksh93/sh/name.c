@@ -2938,28 +2938,29 @@ void nv_newattr (register Namval_t *np, unsigned newatts, int size)
 		errormsg(SH_DICT,ERROR_exit(1),e_restricted,nv_name(np));
 	/* handle attributes that do not change data separately */
 	n = np->nvflag;
-	trans = !(n&NV_INTEGER) && (n&(NV_LTOU|NV_UTOL));
+	trans = !(n&NV_INTEGER) && (n&(NV_LTOU|NV_UTOL)); /* transcode to lower or upper case */
 	if(newatts&NV_EXPORT)
 		nv_offattr(np,NV_IMPORT);
-	if(((n^newatts)&NV_EXPORT))
+	if(((n^newatts)&NV_EXPORT)) /* EXPORT attribute has been toggled */
 	{
 		/* record changes to the environment */
-		if(n&NV_EXPORT)
+		if(n&NV_EXPORT) 
 		{
+			/* EXPORT exists on old attributes therefore not on new */
 			nv_offattr(np,NV_EXPORT);
 			env_delete(shp->env,nv_name(np));
 		}
 		else
-		{
+		{ 
+			/* EXPORT is now turned on for new attributes */
 			nv_onattr(np,NV_EXPORT);
 			sh_envput(shp->env,np);
 		}
-		if((n^newatts)==NV_EXPORT && size==-1)
+		if((n^newatts)==NV_EXPORT && !trans)
+			/* Only EXPORT attribute has changed and thus all work has been done. */
 			return;
 	}
 	oldsize = nv_size(np);
-	if(size==-1)
-		size = oldsize;
 	if((size==oldsize|| (n&NV_INTEGER)) && !trans && ((n^newatts)&~NV_NOCHANGE)==0)
 	{
 		if(size)
