@@ -232,5 +232,14 @@ do	tf=$i
 done
 unset i tf pf
 
+unset x
+[[ $(typeset -F 0 x=5.67; typeset -p x) == 'typeset -F 0 x=6' ]] || err_exit 'typeset -F 0 with assignment failed to round.'
+[[ $(typeset -E 0 x=5.67; typeset -p x) == 'typeset -E 0 x=6' ]] || err_exit 'typeset -E 0 with assignment failed to round.'
+[[ $(typeset -X 0 x=5.67; typeset -p x) == 'typeset -X 0 x=0x1p+2' ]] || err_exit 'typeset -X 0 with assignment failed to round.'
+
+[[ $(typeset -lF 0 x=5.67; typeset -p x) == 'typeset -l -F 0 x=6' ]] || err_exit 'typeset -lF 0 with assignment failed to round.'
+[[ $(typeset -lE 0 x=5.67; typeset -p x) == 'typeset -l -E 0 x=6' ]] || err_exit 'typeset -lE 0 with assignment failed to round.'
+[[ $(typeset -lX 0 x=5.67; typeset -p x) == 'typeset -l -X 0 x=0x1p+2' ]] || err_exit 'typeset -lX 0 with assignment failed to round.'
+
 # ======
 exit $((Errors<125?Errors:125))

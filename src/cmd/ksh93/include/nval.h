@@ -165,6 +165,7 @@ struct Namval
 #define NV_DOUBLE	(NV_INTEGER|NV_ZFILL)	/* for floating point */
 #define NV_EXPNOTE	(NV_LJUST)	/* for scientific notation */
 #define NV_HEXFLOAT	(NV_LTOU)	/* for C99 base16 float notation */
+#define NV_FLTSIZEZERO	-1		/* a float with size of 0 being <0 */
 
 /*  options for nv_open */
 

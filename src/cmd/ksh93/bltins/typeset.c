@@ -262,6 +262,8 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 			case 'X':
 				if(!opt_info.arg || (tdata.argnum = opt_info.num) <0)
 					tdata.argnum = (n=='X'?2*sizeof(Sfdouble_t):10);
+				else if (tdata.argnum==0)
+					tdata.argnum = NV_FLTSIZEZERO;
 				isfloat = 1;
 				if(n=='E')
 				{
@@ -797,7 +799,7 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 					errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
 				newflag = curflag & ~flag;
 			}
-			if (tp->aflag && (tp->argnum>0 || (curflag!=newflag)))
+			if (tp->aflag && (tp->argnum || (curflag!=newflag)))
 			{
 				if(shp->subshell)
 					sh_assignok(np,2);

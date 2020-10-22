@@ -3,6 +3,12 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2020-10-22:
+
+- Fixed: 'typeset -F0', 'typeset -E0', and 'typeset -X0' floating point
+  numerics having a precision of 0 with variable assignment.
+  'typeset -F0 x; x=4.56' worked but not 'typeset -F0 x=4.56'.
+
 2020-10-21:
 
 - Fixed: More concisely correct the exporting of uppercase and lowercase

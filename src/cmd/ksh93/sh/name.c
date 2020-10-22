@@ -2963,12 +2963,16 @@ void nv_newattr (register Namval_t *np, unsigned newatts, int size)
 	oldsize = nv_size(np);
 	if((size==oldsize|| (n&NV_INTEGER)) && !trans && ((n^newatts)&~NV_NOCHANGE)==0)
 	{
-		if(size)
-			nv_setsize(np,size);
+		if(size>0)
+			np->nvsize = size;
+		else if(size==NV_FLTSIZEZERO)
+			np->nvsize = 0;
 		nv_offattr(np, ~NV_NOFREE);
 		nv_onattr(np, newatts);
 		return;
 	}
+	if(size==NV_FLTSIZEZERO)
+		size = 0;
 	/* for an array, change all the elements */
 	if((ap=nv_arrayptr(np)) && ap->nelem>0)
 		nv_putsub(np,NIL(char*),ARRAY_SCAN);
@@ -3019,7 +3023,7 @@ void nv_newattr (register Namval_t *np, unsigned newatts, int size)
 				if(ap)
 					ap->nelem |= ARRAY_SCAN;
 			}
-			if(size==0 && (newatts&NV_HOST)!=NV_HOST && (newatts&(NV_LJUST|NV_RJUST|NV_ZFILL)))
+			if(size==0 && !(newatts&NV_INTEGER) && (newatts&NV_HOST)!=NV_HOST && (newatts&(NV_LJUST|NV_RJUST|NV_ZFILL)))
 				size = n;
 		}
 		else if(!trans)
