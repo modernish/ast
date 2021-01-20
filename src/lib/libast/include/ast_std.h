@@ -93,6 +93,9 @@ struct _sfio_s;
 #ifndef __FILE_defined
 #define __FILE_defined 1
 #endif
+#ifndef __DEFINED_FILE
+#define __DEFINED_FILE 1
+#endif
 #endif
 
 /* locale stuff */

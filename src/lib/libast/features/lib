@@ -723,3 +723,13 @@ tst	no64 -D_LARGEFILE64_SOURCE note{ largefile 64 broken }end execute{
 	echo "#undef	_lib_statvfs64"
 	echo "#undef	_lib_truncate64"
 }end
+
+tst	need64 -D_LARGEFILE64_SOURCE note{ off64_t necessary }end nocompile{
+	#include <sys/types.h>
+	typedef off64_t __ast_off64_t__;
+	typedef off_t __ast_off_t__;
+	extern __ast_off64_t__ x;
+	__ast_off_t__ x;
+}end fail{
+	echo "#undef	_typ_off64_t"
+}end
