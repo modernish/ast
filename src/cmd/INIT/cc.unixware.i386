@@ -1,0 +1,9 @@
+: unixware.i386 cc wrapper
+
+HOSTTYPE=unixware.i386
+
+case " $* " in
+*" -dumpmachine "*) echo $HOSTTYPE; exit ;;
+esac
+
+/bin/cc -D_XOPEN_UNIX -D_XOPEN_SOURCE_EXTENDED "$@"

@@ -60,7 +60,7 @@ cc ld ldd :PACKAGE_INIT: mamake.c proto.c ratz.c release.c
 	cc.sco.i386 \
 	cc.sgi.mips2 cc.sgi.mips3 cc.sgi.mips3-o32 cc.sgi.mips4 \
 	cc.sgi.mips4-n32 ldd.sgi \
-	cc.unix.mc68k
+	cc.unix.mc68k cc.unixware.i386
 
 LICENSE : .DONTCARE
 

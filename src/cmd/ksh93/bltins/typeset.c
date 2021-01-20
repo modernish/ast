@@ -196,8 +196,9 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 	Namdecl_t 	*ntp = (Namdecl_t*)context->ptr;
 	Dt_t		*troot;
 	int		isfloat=0, shortint=0, sflag=0;
-	char		*new_argv[argc + 1];
+	char		**new_argv;
 
+	new_argv = (char **)stakalloc((argc + 2) * sizeof(char*));
 	memset((void*)&tdata,0,sizeof(tdata));
 	tdata.sh = context->shp;
 	troot = tdata.sh->var_tree;
