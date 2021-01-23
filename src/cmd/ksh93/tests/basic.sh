@@ -712,19 +712,28 @@ getPsOutput() {
 	while [[ $actual == [[:space:]]* ]]; do actual=${actual#?}; done
 	while [[ $actual == *[[:space:]] ]]; do actual=${actual%?}; done
 }
-if	[[ ! $(uname -s) =~ ^(SunOS|UnixWare)$ ]] &&
+getCmdline() {
+	if [[ $(uname -s) =~ ^UnixWare$ ]]; then
+		# UnixWare's ps does not trust the value stored in argv[0] as a
+		# security measure. It is still accessible within cmdline.
+		actual=$(< "/proc/${1}/cmdline")
+	else
+		getPsOutput "$1"
+	fi
+}
+if	[[ ! $(uname -s) =~ ^SunOS$ ]] &&
 	getPsOutput "$$" &&
 	[[ "$SHELL $0" == "$actual"* ]]  # "$SHELL $0" is how shtests invokes this script
 then	expect='./atest 1 2'
 	echo 'sleep 10; exit 0' >atest
 	chmod 755 atest
 	./atest 1 2 &
-	getPsOutput "$!"
+	getCmdline "$!"
 	kill "$!"
 	[[ $actual == "$expect" ]] || err_exit "ksh didn't rewrite argv correctly" \
 		"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 fi
-unset -f getPsOutput
+unset -f getPsOutput getCmdline
 
 # ======
 # https://bugzilla.redhat.com/1241013

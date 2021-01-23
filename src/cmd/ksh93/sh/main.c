@@ -53,7 +53,7 @@
 /* These routines are referenced by this module */
 static void	exfile(Shell_t*, Sfio_t*,int);
 static void	chkmail(Shell_t *shp, char*);
-#if defined(_lib_fork) && !defined(_NEXT_SOURCE) && !defined(__USLC__) && !defined(__sun)
+#if defined(_lib_fork) && !defined(_NEXT_SOURCE) && !defined(__sun)
     static void	fixargs(char**,int);
 #else
 #   define fixargs(a,b)
