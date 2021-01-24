@@ -588,4 +588,30 @@ got=$(< $tmpfile)
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
+# Combining -u with -F or -E caused an incorrect variable type
+# https://github.com/ksh93/ksh/pull/163
+typeset -A expect=(
+	[uF]='typeset -F a=2.0000000000'
+	[Fu]='typeset -F a=2.0000000000'
+	[ulF]='typeset -l -F a=2.0000000000'
+	[Ful]='typeset -l -F a=2.0000000000'
+	[Eu]='typeset -E a=2'
+	[Eul]='typeset -l -E a=2'
+)
+for flag in "${!expect[@]}"
+do	unset a
+	actual=$(
+		redirect 2>&1
+		(typeset "-$flag" a=2; typeset -p a)
+		leak=${ typeset -p a; }
+		[[ -n $leak ]] && print "SUBSHELL LEAK: $leak"
+	)
+	if	[[ $actual != "${expect[$flag]}" ]]
+	then	err_exit "typeset -$flag a=2:" \
+			"expected $(printf %q "${expect[$flag]}"), got $(printf %q "$actual")"
+	fi
+done
+unset expect
+
+# ======
 exit $((Errors<125?Errors:125))

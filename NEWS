@@ -5,12 +5,12 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-01-24:
 
+- Fixed a bug in 'typeset': combining the -u option with -F or -E caused the
+  variable to become a hexadecimal floating point in error.
+
 - Fixed: an unquoted variable expansion evaluated in a DEBUG trap action caused
   IFS field splitting to be deactivated in code executed after the trap action.
   This bug was introduced in ksh 93t+ 2009-11-30.
-
-- Fixed: a bit flag collision in typeset when providing -u with -F or -E that
-  caused incorrect variable attributes to be assigned or altered to -X.
 
 2021-01-23:
 
