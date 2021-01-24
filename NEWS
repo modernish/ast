@@ -9,6 +9,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   IFS field splitting to be deactivated in code executed after the trap action.
   This bug was introduced in ksh 93t+ 2009-11-30.
 
+- Fixed: a bit flag collision in typeset when providing -u with -F or -E that
+  caused incorrect variable attributes to be assigned or altered to -X.
+
 2021-01-23:
 
 - Fixed: when the DEBUG trap was redefined in a subshell, the DEBUG trap in
