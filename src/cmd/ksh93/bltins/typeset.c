@@ -274,6 +274,9 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 					flag &= ~NV_EXPNOTE;
 					flag |= NV_HEXFLOAT;
 				}
+				else
+				        /* n=='F' Remove possible collision with NV_UNSIGN/NV_HEXFLOAT */
+				        flag &= ~NV_HEXFLOAT;
 				break;
 			case 'b':
 				flag |= NV_BINARY;
@@ -352,8 +355,11 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 				flag |= NV_TAGGED;
 				break;
 			case 'u':
-				tdata.wctname = e_toupper;
-				flag |= NV_LTOU;
+			        if(!isfloat)
+			        {
+				        tdata.wctname = e_toupper;
+				        flag |= NV_LTOU;
+				}
 				break;
 			case 'x':
 				flag &= ~NV_VARNAME;
