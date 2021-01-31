@@ -3,6 +3,12 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-01-31:
+
+- Fixed a bug in 'typeset':  modifier short '-s' option will only apply
+  if the integer option '-i' is also present as in 'typeset -si'  or
+  'integer -s' to restrict an integer size to short.
+
 2021-01-30:
 
 - The -x option to the 'command' built-in now causes it to bypass built-ins

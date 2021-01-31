@@ -326,7 +326,13 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 			case 'i':
 				if(!opt_info.arg || (tdata.argnum = opt_info.num) <2 || tdata.argnum >64)
 					tdata.argnum = 10;
-				flag |= NV_INTEGER;
+				if(shortint)
+				{
+					flag &= ~NV_LONG;
+					flag |= NV_SHORT|NV_INTEGER;
+				}
+				else
+					flag |= NV_INTEGER;
 				break;
 			case 'l':
 				tdata.wctname = e_tolower;
@@ -350,6 +356,11 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 #endif /*SHOPT_TYPEDEF*/
 			case 's':
 				shortint=1;
+				if(flag&NV_INTEGER)
+				{
+					flag &= ~NV_LONG;
+					flag |= NV_SHORT;
+				}
 				break;
 			case 't':
 				flag |= NV_TAGGED;
@@ -426,11 +437,6 @@ endargs:
 		errormsg(SH_DICT,ERROR_exit(2),"option argument cannot be greater than %d",SHRT_MAX);
 	if(isfloat)
 		flag |= NV_DOUBLE;
-	if(shortint)
-	{
-		flag &= ~NV_LONG;
-		flag |= NV_SHORT|NV_INTEGER;
-	}
 	if(sflag)
 	{
 		if(tdata.sh->mktype)
