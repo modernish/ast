@@ -389,6 +389,8 @@ void nv_setlist(register struct argnod *arg,register int flags, Namval_t *typ)
 					if(array&NV_ARRAY)
 					{
 						nv_setarray(np,nv_associative);
+						if(typ)
+							nv_settype(np,typ,0);
 					}
 					else
 					{

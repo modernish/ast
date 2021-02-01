@@ -27,7 +27,7 @@
 
 static const char mkservice_usage[] =
 "[-?\n@(#)$Id: mkservice (AT&T Research) 2001-06-13 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME? mkservice - create a shell server ]"
 "[+DESCRIPTION?\bmkservice\b creates a tcp or udp server that is "
 	"implemented by shell functions.]"
@@ -68,7 +68,7 @@ USAGE_LICENSE
 
 static const char eloop_usage[] =
 "[-?\n@(#)$Id: eloop (AT&T Research) 2001-06-13 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME? eloop - process event loop]"
 "[+DESCRIPTION?\beloop\b causes the shell to block waiting for events "
 	"to process.  By default, \beloop\b does not return.]"

@@ -25,7 +25,9 @@ case $(getopts '[-][123:xyz]' opt --xyz 2>/dev/null; echo 0$opt) in
 [-?
 @(#)$Id: regress (AT&T Research) 2012-02-02 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 1995-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?regress - run regression tests]
 [+DESCRIPTION?\bregress\b runs the tests in \aunit\a, or
     \aunit\a\b.tst\b if \aunit\a does not exist. If \acommand\a is omitted

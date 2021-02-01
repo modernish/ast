@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: fold (AT&T Research) 2004-11-18 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?fold - fold lines]"
 "[+DESCRIPTION?\bfold\b is a filter that folds lines from its input, "
 	"breaking the lines to have a maximum of \awidth\a column "

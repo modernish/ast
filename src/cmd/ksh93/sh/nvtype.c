@@ -29,7 +29,7 @@
 
 static const char sh_opttype[] =
 "[-1c?\n@(#)$Id: type (AT&T Labs Research) 2008-07-01 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?\f?\f - set the type of variables to \b\f?\f\b]"
 "[+DESCRIPTION?\b\f?\f\b sets the type on each of the variables specified "
 	"by \aname\a to \b\f?\f\b. If \b=\b\avalue\a is specified, "

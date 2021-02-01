@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-n?\n@(#)$Id: head (AT&T Research) 2012-05-31 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?head - output beginning portion of one or more files ]"
 "[+DESCRIPTION?\bhead\b copies one or more input files to standard "
     "output stopping at a designated point for each file or to the end of "

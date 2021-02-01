@@ -1,7 +1,7 @@
 /***********************************************************************
 *                                                                      *
 *               This software is part of the ast package               *
-*          Copyright (c) 1992-2012 AT&T Intellectual Property          *
+*          Copyright (c) 1992-2013 AT&T Intellectual Property          *
 *                      and is licensed under the                       *
 *                 Eclipse Public License, Version 1.0                  *
 *                    by AT&T Intellectual Property                     *
@@ -21,8 +21,12 @@
 #pragma prototyped
 
 static const char usage[] =
-"[-?\n@(#)pty (AT&T Research) 2012-06-11\n]"
-USAGE_LICENSE
+"[-?\n@(#)pty (AT&T Research) 2013-05-22\n]"
+"[-author?Glenn Fowler <gsf@research.att.com>]"
+"[-author?David Korn <dgk@research.att.com>]"
+"[-copyright?Copyright (c) 2001-2013 AT&T Intellectual Property]"
+"[-license?http://www.eclipse.org/org/documents/epl-v10.html]"
+"[--catalog?builtin]"
 "[+NAME?pty - create pseudo terminal and run command]"
 "[+DESCRIPTION?\bpty\b creates a pseudo pty and then runs \bcommand\b "
     "with arguments given by \aarg\a and the standard input, standard "

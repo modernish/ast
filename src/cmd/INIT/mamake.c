@@ -27,7 +27,7 @@
  */
 
 #define RELEASE_DATE "2021-01-21"
-static char id[] = "\n@(#)$Id: mamake (AT&T Research/ksh93) " RELEASE_DATE " $\0\n";
+static char id[] = "\n@(#)$Id: mamake (ksh 93u+m) " RELEASE_DATE " $\0\n";
 
 #if _PACKAGE_ast
 
@@ -35,8 +35,11 @@ static char id[] = "\n@(#)$Id: mamake (AT&T Research/ksh93) " RELEASE_DATE " $\0
 #include <error.h>
 
 static const char usage[] =
-"[-?\n@(#)$Id: mamake (AT&T Research/ksh93) " RELEASE_DATE " $\n]"
-USAGE_LICENSE
+"[-?\n@(#)$Id: mamake (ksh 93u+m) " RELEASE_DATE " $\n]"
+"[-author?Glenn Fowler <gsf@research.att.com>]"
+"[-copyright?(c) 1994-2012 AT&T Intellectual Property]"
+"[-copyright?(c) 2020-2021 Contributors to https://github.com/ksh93/ksh]"
+"[-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 "[+NAME?mamake - make abstract machine make]"
 "[+DESCRIPTION?\bmamake\b reads \amake abstract machine\a target and"
 "	prerequisite file descriptions from a mamfile (see \b-f\b) and executes"

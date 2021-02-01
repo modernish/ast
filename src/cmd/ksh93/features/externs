@@ -12,18 +12,13 @@ extern	nice		int	(int)
 extern	setreuid	int	(uid_t,uid_t)
 extern	setregid	int	(gid_t,gid_t)
 
-tst	note{ determining data alignment factor for arguments list }end output{
+tst	note{ determining extra bytes per argument for arguments list }end output{
 	/*
-	 * Feature test to figure out if this OS does data alignment on
-	 * the arguments list of a process, and if so, at how many bits.
-	 * Outputs an appropriate #define ARG_ALIGN_BITS.
+	 * Figure out if this OS requires extra bytes per argument
+	 * in the arguments list of a process.
+	 * Outputs an appropriate #define ARG_EXTRA_BYTES.
 	 * Without this, 'command -x' failed with E2BIG on macOS and Linux even
 	 * if all the arguments should fit in ARG_MAX based on their length.
-	 *
-	 * Strategy: first try to fill as many single-character arguments as
-	 * should fit in ARG_MAX without alignment. If that fails with E2BIG,
-	 * then start with a 2-byte alignment factor and keep doubling it
-	 * until we either succeed or exceed an absurdly large value.
 	 */
 
 	/* AST includes */
@@ -48,13 +43,13 @@ tst	note{ determining data alignment factor for arguments list }end output{
 
 	int main(int argc,char *argv[])
 	{
-		int align_bytes = 0, envlen = 0, argmax, i;
+		int extra_bytes = 0, envlen = 0, argmax, i;
 		pid_t childpid;
 
-		error_info.id="args list aligment test (parent)";
+		error_info.id="ARG_EXTRA_BYTES test (parent)";
 		for(i=0; environ[i]; i++)
 			envlen += strlen(environ[i]) + 1;
-		argmax = strtoimax(astconf("ARG_MAX",NiL,NiL),NiL,0) - envlen - 1024;
+		argmax = strtoimax(astconf("ARG_MAX",NiL,NiL),NiL,0) - 2 * envlen;
 		if (argmax < 2048)
 		{
 			error(ERROR_ERROR|2, "argmax too small");
@@ -67,7 +62,7 @@ tst	note{ determining data alignment factor for arguments list }end output{
 				/* child */
 				int bytec;
 
-				error_info.id="args list aligment test (child)";
+				error_info.id="ARG_EXTRA_BYTES test (child)";
 				argv = (char **)stakalloc((argmax / 2 + 1) * sizeof(char*));
 				argc = bytec = 0;
 				while(bytec < argmax)
@@ -78,9 +73,8 @@ tst	note{ determining data alignment factor for arguments list }end output{
 						argv[argc] = "true";
 					else
 						argv[argc] = "x";
-					bytec += strlen(argv[argc]) + 1 + align_bytes;
-					if(align_bytes)
-						bytec += bytec % align_bytes;
+					/* also add 1 for terminating zero byte */
+					bytec += strlen(argv[argc]) + 1 + extra_bytes;
 					argc++;
 				}
 				argv[argc] = (char*)0;
@@ -114,11 +108,8 @@ tst	note{ determining data alignment factor for arguments list }end output{
 				}
 				if (exitstatus == 0)
 					break;	/* yay :) */
-				if (!align_bytes)
-					align_bytes = 2;
-				else
-					align_bytes *= 2;
-				if (align_bytes > 256)
+				extra_bytes++;
+				if (extra_bytes > 256)
 				{
 					error(ERROR_ERROR|2, "giving up");
 					return 1;
@@ -126,10 +117,10 @@ tst	note{ determining data alignment factor for arguments list }end output{
 			}
 		}
 		sfprintf(sfstdout,
-			"#define ARG_ALIGN_BYTES\t%d\t/* data alignment factor for arguments list */\n",
-			align_bytes);
+			"#define ARG_EXTRA_BYTES\t%d\t/* extra bytes per argument for arguments list */\n",
+			extra_bytes);
 		return 0;
 	}
 }end fail{
-	echo "#define ARG_ALIGN_BYTES	16	/* BUG: arg list alignment factor test failed; assuming 16 */"
+	echo "#define ARG_EXTRA_BYTES	8	/* BUG: test failed; assuming 8 */"
 }end

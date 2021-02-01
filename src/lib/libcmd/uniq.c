@@ -27,7 +27,7 @@
 
 static const char usage[] =
 "[-n?\n@(#)$Id: uniq (AT&T Research) 2009-11-28 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?uniq - Report or filter out repeated lines in a file]"
 "[+DESCRIPTION?\buniq\b reads the input, compares adjacent lines, and "
 	"writes one copy of each input line on the output.  The second "

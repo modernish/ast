@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: tty (AT&T Research) 2008-03-13 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?tty - write the name of the terminal to standard output]"
 "[+DESCRIPTION?\btty\b writes the name of the terminal that is connected "
 	"to standard input onto standard output.  If the standard input is not "

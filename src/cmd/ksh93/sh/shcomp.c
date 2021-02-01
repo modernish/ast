@@ -29,9 +29,12 @@
 #include "version.h"
 
 static const char usage[] =
-"[-?\n@(#)$Id: shcomp (AT&T Research/ksh93) " SH_RELEASE " $\n]"
-USAGE_LICENSE
+"[-?\n@(#)$Id: shcomp (AT&T Research) " SH_RELEASE " $\n]"
+"[-author?David Korn <dgk@research.att.com>]"
+"[-copyright?(c) 1982-2012 AT&T Intellectual Property]"
 "[-copyright?" SH_RELEASE_CPYR "]"
+"[-license?http://www.eclipse.org/org/documents/epl-v10.html]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?shcomp - compile a shell script]"
 "[+DESCRIPTION?Unless \b-D\b is specified, \bshcomp\b takes a shell script, "
 	"\ainfile\a, and creates a binary format file, \aoutfile\a, that "

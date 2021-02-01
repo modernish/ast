@@ -27,7 +27,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: sync (AT&T Research) 2006-10-04 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?sync - schedule file system updates]"
 "[+DESCRIPTION?\bsync\b calls \bsync\b(2), which causes all information "
     "in memory that updates file systems to be scheduled for writing out to "

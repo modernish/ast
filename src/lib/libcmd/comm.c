@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: comm (AT&T Research) 1999-04-28 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?comm - select or reject lines common to two files]"
 "[+DESCRIPTION?\bcomm\b reads two files \afile1\a and \afile2\a "
 	"which should be ordered in the collating sequence of the "

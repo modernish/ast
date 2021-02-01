@@ -29,7 +29,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: join (AT&T Research) 2009-12-10 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?join - relational database operator]"
 "[+DESCRIPTION?\bjoin\b performs an \aequality join\a on the files \afile1\a "
 	"and \afile2\a and writes the resulting joined files to standard "

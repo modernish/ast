@@ -74,4 +74,16 @@ arr[green]=foo
 read -A arr <<<  'x y z xx yy'
 [[ ${arr[1]} == ${arr[green]}  ]] || err_exit 'arr[1] != arr[green] after read'
 
+# enum arrays didn't block unspecified values
+# https://github.com/ksh93/ksh/issues/87
+exp=': Color_t: clr[2]: invalid value WRONG'
+got=$(set +x; redirect 2>&1; Color_t -a clr=(red blue WRONG yellow); printf '%s\n' "${clr[@]}")
+(((e = $?) == 1)) && [[ $got == *"$exp" ]] || err_exit "indexed enum array, unspecified value:" \
+	"expected status 1, *$(printf %q "$exp"); got status $e, $(printf %q "$got")"
+exp=': clr: invalid value BAD'
+got=$(set +x; redirect 2>&1; Color_t -A clr=([foo]=red [bar]=blue [bad]=BAD); printf '%s\n' "${clr[@]}")
+(((e = $?) == 1)) && [[ $got == *"$exp" ]] || err_exit "associative enum array, unspecified value:" \
+	"expected status 1, *$(printf %q "$exp"); got status $e, $(printf %q "$got")"
+
+# ======
 exit $((Errors<125?Errors:125))

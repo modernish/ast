@@ -45,7 +45,7 @@
 
 static const char	usage[] =
 "[-1p0?\n@(#)$Id: __regress__ (AT&T Research) 2009-03-29 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?__regress__ - shell regression test intercept control]"
 "[+DESCRIPTION?\b__regress__\b controls the regression test intercepts "
     "for shells compiled with SHOPT_REGRESS==1. Shells compiled this way are "

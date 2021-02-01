@@ -27,7 +27,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: pathchk (AT&T Research) 2009-07-24 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?pathchk - check pathnames for portability]"
 "[+DESCRIPTION?\bpathchk\b checks each \apathname\a to see if it is "
     "valid and/or portable. A \apathname\a is valid if it can be used to "

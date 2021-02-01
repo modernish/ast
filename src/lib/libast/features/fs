@@ -1,9 +1,9 @@
 set	prototyped
 lib	_fxstat,__fxstat,_lxstat,__lxstat,_xmknod,__xmknod,_xstat,__xstat,lstat,mknod,sync sys/types.h sys/stat.h
-lib	_fxstat64,__fxstat64,_lxstat64,__lxstat64,_xstat64,__xstat64 -D_LARGEFILE64_SOURCE sys/types.h sys/stat.h
+lib	_fxstat64,__fxstat64,_lxstat64,__lxstat64,_xstat64,__xstat64 sys/types.h sys/stat.h
 mac	fstat,lstat,stat,mknod sys/types.h sys/stat.h
 
-lcl	xstat -D_LARGEFILE64_SOURCE link{
+lcl	xstat link{
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	struct stat64 { int xxx; }; /* disable if stat64 available */
@@ -29,7 +29,7 @@ lcl	xstat -D_LARGEFILE64_SOURCE link{
 	}
 }end
 
-lcl	xstat64 -D_LARGEFILE64_SOURCE link{
+lcl	xstat64 link{
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	#if _STD_
@@ -211,7 +211,6 @@ cat{
 	#if _typ_off64_t
 	#undef	off_t
 	#define off_t	off64_t
-	#endif
 	#if _lib_statvfs64 && !defined(statvfs)
 	#define statvfs		statvfs64
 	#if !defined(__USE_LARGEFILE64)
@@ -224,6 +223,7 @@ cat{
 	extern int		fstatvfs64(int, struct statvfs64*);
 	#endif
 	#endif
+	#endif /* _typ_off64_t */
 }end
 
 str	st_fstype sys/types.h sys/stat.h note{ stat.st_fstype is a string }end compile{

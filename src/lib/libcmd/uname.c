@@ -29,7 +29,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: uname (AT&T Research) 2007-04-19 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?uname - identify the current system ]"
 "[+DESCRIPTION?By default \buname\b writes the operating system name to"
 "	standard output. When options are specified, one or more"

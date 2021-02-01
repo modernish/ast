@@ -31,7 +31,9 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: crossexec (AT&T Labs Research) 2004-01-04 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?crossexec - cross compiler a.out execution]
 [+DESCRIPTION?\bcrossexec\b runs a cross-compiled \acommand\a in an environment
 	that supports a cross-compilation architecture different from the

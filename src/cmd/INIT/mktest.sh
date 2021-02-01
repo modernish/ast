@@ -34,7 +34,9 @@ case $(getopts '[-][123:xyz]' opt --xyz 2>/dev/null; echo 0$opt) in
 [-?
 @(#)$Id: mktest (AT&T Labs Research) 2010-08-11 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?mktest - generate a regression test scripts]
 [+DESCRIPTION?\bmktest\b generates regression test scripts from test
     template commands in the \aunit\a.\brt\b file. The generated test

@@ -71,16 +71,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - hurl.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2003-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat hurl.sh
 		exec - } > hurl
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - hurl.sh > hurl <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2003-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -112,16 +109,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - iffe.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-author?Phong Vo <kpv@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat iffe.sh
 		exec - } > iffe
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - iffe.sh > iffe <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-author?Phong Vo <kpv@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -153,16 +147,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - mktest.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat mktest.sh
 		exec - } > mktest
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - mktest.sh > mktest <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -193,16 +184,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - package.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat package.sh
 		exec - } > package
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - package.sh > package <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -234,16 +222,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - regress.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1995-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat regress.sh
 		exec - } > regress
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - regress.sh > regress <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1995-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -275,16 +260,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - rt.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat rt.sh
 		exec - } > rt
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - rt.sh > rt <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -315,16 +297,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - crossexec.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat crossexec.sh
 		exec - } > crossexec
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - crossexec.sh > crossexec <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -356,16 +335,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - ditto.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-author?Lefty Koutsofios <ek@research.att.com>][-copyright?Copyright (c) 2001-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat ditto.sh
 		exec - } > ditto
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - ditto.sh > ditto <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-author?Lefty Koutsofios <ek@research.att.com>][-copyright?Copyright (c) 2001-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -397,16 +373,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - execrate.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2002-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat execrate.sh
 		exec - } > execrate
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - execrate.sh > execrate <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2002-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -437,16 +410,13 @@ make install
 		exec - case $i in
 		exec - '#!'*|*'||'*|':'*|'":"'*|"':'"*) echo "$i" ;;
 		exec - esac
-		exec - cat - filter.sh <<'!'
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-		exec - !
+		exec - cat filter.sh
 		exec - } > filter
 		exec - ;;
 		exec - esac
 		exec - ;;
 		exec - *) cat - filter.sh > filter <<'!'
 		exec - ${mam_cc_SHELLMAGIC}
-		exec - USAGE_LICENSE="[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 		exec - !
 		exec - ;;
 		exec - esac
@@ -542,7 +512,7 @@ make install
 			done mamake.c
 			meta mamake.o %.c>%.o mamake.c mamake
 			prev mamake.c
-			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -DUSAGE_LICENSE=\""[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"\" -c mamake.c
+			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -c mamake.c
 		done mamake.o generated
 		exec - ${CC} ${CCLDFLAGS} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} ${LDFLAGS} -o mamake mamake.o
 	done mamake generated
@@ -588,7 +558,7 @@ make install
 			done release.c
 			meta release.o %.c>%.o release.c release
 			prev release.c
-			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -DUSAGE_LICENSE=\""[-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"\" -c release.c
+			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -c release.c
 		done release.o generated
 		exec - ${CC} ${CCLDFLAGS} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} ${LDFLAGS} -o release release.o
 	done release generated

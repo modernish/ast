@@ -164,23 +164,20 @@ static pid_t path_xargs(Shell_t *shp,const char *path, char *argv[],char *const 
 		return((pid_t)-1);
 	size = shp->gd->lim.arg_max-2048;
 	for(ev=envp; cp= *ev; ev++)
-		size -= strlen(cp)+1;
+		size -= strlen(cp) + 1 + ARG_EXTRA_BYTES;
 	for(av=argv; (cp= *av) && av< &argv[shp->xargmin]; av++)  
-		size -= strlen(cp)+1;
+		size -= strlen(cp) + 1 + ARG_EXTRA_BYTES;
 	for(av=avlast; cp= *av; av++,nlast++)  
-		size -= strlen(cp)+1;
+		size -= strlen(cp) + 1 + ARG_EXTRA_BYTES;
 	av =  &argv[shp->xargmin];
 	if(!spawn)
 		job_clear();
 	shp->exitval = 0;
 	while(av<avlast)
 	{
-		/* for each argument, account for terminating zero and possible alignment */
+		/* for each argument, account for terminating zero and possible extra bytes */
 		for(xv=av,left=size; left>0 && av<avlast;)
-		{
-			n = strlen(*av++) + 1 + ARG_ALIGN_BYTES;
-			left -= n + (ARG_ALIGN_BYTES ? n % ARG_ALIGN_BYTES : 0);
-		}
+			left -= strlen(*av++) + 1 + ARG_EXTRA_BYTES;
 		/* leave at least two for last */
 		if(left<0 && (avlast-av)<2)
 			av--;

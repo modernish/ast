@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: tee (AT&T Research) 2012-05-31 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?tee - duplicate standard input]"
 "[+DESCRIPTION?\btee\b copies standard input to standard output "
 	"and to zero or more files.  The options determine whether "

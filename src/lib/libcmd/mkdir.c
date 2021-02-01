@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: mkdir (AT&T Research) 2010-04-08 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?mkdir - make directories]"
 "[+DESCRIPTION?\bmkdir\b creates one or more directories.  By "
 	"default, the mode of created directories is \ba=rwx\b minus the "

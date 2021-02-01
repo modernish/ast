@@ -83,7 +83,7 @@ make install
 			prev pty.c
 			setv CMD_STANDALONE -DCMD_STANDALONE="b_pty"
 			setv LICENSE -DLICENSE="since=2001,author=gsf+dgk"
-			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -I. -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=\""builtin"\" -D_PACKAGE_ast -DCMD_STANDALONE=b_pty -DUSAGE_LICENSE=\""[-author?Glenn Fowler <gsf@research.att.com>][-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 2001-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?builtin]"\" -c pty.c
+			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${CCFLAGS} -I. -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=\""builtin"\" -D_PACKAGE_ast -DCMD_STANDALONE=b_pty -c pty.c
 		done pty.o generated
 		bind -lutil dontcare
 		setv CMD_STANDALONE -DCMD_STANDALONE="b_pty"

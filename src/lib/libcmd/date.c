@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: date (AT&T Research) 2011-01-27 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?date - set/list/convert dates]"
 "[+DESCRIPTION?\bdate\b sets the current date and time (with appropriate"
 "	privilege), lists the current date or file dates, or converts"

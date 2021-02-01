@@ -29,7 +29,7 @@
 
 static const char usage[] =
 "+[-?\n@(#)$Id: tail (AT&T Research) 2012-10-10 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?tail - output trailing portion of one or more files ]"
 "[+DESCRIPTION?\btail\b copies one or more input files to standard output "
 	"starting at a designated point for each file.  Copying starts "

@@ -29,7 +29,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: chmod (AT&T Research) 2012-04-20 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?chmod - change the access permissions of files]"
 "[+DESCRIPTION?\bchmod\b changes the permission of each file "
 	"according to mode, which can be either a symbolic representation "

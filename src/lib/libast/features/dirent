@@ -1,8 +1,8 @@
 set	prototyped
 
 set	nodefine
-lib	stat64 -D_LARGEFILE64_SOURCE
-typ	off64_t -D_LARGEFILE64_SOURCE
+lib	stat64
+typ	off64_t
 set	define
 
 lib	opendir
@@ -10,7 +10,7 @@ hdr	dirent,ndir
 sys	dir
 nxt	dirent
 
-tst	botch_d_ino_dirent64 -D_LARGEFILE64_SOURCE note{ dirent64.d_ino vs. readdir64 mismatch }end compile{
+tst	botch_d_ino_dirent64 note{ dirent64.d_ino vs. readdir64 mismatch }end compile{
 	#if !__arm__
 	)
 	#endif

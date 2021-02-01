@@ -35,7 +35,9 @@ static char id[] = "\n@(#)$Id: release (AT&T Research) 2000-01-28 $\0\n";
 
 static const char usage[] =
 "[-?\n@(#)$Id: release (AT&T Research) 2000-01-28 $\n]"
-USAGE_LICENSE
+"[-author?Glenn Fowler <gsf@research.att.com>]"
+"[-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property]"
+"[-license?http://www.eclipse.org/org/documents/epl-v10.html]"
 "[+NAME?release - list recent changes]"
 "[+DESCRIPTION?\brelease\b lists the changes within the date range specified"
 "	by the \b--from\b and \b--to\b options. The input files are assumed to"

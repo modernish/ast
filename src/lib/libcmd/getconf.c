@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: getconf (AT&T Research) 2012-06-25 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?getconf - get configuration values]"
 "[+DESCRIPTION?\bgetconf\b displays the system configuration value for"
 "	\aname\a. If \aname\a is a filesystem specific variable then"

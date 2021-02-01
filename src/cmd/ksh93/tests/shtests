@@ -1,7 +1,5 @@
 : ksh regression test harness :
 
-USAGE_LICENSE="[-author?David Korn <dgk@research.att.com>][-author?Glenn Fowler <gsf@research.att.com>][-copyright?Copyright (c) 2000-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html]"
-
 command=shtests
 
 setslocale='*@(locale).sh'
@@ -10,9 +8,13 @@ valgrindflags='--xml=yes --log-file=/dev/null --track-origins=yes --read-var-inf
 
 USAGE=$'
 [-s8?
-@(#)$Id: shtests (AT&T Research/ksh93) 2020-09-02 $
+@(#)$Id: shtests (ksh 93u+m) 2020-09-02 $
 ]
-'$USAGE_LICENSE$'
+[-author?David Korn <dgk@research.att.com>]
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?(c) 2000-2012 AT&T Intellectual Property]
+[-copyright?(c) 2020-2021 Contributors to https://github.com/ksh93/ksh]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?shtests - ksh regression test harness]
 [+DESCRIPTION?\bshtests\b is the \bksh\b(1) regression test harness for
     \b$SHELL\b or \bksh\b if \bSHELL\b is not defined and exported. If

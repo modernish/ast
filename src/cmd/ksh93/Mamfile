@@ -41,6 +41,7 @@ setv NMAKE nmake
 setv NMAKEFLAGS
 setv PR pr
 setv PRFLAGS
+setv SH_DICT \"libshell\"
 setv SHELL /bin/sh
 setv SILENT
 setv TAR tar
@@ -373,7 +374,7 @@ make install
 				done bltins/enum.c
 				meta enum.o %.c>%.o bltins/enum.c enum
 				prev bltins/enum.c
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -Iinclude -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=\""libshell"\" -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c bltins/enum.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -Iinclude -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=${SH_DICT} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c bltins/enum.c
 				prev SHOPT.sh
 			done enum.o generated
 			make getopts.o
@@ -680,7 +681,7 @@ make install
 				meta main.o %.c>%.o sh/main.c main
 				prev sh/main.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_TIMEOUT+-DSHOPT_TIMEOUT=${SHOPT_TIMEOUT}} ${SHOPT_ACCT+-DSHOPT_ACCT=${SHOPT_ACCT}} ${SHOPT_SYSRC+-DSHOPT_SYSRC=${SHOPT_SYSRC}} ${SHOPT_REMOTE+-DSHOPT_REMOTE=${SHOPT_REMOTE}} ${SHOPT_OLDTERMIO+-DSHOPT_OLDTERMIO=${SHOPT_OLDTERMIO}} ${SHOPT_SPAWN+-DSHOPT_SPAWN=${SHOPT_SPAWN}} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}}${SH_DICT+-DSH_DICT=${SH_DICT}} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c sh/main.c
+				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_TIMEOUT+-DSHOPT_TIMEOUT=${SHOPT_TIMEOUT}} ${SHOPT_ACCT+-DSHOPT_ACCT=${SHOPT_ACCT}} ${SHOPT_SYSRC+-DSHOPT_SYSRC=${SHOPT_SYSRC}} ${SHOPT_REMOTE+-DSHOPT_REMOTE=${SHOPT_REMOTE}} ${SHOPT_OLDTERMIO+-DSHOPT_OLDTERMIO=${SHOPT_OLDTERMIO}} ${SHOPT_SPAWN+-DSHOPT_SPAWN=${SHOPT_SPAWN}} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${DEBUG+-DDEBUG=${DEBUG}} -DSH_DICT=${SH_DICT} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c sh/main.c
 			done main.o generated
 			make nvdisc.o
 				make sh/nvdisc.c
@@ -703,7 +704,7 @@ make install
 				meta nvtype.o %.c>%.o sh/nvtype.c nvtype
 				prev sh/nvtype.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -D_PACKAGE_ast -D_API_ast=20100309 -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c sh/nvtype.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -DSH_DICT=${SH_DICT} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_PACKAGE_ast -D_API_ast=20100309 -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c sh/nvtype.c
 			done nvtype.o generated
 			make arith.o
 				make sh/arith.c
@@ -841,7 +842,7 @@ make install
 				meta regress.o %.c>%.o bltins/regress.c regress
 				prev bltins/regress.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c bltins/regress.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c bltins/regress.c
 			done regress.o generated
 			make fault.o
 				make sh/fault.c
@@ -1165,7 +1166,7 @@ make install
 				meta trestore.o %.c>%.o sh/trestore.c trestore
 				prev sh/trestore.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_SYSRC+-DSHOPT_SYSRC=${SHOPT_SYSRC}} ${SHOPT_ACCT+-DSHOPT_ACCT=${SHOPT_ACCT}} ${SHOPT_SPAWN+-DSHOPT_SPAWN=${SHOPT_SPAWN}} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} ${SH_DICT+-DSH_DICT=${SH_DICT}} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_BLD_shell -DKSHELL -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c sh/trestore.c
+				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_SYSRC+-DSHOPT_SYSRC=${SHOPT_SYSRC}} ${SHOPT_ACCT+-DSHOPT_ACCT=${SHOPT_ACCT}} ${SHOPT_SPAWN+-DSHOPT_SPAWN=${SHOPT_SPAWN}} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} -DSH_DICT=${SH_DICT} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_BLD_shell -DKSHELL -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c sh/trestore.c
 			done trestore.o generated
 			make waitevent.o
 				make sh/waitevent.c
@@ -1248,7 +1249,7 @@ make install
 				meta strdata.o %.c>%.o data/strdata.c strdata
 				prev data/strdata.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} ${SH_DICT+-DSH_DICT=${SH_DICT}} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c data/strdata.c
+				exec - ${CC} ${mam_cc_FLAGS} ${SHOPT_P_SUID+-DSHOPT_P_SUID=${SHOPT_P_SUID}} ${SHOPT_REGRESS+-DSHOPT_REGRESS=${SHOPT_REGRESS}} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${-debug-symbols?1?${mam_cc_DEBUG} -D_BLD_DEBUG?${CCFLAGS.FORCE}?} ${SH_CMDLIB_DIR+-DSH_CMDLIB_DIR=${SH_CMDLIB_DIR}} -DSH_DICT=${SH_DICT} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c data/strdata.c
 			done strdata.o generated
 			make testops.o
 				make data/testops.c
@@ -1259,7 +1260,7 @@ make install
 				meta testops.o %.c>%.o data/testops.c testops
 				prev data/testops.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c data/testops.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -DSH_DICT=${SH_DICT} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c data/testops.c
 			done testops.o generated
 			make keywords.o
 				make data/keywords.c
@@ -1317,7 +1318,7 @@ make install
 				meta builtins.o %.c>%.o data/builtins.c builtins
 				prev data/builtins.c
 				prev SHOPT.sh
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c data/builtins.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -DSH_DICT=${SH_DICT} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -D_API_ast=20100309 -D_PACKAGE_ast -D_BLD_shell -DKSHELL -DERROR_CONTEXT_T=Error_context_t -c data/builtins.c
 			done builtins.o generated
 			make variables.o
 				make data/variables.c
@@ -1412,10 +1413,9 @@ make install
 			prev sh/shcomp.c
 			prev SHOPT.sh
 			setv CC.DLL -UCC.DLL
-			setv SH_DICT -DSH_DICT="\"libshell\""
 			setv _BLD_shell -U_BLD_shell
 			setv _BLD_DLL -U_BLD_DLL
-			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DSH_DICT=\""libshell"\" -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -DUSAGE_LICENSE=\""[-author?David Korn <dgk@research.att.com>][-copyright?Copyright (c) 1982-2012 AT&T Intellectual Property][-license?http://www.eclipse.org/org/documents/epl-v10.html][--catalog?libshell]"\" -c sh/shcomp.c
+			exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DSH_DICT=${SH_DICT} -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c sh/shcomp.c
 		done shcomp.o generated
 		prev libshell.a archive
 		prev +ljobs
@@ -1423,7 +1423,6 @@ make install
 		prev ${mam_libsocket}
 		prev ${mam_libsecdb}
 		setv CC.DLL -UCC.DLL
-		setv SH_DICT -DSH_DICT="\"libshell\""
 		exec - ${CC} ${CCLDFLAGS} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} ${LDFLAGS} ${mam_cc_L+-L.} ${mam_cc_L+-L${INSTALLROOT}/lib} -o shcomp shcomp.o ${mam_libshell} ${mam_libnsl} ${mam_libast}
 	done shcomp generated
 	make suid_exec

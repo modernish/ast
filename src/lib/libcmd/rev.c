@@ -32,7 +32,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: rev (AT&T Research) 2007-11-29 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?rev - reverse the characters or lines of one or more files]"
 "[+DESCRIPTION?\brev\b copies one or more files to standard output "
 	"reversing the order of characters on every line of the file "

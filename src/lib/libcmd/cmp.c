@@ -29,7 +29,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: cmp (AT&T Research) 2010-04-11 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?cmp - compare two files]"
 "[+DESCRIPTION?\bcmp\b compares two files \afile1\a and \afile2\a. "
     "\bcmp\b writes no output if the files are the same. By default, if the "

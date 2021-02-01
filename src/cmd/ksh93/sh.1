@@ -5847,16 +5847,16 @@ The
 option runs
 .I name\^
 as an external command, bypassing built-ins.
-If the arguments contain a word that expands to multiple arguments, such as
-\f3"$@"\fP or \f3"${array[@]}"\fP, then the
+If the arguments contain at least one word that expands to multiple arguments,
+such as \f3"$@"\fP or \f3*.txt\fP, then the
 .B \-x
 option also allows executing external commands with argument lists that are
 longer than the operating system allows. This functionality is similar to
 .BR xargs (1)
 but is easier to use. The shell does this by invoking the external command
 multiple times if needed, dividing the expanded argument list over the
-invocations. Any arguments that come before the first \f3"$@"\fP or similar
-expansion, as well as any that follow the last \f3"$@"\fP or similar, are
+invocations. Any arguments that come before the first word that expands to
+multiple arguments, as well as any that follow the last such word, are
 considered static arguments and are repeated for each invocation. This allows
 each invocation to use the same command options, as well as the same trailing
 destination arguments for commands like
@@ -5869,8 +5869,8 @@ exits with the status of the invocation that had the highest exit status.
 (Note that
 .B "command \-x"
 may still fail with an "argument list too long" error if a single argument
-exceeds the maximum length of the argument list, or if no \f3"$@"\fP or
-similar expansion was used.)
+exceeds the maximum length of the argument list, or if a long arguments
+list contains no word that expands to multiple arguments.)
 .TP
 \(dd \f3compound\fP \f2vname\fP\*(OK\f3=\fP\f2value\^\fP\*(CK .\|.\|.
 Causes each

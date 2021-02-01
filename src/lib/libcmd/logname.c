@@ -28,19 +28,19 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: logname (AT&T Research) 1999-04-30 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?logname - return the user's login name]"
 "[+DESCRIPTION?\blogname\b writes the users's login name to standard "
 	"output.  The login name is the string that is returned by the "
 	"\bgetlogin\b(2) function.  If \bgetlogin\b(2) does not return "
-	"successfully, the corresponding to the real user id of the calling "
-	"process is used instead.]"
+	"successfully, the name corresponding to the real user ID of the "
+	"calling process is used instead.]"
 
 "\n"
 "\n\n"
 "\n"
 "[+EXIT STATUS?]{"
-        "[+0?Successful Completion.]"
+        "[+0?Successful completion.]"
         "[+>0?An error occurred.]"
 "}"
 "[+SEE ALSO?\bgetlogin\b(2)]"

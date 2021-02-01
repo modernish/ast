@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: mkfifo (AT&T Research) 2009-01-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?mkfifo - make FIFOs (named pipes)]"
 "[+DESCRIPTION?\bmkfifo\b creates one or more FIFO's.  By "
 	"default, the mode of created FIFO is \ba=rw\b minus the "

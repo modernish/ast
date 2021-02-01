@@ -407,11 +407,7 @@ static Namval_t *array_find(Namval_t *np,Namarr_t *arp, int flag)
 int nv_arraysettype(Namval_t *np, Namval_t *tp, const char *sub, int flags)
 {
 	Namval_t	*nq;
-	char		*av[2];
-	int		rdonly = nv_isattr(np,NV_RDONLY);
-	int		xtrace = sh_isoption(SH_XTRACE);
 	Namarr_t	*ap = nv_arrayptr(np);
-	av[1] = 0;
 	sh.last_table = 0;
 	if(!ap->table)
 	{
@@ -420,30 +416,20 @@ int nv_arraysettype(Namval_t *np, Namval_t *tp, const char *sub, int flags)
 	}
 	if(nq = nv_search(sub, ap->table, NV_ADD))
 	{
+		char		*saved_value;
+		int		rdonly = nv_isattr(np,NV_RDONLY);
 		if(!nq->nvfun && nq->nvalue.cp && *nq->nvalue.cp==0)
 			_nv_unset(nq,NV_RDONLY);
 		nv_arraychild(np,nq,0);
 		if(!nv_isattr(tp,NV_BINARY))
-		{
-			sfprintf(sh.strbuf,"%s=%s",nv_name(nq),nv_getval(np));
-			av[0] = strdup(sfstruse(sh.strbuf));
-		}
+			saved_value = stkcopy(stkstd,nv_getval(np));
 		if(!nv_clone(tp,nq,flags|NV_NOFREE))
 			return(0);
-		ap->nelem |= ARRAY_SCAN;
 		if(!rdonly)
 			nv_offattr(nq,NV_RDONLY);
 		if(!nv_isattr(tp,NV_BINARY))
-		{
-			if(xtrace)
-				sh_offoption(SH_XTRACE);
-			ap->nelem &= ~ARRAY_SCAN;
-			sh_eval(sh_sfeval(av),0);
-			ap->nelem |= ARRAY_SCAN;
-			free((void*)av[0]);
-			if(xtrace)
-				sh_onoption(SH_XTRACE);
-		}
+			nv_putval(nq,saved_value,0);
+		ap->nelem |= ARRAY_SCAN;
 		return(1);
 	}
 	return(0);

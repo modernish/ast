@@ -37,9 +37,9 @@ lib	strchr,strcoll,strdup,strerror,strcasecmp,strncasecmp,strrchr,strstr
 lib	strmode,strxfrm,strftime,swab,symlink,sysconf,sysinfo,syslog
 lib	telldir,tmpnam,tzset,universe,unlink,utime,wctype
 lib	ftruncate,truncate
-lib	creat64,fstat64,fstatvfs64,ftruncate64 -D_LARGEFILE64_SOURCE
-lib	lseek64,lstat64 -D_LARGEFILE64_SOURCE
-lib	open64,readdir64,stat64,statvfs64,truncate64 -D_LARGEFILE64_SOURCE
+lib	creat64,fstat64,fstatvfs64,ftruncate64
+lib	lseek64,lstat64
+lib	open64,readdir64,stat64,statvfs64,truncate64
 
 lib,npt	strtod,strtold,strtol,strtoll,strtoul,strtoull stdlib.h
 lib,npt	sigflag signal.h
@@ -53,8 +53,8 @@ mem	inheritance.pgroup spawn.h
 sys	dir,filio,jioctl,localedef,ptem,resource
 sys	socket,stream,systeminfo,universe,vfork
 
-typ	ino64_t,off64_t -D_LARGEFILE64_SOURCE
-typ	struct.dirent64 -D_LARGEFILE64_SOURCE dirent.h
+typ	ino64_t,off64_t
+typ	struct.dirent64 dirent.h
 
 tst	tst_errno note{ errno can be assigned }end link{
 	_BEGIN_EXTERNS_
@@ -703,7 +703,7 @@ tst	- output{
 	echo '#error The output block in src/lib/libast/features/lib failed to compile. Rebuild with IFFEFLAGS=-d1 to debug.'
 }end
 
-tst	no64 -D_LARGEFILE64_SOURCE note{ largefile 64 broken }end execute{
+tst	no64 note{ largefile 64 broken }end execute{
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	int
@@ -726,7 +726,7 @@ tst	no64 -D_LARGEFILE64_SOURCE note{ largefile 64 broken }end execute{
 	echo "#undef	_lib_truncate64"
 }end
 
-tst	need64 -D_LARGEFILE64_SOURCE note{ off64_t necessary }end nocompile{
+tst	need64 note{ off64_t necessary }end nocompile{
 	#include <sys/types.h>
 	typedef off64_t __ast_off64_t__;
 	typedef off_t __ast_off_t__;

@@ -30,7 +30,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: paste (AT&T Research) 2010-06-12 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?paste - merge lines of files]"
 "[+DESCRIPTION?\bpaste\b concatenates the corresponding lines of a "
 	"given input file and writes the resulting lines to standard "

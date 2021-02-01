@@ -26,7 +26,10 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: ditto (AT&T Labs Research) 2010-11-22 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-author?Lefty Koutsofios <ek@research.att.com>]
+[-copyright?Copyright (c) 2001-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?ditto - replicate directory hierarchies]
 [+DESCRIPTION?\bditto\b replicates the \asource\a directory hierarchy
 	to the \adestination\a directory hierarchy. Both \asource\a and

@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: rm (AT&T Research) 2012-02-14 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?rm - remove files]"
 "[+DESCRIPTION?\brm\b removes the named \afile\a arguments. By default it"
 "	does not remove directories. If a file is unwritable, the"

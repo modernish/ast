@@ -56,8 +56,8 @@ const Shtable_t shtab_testops[] =
 };
 
 const char sh_opttest[] =
-"[-1c?\n@(#)$Id: test (AT&T Research/ksh93) 2020-08-31 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: test (ksh 93u+m) 2020-08-31 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?test, [ - evaluate expression]"
 "[+DESCRIPTION?\btest\b evaluates expressions and returns its result using the "
 	"exit status. Option parsing is not performed; all arguments, "

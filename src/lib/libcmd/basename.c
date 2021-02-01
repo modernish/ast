@@ -30,7 +30,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: basename (AT&T Research) 2010-05-06 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?basename - strip directory and suffix from filenames]"
 "[+DESCRIPTION?\bbasename\b removes all leading directory components "
     "from the file name defined by \astring\a. If the file name defined by "
@@ -57,7 +57,7 @@ USAGE_LICENSE
 "\n"
 "[+EXIT STATUS?]"
     "{"
-        "[+0?Successful Completion.]"
+        "[+0?Successful completion.]"
         "[+>0?An error occurred.]"
     "}"
 "[+SEE ALSO?\bdirname\b(1), \bgetconf\b(1), \bbasename\b(3)]"

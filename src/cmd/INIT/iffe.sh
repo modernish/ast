@@ -721,7 +721,10 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: iffe (AT&T Research) 2012-07-17 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-author?Phong Vo <kpv@research.att.com>]
+[-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?iffe - C compilation environment feature probe]
 [+DESCRIPTION?\biffe\b is a command interpreter that probes the C
 	compilation environment for features. A feature is any file, option

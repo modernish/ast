@@ -22,7 +22,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: fds (AT&T Research) 2009-09-09 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?fds - list open file descriptor status]"
 "[+DESCRIPTION?\bfds\b lists the status for each open file descriptor. "
     "When invoked as a shell builtin it accesses the file descriptors of the "

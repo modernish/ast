@@ -1,4 +1,4 @@
-: linux.ia64 icc wrapper : 2011-10-18 :
+: linux.ia64 icc wrapper : 2021-01-31 :
 
 HOSTTYPE=linux.ia64-icc
 
@@ -19,4 +19,4 @@ case $icc in
 	esac
 	;;
 esac
-$icc "$@"
+exec "$icc" -D_LARGEFILE64_SOURCE "$@"

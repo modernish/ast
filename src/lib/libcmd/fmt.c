@@ -22,7 +22,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: fmt (AT&T Research) 2007-01-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?fmt - simple text formatter]"
 "[+DESCRIPTION?\bfmt\b reads the input files and left justifies space "
     "separated words into lines \awidth\a characters or less in length and "

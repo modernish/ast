@@ -489,16 +489,86 @@ EOF
 print 'echo "wrong path used"' > $tmp/ls
 chmod +x $tmp/ls
 expect=/dev/null
-actual=$(PATH=$tmp; redirect 2>&1; hash ls; command -p ls /dev/null)
+actual=$(set +x; PATH=$tmp; redirect 2>&1; hash ls; command -p ls /dev/null)
 [[ $actual == "$expect" ]] || err_exit "'command -p' fails to search default path if tracked alias exists" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
-actual=$(PATH=$tmp; redirect 2>&1; hash ls; command -p ls /dev/null; exit)  # the 'exit' disables subshell optimization
+actual=$(set +x; PATH=$tmp; redirect 2>&1; hash ls; command -p ls /dev/null; exit)  # the 'exit' disables subshell optimization
 [[ $actual == "$expect" ]] || err_exit "'command -p' fails to search default path if tracked alias exists" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 expect=$(builtin getconf; PATH=$(getconf PATH); whence -p ls)
-actual=$(PATH=$tmp; redirect 2>&1; hash ls; command -p -v ls)
+actual=$(set +x; PATH=$tmp; redirect 2>&1; hash ls; command -p -v ls)
 [[ $actual == "$expect" ]] || err_exit "'command -p -v' fails to search default path if tracked alias exists" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+# Check that adding '-x' makes '-v'/'-V' look up external commands
+if	((.sh.version >= 20210130))
+then
+	exp=$tmp/echo
+	touch "$exp"
+	chmod +x "$exp"
+	got=$(PATH=$tmp; command -vx echo 2>&1)
+	[[ $got == "$exp" ]] || err_exit "'command -v -x' failed to look up external command in \$PATH" \
+		"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+	exp="echo is a tracked alias for $exp"
+	got=$(PATH=$tmp; command -Vx echo 2>&1)
+	[[ $got == "$exp" ]] || err_exit "'command -V -x' failed to look up external command in \$PATH" \
+		"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+	exp=$(PATH=${ getconf PATH 2>/dev/null; }; whence -p echo)
+	got=$(PATH=$tmp; command -pvx echo 2>&1)
+	[[ $got == "$exp" ]] || err_exit "'command -p -v -x' failed to look up external command in default path" \
+		"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+	exp="echo is $exp"
+	got=$(PATH=$tmp; command -pVx echo 2>&1)
+	[[ $got == "$exp" ]] || err_exit "'command -p -V -x' failed to look up external command in default path" \
+		"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+fi
+
+# 'command -x' used to hang in an endless E2BIG loop on Linux and macOS
+ofile=$tmp/command_x_chunks.sh
+trap 'sleep_pid=; while kill -9 $pid; do :; done 2>/dev/null; err_exit "'\''command -x'\'' hung"' TERM
+{ sleep 15; kill $$; } &
+sleep_pid=$!
+(
+	export LC_ALL=C
+	unset IFS; set +f
+	builtin getconf && arg_max=$(getconf ARG_MAX) && let arg_max || { err_exit "getconf ARG_MAX not working"; exit 1; }
+	set +x	# trust me, you don't want to xtrace what follows
+	# let's try to use a good variety of argument lengths
+	set -- $(typeset -p) $(functions) /dev/* /tmp/* /* *
+	args=$*
+	while	let "${#args} < 3 * arg_max"
+	do	set -- "$RANDOM" "$@" "$RANDOM" "$@" "$RANDOM"
+		args=$*
+	done
+	print "chunks=0 expargs=$# args=0 expsize=$((${#args}+1)) size=0"
+	unset args
+	command -px awk 'BEGIN {
+		ARGC -= 2;  # final static args
+		for (i=1; i<ARGC; i++)
+			size += length(ARGV[i]) + 1;
+		print ("let chunks++ args+=")(ARGC - 1)(" size+=")(size);
+		if(ARGV[ARGC] != "static_arg_1" || ARGV[ARGC+1] != "final_static_arg_2")
+			print "err_exit \"'\''command -x'\'': static final arguments for chunk $chunks incorrect\"";
+	}' "$@" static_arg_1 final_static_arg_2
+) >$ofile &
+pid=$!
+wait $pid
+e=$?
+trap - TERM
+[[ $sleep_pid ]] && kill $sleep_pid
+if	let "e > 0"
+then	err_exit "'command -x' test yielded exit status $e$( let "e>128" && print -n / && kill -l "$e")"
+fi
+if	[[ ! -s $ofile ]]
+then	err_exit "'command -x' test failed to produce output"
+else	save_Command=$Command
+	Command+=": ${ofile##*/}"
+	. "$ofile"
+	Command=$save_Command
+	let "args == expargs && size == expsize" || err_exit "'command -x' did not correctly divide arguments" \
+		"(expected $expargs args of total size $expsize, got $args args of total size $size;" \
+		"divided in $chunks chunks)"
+fi
 
 # ======
 # whence -a/-v tests

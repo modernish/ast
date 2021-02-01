@@ -34,7 +34,9 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: filter (AT&T Labs Research) 2001-05-31 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 1994-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?filter - run a command in stdin/stdout mode]
 [+DESCRIPTION?\bfilter\b runs \acommand\a in a mode that takes input from
 	the \afile\a operands, or from the standard input if no \afile\a

@@ -30,7 +30,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: dirname (AT&T Research) 2009-01-31 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?dirname - return directory portion of file name]"
 "[+DESCRIPTION?\bdirname\b treats \astring\a as a file name and returns "
 	"the name of the directory containing the file name by deleting "
@@ -55,7 +55,7 @@ USAGE_LICENSE
 "\nstring\n"
 "\n"
 "[+EXIT STATUS?]{"
-        "[+0?Successful Completion.]"
+        "[+0?Successful completion.]"
         "[+>0?An error occurred.]"
 "}"
 "[+SEE ALSO?\bbasename\b(1), \bgetconf\b(1), \bdirname\b(3), \bpathname\b(3)]"

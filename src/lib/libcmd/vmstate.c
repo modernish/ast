@@ -24,7 +24,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: vmstate (AT&T Research) 2010-04-08 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?vmstate - list the calling process vmalloc region state]"
 "[+DESCRIPTION?When invoked as a shell builtin, \bvmstate\b lists the "
     "calling process \bvmalloc\b(3) state for all regions.]"

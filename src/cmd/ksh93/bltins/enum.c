@@ -22,7 +22,7 @@
 
 static const char enum_usage[] =
 "[-?@(#)$Id: enum (AT&T Research) 2008-01-08 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?enum - create an enumeration type]"
 "[+DESCRIPTION?\benum\b is a declaration command that creates an enumeration "
     "type \atypename\a that can only store any one of the values in the indexed "
@@ -43,7 +43,7 @@ USAGE_LICENSE
 
 static const char enum_type[] =
 "[-1c?\n@(#)$Id: type (AT&T Labs Research) 2008-01-08 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?\f?\f - create an instance of type \b\f?\f\b]"
 "[+DESCRIPTION?\b\f?\f\b creates a variable for each \aname\a with "
     "enumeration type \b\f?\f\b where \b\f?\f\b is a type that has been "
@@ -150,8 +150,7 @@ static void put_enum(Namval_t* np,const char *val,int flags,Namfun_t *fp)
 		}
 		i++;
 	}
-	if(nv_isattr(np,NV_NOFREE))
-		error(ERROR_exit(1), "%s: invalid value %s",nv_name(np),val);
+	error(ERROR_exit(1), "%s: invalid value %s",nv_name(np),val);
 }
 
 static char* get_enum(register Namval_t* np, Namfun_t *fp)

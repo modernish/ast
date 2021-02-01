@@ -30,8 +30,4 @@
 #define ERROR_CATALOG		0
 #endif
 
-#ifndef USAGE_LICENSE
-#define USAGE_LICENSE		"[-license?THIS IS AN UNLICENSED COPY]"
-#endif
-
 #endif

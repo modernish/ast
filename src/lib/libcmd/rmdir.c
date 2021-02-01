@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: rmdir (AT&T Research) 2006-08-24 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?rmdir - remove empty directories]"
 "[+DESCRIPTION?\brmdir\b deletes each given directory.  The directory "
 	"must be empty; containing no entries other than \b.\b or \b..\b.  "

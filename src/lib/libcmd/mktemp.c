@@ -22,7 +22,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: mktemp (AT&T Research) 2010-03-05 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?mktemp - make temporary file or directory]"
 "[+DESCRIPTION?\bmktemp\b creates a temporary file with optional base "
     "name prefix \aprefix\a. If \aprefix\a is omitted then \btmp_\b is used "

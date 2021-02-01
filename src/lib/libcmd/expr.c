@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: expr (AT&T Research) 2010-08-11 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?expr - evaluate arguments as an expression]"
 "[+DESCRIPTION?\bexpr\b evaluates an expression given as arguments and writes "
 	"the result to standard output.  The character \b0\b will be written "

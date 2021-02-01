@@ -28,7 +28,7 @@
 
 static const char usage_head[] =
 "[-?@(#)$Id: cp (AT&T Research) 2012-04-20 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 ;
 
 static const char usage_cp[] =

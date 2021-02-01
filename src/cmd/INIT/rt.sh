@@ -31,7 +31,9 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: rt (AT&T Research) 2010-07-27 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?rt - run "nmake test" and filter output]
 [+DESCRIPTION?\brt\b runs \vnmake test\v and filters the regression
 	test output to contain only test summary lines. If no \atest\a

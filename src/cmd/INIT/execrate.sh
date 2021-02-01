@@ -37,7 +37,9 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: execrate (AT&T Labs Research) 2002-02-02 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 2002-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?execrate - wrapper for .exe challenged commands]
 [+DESCRIPTION?\bexecrate\b runs \acommand\a after checking the \afile\a
 	operands for standard semantics with respect to \bwin32\b \b.exe\b

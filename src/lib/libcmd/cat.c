@@ -32,7 +32,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: cat (AT&T Research) 2012-05-31 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?cat - concatenate files]"
 "[+DESCRIPTION?\bcat\b copies each \afile\a in sequence to the standard"
 "	output. If no \afile\a is given, or if the \afile\a is \b-\b,"

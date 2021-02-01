@@ -28,7 +28,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: sum (AT&T Research) 2012-04-20 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?cksum,md5sum,sum - print file checksum and block count]"
 "[+DESCRIPTION?\bsum\b lists the checksum, and for most methods the block"
 "	count, for each file argument. The standard input is read if there are"

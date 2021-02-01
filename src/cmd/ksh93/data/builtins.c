@@ -282,7 +282,7 @@ const char sh_set[] =
 
 const char sh_optbreak[] =
 "[-1c?\n@(#)$Id: break (AT&T Research) 1999-04-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?break - break out of loop ]"
 "[+DESCRIPTION?\bbreak\b is a shell special built-in that exits the "
 	"smallest enclosing \bfor\b, \bselect\b, \bwhile\b, or \buntil\b loop, "
@@ -300,7 +300,7 @@ USAGE_LICENSE
 
 const char sh_optcont[] =
 "[-1c?\n@(#)$Id: continue (AT&T Research) 1999-04-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?continue - continue execution at top of the loop]"
 "[+DESCRIPTION?\bcontinue\b is a shell special built-in that continues " 
 	"execution at the top of smallest enclosing enclosing \bfor\b, "
@@ -318,8 +318,8 @@ USAGE_LICENSE
 
 const char sh_optalarm[]	= "r [varname seconds]";
 const char sh_optalias[] =
-"[-1c?\n@(#)$Id: alias (AT&T Research/ksh93) 2020-06-10 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: alias (ksh 93u+m) 2020-06-10 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?alias - define or display aliases]"
 "[+DESCRIPTION?\balias\b creates or redefines alias definitions "
 	"or writes the existing alias definitions to standard output.  "
@@ -359,7 +359,7 @@ USAGE_LICENSE
 
 const char sh_optbuiltin[] =
 "[-1c?\n@(#)$Id: builtin (AT&T Research) 2010-08-04 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?builtin - add, delete, or display shell built-ins]"
 "[+DESCRIPTION?\bbuiltin\b can be used to add, delete, or display "
     "built-in commands in the current shell environment. A built-in command "
@@ -414,8 +414,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optcd[] =
-"[-1c?\n@(#)$Id: cd (AT&T Research/ksh93) 2021-01-19 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: cd (ksh 93u+m) 2021-01-19 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?cd - change working directory ]"
 "[+DESCRIPTION?\bcd\b changes the current working directory of the "
 	"current shell environment.]"
@@ -467,8 +467,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optcommand[] =
-"[-1c?\n@(#)$Id: command (AT&T Research/ksh93) 2021-01-30 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: command (ksh 93u+m) 2021-01-30 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?command - execute a simple command disabling special properties]"
 "[+DESCRIPTION?Without \b-v\b or \b-V\b,  \bcommand\b executes \acmd\a "
 	"with arguments given by \aarg\a, suppressing the shell function lookup "
@@ -487,13 +487,14 @@ USAGE_LICENSE
 "[V?Equivalent to \bwhence \b-v\b \acmd\a [\aarg\a ...]].]"
 "[x?Search \acmd\a as an external command, bypassing built-ins. "
 	"If the \aarg\as include a word "
-	"such as \b\"$@\"\b or \b\"${array[@]]}\"\b "
+	"such as \b\"$@\"\b or \b\"*.txt\"\b "
 	"that expands to multiple arguments, "
 	"and the size of the expanded \aarg\a list "
 	"exceeds \bgetconf ARG_MAX\b bytes, "
 	"then \acmd\a will be run multiple times, "
 	"dividing the \aarg\as over the invocations. "
-	"Any \aarg\as that come before the first \b\"$@\"\b or similar, "
+	"Any \aarg\as that come before the first "
+	"word that expands to multiple arguments, "
 	"as well as any that follow the last such word, "
 	"are considered static and will be repeated for each invocation "
 	"so as to allow all invocations to use the same command options. "
@@ -514,8 +515,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optdot[]	 =
-"[-1c?@(#)$Id: \b.\b (AT&T Research/ksh93) 2020-06-15 $\n]"
-USAGE_LICENSE
+"[-1c?@(#)$Id: \b.\b (ksh 93u+m) 2020-06-15 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?\f?\f - execute commands in the current environment]"
 "[+DESCRIPTION?\b.\b and \bsource\b are built-in commands that execute "
 	"commands from a function or a file in the current environment. \b.\b "
@@ -551,7 +552,7 @@ USAGE_LICENSE
 
 const char sh_opteval[] =
 "[-1c?\n@(#)$Id: eval (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?eval - create a shell command and process it]"
 "[+DESCRIPTION?\beval\b is a shell special built-in command that constructs "
 	"a command by concatenating the \aarg\as together, separating each "
@@ -570,8 +571,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optexec[] =
-"[-1c?\n@(#)$Id: exec (AT&T Research/ksh93) 2020-06-11 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: exec (ksh 93u+m) 2020-06-11 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?exec - execute command, open/close and duplicate file descriptors]"
 "[+DESCRIPTION?\bexec\b is a special built-in command that can be used to "
 	"manipulate file descriptors or to replace the current shell "
@@ -602,7 +603,7 @@ USAGE_LICENSE
 
 const char sh_optexit[] =
 "[-1c?\n@(#)$Id: exit (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?exit - exit the current shell]"
 "[+DESCRIPTION?\bexit\b is shell special built-in that causes the "
 	"shell that invokes it to exit.  Before exiting the shell, if the "
@@ -620,7 +621,7 @@ USAGE_LICENSE
 
 const char sh_optexport[] =
 "[-1c?\n@(#)$Id: export (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?export - set export attribute on variables]"
 "[+DESCRIPTION?\bexport\b sets the export attribute on each of "
 	"the variables specified by \aname\a which causes them "
@@ -648,7 +649,7 @@ USAGE_LICENSE
 const char sh_optgetopts[] =
 ":[-1c?\n@(#)$Id: getopts (AT&T Research) 2005-01-01 $\n]"
 "[-author?Glenn Fowler <gsf@research.att.com>]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?\f?\f - parse utility options]"
 "[+DESCRIPTION?The \bgetopts\b utility can be used to retrieve options and "
   "arguments from a list of arguments given by \aargs\a or the positional "
@@ -817,7 +818,7 @@ USAGE_LICENSE
 
 const char sh_optbg[] =
 "[-1c?@(#)$Id: bg (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?bg - resume jobs in the background]"
 "[+DESCRIPTION?\bbg\b places the given \ajob\as into the background "
 	"and sends them a \bCONT\b signal to start them running.]"
@@ -838,7 +839,7 @@ _JOB_
 
 const char sh_optfg[] =
 "[-1c?@(#)$Id: fg (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?fg - move jobs to the foreground]"
 "[+DESCRIPTION?\bfg\b places the given \ajob\as into the foreground "
 	"in sequence and sends them a \bCONT\b signal to start each running.]"
@@ -859,7 +860,7 @@ _JOB_
 
 const char sh_optdisown[] =
 "[-1c?@(#)$Id: disown (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?disown - disassociate a job with the current shell]"
 "[+DESCRIPTION?\bdisown\b prevents the current shell from sending "
 	"a \bHUP\b signal to each of the given \ajob\as when "
@@ -880,7 +881,7 @@ _JOB_
 
 const char sh_optjobs[] =
 "[-1c?@(#)$Id: jobs (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?jobs - display status of jobs]"
 "[+DESCRIPTION?\bjobs\b displays information about specified \ajob\as "
 	"that were started by the current shell environment on standard "
@@ -910,7 +911,8 @@ _JOB_
 ;
 
 const char sh_opthash[] =
-"[-1c?\n@(#)$Id: hash (ksh93) 2021-01-07 $\n]"
+"[-1c?\n@(#)$Id: hash (ksh 93u+m) 2021-01-07 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?hash - display the locations of recently used programs]"
 "[+DESCRIPTION?\bhash\b displays or modifies the hash table with the "
 	"locations of recently used programs. If given no arguments, it lists "
@@ -930,7 +932,7 @@ const char sh_opthash[] =
 
 const char sh_opthist[]	= 
 "[-1cn?@(#)$Id: hist (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?\f?\f - process command history list]"
 "[+DESCRIPTION?\b\f?\f\b lists, edits, or re-executes, commands  "
 	"previously entered into the current shell environment.]"
@@ -998,7 +1000,7 @@ USAGE_LICENSE
 
 const char sh_optkill[]	 = 
 "[-1c?\n@(#)$Id: kill (AT&T Research) 2012-04-13 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?kill - terminate or signal process]"
 "[+DESCRIPTION?With the first form in which \b-l\b is not specified, "
 	"\bkill\b sends a signal to one or more processes specified by "
@@ -1049,7 +1051,8 @@ _JOB_
 
 #if defined(JOBS) && defined(SIGSTOP)
 const char sh_optstop[] =
-"[-1c?\n@(#)$Id: stop (ksh93) 2020-06-22 $\n]"
+"[-1c?\n@(#)$Id: stop (ksh 93u+m) 2020-06-22 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?stop - suspend a process]"
 "[+DESCRIPTION?\bstop\b sends a \bSIGSTOP\b signal to one or more processes "
 	"specified by \ajob\a, suspending them until they receive \bSIGCONT\b.]"
@@ -1067,7 +1070,8 @@ _JOB_
 ;
 
 const char sh_optsuspend[] =
-"[-1c?\n@(#)$Id: suspend (ksh93) 2020-06-22 $\n]"
+"[-1c?\n@(#)$Id: suspend (ksh 93u+m) 2020-06-22 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?suspend - stop the shell]"
 "[+DESCRIPTION?\bsuspend\b sends a \bSIGSTOP\b signal to the main shell "
 	"process, suspending the script or child shell session until it "
@@ -1085,7 +1089,7 @@ const char sh_optsuspend[] =
 
 const char sh_optlet[]	=
 "[-1c?@(#)$Id: let (AT&T Research) 2000-04-02 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?let - evaluate arithmetic expressions]"
 "[+DESCRIPTION?\blet\b evaluates each \aexpr\a in the current "
 	"shell environment as an arithmetic expression using ANSI C "
@@ -1108,7 +1112,7 @@ USAGE_LICENSE
 
 const char sh_optprint[] =
 "[-1c?\n@(#)$Id: print (AT&T Research) 2008-11-26 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?print - write arguments to standard output]"
 "[+DESCRIPTION?By default, \bprint\b writes each \astring\a operand to "
 	"standard output and appends a newline character.]"  
@@ -1162,8 +1166,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optprintf[] =
-"[-1c?\n@(#)$Id: printf (AT&T Research/ksh93) 2020-08-10 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: printf (ksh 93u+m) 2020-08-10 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?printf - write formatted output]"
 "[+DESCRIPTION?\bprintf\b writes each \astring\a operand to "
 	"standard output using \aformat\a to control the output format.]"  
@@ -1336,7 +1340,7 @@ USAGE_LICENSE
 
 const char sh_optpwd[] =
 "[-1c?\n@(#)$Id: pwd (AT&T Research) 1999-06-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?pwd - write working directory name]"
 "[+DESCRIPTION?\bpwd\b writes an absolute pathname of the current working "
 	"directory to standard output.   An absolute pathname is a "
@@ -1360,7 +1364,7 @@ USAGE_LICENSE
 
 const char sh_optread[] =
 "[-1c?\n@(#)$Id: read (AT&T Research) 2006-12-19 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?read - read a line from standard input]"
 "[+DESCRIPTION?\bread\b reads a line from standard input and breaks it "
 	"into fields using the characters in value of the \bIFS\b variable "
@@ -1409,8 +1413,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optreadonly[] =
-"[-1c?\n@(#)$Id: readonly (AT&T Research/ksh93) 2020-06-28 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: readonly (ksh 93u+m) 2020-06-28 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?readonly - set readonly attribute on variables]"
 "[+DESCRIPTION?\breadonly\b sets the readonly attribute on each of "
 	"the variables specified by \aname\a which prevents their "
@@ -1443,7 +1447,8 @@ USAGE_LICENSE
 ;
 
 const char sh_optredirect[] =
-"[-1c?\n@(#)$Id: redirect (ksh93) 2020-08-08 $\n]"
+"[-1c?\n@(#)$Id: redirect (ksh 93u+m) 2020-08-08 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?redirect - open/close and duplicate file descriptors]"
 "[+DESCRIPTION?This command only accepts input/output redirections. "
 	"It can open and close files and modify file descriptors from \b0\b "
@@ -1469,7 +1474,7 @@ const char sh_optredirect[] =
 
 const char sh_optreturn[] =
 "[-1c?\n@(#)$Id: return (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?return - return from a function or dot script ]"
 "[+DESCRIPTION?\breturn\b is a shell special built-in that causes the "
 	"function or dot script that invokes it to exit.  "
@@ -1492,8 +1497,12 @@ USAGE_LICENSE
 
 const char sh_optksh[] =
 "+[-1?\n@(#)$Id: sh (AT&T Research) "SH_RELEASE" $\n]"
-USAGE_LICENSE
+"[-author?David Korn <dgk@research.att.com>]"
+"[-author?Contributors to https://github.com/ksh93/ksh]"
+"[-copyright?(c) 1982-2014 AT&T Intellectual Property]"
 "[-copyright?" SH_RELEASE_CPYR "]"
+"[-license?http://www.eclipse.org/org/documents/epl-v10.html]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?\b\f?\f\b - Shell, the standard command language interpreter]"
 "[+DESCRIPTION?\b\f?\f\b is a command language interpreter that "
 	"executes commands read from a command line string, the "
@@ -1575,7 +1584,7 @@ USAGE_LICENSE
 ;
 const char sh_optset[] =
 "+[-1c?\n@(#)$Id: set (AT&T Research) 1999-09-28 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?set - set/unset options and positional parameters]"
 "[+DESCRIPTION?\bset\b sets or unsets options and positional parameters.  "
 	"Options that are specified with a \b-\b cause the options to "
@@ -1616,7 +1625,7 @@ USAGE_LICENSE
 
 const char sh_optshift[] =
 "[-1c?\n@(#)$Id: shift (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?shift - shift positional parameters]"
 "[+DESCRIPTION?\bshift\b is a shell special built-in that shifts the "
 	"positional parameters to the left by the number of places "
@@ -1639,7 +1648,7 @@ USAGE_LICENSE
 
 const char sh_optsleep[] =
 "[-1c?\n@(#)$Id: sleep (AT&T Research) 2009-03-12 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?sleep - suspend execution for an interval]"
 "[+DESCRIPTION?\bsleep\b suspends execution for at least the time specified "
 	"by \aduration\a or until a \bSIGALRM\b signal is received. "
@@ -1673,7 +1682,7 @@ USAGE_LICENSE
 
 const char sh_opttrap[] =
 "[-1c?\n@(#)$Id: trap (AT&T Research) 1999-07-17 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?trap - trap signals and conditions]"
 "[+DESCRIPTION?\btrap\b is a special built-in that defines actions to be "
 	"taken when conditions such as receiving a signal occur.  Also, "
@@ -1725,8 +1734,8 @@ USAGE_LICENSE
 ;
 
 const char sh_opttypeset[] =
-"+[-1c?\n@(#)$Id: typeset (AT&T Research/ksh93) 2021-01-20 $\n]"
-USAGE_LICENSE
+"+[-1c?\n@(#)$Id: typeset (ksh 93u+m) 2021-01-20 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?typeset - declare or display variables with attributes]"
 "[+DESCRIPTION?Without the \b-f\b option, \btypeset\b sets, unsets, "
 	"or displays attributes of variables as specified with the "
@@ -1849,7 +1858,7 @@ USAGE_LICENSE
 
 const char sh_optulimit[] =
 "[-1c?@(#)$Id: ulimit (AT&T Research) 2003-06-21 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?ulimit - set or display resource limits]"
 "[+DESCRIPTION?\bulimit\b sets or displays resource limits.  These "
 	"limits apply to the current process and to each child process "
@@ -1884,7 +1893,8 @@ USAGE_LICENSE
 ;
 
 const char sh_opttimes[] =
-"[-1c?@(#)$Id: times (ksh93) 2020-07-14 $\n]"
+"[-1c?@(#)$Id: times (ksh 93u+m) 2020-07-14 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?times - display CPU usage by the shell and child processes]"
 "[+DESCRIPTION?\btimes\b displays the accumulated user and system CPU times, "
 "one line with the times used by the shell and another with those used by "
@@ -1894,7 +1904,7 @@ const char sh_opttimes[] =
 
 const char sh_optumask[] =
 "[-1c?\n@(#)$Id: umask (AT&T Research) 1999-04-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?umask - get or set the file creation mask]"
 "[+DESCRIPTION?\bumask\b sets the file creation mask of the current "
 	"shell execution environment to the value specified by the "
@@ -1921,7 +1931,7 @@ USAGE_LICENSE
 const char sh_optuniverse[]	= " [name]";
 const char sh_optunset[] =
 "[-1c?\n@(#)$Id: unset (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?unset - unset values and attributes of variables and functions]"
 "[+DESCRIPTION?For each \aname\a specified, \bunset\b  unsets the variable, "
 	"or function if \b-f\b is specified, from the current shell "
@@ -1947,7 +1957,7 @@ USAGE_LICENSE
 
 const char sh_optunalias[] =
 "[-1c?\n@(#)$Id: unalias (AT&T Research) 1999-07-07 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?unalias - remove alias definitions]"
 "[+DESCRIPTION?\bunalias\b removes the definition of each named alias "
 	"from the current shell execution environment, or all aliases if "
@@ -1969,7 +1979,7 @@ USAGE_LICENSE
 
 const char sh_optwait[]	=
 "[-1c?\n@(#)$Id: wait (AT&T Research) 1999-06-17 $\n]"
-USAGE_LICENSE
+"[--catalog?" SH_DICT "]"
 "[+NAME?wait - wait for process or job completion]"
 "[+DESCRIPTION?\bwait\b with no operands, waits until all jobs "
 	"known to the invoking shell have terminated.  If one or more "
@@ -1996,8 +2006,8 @@ _JOB_
 ;
 
 const char sh_optwhence[] =
-"[-1c?\n@(#)$Id: whence (AT&T Research/ksh93) 2020-09-25 $\n]"
-USAGE_LICENSE
+"[-1c?\n@(#)$Id: whence (ksh 93u+m) 2020-09-25 $\n]"
+"[--catalog?" SH_DICT "]"
 "[+NAME?whence, type - locate a command and describe its type]"
 "[+DESCRIPTION?Without \b-v\b, \bwhence\b writes on standard output an "
 	"absolute pathname, if any, corresponding to \aname\a based "

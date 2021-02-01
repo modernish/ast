@@ -32,7 +32,9 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-?
 @(#)$Id: hurl (AT&T Research) 2009-01-20 $
 ]
-'$USAGE_LICENSE$'
+[-author?Glenn Fowler <gsf@research.att.com>]
+[-copyright?Copyright (c) 2003-2012 AT&T Intellectual Property]
+[-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?hurl - copy http url data]
 [+DESCRIPTION?\bhurl\b copies the data for the \bhttp\b \aurl\a operand
 	to the standard output. The \aurl\a must be of the form

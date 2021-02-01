@@ -24,7 +24,7 @@
 
 static const char usage[] =
 "[-?\n@(#)$Id: pids (AT&T Research) 2011-08-27 $\n]"
-USAGE_LICENSE
+"[--catalog?" ERROR_CATALOG "]"
 "[+NAME?pids - list calling shell process ids]"
 "[+DESCRIPTION?When invoked as a shell builtin, \bpids\b lists one or "
     "more of the calling process ids determined by \bgetpid\b(2), "
