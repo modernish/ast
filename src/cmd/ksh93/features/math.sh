@@ -29,7 +29,7 @@ esac
 
 command=$0
 iffeflags="-n -v"
-iffehdrs="math.h"
+iffehdrs="ast_float.h"
 iffelibs="-lm"
 table=/dev/null
 
@@ -136,11 +136,11 @@ case $_hdr_ieeefp in
 1)	echo "#include <ieeefp.h>" ;;
 esac
 cat <<!
+#include <ast_float.h>
 #if defined(__ia64__) && defined(signbit)
 # if defined __GNUC__ && __GNUC__ >= 4
 #  define __signbitl(f)		__builtin_signbitl(f)
 # else
-#  include <ast_float.h>
 #  if _lib_copysignl
 #   define __signbitl(f)	(int)(copysignl(1.0,(f))<0.0)
 #  endif

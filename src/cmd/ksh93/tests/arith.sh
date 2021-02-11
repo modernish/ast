@@ -297,6 +297,12 @@ fi
 if	(( (4**3)**2 != pow(pow(4,3),2) ))
 then	err_exit '(4**3)**2 not working'
 fi
+if	(( 1**Inf != pow(1,Inf) ))
+then	err_exit '1**Inf not working'
+fi
+if	(( 1**NaN != pow(1,NaN) ))
+then	err_exit '1**NaN not working'
+fi
 typeset -Z3 x=11
 typeset -i x
 if	(( x != 11 ))
@@ -465,8 +471,12 @@ then	set \
 	(( NaN != NaN )) || err_exit 'NaN == NaN'
 	(( -5*Inf == -Inf )) || err_exit '-5*Inf != -Inf'
 	[[ $(print -- $((sqrt(-1.0)))) == ?(-)nan ]]|| err_exit 'sqrt(-1.0) != NaN'
+	(( pow(1.0,-Inf) == 1.0 )) || err_exit 'pow(1.0,-Inf) != 1.0'
+	(( pow(-Inf,0.0) == 1.0 )) || err_exit 'pow(-Inf,0.0) != 1.0'
 	(( pow(1.0,Inf) == 1.0 )) || err_exit 'pow(1.0,Inf) != 1.0'
 	(( pow(Inf,0.0) == 1.0 )) || err_exit 'pow(Inf,0.0) != 1.0'
+	(( pow(1.0,NaN) == 1.0 )) || err_exit 'pow(1.0,NaN) != 1.0'
+	(( pow(Nan,0.0) == 1.0 )) || err_exit 'pow(Nan,0.0) != 1.0'
 	[[ $(print -- $((NaN/Inf))) == ?(-)nan ]] || err_exit 'NaN/Inf != NaN'
 	(( 4.0/Inf == 0.0 )) || err_exit '4.0/Inf != 0.0'
 else	err_exit 'Inf and NaN not working'
