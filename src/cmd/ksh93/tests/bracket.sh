@@ -264,9 +264,14 @@ test '(' = ')' && err_exit '"test ( = )" should not be true'
 [[ $($SHELL -c 'case  F in ~(Eilr)[a-z0-9#]) print ok;;esac' 2> /dev/null) == ok ]] || err_exit '~(Eilr) not working in case command'
 [[ $($SHELL -c "case  Q in ~(Fi)q |  \$'\E') print ok;;esac" 2> /dev/null) == ok ]] || err_exit '~(Fi)q | \E  not working in case command'
 
-for l in C en_US.ISO8859-15
-do	[[ $($SHELL -c "LC_COLLATE=$l" 2>&1) ]] && continue
-	export LC_COLLATE=$l
+for l in C en_US.ISO8859-1 en_US.ISO8859-15 en_US.UTF-8
+do	if [[ ! $(locale -a) =~ "${l}" ]] ||
+	   [[ $($SHELL -c "LC_COLLATE=${l}" 2>&1) ]]
+	then
+		print -u2 "\t${Command}[$LINENO]: warning: cannot test unavailable locale: ${l}"
+                continue
+	fi
+	export LC_COLLATE="${l}"
 	set -- \
 		'A'   0 1 1   0 1 1      1 0 0   1 0 0   \
 		'Z'   0 1 1   0 1 1      1 0 0   1 0 0   \
@@ -300,7 +305,7 @@ do	[[ $($SHELL -c "LC_COLLATE=$l" 2>&1) ]] && continue
 			shift
 			[[ $c == $p ]]
 			g=$?
-			[[ $g == $e ]] || err_exit "[[ '$c' == $p ]] for LC_COLLATE=$l failed -- expected $e, got $g"
+			[[ $g == $e ]] || err_exit "[[ '$c' == $p ]] for LC_COLLATE=${l} failed -- expected $e, got $g"
 		done
 	done
 done
