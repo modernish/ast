@@ -687,8 +687,8 @@ ckmagic(register Magic_t* mp, const char* file, char* buf, char* end, struct sta
 				c = mp->fbsz;
 				if (c >= sizeof(mp->nbuf))
 					c = sizeof(mp->nbuf) - 1;
-				p = (char*)memcpy(mp->nbuf, p, c);
-				p[c] = 0;
+				p = strncpy(mp->nbuf, p, c);
+				p[c] = '\0';
 				ccmapstr(mp->x2n, p, c);
 				if ((c = regexec(ep->value.sub, p, elementsof(matches), matches, 0)) || (c = regsubexec(ep->value.sub, p, elementsof(matches), matches)))
 				{
