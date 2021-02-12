@@ -388,6 +388,17 @@ actual=$(echo begin; [ -n X -a -t ] || test -n X -a -t && echo -t is true; echo 
 [[ $actual == "$expect" ]] || err_exit 'test -t in comsub fails (compound expression)' \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
+function has_controlling_terminal
+{
+    if [[ -c /dev/tty ]] && [[ -w /dev/tty ]]; then
+        >/dev/tty || return
+        print -- TRUE
+    fi
+}
+if [[ $(has_controlling_terminal) != "TRUE" ]]
+then
+    print -u2 "\t${Command}[$LINENO]: warning: no controlling terminal: skipping comsub tests"
+else
 # This is the more complex case that does redirect stdout within the command substitution to the
 # actual tty. Thus the [ -t 1 ] test should be true.
 actual=$(echo begin; exec >/dev/tty; [ -t 1 ] && test -t 1 && [[ -t 1 ]]) \
@@ -399,6 +410,8 @@ actual=$(echo begin; exec >/dev/tty; [ -t ] && test -t) \
 || err_exit 'test -t in comsub with exec >/dev/tty fails'
 actual=$(echo begin; exec >/dev/tty; [ -n X -a -t ] && test -n X -a -t) \
 || err_exit 'test -t in comsub with exec >/dev/tty fails (compound expression)'
+fi
+unset -f has_controlling_terminal
 
 # The POSIX mode should disable the ancient 'test -t' compatibility hack.
 if	[[ -o ?posix ]]
