@@ -53,6 +53,17 @@ then	N=1024			# number of iterations for each test
 	{
 		cut -f 23 -d ' ' </proc/$$/stat
 	}
+# On UnixWare, read the process virtual size with ps
+elif	[[ $(uname) == UnixWare ]] &&
+	n=$(ps -o vsz= -p "$$" 2>/dev/null) &&
+	let "($n) == ($n) && n > 0"
+then	N=16384
+	unit=KiB
+	tolerance=$((4*N/1024))	# tolerate 4 bytes per iteration to account for malloc artefacts
+	function getmem
+	{
+		ps -o vsz= -p "$$"
+	}
 # Otherwise, make do with the nonstandard 'rss' (real resident size) keyword
 # of the 'ps' command (the standard 'vsz', virtual size, is not usable).
 elif	n=$(ps -o rss= -p "$$" 2>/dev/null) &&
