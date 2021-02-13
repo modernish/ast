@@ -139,7 +139,7 @@ void sh_delay(double t, int sflag)
 
 	ts.tv_sec = n;
 	ts.tv_nsec = 1000000000 * (t - (double)n);
-	while(tvsleep(&ts, &tx) < 0 && errno == EINTR)
+	while(tvsleep(&ts, &tx) < 0)
 	{
 		if ((shp->trapnote & (SH_SIGSET | SH_SIGTRAP)) || sflag)
 			return;

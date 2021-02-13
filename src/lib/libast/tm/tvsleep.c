@@ -41,6 +41,8 @@
 # endif
 #endif
 
+#define NANOSECONDS 1000000000L
+
 /*
  * sleep for tv
  * non-zero exit if sleep did not complete
@@ -53,11 +55,12 @@ int
 tvsleep(register const Tv_t* tv, register Tv_t* rv)
 {
 
+	int		r;
+
 #if _lib_nanosleep
 
 	struct timespec	stv;
 	struct timespec	srv;
-	int		r;
 
 	stv.tv_sec = tv->tv_sec;
 	stv.tv_nsec = tv->tv_nsec;
@@ -77,13 +80,11 @@ tvsleep(register const Tv_t* tv, register Tv_t* rv)
 
 #if _lib_select
 
-	struct timeval	stv;
+	struct timeval tvSleep = { tv->tv_sec, tv->tv_nsec / 1000 };
+	if (tv->tv_nsec % 1000)
+		++tvSleep.tv_usec;
 
-	stv.tv_sec = tv->tv_sec;
-	if (!(stv.tv_usec = tv->tv_nsec / 1000))
-		stv.tv_usec = 1;
-	if (select(0, NiL, NiL, NiL, &stv) >= 0)
-		return 0;
+	r = select(0, NiL, NiL, NiL, &tvSleep);
 
 #else
 
@@ -162,51 +163,52 @@ tvsleep(register const Tv_t* tv, register Tv_t* rv)
 
 	if (!(t = (n + 999999L) / 1000000L))
 		t = 1;
-	if (poll(&pfd, 0, t) >= 0)
-		return 0;
+	r = poll(&pfd, 0, t);
 
 #endif
 
 #endif
 
 	}
- bad:
-	if (errno == EINTR && rv)
+
+/* Ascertain whether we actually slept for a sufficient time.
+ * It is preferable to sleep a little more than necessary than too little.
+ */
 	{
-		tvgettime(rv);
-		if (rv->tv_nsec < bv.tv_nsec)
+		struct timespec tsAfter;
+		long sec, nsec;
+
+		tvgettime(&tsAfter);
+
+		/* Calculate seconds left to sleep */
+		sec = (long)(tv->tv_sec + tv->tv_nsec / NANOSECONDS) -
+			((long)tsAfter.tv_sec - (long)bv.tv_sec);
+
+		/* Calculate nanoseconds left to sleep */
+		nsec = (long)(tv->tv_nsec % NANOSECONDS) -
+			((long)tsAfter.tv_nsec - (long)bv.tv_nsec);
+		if (nsec >= NANOSECONDS)
 		{
-			rv->tv_nsec += 1000000000L;
-			rv->tv_sec--;
+			++sec;
+			nsec -= NANOSECONDS;
 		}
-		rv->tv_nsec -= bv.tv_nsec;
-		rv->tv_sec -= bv.tv_sec;
-		if (rv->tv_sec > tv->tv_sec)
+		else if (nsec < 0)
 		{
-			rv->tv_sec = 0;
-			rv->tv_nsec = 0;
+			--sec;
+			nsec += NANOSECONDS;
 		}
-		else
+
+		if (sec >= 0 && (sec > 0 || nsec > 0))
 		{
-			rv->tv_sec = tv->tv_sec - rv->tv_sec;
-			if (rv->tv_nsec > tv->tv_nsec)
+			if (rv)
 			{
-				if (!rv->tv_sec)
-				{
-					rv->tv_sec = 0;
-					rv->tv_nsec = 0;
-				}
-				else
-				{
-					rv->tv_sec--;
-					rv->tv_nsec = 1000000000L - rv->tv_nsec + tv->tv_nsec;
-				}
+				rv->tv_sec  = sec;
+				rv->tv_nsec = nsec;
 			}
-			else
-				rv->tv_nsec = tv->tv_nsec - rv->tv_nsec;
+			return -1;
 		}
 	}
-	return -1;
+	return r;
 
 #endif
 

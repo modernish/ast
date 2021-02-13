@@ -40,11 +40,15 @@ if	(( RANDOM==RANDOM || $RANDOM==$RANDOM ))
 then	err_exit RANDOM variable not working
 fi
 # SECONDS
-let SECONDS=0.0
-sleep .001
-if	(( SECONDS < .001 ))
-then	err_exit "either 'sleep' or \$SECONDS not working"
+float secElapsed=0.0 secSleep=0.001
+let SECONDS=$secElapsed
+sleep $secSleep
+secElapsed=SECONDS
+if	(( secElapsed < secSleep ))
+then	err_exit "slept ${secElapsed} seconds instead of ${secSleep}: " \
+                 "either 'sleep' or \$SECONDS not working"
 fi
+unset -v secElapsed secSleep
 # _
 set abc def
 if	[[ $_ != def ]]
@@ -508,12 +512,11 @@ fi
 function foo
 {
 	typeset SECONDS=0
-	sleep .002
+	sleep 0.002
 	print $SECONDS
-
 }
 x=$(foo)
-(( x >.001 && x < 1 ))
+(( x >= 0.002 && x < 1 ))
 '
 } 2> /dev/null   || err_exit 'SECONDS not working in function'
 cat > $tmp/script <<-\!
