@@ -1126,7 +1126,7 @@ function gosleep
 	"$bin_sleep" 1
 }
 x=$(
-	(sleep .25; pid=; ps | grep sleep | read pid extra; [[ $pid ]] && kill -- "$pid") &
+	(sleep .25; pid=; ps 2>/dev/null | grep sleep | read pid extra; [[ $pid ]] && kill -- "$pid") &
 	gosleep 2> /dev/null
 	print ok
 )
