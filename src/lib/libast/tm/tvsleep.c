@@ -41,6 +41,11 @@
 # endif
 #endif
 
+#if defined(_lib_setitimer) && defined(_lib_signal)
+#include <signal.h>
+void wakeup(int unused) {}
+#endif
+
 /*
  * sleep for tv
  * non-zero exit if sleep did not complete
@@ -67,6 +72,72 @@ tvsleep(register const Tv_t* tv, register Tv_t* rv)
 		rv->tv_nsec = srv.tv_nsec;
 	}
 	return r;
+
+#elif defined(_lib_setitimer) && defined(_lib_signal)
+
+	#define MICROSECONDS 1000000
+	struct itimerval itvSleep;
+	struct timeval tvBefore, tvAfter;
+	void (*handleOld)(int) = SIG_DFL;
+	long secSleep, secDiff;
+	long usecSleep, usecDiff;
+	int result = 0;
+
+	memset(&itvSleep, 0, sizeof(itvSleep));
+	memset(&tvBefore, 0, sizeof(tvBefore));
+	memset(&tvAfter, 0, sizeof(tvAfter));
+
+	secSleep = tv->tv_sec;
+	if (!(usecSleep = tv->tv_nsec / 1000))
+	{
+		usecSleep = 1;
+	}
+	handleOld = signal(SIGALRM, wakeup);
+
+	do
+	{
+		gettimeofday(&tvBefore, NULL);
+		itvSleep.it_value.tv_sec = secSleep;
+		itvSleep.it_value.tv_usec = usecSleep;
+		if (result = setitimer(ITIMER_REAL, &itvSleep, NULL) == 0)
+		{
+			pause();
+			gettimeofday(&tvAfter, NULL);
+
+			usecDiff = tvAfter.tv_usec - tvBefore.tv_usec;
+			if (usecDiff < 0)
+			{
+				usecDiff  = tvAfter.tv_usec;
+				usecDiff += MICROSECONDS - tvBefore.tv_usec;
+			}
+
+			if (usecDiff > usecSleep)
+			{
+				if (secSleep == 0) {
+					/* We have run out of time to sleep. */
+					break;
+				}
+
+				--secSleep;
+				usecSleep += MICROSECONDS;
+			}
+			usecSleep -= usecDiff;
+
+			secDiff = abs(tvAfter.tv_sec - tvBefore.tv_sec);
+			if (secDiff > secSleep)
+			{
+				/* If we slept more than a second longer than necessary,
+				 * microseconds no longer matter.
+				 */
+				break;
+			}
+
+			secSleep -= secDiff;
+		}
+	} while (usecSleep > 0 || secSleep > 0);
+
+	signal(SIGALRM, handleOld);
+	return result;
 
 #else
 
