@@ -30,48 +30,28 @@ Bad*)	echo "Cannot be run by zsh in native mode; use a sh symlink to zsh" >&2
 	exit 1 ;;
 esac
 
-unset CDPATH PWD
-case $0 in
+unset CDPATH pwd
+case "$0" in
 -*)
 	echo "dodgy \$0: $0" >&2
 	exit 1 ;;
-*/package)
-	mydir=`echo "$0" | sed 's,/package$,,'`
-	cd "$mydir" || exit
-	case ${PWD:-`pwd`} in
-	*/bin)	;;
-	*)	echo "this script must live in bin/" >&2
-		exit 1 ;;
-	esac
-	case $mydir in
-	*/arch/*/*/bin)
-		cd .. ;;
-	*/arch/*/bin)
-		cd ../../.. ;;
-	*)	cd .. ;;
-	esac || exit
-	unset mydir ;;
-package)
-	me=`command -v package` || me=`which package` || exit
-	mydir=`echo "$me" | sed 's,/package$,,'`
-	cd "$mydir" || exit
-	case ${PWD:-`pwd`} in
-	*/bin)	;;
-	*)	echo "this script must live in bin/" >&2
-		exit 1 ;;
-	esac
-	case $mydir in
-	*/arch/*/*/bin)
-		cd .. ;;
-	*/arch/*/bin)
-		cd ../../.. ;;
-	*)	cd .. ;;
-	esac || exit
-	unset me mydir ;;
+*/package)	pwd="$0" ;;
+package)	pwd=`command -v package || which package` || exit 1 ;;
 *)
 	echo "this script must be named 'package'" >&2
 	exit 1 ;;
 esac
+
+pwd=`dirname "$pwd"`
+cd "$pwd" || exit
+case ${PWD:-`pwd -P`} in
+	*arch/*/*/bin)	cd .. ;;
+	*arch/*/bin)	cd ../../.. ;;
+	*bin)	cd .. ;;
+	*)	echo "this script must live in bin/" >&2
+		exit 1 ;;
+esac || exit
+unset pwd
 
 # shell checks
 checksh()
@@ -1513,7 +1493,7 @@ admin)	while	:
 		esac
 	done
 	;;
-setup)	PACKAGEROOT=${PWD:-`pwd`}
+setup)	PACKAGEROOT=${PWD:-`pwd -P`}
 	export PACKAGEROOT
 	KEEP_PACKAGEROOT=1
 	;;
@@ -1580,7 +1560,7 @@ use)	case $1 in
 			exit
 			;;
 		esac
-		PACKAGEROOT=${PWD:-`pwd`}
+		PACKAGEROOT=${PWD:-`pwd -P`}
 		$show export PACKAGEROOT
 	esac
 	;;
@@ -2519,7 +2499,7 @@ int main()
 				*) abi=-64 ;;
 				esac
 				;;
-			*)	pwd=`pwd`
+			*)	pwd=`pwd -P`
 				cd "$TMPDIR"
 				tmp=hi$$
 				trap 'rm -f $tmp.*' 0 1 2
@@ -2760,7 +2740,7 @@ case $x in
 			;;
 		esac
 		case $PACKAGEROOT in
-		'')	PACKAGEROOT=${PWD:-`pwd`} ;;
+		'')	PACKAGEROOT=${PWD:-`pwd -P`} ;;
 		esac
 
 		# . must be within the PACKAGEROOT tree
@@ -6123,7 +6103,7 @@ cat $j $k
 	fi
 	;;
 
-read)	case ${PWD:-`pwd`} in
+read)	case ${PWD:-`pwd -P`} in
 	$PACKAGEROOT)
 		;;
 	*)	echo "$command: must be in package root directory" >&2
