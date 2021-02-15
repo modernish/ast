@@ -318,13 +318,13 @@ int ed_emacsread(void *context, int fd,char *buff,int scend, int reedit)
 			killing = 0;
 #endif
 		oadjust = count = adjust;
-		if(vt220_save_repeat)
-		{
-			count = vt220_save_repeat;
-			vt220_save_repeat = 0;
-		}
 		if(count<0)
 			count = 1;
+		if(vt220_save_repeat>0)
+		{
+			count += vt220_save_repeat;
+			vt220_save_repeat = 0;
+		}
 		adjust = -1;
 		i = cur;
 		if(c!='\t' && c!=ESC && !digit(c))
