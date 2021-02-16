@@ -641,6 +641,7 @@ r ^:test-2:
 !
 
 # err_exit #
+((SHOPT_ESH)) &&
 tst $LINENO <<"!"
 L backslashctrl functionality in emacs mode reverse search
 
