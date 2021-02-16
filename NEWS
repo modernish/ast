@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-02-15:
+
+- Fixed a bug in the emacs built-in editor, introduced on 2020-09-17, that
+  made the Meta-D and Meta-H keys delete single characters instead of words.
+
 2021-02-14:
 
 - Due to a deficiency in some UNIX veriants, the 'sleep' built-in command could
