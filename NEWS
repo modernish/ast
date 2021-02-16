@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-02-16:
+
+- Fixed buggy behavior in emacs mode reverse search when control characters
+  are escaped with a backslash.
+
 2021-02-15:
 
 - Fixed a regression introduced by ksh93 (was not in ksh88): an empty 'case'

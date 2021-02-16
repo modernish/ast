@@ -1298,20 +1298,37 @@ static void search(Emacs_t* ep,genchar *out,int direction)
 			beep();
 			goto restore;
 		}
-		if (i == '\\')
+		if (!sh_isoption(SH_NOBACKSLCTRL))
 		{
-			string[sl++] = '\\';
-			string[sl] = '\0';
-			cur = sl;
-			draw(ep,APPEND);
-			i = ed_getchar(ep->ed,1);
-			string[--sl] = '\0';
+			while (i == '\\')
+			{
+				/*
+				 * Append the backslash to the command line, then escape
+				 * the next control character. Repeat the loop if the
+				 * next input is another backslash (otherwise every
+				 * second backslash is skipped).
+				 */
+				string[sl++] = '\\';
+				string[sl] = '\0';
+				cur = sl;
+				draw(ep,APPEND);
+				i = ed_getchar(ep->ed,1);
+
+				/* Backslashes don't affect Ctrl+C or newlines */
+				if (i == '\n' || i == '\r')
+					goto skip;
+				else if (i == cntl('C'))
+					goto restore;
+				else if (i == usrerase || !print(i))
+					string[--sl] = '\0';
+			}
 		}
 		string[sl++] = i;
 		string[sl] = '\0';
 		cur = sl;
 		draw(ep,APPEND);
 	}
+	skip:
 	i = genlen(string);
 	
 	if(ep->prevdirection == -2 && i!=2 || direction!=1)
