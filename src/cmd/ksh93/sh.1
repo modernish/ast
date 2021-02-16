@@ -4964,7 +4964,9 @@ Multiply parameter of next command by 4.
 .PP
 .TP 10
 .BI \e
-Escape next character.
+If the
+.B backslashctrl
+shell option is on (which is the default setting), this escapes the next character.
 Editing characters, the user's erase, kill and
 interrupt (normally
 .BR ^? )
@@ -4976,6 +4978,9 @@ The
 .B \e
 removes the next character's
 editing features (if any).
+See also
+.I lnext
+which is not subject to any shell option.
 .PP
 .TP 10
 .B M-^V
@@ -5074,7 +5079,9 @@ On some systems the \f3viraw\fP option
 may be required for this to work.
 .TP 10
 .BI \e
-Escape the next
+If the
+.B backslashctrl
+shell option is on (which is the default setting), this escapes the next
 .I erase
 or
 .I kill
@@ -7003,6 +7010,20 @@ The following argument can be one of the following option names:
 .B allexport
 Same as
 .BR \-a .
+.TP 8
+.B backslashctrl
+The backslash character
+.B \\\\
+escapes the next control character in the
+.B emacs
+built-in editor and the next
+.I erase
+or
+.I kill
+character in the
+.B vi
+built-in editor.
+On by default.
 .TP 8
 .B bgnice
 All background jobs are run at a lower priority.

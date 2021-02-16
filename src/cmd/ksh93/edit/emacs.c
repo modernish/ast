@@ -378,7 +378,7 @@ int ed_emacsread(void *context, int fd,char *buff,int scend, int reedit)
 			}
 			for(i= ++eol; i>cur; i--)
 				out[i] = out[i-1];
-			backslash =  (c == '\\');
+			backslash = (c == '\\' && !sh_isoption(SH_NOBACKSLCTRL));
 			out[cur++] = c;
 			draw(ep,APPEND);
 			continue;
@@ -1010,7 +1010,7 @@ static int escape(register Emacs_t* ep,register genchar *out,int count)
 				if(ep->ed->e_tabcount==1)
 				{
 					ep->ed->e_tabcount=2;
-					ed_ungetchar(ep->ed,cntl('\t'));
+					ed_ungetchar(ep->ed,'\t');
 					return(-1);
 				}
 				beep();
@@ -1229,7 +1229,7 @@ static void xcommands(register Emacs_t *ep,int count)
 				show_info(ep,hbuf);
 				return;
 			}
-#	if 0	/* debugging, modify as required */
+#	if !AST_ksh_release		/* debugging, modify as required */
 		case cntl('D'):		/* ^X^D show debugging info */
 			{
 				char debugbuf[MAXLINE];

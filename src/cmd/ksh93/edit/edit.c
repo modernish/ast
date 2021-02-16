@@ -785,6 +785,8 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 			sh_trap(".sh.subscript=$(" _pth_tput " cuu1 2>/dev/null)",0);
 #elif _tput_termcap
 			sh_trap(".sh.subscript=$(" _pth_tput " up 2>/dev/null)",0);
+#else
+#error no tput method
 #endif
 			if(pp=nv_getval(SH_SUBSCRNOD))
 				strncpy(CURSOR_UP,pp,sizeof(CURSOR_UP)-1);

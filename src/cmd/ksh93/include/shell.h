@@ -132,6 +132,7 @@ typedef union Shnode_u Shnode_t;
 #endif
 #define SH_POSIX	46
 #define SH_MULTILINE	47
+#define SH_NOBACKSLCTRL	48
 #define SH_LOGIN_SHELL	67
 #define SH_NOUSRPROFILE	79	/* internal use only */
 #define SH_COMMANDLINE	0x100	/* bit flag for invocation-only options ('set -o' cannot change them) */

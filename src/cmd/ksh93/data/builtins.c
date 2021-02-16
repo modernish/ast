@@ -204,6 +204,10 @@ const char sh_set[] =
 	"off. This can be repeated to enable/disable multiple options. "
 	"The value of \aoption\a must be one of the following:]{"
 		"[+allexport?Equivalent to \b-a\b.]"
+		"[+backslashctrl?The backslash character \b\\\b escapes the "
+			"next control character in the \bemacs\b built-in "
+			"editor and the next \aerase\a or \akill\a character "
+			"in the \bvi\b built-in editor. On by default.]"
 		"[+bgnice?Runs background jobs at lower priorities.]"
 #if SHOPT_BRACEPAT
 		"[+braceexpand?Equivalent to \b-B\b.] "

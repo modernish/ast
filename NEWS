@@ -8,6 +8,15 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a bug in the emacs built-in editor, introduced on 2020-09-17, that
   made the Meta-D and Meta-H keys delete single characters instead of words.
 
+- A new 'backslashctrl' shell option has been added. It is on by default.
+  Turning it off (set +o backslashctrl or set --nobackslashctrl) disables the
+  special escaping behaviour of the backslash character in the emacs and vi
+  built-in editors. Particularly in the emacs editor, this makes it much easier
+  to go back, insert a forgotten backslash into a command, and then continue
+  editing without having your next cursor key replace your backslash with
+  garbage. Note that Ctrl+V (or whatever other character was set using
+  'stty lnext') always escapes all control characters in either editing mode.
+
 2021-02-14:
 
 - Due to a deficiency in some UNIX veriants, the 'sleep' built-in command could

@@ -79,7 +79,7 @@ kill %+ >out 2>&1 || err_exit "'kill %+' not working in script (got $(printf %q 
 # =====
 # Before 2021-02-11, job control was deactivated in subshells
 # https://www.mail-archive.com/austin-group-l@opengroup.org/msg06456.html
-(sleep 1 & UNIX95=1 command -p ps -o pid=,pgid= -p $! 2>/dev/null) | IFS=$' \t' read -r pid pgid
+(sleep 1 & UNIX95=1 command -p ps -o pid= -o pgid= -p $! 2>/dev/null) | IFS=$' \t' read -r pid pgid
 if	let "pid>0 && pgid>0" 2>/dev/null
 then	kill $pid
 	let "pgid == pid" || err_exit "background job run in subshell didn't get its own process group ($pgid != $pid)"

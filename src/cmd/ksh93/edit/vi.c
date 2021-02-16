@@ -1583,7 +1583,7 @@ static void getline(register Vi_t* vp,register int mode)
 				mode = APPEND;
 				max_virt = last_virt+3;
 			}
-			backslash = (c == '\\');
+			backslash = (c == '\\' && !sh_isoption(SH_NOBACKSLCTRL));
 			append(vp,c, mode);
 			break;
 		}
