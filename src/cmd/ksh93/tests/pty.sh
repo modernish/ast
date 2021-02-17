@@ -660,7 +660,7 @@ p :test-4:
 w \cRs\\\\\cH\cH\cH
 u set
 
-# \ shouldn't escape Ctrl+C
+# \ shouldn't escape the interrupt character (usually Ctrl+C)
 w echo stringgg \cRset\\\cC\cH\cH
 u string
 !

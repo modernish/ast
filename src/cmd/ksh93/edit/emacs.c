@@ -1314,10 +1314,10 @@ static void search(Emacs_t* ep,genchar *out,int direction)
 				draw(ep,APPEND);
 				i = ed_getchar(ep->ed,1);
 
-				/* Backslashes don't affect Ctrl+C or newlines */
+				/* Backslashes don't affect the interrupt character or newlines */
 				if (i == '\n' || i == '\r')
 					goto skip;
-				else if (i == cntl('C'))
+				else if (i == ep->ed->e_intr)
 					goto restore;
 				else if (i == usrerase || !print(i))
 					string[--sl] = '\0';
