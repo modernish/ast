@@ -281,11 +281,12 @@ int ed_emacsread(void *context, int fd,char *buff,int scend, int reedit)
 #endif /* ESH_NFIRST */
 	}
 	ep->CntrlO = 0;
-	while ((c = ed_getchar(ep->ed,0)) != (-1))
+	while ((c = ed_getchar(ep->ed,backslash)) != (-1))
 	{
 		if (backslash)
 		{
-			backslash = 0;
+			if(c!='\\')
+				backslash = 0;
 			if (c==usrerase||c==usrkill||(!print(c) &&
 				(c!='\r'&&c!='\n')))
 			{
@@ -1317,8 +1318,6 @@ static void search(Emacs_t* ep,genchar *out,int direction)
 				/* Backslashes don't affect the interrupt character or newlines */
 				if (i == '\n' || i == '\r')
 					goto skip;
-				else if (i == ep->ed->e_intr)
-					goto restore;
 				else if (i == usrerase || !print(i))
 					string[--sl] = '\0';
 			}
