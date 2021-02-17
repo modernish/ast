@@ -1068,7 +1068,7 @@ int ed_getchar(register Edit_t *ep,int mode)
 	{
 		ed_flush(ep);
 		ep->e_inmacro = 0;
-		/* The while is necessary for reads of partial multbyte chars */
+		/* The while is necessary for reads of partial multibyte chars */
 		*ep->e_vi_insert = (mode==-2);
 		if((n=ed_read(ep,ep->e_fd,readin,-LOOKAHEAD,0)) > 0)
 			n = putstack(ep,readin,n,1);

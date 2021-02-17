@@ -5,12 +5,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-02-17:
 
-- Erasing a backslash while doing a reverse search in emacs mode no longer
-  deletes extra characters.
-- The interrupt character can now be escaped in emacs mode when entered
-  after a backslash.
-- A minor documentation error that called ^? the interrupt character has
-  been fixed (^C is usually the interrupt character).
+- Emacs mode fixes:
+  1. Erasing a backslash while doing a reverse search (^R) no longer deletes
+     extra characters.
+  2. The backslash now escapes a subsequent interrupt (^C) as documented.
 
 2021-02-15:
 

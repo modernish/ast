@@ -641,28 +641,33 @@ r ^:test-2:
 !
 
 # err_exit #
-((SHOPT_ESH)) && tst $LINENO <<"!"
-L backslashctrl functionality in emacs mode reverse search
+((SHOPT_ESH)) && [[ -o ?backslashctrl ]] && tst $LINENO <<"!"
+L nobackslashctrl in emacs
 
 d 10
-p :test-1:
 w set -o emacs --nobackslashctrl
 
 # --nobackslashctrl shouldn't be ignored by reverse search
 p :test-2:
 w \cR\\\cH\cH
 r ^:test-2: \r\n$
-p :test-3:
-w set -o backslashctrl
+!
 
-# Test for too many backslash deletions
-p :test-4:
-w \cRs\\\\\cH\cH\cH
-u set
+# err_exit #
+((SHOPT_ESH)) && tst $LINENO <<"!"
+L emacs backslash escaping
+
+d 10
+w set -o emacs
+
+# Test for too many backslash deletions in reverse-search mode
+p :test-2:
+w \cRset\\\\\\\\\cH\cH\cH\cH\cH
+r ^:test-2: set -o emacs$
 
 # \ should escape the interrupt character (usually Ctrl+C)
-w string\\\cC\cH
-r ^string\r\n$
+w true \\\cC
+r true \^C
 !
 
 # ======
