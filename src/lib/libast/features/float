@@ -2,7 +2,7 @@ set	prototyped
 set	nooptimize
 set	stdio FEATURE/standards
 hdr	float,limits,math,values
-lib,npt	frexp,frexpl,ldexp,ldexpl,finite,finitel,isinfl,isnanl,copysign,copysignl FEATURE/standards math.h -lm
+lib,npt	frexp,frexpl,ldexp,ldexpl,finite,finitel,isinfl,isnanl,copysign,copysignl,powf,pow,powl FEATURE/standards math.h -lm
 lib	fpclassify -lm note{ fpclassify present and works }end link{
 		#include <sys/types.h>
 		#include <sys/stat.h>
@@ -1231,15 +1231,33 @@ tst	- -DSCAN=1 - -lm -DSTRTO=1 - -DMAC=1 - -DDIV=1 - -DEXP=1 - -DADD=1 - -DMPY=1
 	}
 }end
 
-tst	ast_pow_ieee -lm note{ pow(1,inf) is IEEE compliant }end execute{
+if	need_ast_pow_macros -lm note{ are IEEE pow macro replacements needed }end execute{
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	#include <stdlib.h>
 	#include <unistd.h>
 	#include <math.h>
-	int main() { return pow(1.0, 1.0 / 0.0) != 1.0; }
-}end fail{
-	echo '#define powf(x,y)	(((x)==1.0)?1.0:powf((x),(y)))'
-	echo '#define pow(x,y)	(((x)==1.0)?1.0:pow((x),(y)))'
-	echo '#define powl(x,y)	(((x)==1.0)?1.0:powl((x),(y)))'
-}end
+	int main() { return pow(1.0, 1.0 / 0.0) == 1.0; }
+}end {
+	#define powf(x,y)	(((x)==1.0)?1.0:powf((x),(y)))
+	#define pow(x,y)	(((x)==1.0)?1.0:pow((x),(y)))
+	#define powl(x,y)	(((x)==1.0)?1.0:powl((x),(y)))
+}
+elif	tst need_ast_pow_funs -lm note{ are IEEE pow function replacements needed }end execute{
+	#include <sys/types.h>
+	#include <sys/stat.h>
+	#include <stdlib.h>
+	#include <unistd.h>
+	#include <math.h>
+	/* This bit of obfuscation defeats GCC's code optimizer. */
+	double (*volatile _ast_ppow)(double,double);
+	int main () { _ast_ppow = &pow; return (*_ast_ppow)(1.0, 1.0 / 0.0) == 1.0; }
+}end {
+	float			_ast_powf(float x, float y);
+	double			_ast_pow(double x, double y);
+	long double		_ast_powl(long double x, long double y);
+	#define powf(x,y)	(_ast_powf((x),(y)))
+	#define pow(x,y)	(_ast_pow((x),(y)))
+	#define powl(x,y)	(_ast_powl((x),(y)))
+}
+endif
