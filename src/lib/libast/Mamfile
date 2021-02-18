@@ -3128,6 +3128,7 @@ make install
 					prev include/tm.h implicit
 					prev include/error.h implicit
 					prev include/ast.h implicit
+					prev FEATURE/float implicit
 				done comp/omitted.c
 				meta omitted.o %.c>%.o comp/omitted.c omitted
 				prev comp/omitted.c
