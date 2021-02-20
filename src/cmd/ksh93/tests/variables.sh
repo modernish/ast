@@ -1189,7 +1189,7 @@ Hi, I'm still a function! On line 6, my \$LINENO is 6
 end: main script \$LINENO == 10"
 
 got=$(FPATH=$tmp "$SHELL" ./lineno_autoload 2>&1)
-[[ $got == "$exp" ]] || err_exit 'Regression in \$LINENO and/or error messages.' \
+[[ $got == "$exp" ]] || err_exit 'Regression in $LINENO and/or error messages.' \
 	$'Diff follows:\n'"$(diff -u <(print -r -- "$exp") <(print -r -- "$got") | sed $'s/^/\t| /')"
 
 # ======

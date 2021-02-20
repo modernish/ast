@@ -55,7 +55,7 @@ static const char usage[] =
 "[d:differences?Print at most \adifferences\a differences using "
     "\b--verbose\b output format. \b--differences=0\b is equivalent to "
     "\b--silent\b.]#[differences]"
-"[i:ignore-initial|skip?Skip the the first \askip1\a bytes in \afile1\a "
+"[i:ignore-initial|skip?Skip the first \askip1\a bytes in \afile1\a "
     "and the first \askip2\a bytes in \afile2\a. If \askip2\a is omitted "
     "then \askip1\a is used.]:[skip1[::skip2]]:=0::0]"
 "[l:verbose?Write the decimal byte number and the differing bytes (in "

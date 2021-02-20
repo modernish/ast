@@ -120,13 +120,13 @@ to re-execute the command.
 .LI
 The
 .B \-t
-option to \fBalias\fR builtin is is obsolete.  It
+option to \fBalias\fR builtin is obsolete.  It
 is used to set and list tracked aliases.
 There is no replacement.
 .LI
 The shell command line option
 .B \-t
-is obsolete.  This option cause the shell to exit after reading
+is obsolete.  This option causes the shell to exit after reading
 and executing one command.  The is no replacement (although ending
 \&"command" with the exit builtin should have the same effect).
 .LI

@@ -102,7 +102,7 @@ field width, and justification to shell variables.
 More pattern matching capabilities:  KSH-93 allows you to specify
 extended regular expressions for file and string matches.
 .LI
-KSH-93 uses a hierarchal name space for variables.
+KSH-93 uses a hierarchical name space for variables.
 Compound variables can be defined and variables can
 be passed by reference.  In addition, each variable
 can have one or more disciplines associated with

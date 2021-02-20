@@ -254,7 +254,7 @@ that supports a subset of the 1988 KornShell language.
 
 ksh has been written to be portable.
 It has been ported to virtually run on every known UNIX system.
-In addition it runs on non-UNIX systems such as IBM's MVS using OpenEdition, and
+In addition, it runs on non-UNIX systems such as IBM's MVS using OpenEdition, and
 Microsoft's Windows 9X, Windows NT and Windows 2000.
 ksh is part of the UWIN (Unix for Windows)</A>
 software,
@@ -389,7 +389,7 @@ If you run
 kill -l $?
 </DIV>
 </PRE>
-on this signal number, it will give the the name of the signal
+on this signal number, it will give the name of the signal
 that caused this exit.
 
 <DT>When I type builtin, I notice that some of these are full pathnames. What does this mean?<DD>
@@ -600,7 +600,7 @@ hand side, which removes the special meaning of pattern match
 characters, then this becomes a string comparison so that
 &#0091;&#0091; "$foo" == "bar" &#0093;&#0093; and &#0091;&#0091; "$bar" == "$foo" &#0093;&#0093; are equivalent.
 
-<DT>Why does ksh93 have print since echo already exists is is widely used?<DD>
+<DT>Why does ksh93 have print since echo already exists and is widely used?<DD>
 
 The behavior of echo varies from system to system.
 The POSIX standard does not define the behavior of echo when
@@ -620,7 +620,7 @@ as if you had invoked it as  echo foo | (read bar).
 <DT>How can I access a substring of a variable?<DD>
 
 The syntax ${varname:offset:len} can be used to generate
-the string of length len starting at the the specified
+the string of length len starting at the specified
 offset.   String offsets start at 0.  If :len is omitted,
 then the remainder of the string will be used.  Both offset
 and len can be arithmetic expressions.  A negative offset is
@@ -894,19 +894,19 @@ Alternatively, &lt;# and &gt;# can be followed by a shell pattern.  In this
 case, the file will be positioned to beginning of the next line
 containing this pattern.
 
-<DT>What is the the &lt;&lt;&lt; redirection operator?<DD>
+<DT>What is the &lt;&lt;&lt; redirection operator?<DD>
 
 It denotes a here-document in which the document is contained the
 argument that follows &lt;&lt;&lt; and therefore there is no delimiter.
 
-<DT>What is the the &gt;; redirection operator?<DD>
+<DT>What is the &gt;; redirection operator?<DD>
 
 This operator writes the output into a temporary file in the same
 directory as the file specified after &gt;;.  If the command completes
-successfully, then the the file is replaced.  Otherwise, the
+successfully, then the file is replaced.  Otherwise, the
 original file is unchanged and the temporary file removed.
 
-<DT>What is the the &lt;&gt;; redirection operator?<DD>
+<DT>What is the &lt;&gt;; redirection operator?<DD>
 
 The file is opened for reading and writing as with  &lt;&gt;.  However,
 when the file is closed it is truncated to the its current location.

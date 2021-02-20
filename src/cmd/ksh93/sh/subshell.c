@@ -787,7 +787,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 			/* Detach this scope from the unified view. */
 			shp->track_tree = dtview(sp->strack,0);
 			/* Delete (free) all elements of the subshell hash table. To allow dtnext() to
-			   set the pointer to the next item, we have to delete one item beind the loop. */
+			   set the pointer to the next item, we have to delete one item behind the loop. */
 			prev_np = 0;
 			np = (Namval_t*)dtfirst(sp->strack);
 			while(np)

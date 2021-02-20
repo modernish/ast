@@ -36,7 +36,7 @@ static const char usage[] =
 "	directory if \apath\a is omitted. If \avalue\a is specified then"
 "	\bgetconf\b attempts to change the process local value to \avalue\a."
 "	\b-\b may be used in place of \apath\a when it is not relevant."
-"	If \apath\a is \b=\b then the the \avalue\a is cached and used"
+"	If \apath\a is \b=\b then the \avalue\a is cached and used"
 "	for subsequent tests in the calling and all child processes."
 "	Only \bwritable\b variables may be set; \breadonly\b variables"
 "	cannot be changed.]"

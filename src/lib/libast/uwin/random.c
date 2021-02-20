@@ -100,7 +100,7 @@ extern long int	random();
 
 
 /* For each of the currently supported random number generators, we have a
-   break value on the amount of state information (you need at least thi
+   break value on the amount of state information (you need at least the
    bytes of state info to support this random number generator), a degree for
    the polynomial (actually a trinomial) that the R.N.G. is based on, and
    separation between the two lower order coefficients of the trinomial.  */

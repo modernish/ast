@@ -1115,7 +1115,7 @@ Namval_t *nv_create(const char *name,  Dt_t *root, int flags, Namfun_t *dp)
 					else if(n==0 && (c==0 || (c=='[' && !nv_isarray(np))))
 #endif /* SHOPT_FIXEDARRAY */
 					{
-						/* subscript must be 0*/
+						/* subscript must be 0 */
 						cp[-1] = 0;
 						n = sh_arith(shp,sp+1);
 						cp[-1] = ']';

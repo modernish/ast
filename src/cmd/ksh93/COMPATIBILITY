@@ -132,7 +132,7 @@ omitted features that are completely upward compatible.
 	with ksh-93, ${foo-~} will cause tilde expansion if foo is
 	not set.  You need to escape the ~ for the previous behavior.
 
-8.      Some changes in the tokenizing rules where made that might
+8.      Some changes in the tokenizing rules were made that might
 	cause some scripts with previously ambiguous use of quoting
 	to produce syntax errors.
 

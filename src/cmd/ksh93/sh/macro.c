@@ -1072,7 +1072,7 @@ static char *nextname(Mac_t *mp,const char *prefix, int len)
 }
 
 /*
- * This routine handles $param,  ${parm}, and ${param op word}
+ * This routine handles $param, ${param}, and ${param op word}
  * The input stream is assumed to be a string
  */
 static int varsub(Mac_t *mp)

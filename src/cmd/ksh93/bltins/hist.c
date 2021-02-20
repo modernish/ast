@@ -176,7 +176,7 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 		errormsg(SH_DICT,ERROR_exit(1),e_badrange,range[0],range[1]);
 	if(edit && *edit=='-' && range[0]!=range[1])
 		errormsg(SH_DICT,ERROR_exit(1),e_eneedsarg);
-	/* now list commands from range[rflag] to range[1-rflag] */
+	/* now list commands from range[flag] to range[1-flag] */
 	incr = 1;
 	flag = rflag>0;
 	if(range[1-flag] < range[flag])

@@ -7,7 +7,7 @@ to the last stable release (93u+ 2012-08-01) of
 [ksh93](http://www.kornshell.com/),
 formerly developed by AT&T Software Technology (AST).
 The sources in this repository were forked from the
-Github [AST repository](https://github.com/att/ast)
+GitHub [AST repository](https://github.com/att/ast)
 which is no longer under active development.
 
 For user-visible fixes, see [NEWS](https://github.com/ksh93/ksh/blame/master/NEWS)
@@ -175,7 +175,7 @@ KSH-88:
   two to sixty-four. You can also do double precision floating point
   arithmetic. Almost the complete set of C language operators are available
   with the same syntax and precedence. Arithmetic expressions can be used to
-  as an argument expansion or as a separate command. In addition there is an
+  as an argument expansion or as a separate command. In addition, there is an
   arithmetic for command that works like the for statement in C.
 * Arrays: KSH-93 supports both indexed and associative arrays. The subscript
   for an indexed array is an arithmetic expression, whereas, the subscript
@@ -192,7 +192,7 @@ KSH-88:
   case, field width, and justification to shell variables.
 * More pattern matching capabilities: KSH-93 allows you to specify extended
   regular expressions for file and string matches.
-* KSH-93 uses a hierarchal name space for variables. Compound variables can
+* KSH-93 uses a hierarchical name space for variables. Compound variables can
   be defined and variables can be passed by reference. In addition, each
   variable can have one or more disciplines associated with it to intercept
   assignments and references.

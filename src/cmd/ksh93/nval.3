@@ -183,7 +183,7 @@ with the cdt library and associate them with name-value pairs.
 The \f5nv_dict()\fP function returns the dictionary associated with
 the specified name-value pair, or if no dictionary was specified,
 \f5NULL\fP is returned.
-The \f5nv_lastdict()\fP function returns a pointer the the
+The \f5nv_lastdict()\fP function returns a pointer to the
 name-value pair that contains
 the last dictionary searched on the previous \f5nv_open()\fP.
 .PP
@@ -446,7 +446,7 @@ The \f5createf()\fP discipline function
 must return the created name-value pair, otherwise the default action
 will be taken.
 If the name-value pair that is returned is the same as the
-one given, then the the behavior will be the same as if
+one given, then the behavior will be the same as if
 an invalid name had been given to \f5nv_open()\fP.
 The \f5nv_create()\fP function may be called within
 the \f5createf()\fP discipline function
@@ -536,7 +536,7 @@ Otherwise, the bottom of the discipline stack is returned.
 If \fIfp\fP is non-\f5NULL\fP and it is on the stack,
 it is removed and \fIfp\fP is returned.  If  \fIfp\fP is non-\f5NULL\fP
 and is not on the stack, \f5NULL\fP is returned.
-Otherwise, the the top discipline is popped
+Otherwise, the top discipline is popped
 and returned.
 .IP
 \f5NV_CLONE\fP:

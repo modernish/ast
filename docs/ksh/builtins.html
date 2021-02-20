@@ -128,7 +128,7 @@ to terminate your command.
 The return value will become the exit status of the command.
 The <TT>open</TT> built-in, installed in <TT>lib/ksh</TT> in the AST Toolkit, uses this method.
 The <TT>Shbltin_t</TT> structure contains a field named <TT>shp</TT> which is
-a pointer the the shell data that is needed for <TT>shell</TT> library callbacks.
+a pointer to the shell data that is needed for <TT>shell</TT> library callbacks.
 It also contains the fields, <TT>shrun</TT>, <TT>shtrap</TT>, <TT>shexit</TT>,
 and <TT>shbltin</TT>
 that are function pointers to the <TT>shell</TT> library functions <TT>sh_run</TT>, <TT>sh_trap</TT>
@@ -412,7 +412,7 @@ The variable <TT>opt_info.num</TT> will contain this
 value after the given argument is encountered.
 <DT><TT>?</TT><DD>
 Used after a <TT>:</TT> or <TT>#</TT> (and after the optional <TT>?</TT>)
-to indicate the the
+to indicate the
 preceding option argument is not required.
 <DT><TT>&#0091;</TT>...<TT>&#0093;</TT><DD><BR>
 After a <TT>:</TT> or <TT>#</TT>, the characters contained
@@ -521,7 +521,7 @@ The <STRONG>shell</STRONG> library is used to access other shell services.
 <P>
 <H4><A name="The nval library">The nval library</A></H4>
 A great deal of power is derived from the ability to use
-portions of the hierarchal variable namespace provided by <TT>ksh-93</TT>
+portions of the hierarchical variable namespace provided by <TT>ksh-93</TT>
 and turn these names into active objects.
 <P>
 The <STRONG>nval</STRONG> library is used to interface with shell
@@ -544,7 +544,7 @@ using this handle so that the space can be freed once
 the value is unset.
 The two most frequent operations are to get the value of
 the variable, and to assign value to the variable.
-The <TT>nv_getval()</TT> returns a pointer the the
+The <TT>nv_getval()</TT> function returns a pointer to the
 value of the variable.
 In some cases the pointer returned is to a region that
 will be overwritten by the next <TT>nv_getval()</TT> call
@@ -593,7 +593,7 @@ The <TT>getval()</TT>
 function is called by <TT>nv_getval()</TT>
 value and must return a string.
 The <TT>getnum()</TT>
-function is called by by the arithmetic evaluator
+function is called by the arithmetic evaluator
 and must return double.
 If omitted, then it will call <TT>nv_getval()</TT> and
 convert the result to a number.

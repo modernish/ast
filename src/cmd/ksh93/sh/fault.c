@@ -610,7 +610,7 @@ void sh_done(void *ptr, register int sig)
 		(*shp->userinit)(shp, -1);
 	if(t=shp->st.trapcom[0])
 	{
-		shp->st.trapcom[0]=0; /*should free but not long */
+		shp->st.trapcom[0]=0; /* should free but not long */
 		sh_trap(t,0);
 		savxit = shp->exitval;
 	}

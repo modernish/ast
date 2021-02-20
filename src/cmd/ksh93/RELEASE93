@@ -131,7 +131,7 @@ of ksh.
 	    the job list as required by the POSIX standard.
 	l.  The value of OPTARG when an option that required
 	    an argument but didn't have one was incorrect in the
-	    case the the option string began with a :.
+	    case the option string began with a :.
 	m.  A bug which caused the terminal to get into a bad
 	    state with some KEYBD traps in vi-mode has been fixed.
 	n.  A bug which caused an invalid trap to cause a script

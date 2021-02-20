@@ -826,7 +826,7 @@ static void ed_nputchar(register Edit_t *ep, int n, int c)
  * Do read, restart on interrupt unless SH_SIGSET or SH_SIGTRAP is set
  * Use sfpkrd() to poll() or select() to wait for input if possible
  * Unfortunately, systems that get interrupted from slow reads update
- * this access time for for the terminal (in violation of POSIX).
+ * this access time for the terminal (in violation of POSIX).
  * The fixtime() macro, resets the time to the time at entry in
  * this case.  This is not necessary for systems that can handle
  * sfpkrd() correctly (i,e., those that support poll() or select()

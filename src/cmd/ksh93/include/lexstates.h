@@ -41,7 +41,7 @@
 #define S_ERR	20	/* invalid character in ${...} */
 #define S_SPC1	21	/* special prefix characters after $ */
 #define S_SPC2	22	/* special characters after $ */
-#define S_DIG	23	/* digit character after $*/
+#define S_DIG	23	/* digit character after $ */
 #define S_ALP	24	/* alpahbetic character after $ */
 #define S_LBRA	25	/* left brace after $ */
 #define S_RBRA	26	/* right brace after $ */

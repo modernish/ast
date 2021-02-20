@@ -303,7 +303,7 @@ closes the current method (releasing its resources),
 temporarily instantiates the default method
 (either \f5ASO_INTRINSIC\fP if available or \f5AS_SIGNAL\fP otherwise),
 and initializes \f5meth\fP and instantiates it as the new method.
-If \f5disc\fP is \f50\fP the the global discipline is not modified.
+If \f5disc\fP is \f50\fP then the global discipline is not modified.
 If \f5meth\fP is \f50\fP then \f51\fP is returned if \f5asoinit()\fP has
 already been called to initialize a method, otherwise \f50\fP is returned.
 If \f5meth->lockf\fP is \f50\fP and \f5(meth->type & ASO_INTRINSIC) != 0\fP

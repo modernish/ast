@@ -106,12 +106,12 @@ FPATH=$PWD/dir2
 PATH=$FPATH:$p
 [[ ${ foobar;} == foobar2 ]] || err_exit 'foobar should output foobar2 with ${}'
 [[ ${ dir2;} == dir2 ]] || err_exit 'should be dir2'
-[[ ${ dir1;} == dir1 ]] 2> /dev/null &&  err_exit 'should not be be dir1'
+[[ ${ dir1;} == dir1 ]] 2> /dev/null &&  err_exit 'should not be dir1'
 FPATH=$PWD/dir1
 PATH=$FPATH:$p
 [[ ${ foobar;} == foobar1 ]] || err_exit 'foobar should output foobar1 with ${}'
 [[ ${ dir1;} == dir1 ]] || err_exit 'should be dir1'
-[[ ${ dir2;} == dir2 ]] 2> /dev/null &&  err_exit 'should not be be dir2'
+[[ ${ dir2;} == dir2 ]] 2> /dev/null &&  err_exit 'should not be dir2'
 FPATH=$PWD/dir2
 PATH=$FPATH:$p
 [[ ${ foobar;} == foobar2 ]] || err_exit 'foobar should output foobar2 with ${} again'

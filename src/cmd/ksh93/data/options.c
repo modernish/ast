@@ -25,7 +25,7 @@
 
 /*
  * This is the list of invocation and set options
- * This list must be in in ascii sorted order
+ * This list must be in ASCII sorted order
  */
 
 const Shtable_t shtab_options[] =

@@ -9,7 +9,7 @@ typeset -T option to the shell.  The method for defining types via
 a shared library is not described here.  However, the source file
 bltins/enum.c is an example of a builtin that creates enumeration types.
 
-By convention, typenames begin with a capitol letter and end in _t.
+By convention, typenames begin with a capital letter and end in _t.
 To define a type, use
 	typeset -T Type_t=(
 		definition
@@ -60,7 +60,7 @@ When a type is defined, a declaration built-in command by this name
 is added to ksh.  As with other shell builtins, you can get the man page
 for this newly added command by invoking Pt_t --man.  The information from
 the -h options will be embedded in this man page.  Any functions that
-use getopts to process arguments will be cross referenced on the generated
+use getopts to process arguments will be cross-referenced on the generated
 man page.
 
 Since Pt_t is now a declaration command it can be used in the definition

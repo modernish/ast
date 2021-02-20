@@ -619,7 +619,7 @@ then	set -o posix
 	[[ $(< aha2.txt) == ok2 ]] || err_exit '&> does not redirect stderr'
 fi
 
-# In POSIX mode, file descriptors > 2 should remain open when invoking another proram
+# In POSIX mode, file descriptors > 2 should remain open when invoking another program
 if	[[ -o ?posix ]]
 then	(set -o posix; exec 7>ok.txt; "$SHELL" -c 'print ok >&7' 2>/dev/null)
 	[[ $(<ok.txt) == ok ]] || err_exit 'File descriptors > 2 not inherited in POSIX mode'

@@ -24,7 +24,7 @@
 
 /*
  * table of reserved words in shell language
- * This list must be in in ascii sorted order
+ * This list must be in ASCII sorted order
  */
 
 const Shtable_t shtab_reserved[] =
