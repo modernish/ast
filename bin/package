@@ -29,27 +29,42 @@ case $PATH in
 Bad*)	echo "Cannot be run by zsh in native mode; use a sh symlink to zsh" >&2
 	exit 1 ;;
 esac
+unset path
 
-unset CDPATH pwd
-case "$0" in
+# Sanitize 'cd'
+unset CDPATH
+case `cd / && v=$PWD && cd /dev && v=$v,$PWD && echo "$v"` in
+/,/dev)	;;
+*)	# old Bourne shell does not have $PWD; avoid inheriting it from
+	# the environment, which would kill our ${PWD:-`pwd`} fallback
+	unset PWD ;;
+esac
+
+# Make the package root the current working directory
+case $0 in
 -*)
 	echo "dodgy \$0: $0" >&2
 	exit 1 ;;
-*/package)	pwd="$0" ;;
-package)	pwd=`command -v package || which package` || exit 1 ;;
+*/package)
+	pwd=$0 ;;
+package)
+	pwd=`command -v package || which package` || exit ;;
 *)
 	echo "this script must be named 'package'" >&2
 	exit 1 ;;
 esac
-
 pwd=`dirname "$pwd"`
 cd "$pwd" || exit
-case ${PWD:-`pwd -P`} in
-	*arch/*/*/bin)	cd .. ;;
-	*arch/*/bin)	cd ../../.. ;;
-	*bin)	cd .. ;;
-	*)	echo "this script must live in bin/" >&2
-		exit 1 ;;
+case ${PWD:-`pwd`} in
+*/arch/*/*/bin)
+	cd .. ;;
+*/arch/*/bin)
+	cd ../../.. ;;
+*/bin)
+	cd .. ;;
+*)
+	echo "this script must live in bin/" >&2
+	exit 1 ;;
 esac || exit
 unset pwd
 
@@ -1493,7 +1508,7 @@ admin)	while	:
 		esac
 	done
 	;;
-setup)	PACKAGEROOT=${PWD:-`pwd -P`}
+setup)	PACKAGEROOT=${PWD:-`pwd`}
 	export PACKAGEROOT
 	KEEP_PACKAGEROOT=1
 	;;
@@ -1560,7 +1575,7 @@ use)	case $1 in
 			exit
 			;;
 		esac
-		PACKAGEROOT=${PWD:-`pwd -P`}
+		PACKAGEROOT=${PWD:-`pwd`}
 		$show export PACKAGEROOT
 	esac
 	;;
@@ -2499,7 +2514,7 @@ int main()
 				*) abi=-64 ;;
 				esac
 				;;
-			*)	pwd=`pwd -P`
+			*)	pwd=`pwd`
 				cd "$TMPDIR"
 				tmp=hi$$
 				trap 'rm -f $tmp.*' 0 1 2
@@ -2740,7 +2755,7 @@ case $x in
 			;;
 		esac
 		case $PACKAGEROOT in
-		'')	PACKAGEROOT=${PWD:-`pwd -P`} ;;
+		'')	PACKAGEROOT=${PWD:-`pwd`} ;;
 		esac
 
 		# . must be within the PACKAGEROOT tree
@@ -6103,7 +6118,7 @@ cat $j $k
 	fi
 	;;
 
-read)	case ${PWD:-`pwd -P`} in
+read)	case ${PWD:-`pwd`} in
 	$PACKAGEROOT)
 		;;
 	*)	echo "$command: must be in package root directory" >&2
