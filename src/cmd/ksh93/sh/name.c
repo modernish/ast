@@ -1573,7 +1573,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 	Shell_t	*shp = sh_getinterp();
 	register const char *sp=string;
 	register union Value *up;
-	register int size = 0;
+	register unsigned int size = 0;
 	int	was_local = nv_local;
 	union Value u;
 #if SHOPT_FIXEDARRAY
@@ -1874,8 +1874,8 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 		else
 		{
 			char	*cp = NIL(char*);	/* pointer to new string */
-			int	dot;			/* attribute or type length; defaults to string length */
-			int	append = 0;		/* offset for appending */
+			unsigned int dot;		/* attribute or type length; defaults to string length */
+			unsigned int append = 0;	/* offset for appending */
 			if(sp==up->cp && !(flags&NV_APPEND))
 				return;
 			dot = strlen(sp);
@@ -1955,11 +1955,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				{
 					if(tofree && tofree!=Empty && tofree!=Null)
 					{
-						cp = (char*)realloc((void*)tofree,((unsigned)dot+append+1));
+						cp = (char*)realloc((void*)tofree, dot+append+1);
 						tofree = 0;
 					}
 					else
-						cp = (char*)malloc(((unsigned)dot+append+1));
+						cp = (char*)malloc(dot+append+1);
 					cp[dot+append] = 0;
 					nv_offattr(np,NV_NOFREE);
 				}
