@@ -2321,7 +2321,7 @@ static int search(register Vi_t* vp,register int mode)
 		location = hist_find(shgd->hist_ptr,((char*)virtual)+1, curhline, 1, new_direction);
 	}
 	cur_virt = i;
-	strncpy(lsearch, ((char*)virtual)+1, SEARCHSIZE);
+	strncpy(lsearch, ((char*)virtual)+1, SEARCHSIZE-1);
 	lsearch[SEARCHSIZE-1] = 0;
 	if( (curhline=location.hist_command) >=0 )
 	{

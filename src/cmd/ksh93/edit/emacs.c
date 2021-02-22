@@ -1344,7 +1344,7 @@ static void search(Emacs_t* ep,genchar *out,int direction)
 #if SHOPT_MULTIBYTE
 		ed_external(string,(char*)string);
 #endif /* SHOPT_MULTIBYTE */
-		strncpy(lstring,((char*)string)+2,SEARCHSIZE);
+		strncpy(lstring,((char*)string)+2,SEARCHSIZE-1);
 		lstring[SEARCHSIZE-1] = 0;
 		ep->prevdirection = direction;
 	}
