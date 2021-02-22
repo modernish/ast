@@ -73,6 +73,7 @@ int	b_sleep(register int argc,char *argv[],Shbltin_t *context)
 			Time_t now,ns;
 			char* pp;
 			now = TMX_NOW;
+			ns = 0;
 			if(*cp == 'P' || *cp == 'p')
 				ns = tmxdate(cp, &last, now);
 			else if(*last=='.' && shp->decomma && d==(unsigned long)d)

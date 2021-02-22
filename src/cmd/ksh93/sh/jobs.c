@@ -1092,8 +1092,6 @@ int job_kill(register struct process *pw,register int sig)
 int job_hup(struct process *pw, int sig)
 {
 	struct process	*px;
-	pid_t	pid;
-	int	r;
 	NOT_USED(sig);
 	if(pw->p_pgrp == 0 || (pw->p_flag & P_DISOWN))
 		return(0);

@@ -383,16 +383,6 @@ static void put_cdpath(register Namval_t* np,const char *val,int flags,Namfun_t 
 }
 
 #ifdef _hdr_locale
-    /*
-     * This function needs to be modified to handle international
-     * error message translations
-     */
-    static char* msg_translate(const char* catalog, const char* message)
-    {
-	NOT_USED(catalog);
-	return((char*)message);
-    }
-
     /* Trap for LC_ALL, LC_CTYPE, LC_MESSAGES, LC_COLLATE and LANG */
     static void put_lang(Namval_t* np,const char *val,int flags,Namfun_t *fp)
     {
@@ -731,13 +721,6 @@ static void put_lastarg(Namval_t* np,const char *val,int flags,Namfun_t *fp)
 	np->nvenv = 0;
 }
 
-static int hasgetdisc(register Namfun_t *fp)
-{
-        while(fp && !fp->disc->getnum && !fp->disc->getval)
-                fp = fp->next;
-	return(fp!=0);
-}
-
 /*
  * store the most recent value for use in .sh.match
  * treat .sh.match as a two dimensional array
@@ -1034,7 +1017,6 @@ static const Namdisc_t SH_MATH_disc  = { 0, 0, get_math, 0, setdisc_any, create_
 	return((char*)np->nvalue.cp);
     }
     static const Namdisc_t NSPACE_disc	= {  0, 0, get_nspace };
-    static Namfun_t NSPACE_init	= {  &NSPACE_disc, 1};
 #endif /* SHOPT_NAMESPACE */
 
 #ifdef _hdr_locale

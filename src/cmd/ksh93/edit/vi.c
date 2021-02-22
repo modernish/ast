@@ -67,12 +67,10 @@
 #	define iswprint(c)	((c&~0177) || isprint(c))
 #   endif
     static int _isalph(int);
-    static int _ismetach(int);
     static int _isblank(int);
 #   undef  isblank
 #   define isblank(v)	_isblank(virtual[v])
 #   define isalph(v)	_isalph(virtual[v])
-#   define ismetach(v)	_ismetach(virtual[v])
 #else
     static genchar	_c;
 #   define gencpy(a,b)	strcpy((char*)(a),(char*)(b))
@@ -81,7 +79,6 @@
 #   define isalph(v)	((_c=virtual[v])=='_'||isalnum(_c))
 #   undef  isblank
 #   define isblank(v)	isspace(virtual[v])
-#   define ismetach(v)	ismeta(virtual[v])
 #   define digit(c)	isdigit(c)
 #   define is_print(c)	isprint(c)
 #endif	/* SHOPT_MULTIBYTE */
@@ -2785,12 +2782,6 @@ yankeol:
     {
 	return((v&~STRIP)==0 && isspace(v));
     }
-
-    static int _ismetach(register int v)
-    {
-	return((v&~STRIP)==0 && ismeta(v));
-    }
-
 #endif	/* SHOPT_MULTIBYTE */
 
 /*

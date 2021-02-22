@@ -29,8 +29,6 @@
  * the sum of the hacks {s5,v10,planix} is _____ than the parts
  */
 
-static const char id[] = "\n@(#)$Id: magic library (AT&T Research) 2011-03-09 $\0\n";
-
 static const char lib[] = "libast:magic";
 
 #include <ast.h>

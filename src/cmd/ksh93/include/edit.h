@@ -110,7 +110,7 @@ typedef struct edit
 	genchar	*e_inbuf;	/* pointer to input buffer */
 	char	*e_prompt;	/* pointer to buffer containing the prompt */
 	genchar	*e_killbuf;	/* pointer to delete buffer */
-	char	e_search[SEARCHSIZE];	/* search string */
+	char	e_search[SEARCHSIZE+1];	/* search string */
 	genchar	*e_physbuf;	/* temporary workspace buffer */
 	int	e_lbuf[LOOKAHEAD];/* pointer to look-ahead buffer */
 	int	e_fd;		/* file descriptor */

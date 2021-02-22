@@ -35,10 +35,6 @@ void _STUB_log1p(){}
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)log1p.c	8.1 (Berkeley) 6/4/93";
-#endif /* not lint */
-
 /* LOG1P(x) 
  * RETURN THE LOGARITHM OF 1+x
  * DOUBLE PRECISION (VAX D FORMAT 56 bits, IEEE DOUBLE 53 BITS)

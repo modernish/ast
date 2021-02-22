@@ -35,10 +35,6 @@ void _STUB_lgamma(){}
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)lgamma.c	8.2 (Berkeley) 11/30/93";
-#endif /* not lint */
-
 /*
  * Coded by Peter McIlroy, Nov 1992;
  *

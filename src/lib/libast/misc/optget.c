@@ -297,20 +297,6 @@ static const Attr_t	attrs[] =
 
 static const char	unknown[] = C("unknown option or attribute");
 
-static const char*	heading[] =
-{
-	C("INDEX"),
-	C("USER COMMANDS"),
-	C("SYSTEM LIBRARY"),
-	C("USER LIBRARY"),
-	C("FILE FORMATS"),
-	C("MISCELLANEOUS"),
-	C("GAMES and DEMOS"),
-	C("SPECIAL FILES"),
-	C("ADMINISTRATIVE COMMANDS"),
-	C("GUIs"),
-};
-
 /*
  * list of common man page strings
  * NOTE: add but do not delete from this table

@@ -35,10 +35,6 @@ void _STUB_log__L(){}
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)log__L.c	8.1 (Berkeley) 6/4/93";
-#endif /* not lint */
-
 /* log__L(Z)
  *		LOG(1+X) - 2S			       X
  * RETURN      ---------------  WHERE Z = S*S,  S = ------- , 0 <= Z <= .0294...

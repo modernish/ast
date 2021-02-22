@@ -354,7 +354,6 @@ Vmdisc_t*	disc;
 #endif
 {
 	int		rv;
-	Void_t		*base;
 	Mmdisc_t	*mmdc = (Mmdisc_t*)disc;
 
 	if(type == VM_OPEN)

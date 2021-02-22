@@ -35,10 +35,6 @@ void _STUB_asinh(){}
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)asinh.c	8.1 (Berkeley) 6/4/93";
-#endif /* not lint */
-
 /* ASINH(X)
  * RETURN THE INVERSE HYPERBOLIC SINE OF X
  * DOUBLE PRECISION (VAX D format 56 bits, IEEE DOUBLE 53 BITS)

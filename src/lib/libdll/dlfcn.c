@@ -26,8 +26,6 @@
  * AT&T Research
  */
 
-static const char id[] = "\n@(#)$Id: dll library (AT&T Research) 2010-10-20 $\0\n";
-
 #include <ast.h>
 #include <dlldefs.h>
 #include <error.h>

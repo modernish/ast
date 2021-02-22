@@ -70,7 +70,6 @@ static void	coproc_init(Shell_t*, int pipes[]);
 static void	*timeout;
 static char	nlock;
 static char	pipejob;
-static char	nopost;
 static int	restorefd;
 
 struct funenv

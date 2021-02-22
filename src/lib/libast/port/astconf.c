@@ -26,8 +26,6 @@
  * extended to allow some features to be set per-process
  */
 
-static const char id[] = "\n@(#)$Id: getconf (AT&T Research) 2012-05-01 $\0\n";
-
 #include "univlib.h"
 
 #include <ast.h>

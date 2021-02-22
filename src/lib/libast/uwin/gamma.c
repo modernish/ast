@@ -35,10 +35,6 @@ void _STUB_gamma(){}
  * SUCH DAMAGE.
  */
 
-#ifndef lint
-static char sccsid[] = "@(#)gamma.c	8.1 (Berkeley) 6/4/93";
-#endif /* not lint */
-
 /*
  * This code by P. McIlroy, Oct 1992;
  *

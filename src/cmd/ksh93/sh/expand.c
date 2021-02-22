@@ -65,11 +65,6 @@
 #   define GLOB_AUGMENTED	0
 #endif
 
-#define GLOB_RESCAN 1
-#define globptr()	((struct glob*)membase)
-
-static struct glob	 *membase;
-
 static char *nextdir(glob_t *gp, char *dir)
 {
 	Shell_t	*shp = sh_getinterp();
@@ -143,7 +138,7 @@ static int scantree(Dt_t *tree, const char *pattern, struct argnod **arghead)
 	{
 		if(strmatch(cp=nv_name(np),pattern))
 		{
-			ap = (struct argnod*)stakseek(ARGVAL);
+			(void)stakseek(ARGVAL);
 			stakputs(cp);
 			ap = (struct argnod*)stakfreeze(1);
 			ap->argbegin = NIL(char*);

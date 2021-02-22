@@ -72,12 +72,6 @@ static int	setall(char**, int, Dt_t*, struct tdata*);
 static void	pushname(Namval_t*,void*);
 static void(*nullscan)(Namval_t*,void*);
 
-static Namval_t *load_class(const char *name)
-{
-	errormsg(SH_DICT,ERROR_exit(1),"%s: type not loadable",name);
-	return(0);
-}
-
 /*
  * Note export and readonly are the same
  */
@@ -131,7 +125,6 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 	register Dt_t *troot;
 	register int rflag=0, n;
 	struct tdata tdata;
-	Namval_t *np;
 	NOT_USED(argc);
 	memset((void*)&tdata,0,sizeof(tdata));
 	tdata.sh = context->shp;
@@ -275,8 +268,8 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 					flag |= NV_HEXFLOAT;
 				}
 				else
-				        /* n=='F' Remove possible collision with NV_UNSIGN/NV_HEXFLOAT */
-				        flag &= ~NV_HEXFLOAT;
+					/* n=='F' Remove possible collision with NV_UNSIGN/NV_HEXFLOAT */
+					flag &= ~NV_HEXFLOAT;
 				break;
 			case 'b':
 				flag |= NV_BINARY;
@@ -366,10 +359,10 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 				flag |= NV_TAGGED;
 				break;
 			case 'u':
-			        if(!isfloat)
-			        {
-				        tdata.wctname = e_toupper;
-				        flag |= NV_LTOU;
+				if(!isfloat)
+				{
+					tdata.wctname = e_toupper;
+					flag |= NV_LTOU;
 				}
 				break;
 			case 'x':

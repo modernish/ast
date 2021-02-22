@@ -70,8 +70,6 @@
  * SUCH DAMAGE.
  */
 
-static const char id[] = "\n@(#)$Id: fastfind (AT&T Research) 2002-10-02 $\0\n";
-
 static const char lib[] = "libast:fastfind";
 
 #include "findlib.h"
