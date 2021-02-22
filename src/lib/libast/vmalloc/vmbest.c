@@ -883,7 +883,8 @@ int		local;
 				CLRBITS(s);
 			}
 			else if(ISJUNK(s) )
-			{	if(!bestreclaim(vd,np,(int)C_INDEX(s)) )
+			{
+				if(!bestreclaim(vd,np,(int)C_INDEX(s)) )
 					/**/ASSERT(0); /* oops: did not see np! */
 				s = SIZE(np); /**/ASSERT(s%ALIGN == 0);
 			}
