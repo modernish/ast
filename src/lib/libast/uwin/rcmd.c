@@ -35,6 +35,10 @@ void _STUB_rcmd(){}
  * SUCH DAMAGE.
  */
 
+#if defined(LIBC_SCCS) && !defined(lint)
+static char sccsid[] = "@(#)rcmd.c	5.17 (Berkeley) 6/27/88";
+#endif /* LIBC_SCCS and not lint */
+
 #include "rlib.h"
 #include <pwd.h>
 #include <sys/file.h>

@@ -38,6 +38,10 @@ void _STUB_crypt(){}
  * SUCH DAMAGE.
  */
 
+#if defined(LIBC_SCCS) && !defined(lint)
+static char sccsid[] = "@(#)crypt.c	8.1 (Berkeley) 6/4/93";
+#endif /* LIBC_SCCS and not lint */
+
 #define crypt		______crypt
 #define encrypt		______encrypt
 #define setkey		______setkey

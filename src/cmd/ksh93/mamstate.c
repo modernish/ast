@@ -28,6 +28,10 @@
  * non-existent files are not listed
  */
 
+#if !lint
+static char id[] = "\n@(#)$Id: mamstate (AT&T Bell Laboratories) 1989-06-26 $\0\n";
+#endif
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>

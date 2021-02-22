@@ -40,8 +40,7 @@
 /*
  * This is a macro that can be used to silence "unused parameter" warnings from the compiler for
  * functions which need to accept parameters they do not use because they need to be compatible
- * with an interface. It's similar to the Python idiom of doing `_ = param` at the top of a
- * function in the same situation.
+ * with an interface.
  */
 #undef NOT_USED
 #define NOT_USED(expr)		\

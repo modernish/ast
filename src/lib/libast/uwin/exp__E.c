@@ -35,6 +35,10 @@ void _STUB_exp__E(){}
  * SUCH DAMAGE.
  */
 
+#ifndef lint
+static char sccsid[] = "@(#)exp__E.c	8.1 (Berkeley) 6/4/93";
+#endif /* not lint */
+
 /* exp__E(x,c)
  * ASSUMPTION: c << x  SO THAT  fl(x+c)=x.
  * (c is the correction term for x)

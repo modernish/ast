@@ -35,6 +35,10 @@ void _STUB_support(){}
  * SUCH DAMAGE.
  */
 
+#ifndef lint
+static char sccsid[] = "@(#)support.c	8.1 (Berkeley) 6/4/93";
+#endif /* not lint */
+
 /* 
  * Some IEEE standard 754 recommended functions and remainder and sqrt for 
  * supporting the C elementary functions.

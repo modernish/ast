@@ -83,6 +83,7 @@ static int endsh(const char*);
     static void setids(int,int,int);
 #endif /* _lib_setreuid */
 
+static const char version[]	= "\n@(#)$Id: suid_exec "SH_RELEASE" $\n";
 static const char badopen[]	= "cannot open";
 static const char badexec[]	= "cannot exec";
 static const char devfd[]	= "/dev/fd/10";	/* must match FDIN above */

@@ -35,6 +35,10 @@ void _STUB_atanh(){}
  * SUCH DAMAGE.
  */
 
+#ifndef lint
+static char sccsid[] = "@(#)atanh.c	8.1 (Berkeley) 6/4/93";
+#endif /* not lint */
+
 /* ATANH(X)
  * RETURN THE HYPERBOLIC ARC TANGENT OF X
  * DOUBLE PRECISION (VAX D format 56 bits, IEEE DOUBLE 53 BITS)

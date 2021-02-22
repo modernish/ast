@@ -35,6 +35,10 @@ void _STUB_erf(){}
  * SUCH DAMAGE.
  */
 
+#ifndef lint
+static char sccsid[] = "@(#)erf.c	8.1 (Berkeley) 6/4/93";
+#endif /* not lint */
+
 /* Modified Nov 30, 1992 P. McILROY:
  *	Replaced expansions for x >= 1.25 (error 1.7ulp vs ~6ulp)
  * Replaced even+odd with direct calculation for x < .84375,
