@@ -19,6 +19,7 @@
 *                   Phong Vo <kpv@research.att.com>                    *
 *                                                                      *
 ***********************************************************************/
+#pragma clang diagnostic ignored "-Wparentheses"
 /*
  * generate <lc.h> implementation tables from lc.tab
  * this must make it through vanilla cc with no -last

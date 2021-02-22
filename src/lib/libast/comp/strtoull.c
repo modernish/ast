@@ -19,6 +19,7 @@
 *                   Phong Vo <kpv@research.att.com>                    *
 *                                                                      *
 ***********************************************************************/
+#pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
 /*
  * strtoull() implementation
  */

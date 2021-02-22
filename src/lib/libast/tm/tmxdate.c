@@ -836,7 +836,8 @@ tmxdate(register const char* s, char** e, Time_t now)
 			}
 			else
 			{
-				for (u = t; isspace(*u); u++);
+				for (u = t; isspace(*u); u++)
+					;
 				message((-1, "AHA#%d n=%d u=\"%s\"", __LINE__, n, u));
 				if ((j = tmlex(u, NiL, tm_info.format, TM_NFORM, tm_info.format + TM_SUFFIXES, TM_PARTS - TM_SUFFIXES)) >= 0 && tm_data.lex[j] == TM_PARTS)
 					s = u;
@@ -978,7 +979,8 @@ tmxdate(register const char* s, char** e, Time_t now)
 						}
 						continue;
 					}
-					for (s = t; skip[*s]; s++);
+					for (s = t; skip[*s]; s++)
+						;
 					message((-1, "AHA#%d s=\"%s\"", __LINE__, s));
 					if (*s == ':' || *s == '.' && ((set|state) & (YEAR|MONTH|DAY|HOUR)) == (YEAR|MONTH|DAY))
 					{

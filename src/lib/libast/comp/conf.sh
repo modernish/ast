@@ -1195,7 +1195,7 @@ printf("#endif\n");
 				*:U*)	cat >> $tmp.l <<!
 printf("#ifndef ${conf_name}\n");
 printf("#ifndef ${x}\n");
-printf("#define ${x} %lu\n", ${x});
+printf("#define ${x} %lu\n", (unsigned long)${x});
 printf("#endif\n");
 printf("#define ${conf_name} ${x}\n");
 printf("#endif\n");
@@ -1204,7 +1204,7 @@ printf("#endif\n");
 				*:$sym)	cat >> $tmp.l <<!
 printf("#ifndef ${conf_name}\n");
 printf("#ifndef ${x}\n");
-printf("#define ${x} %ld\n", ${x});
+printf("#define ${x} %ld\n", (long)${x});
 printf("#endif\n");
 printf("#define ${conf_name} ${x}\n");
 printf("#endif\n");

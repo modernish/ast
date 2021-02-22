@@ -20,6 +20,7 @@
 *                                                                      *
 ***********************************************************************/
 #pragma prototyped
+#pragma clang diagnostic ignored "-Wparentheses"
 /*
  * Glenn Fowler
  * AT&T Research
