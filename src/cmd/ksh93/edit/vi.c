@@ -2095,6 +2095,7 @@ static void refresh(register Vi_t* vp, int mode)
 	cursor(vp,ncur_phys);
 	ed_flush(vp->ed);
 	return;
+#	undef	w
 }
 
 /*{	REPLACE( char, increment )
