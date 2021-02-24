@@ -189,7 +189,7 @@ void *sh_timeradd(unsigned long msec,int flags,void (*action)(void*),void *handl
 	if(tp=tpfree)
 		tpfree = tp->next;
 	else if(!(tp=(Timer_t*)malloc(sizeof(Timer_t))))
-		return((void*)0);
+		sh_outofmemory();
 	tp->wakeup = getnow() + t;
 	tp->incr = (flags?t:0);
 	tp->action = action;
@@ -204,7 +204,9 @@ void *sh_timeradd(unsigned long msec,int flags,void (*action)(void*),void *handl
 		if((t= setalarm(t))>0 && fn  && fn!=(Handler_t)sigalrm)
 		{
 			Handler_t *hp = (Handler_t*)malloc(sizeof(Handler_t));
-			if(hp)
+			if(!hp)
+				sh_outofmemory();
+			else
 			{
 				*hp = fn;
 				sh_timeradd((long)(1000*t), 0, oldalrm, (void*)hp);

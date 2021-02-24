@@ -1658,7 +1658,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 					ld = sh_arith(shp,sp);
 				if(!up->ldp)
+				{
 					up->ldp = new_of(Sfdouble_t,0);
+					if(!up->ldp)
+						sh_outofmemory();
+				}
 				else if(flags&NV_APPEND)
 					old = *(up->ldp);
 				*(up->ldp) = old?ld+old:ld;
@@ -1678,7 +1682,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 					d = sh_arith(shp,sp);
 				if(!up->dp)
+				{
 					up->dp = new_of(double,0);
+					if(!up->dp)
+						sh_outofmemory();
+				}
 				else if(flags&NV_APPEND)
 					od = *(up->dp);
 				*(up->dp) = od?d+od:d;
@@ -1722,7 +1730,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else if(sp)
 					ll = (Sflong_t)sh_arith(shp,sp);
 				if(!up->llp)
+				{
 					up->llp = new_of(Sflong_t,0);
+					if(!up->llp)
+						sh_outofmemory();
+				}
 				else if(flags&NV_APPEND)
 					oll = *(up->llp);
 				*(up->llp) = ll+oll;
@@ -1783,7 +1795,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 				{
 					if(!up->lp)
+					{
 						up->lp = new_of(int32_t,0);
+						if(!up->lp)
+							sh_outofmemory();
+					}
 					else if(flags&NV_APPEND)	
 						ol =  *(up->lp);
 					*(up->lp) = l+ol;
@@ -2694,7 +2710,11 @@ void nv_optimize(Namval_t *np)
 		if(op = opt_free)
 			opt_free = op->next;
 		else
+		{
 			op=(struct optimize*)calloc(1,sizeof(struct optimize));
+			if(!op)
+				sh_outofmemory();
+		}
 		op->ptr = shp->argaddr;
 		op->np = np;
 		if(xp)
@@ -3489,6 +3509,8 @@ void nv_setref(register Namval_t *np, Dt_t *hp, int flags)
 	_nv_unset(np,0);
 	nv_delete(np,(Dt_t*)0,0);
 	np->nvalue.nrp = newof(0,struct Namref,1,sizeof(Dtlink_t));
+	if(!np->nvalue.nrp)
+		sh_outofmemory();
 	np->nvalue.nrp->np = nq;
 	np->nvalue.nrp->root = hp;
 	if(ep)

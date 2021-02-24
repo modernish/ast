@@ -829,6 +829,8 @@ static Shnode_t *funct(Lex_t *lexp)
 			{
 				Namval_t *np= nv_open(t->funct.functnam,shp->fun_tree,NV_ADD|NV_VARNAME);
 				np->nvalue.rp = new_of(struct Ufunction,shp->funload?sizeof(Dtlink_t):0);
+				if(!np->nvalue.rp)
+					sh_outofmemory();
 				memset((void*)np->nvalue.rp,0,sizeof(struct Ufunction));
 				np->nvalue.rp->argc = ((struct dolnod*)ac->comarg)->dolnum;
 			}

@@ -182,7 +182,7 @@ getaddrinfo(const char* node, const char* service, const struct addrinfo* hint, 
 		return EAI_SYSTEM;
 	}
 	if (!(ap = newof(0, struct addrinfo, 1, sizeof(struct sockaddr_in))))
-		return EAI_SYSTEM;
+		sh_outofmemory();
 	if (hint)
 		*ap = *hint;
 	ap->ai_family = hp->h_addrtype;
@@ -558,7 +558,7 @@ Sfio_t *sh_iostream(Shell_t *shp, register int fd)
 	if(status&IOREAD)
 	{
 		if(!(bp = (char *)malloc(IOBSIZE+1)))
-			return(NIL(Sfio_t*));
+			sh_outofmemory();
 		flags |= SF_READ;
 		if(!(status&IOWRITE))
 			flags &= ~SF_WRITE;
@@ -576,6 +576,8 @@ Sfio_t *sh_iostream(Shell_t *shp, register int fd)
 	else if(!(iop=sfnew((fd<=2?iop:0),bp,IOBSIZE,fd,flags)))
 		return(NIL(Sfio_t*));
 	dp = newof(0,struct Iodisc,1,0);
+	if(!dp)
+		sh_outofmemory();
 	dp->sh = shp;
 	if(status&IOREAD)
 	{
@@ -2244,6 +2246,8 @@ static void	sftrack(Sfio_t* sp, int flag, void* data)
 			 * built-ins from cleanup
 			 */
 			item = new_of(struct openlist, 0);
+			if(!item)
+				sh_outofmemory();
 			item->strm = sp;
 			item->next = pp->olist;
 			pp->olist = item;
@@ -2295,7 +2299,7 @@ Sfio_t *sh_sfeval(register char *argv[])
 	{
 		register struct eval *ep;
 		if(!(ep = new_of(struct eval,0)))
-			return(NIL(Sfio_t*));
+			sh_outofmemory();
 		ep->disc = eval_disc;
 		ep->argv = argv;
 		ep->slen  = -1;
@@ -2355,7 +2359,7 @@ static Sfio_t *subopen(Shell_t *shp,Sfio_t* sp, off_t offset, long size)
 	if(sfseek(sp,offset,SEEK_SET) <0)
 		return(NIL(Sfio_t*));
 	if(!(disp = (struct subfile*)malloc(sizeof(struct subfile)+IOBSIZE+1)))
-		return(NIL(Sfio_t*));
+		sh_outofmemory();
 	disp->disc = sub_disc;
 	disp->oldsp = sp;
 	disp->offset = offset;

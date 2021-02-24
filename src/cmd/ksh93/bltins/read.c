@@ -155,8 +155,11 @@ int	b_read(int argc,char *argv[], Shbltin_t *context)
 		r = strlen(name++);
 	else
 		r = 0;
-	if(argc==fixargs && (rp=newof(NIL(struct read_save*),struct read_save,1,0)))
+	if(argc==fixargs)
 	{
+		rp = newof(NIL(struct read_save*),struct read_save,1,0);
+		if(!rp)
+			sh_outofmemory();
 		context->data = (void*)rp;
 		rp->fd = fd;
 		rp->flags = flags;
@@ -417,7 +420,11 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 							var = memcpy(v, var, cur - var);
 						}
 						else
+						{
 							var = newof(var, char, m, 1);
+							if(!var)
+								sh_outofmemory();
+						}
 						end = var + m;
 						cur = var + cx;
 						up = var + ux;

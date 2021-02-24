@@ -231,7 +231,9 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 #endif /* SHOPT_RAWONLY */
 	if(!vp)
 	{
-		ed->e_vi = vp =  newof(0,Vi_t,1,0);
+		ed->e_vi = vp = newof(0,Vi_t,1,0);
+		if(!vp)
+			sh_outofmemory();
 		vp->lastline = (genchar*)malloc(MAXLINE*CHARSIZE);
 		if(!vp->lastline)
 			sh_outofmemory();

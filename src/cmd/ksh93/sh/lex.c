@@ -267,6 +267,8 @@ Lex_t *sh_lexopen(Lex_t *lp, Shell_t *sp, int mode)
 	if(!lp)
 	{
 		lp = (Lex_t*)newof(0,Lex_t,1,0);
+		if(!lp)
+			sh_outofmemory();
 		lp->sh = sp;
 	}
 	fcnotify(lex_advance,lp);
@@ -1705,6 +1707,8 @@ static void nested_here(register Lex_t *lp)
 	if(lp->lexd.docend)
 		n = fcseek(0)-lp->lexd.docend;
 	iop = newof(0,struct ionod,1,lp->lexd.docextra+n+ARGVAL);
+	if(!iop)
+		sh_outofmemory();
 	iop->iolst = lp->heredoc;
 	stkseek(stkp,ARGVAL);
 	if(lp->lexd.docextra)

@@ -309,7 +309,7 @@ retry:
 	if(!(hp=new_of(History_t,(--histmask)*sizeof(off_t))))
 	{
 		close(fd);
-		return(0);
+		sh_outofmemory();
 	}
 	shgd->hist_ptr = hist_ptr = hp;
 	hp->histshell = (void*)shp;

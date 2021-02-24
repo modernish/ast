@@ -1496,6 +1496,8 @@ static Pathcomp_t *path_addcomp(Shell_t *shp,Pathcomp_t *first, Pathcomp_t *old,
 	}
 	for(pp=first, oldpp=0; pp; oldpp=pp, pp=pp->next);
 	pp = newof((Pathcomp_t*)0,Pathcomp_t,1,len+1);
+	if(!pp)
+		sh_outofmemory();
 	pp->shp = shp;
 	pp->refcount = 1;
 	memcpy((char*)(pp+1),name,len+1);

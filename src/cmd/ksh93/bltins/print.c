@@ -776,6 +776,8 @@ static int extend(Sfio_t* sp, void* v, Sffmt_t* fe)
 			nv_onattr(np,NV_INTEGER);
 			if (np->nvalue.lp = new_of(int32_t,0))
 				*np->nvalue.lp = 0;
+			else
+				sh_outofmemory();
 			nv_setsize(np,10);
 			if(sizeof(int)==sizeof(int32_t))
 				value->ip = (int*)np->nvalue.lp;

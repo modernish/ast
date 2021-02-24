@@ -87,8 +87,8 @@ static Namarr_t *array_scope(Namval_t *np, Namarr_t *ap, int flags)
 	size_t size = ap->hdr.dsize;
 	if(size==0)
 		size = ap->hdr.disc->dsize;
-        if(!(aq=newof(NIL(Namarr_t*),Namarr_t,1,size-sizeof(Namarr_t))))
-                return(0);
+	if(!(aq=newof(NIL(Namarr_t*),Namarr_t,1,size-sizeof(Namarr_t))))
+		sh_outofmemory();
         memcpy(aq,ap,size);
 	aq->hdr.nofree &= ~1;
         aq->hdr.nofree |= (flags&NV_RDONLY)?1:0;
@@ -816,6 +816,8 @@ static struct index_array *array_grow(Namval_t *np, register struct index_array 
 		errormsg(SH_DICT,ERROR_exit(1),e_subscript, fmtbase((long)maxi,10,0));
 	i = (newsize-1)*sizeof(union Value*)+newsize;
 	ap = new_of(struct index_array,i);
+	if(!ap)
+		sh_outofmemory();
 	memset((void*)ap,0,sizeof(*ap)+i);
 	ap->maxi = newsize;
 	ap->cur = maxi;
@@ -1393,8 +1395,8 @@ static int array_fixed_init(Namval_t *np, char *sub, char *cp)
 	if(*ep)
 		return(0);
 	sz = sizeof(struct fixed_array)+ 3*n*sizeof(int);
-        if(!(ap=newof(NIL(Namarr_t*),Namarr_t,1,sz)))
-                return(0);
+	if(!(ap=newof(NIL(Namarr_t*),Namarr_t,1,sz)))
+		sh_outofmemory();
 	ap->hdr.disc = &array_disc;
 	ap->hdr.dsize = sizeof(Namarr_t)+sz;
 	ap->hdr.nofree &= ~1;

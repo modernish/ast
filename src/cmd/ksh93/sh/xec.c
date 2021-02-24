@@ -627,6 +627,8 @@ static const Namdisc_t level_disc = {  sizeof(struct Level), put_level };
 static struct Level *init_level(Shell_t *shp,int level)
 {
 	struct Level *lp = newof(NiL,struct Level,1,0);
+	if(!lp)
+		sh_outofmemory();
 	lp->maxlevel = level;
 	_nv_unset(SH_LEVELNOD,0);
 	nv_onattr(SH_LEVELNOD,NV_INT16|NV_NOFREE);
@@ -2528,6 +2530,8 @@ int sh_exec(register const Shnode_t *t, int flags)
 			if(!np->nvalue.rp)
 			{
 				np->nvalue.rp = new_of(struct Ufunction,shp->funload?sizeof(Dtlink_t):0);
+				if(!np->nvalue.rp)
+					sh_outofmemory();
 				memset((void*)np->nvalue.rp,0,sizeof(struct Ufunction));
 			}
 			if(t->funct.functstak)
@@ -3172,6 +3176,8 @@ int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 					if(np && (nq=*nref++))
 					{
 						np->nvalue.nrp = newof(0,struct Namref,1,0);
+						if(!np->nvalue.nrp)
+							sh_outofmemory();
 						np->nvalue.nrp->np = nq;
 						nv_onattr(np,NV_REF|NV_NOFREE);
 					}

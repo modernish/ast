@@ -759,12 +759,9 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 	{
 		/* can't use output buffer when reading from stderr */
 		static char *buff;
+		buff = (char*)malloc(MAXLINE);
 		if(!buff)
-		{
-			buff = (char*)malloc(MAXLINE);
-			if(!buff)
-				sh_outofmemory();
-		}
+			sh_outofmemory();
 		ep->e_outbase = ep->e_outptr = buff;
 		ep->e_outlast = ep->e_outptr + MAXLINE;
 		return;
@@ -1877,6 +1874,8 @@ void	ed_histlist(Edit_t *ep,int n)
 void	*ed_open(Shell_t *shp)
 {
 	Edit_t *ed = newof(0,Edit_t,1,0);
+	if(!ed)
+		sh_outofmemory();
 	ed->sh = shp;
 	strcpy(ed->e_macro,"_??");
 	return((void*)ed);

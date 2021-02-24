@@ -86,6 +86,8 @@ static void init_savelist(void)
 	while(njob_savelist < NJOB_SAVELIST)
 	{
 		jp = newof(0,struct jobsave,1,0);
+		if(!jp)
+			sh_outofmemory();
 		jp->next = job_savelist;
 		job_savelist = jp;
 		njob_savelist++;
@@ -243,7 +245,11 @@ static struct jobsave *jobsave_create(pid_t pid)
 		job_savelist = jp->next;
 	}
 	else
+	{
 		jp = newof(0,struct jobsave,1,0);
+		if(!jp)
+			sh_outofmemory();
+	}
 	if(jp)
 	{
 		jp->pid = pid;
@@ -1264,7 +1270,11 @@ int job_post(Shell_t *shp,pid_t pid, pid_t join)
 	if(pw=freelist)
 		freelist = pw->p_nxtjob;
 	else
+	{
 		pw = new_of(struct process,0);
+		if(!pw)
+			sh_outofmemory();
+	}
 	pw->p_flag = 0;
 	job.numpost++;
 	if(join && job.pwlist)
@@ -1896,6 +1906,8 @@ again:
 void *job_subsave(void)
 {
 	struct back_save *bp = new_of(struct back_save,0);
+	if(!bp)
+		sh_outofmemory();
 	job_lock();
 	*bp = bck;
 	bp->prev = bck.prev;

@@ -197,6 +197,8 @@ int ed_emacsread(void *context, int fd,char *buff,int scend, int reedit)
 	if(!ep)
 	{
 		ep = ed->e_emacs = newof(0,Emacs_t,1,0);
+		if(!ep)
+			sh_outofmemory();
 		ep->ed = ed;
 		ep->prevdirection =  1;
 		location.hist_command =  -5;

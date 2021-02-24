@@ -577,6 +577,8 @@ static void put_seconds(register Namval_t* np,const char *val,int flags,Namfun_t
 		nv_setsize(np,3);
 		nv_onattr(np,NV_DOUBLE);
 		np->nvalue.dp = new_of(double,0);
+		if(!np->nvalue.dp)
+			sh_outofmemory();
 	}
 	nv_putv(np, val, flags, fp);
 	d = *np->nvalue.dp;
@@ -1212,6 +1214,8 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 		sh_regress_init(shp);
 #endif
 		shgd = newof(0,struct shared,1,0);
+		if(!shgd)
+			sh_outofmemory();
 		shgd->current_pid = shgd->pid = getpid();
 		shgd->ppid = getppid();
 		shgd->userid=getuid();
@@ -1235,7 +1239,11 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 		error_info.id = path_basename(argv[0]);
 	}
 	else
+	{
 		shp = newof(0,Shell_t,1,0);
+		if(!shp)
+			sh_outofmemory();
+	}
 	umask(shp->mask=umask(0));
 	shp->gd = shgd;
 	shp->mac_context = sh_macopen(shp);
@@ -1398,8 +1406,11 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 #if _lib_pathposix
 					char*	p;
 
-					if((n = pathposix(name, NIL(char*), 0)) > 0 && (p = (char*)malloc(++n)))
+					if((n = pathposix(name, NIL(char*), 0)) > 0)
 					{
+						p = (char*)malloc(++n);
+						if(!p)
+							sh_outofmemory();
 						pathposix(name, p, n);
 						name = p;
 					}
@@ -1710,6 +1721,9 @@ static void stat_init(Shell_t *shp)
 	int		i,nstat = STAT_SUBSHELL+1;
 	struct Stats	*sp = newof(0,struct Stats,1,nstat*NV_MINSZ);
 	Namval_t	*np;
+
+	if(!sp)
+		sh_outofmemory();
 	sp->numnodes = nstat;
 	sp->nodes = (char*)(sp+1);
 	shgd->stats = (int*)calloc(sizeof(int),nstat);
@@ -1743,7 +1757,7 @@ static Init_t *nv_init(Shell_t *shp)
 	double d=0;
 	ip = newof(0,Init_t,1,0);
 	if(!ip)
-		return(0);
+		sh_outofmemory();
 	shp->nvfun.last = (char*)shp;
 	shp->nvfun.nofree = 1;
 	ip->sh = shp;
@@ -1855,6 +1869,8 @@ static Init_t *nv_init(Shell_t *shp)
 	nv_onattr(DOTSHNOD,NV_RDONLY);
 	SH_LINENO->nvalue.ip = &shp->st.lineno;
 	VERSIONNOD->nvalue.nrp = newof(0,struct Namref,1,0);
+	if(!VERSIONNOD->nvalue.nrp)
+		sh_outofmemory();
         VERSIONNOD->nvalue.nrp->np = SH_VERSIONNOD;
         VERSIONNOD->nvalue.nrp->root = nv_dict(DOTSHNOD);
         VERSIONNOD->nvalue.nrp->table = DOTSHNOD;
@@ -2137,6 +2153,8 @@ Namfun_t	*nv_mapchar(Namval_t *np,const char *name)
 			free((void*)mp);
 	}
 	mp = newof(0,struct Mapchar,1,n);
+	if(!mp)
+		sh_outofmemory();
 	mp->trans = trans;
 	mp->lctype = lctype;
 	if(low==0)

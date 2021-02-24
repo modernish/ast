@@ -778,6 +778,8 @@ found:
 void nv_addtype(Namval_t *np, const char *optstr, Optdisc_t *op, size_t optsz)
 {
 	Namdecl_t	*cp = newof((Namdecl_t*)0,Namdecl_t,1,optsz);
+	if(!cp)
+		sh_outofmemory();
 	Optdisc_t	*dp = (Optdisc_t*)(cp+1);
 	Shell_t		*shp = sh_getinterp();
 	Namval_t	*mp,*bp;
@@ -914,6 +916,8 @@ Namval_t *nv_mktype(Namval_t **nodes, int numnodes)
 	nv_setsize(mp,offset);
 	k = roundof(sizeof(Namtype_t),sizeof(Sfdouble_t)) - sizeof(Namtype_t);
 	pp = newof(NiL, Namtype_t, 1, nnodes*NV_MINSZ + offset + size + (nnodes+nd)*sizeof(char*) + iref*sizeof(struct Namref)+k);
+	if(!pp)
+		sh_outofmemory();
 	pp->fun.dsize = sizeof(Namtype_t)+nnodes*NV_MINSZ +offset+k;
 	pp->fun.type = mp;
 	pp->parent = nv_lastdict();
@@ -934,7 +938,11 @@ Namval_t *nv_mktype(Namval_t **nodes, int numnodes)
 	pp->strsize = size;
 	cp = (char*)&pp->names[nd+nnodes];
 	if(qp)
+	{
 		mnodes = newof(NiL, Namval_t*, nd+1, 0);
+		if(!mnodes)
+			sh_outofmemory();
+	}
 	nd = 0;
 	nq = nv_namptr(pp->nodes,0);
 	nq->nvname = cp;
@@ -1207,6 +1215,8 @@ Namval_t *nv_mkinttype(char *name, size_t size, int sign, const char *help, Namd
 	stakseek(offset);
 	offset = size + sizeof(Namdisc_t);
 	fp = newof(NiL, Namfun_t, 1, offset);
+	if(!fp)
+		sh_outofmemory();
 	fp->type = mp;
 	fp->nofree |= 1;
 	fp->dsize = sizeof(Namfun_t)+size;
@@ -1445,6 +1455,8 @@ Namval_t *nv_mkstruct(const char *name, int rsize, Fields_t *fields)
 		}
 	}
 	pp = newof(NiL,Namtype_t, 1,  nnodes*NV_MINSZ + rsize + size);
+	if(!pp)
+		sh_outofmemory();
 	pp->fun.dsize = sizeof(Namtype_t)+nnodes*NV_MINSZ +rsize;
 	pp->fun.type = mp;
 	pp->np = mp;
@@ -1554,6 +1566,8 @@ void nv_mkstat(void)
 	nv_offattr(tp,NV_RDONLY);
 	nv_setvtree(tp);
 	fp = newof(NiL,Namfun_t,1,0);
+	if(!fp)
+		sh_outofmemory();
 	fp->type = tp;
 	fp->disc = &stat_disc;
 	nv_disc(tp,fp,NV_FIRST);

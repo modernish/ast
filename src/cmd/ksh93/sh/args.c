@@ -101,6 +101,8 @@ static void 		sh_argset(Arg_t*, char *[]);
 void *sh_argopen(Shell_t *shp)
 {
 	void *addr = newof(0,Arg_t,1,0);
+	if(!addr)
+		sh_outofmemory();
 	Arg_t *ap = (Arg_t*)addr;
 	ap->sh = shp;
 	return(addr);
@@ -476,6 +478,8 @@ struct dolnod *sh_argcreate(register char *argv[])
 		size += strlen(sp);
 	n = (pp - argv)-1;
 	dp=new_of(struct dolnod,n*sizeof(char*)+size+n);
+	if(!dp)
+		sh_outofmemory();
 	dp->dolrefcnt=1;	/* use count */
 	dp->dolnum = n;
 	dp->dolnxt = 0;

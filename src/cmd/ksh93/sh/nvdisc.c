@@ -520,7 +520,7 @@ char *nv_setdisc(register Namval_t* np,register const char *event,Namval_t *acti
 		if(action==np)
 			return((char*)action);
 		if(!(vp = newof(NIL(struct vardisc*),struct vardisc,1,sizeof(Namdisc_t))))
-			return(0);
+			sh_outofmemory();
 		dp = (Namdisc_t*)(vp+1);
 		vp->fun.disc = dp;
 		memset(dp,0,sizeof(*dp));
@@ -648,7 +648,7 @@ Namfun_t *nv_clone_disc(register Namfun_t *fp, int flags)
 	if(!(size=fp->dsize) && (!fp->disc || !(size=fp->disc->dsize)))
 		size = sizeof(Namfun_t);
 	if(!(nfp=newof(NIL(Namfun_t*),Namfun_t,1,size-sizeof(Namfun_t))))
-		return(0);
+		sh_outofmemory();
 	memcpy(nfp,fp,size);
 	nfp->nofree &= ~1;
 	nfp->nofree |= (flags&NV_RDONLY)?1:0;
@@ -666,7 +666,7 @@ int nv_adddisc(Namval_t *np, const char **names, Namval_t **funs)
 			n++;
 	}
 	if(!(vp = newof(NIL(Nambfun_t*),Nambfun_t,1,n*sizeof(Namval_t*))))
-		return(0);
+		sh_outofmemory();
 	vp->fun.dsize = sizeof(Nambfun_t)+n*sizeof(Namval_t*);
 	vp->fun.nofree |= 2;
 	vp->num = n;
@@ -826,7 +826,7 @@ int nv_setnotify(Namval_t *np, char **addr)
 {
 	struct notify *pp = newof(0,struct notify, 1,0);
 	if(!pp)
-		return(0);
+		sh_outofmemory();
 	pp->ptr = addr;
 	pp->hdr.disc = &notify_disc;
 	nv_stack(np,&pp->hdr);
@@ -837,7 +837,9 @@ static void *newnode(const char *name)
 {
 	register int s;
 	register Namval_t *np = newof(0,Namval_t,1,s=strlen(name)+1);
-	if(np)
+	if(!np)
+		sh_outofmemory();
+	else
 	{
 		np->nvname = (char*)np+sizeof(Namval_t);
 		memcpy(np->nvname,name,s);
@@ -1037,12 +1039,16 @@ Namval_t *nv_mkclone(Namval_t *mp)
 	Namval_t *np;
 	Namfun_t *dp;
 	np = newof(0,Namval_t,1,0);
+	if(!np)
+		sh_outofmemory();
 	np->nvflag = mp->nvflag;
 	np->nvsize = mp->nvsize;
 	np->nvname = mp->nvname;
 	np->nvalue.np = mp;
 	np->nvflag = mp->nvflag;
 	dp = newof(0,Namfun_t,1,0);
+	if(!dp)
+		sh_outofmemory();
 	dp->disc = &clone_disc;
 	nv_stack(np,dp);
 	dtinsert(nv_dict(sh.namespace),np);
@@ -1440,7 +1446,7 @@ Namval_t *nv_mount(Namval_t *np, const char *name, Dt_t *dict)
 	else
 		pp = nv_lastdict();
 	if(!(tp = newof((struct table*)0, struct table,1,0)))
-		return(0);
+		sh_outofmemory();
 	if(name)
 	{
 		Namfun_t *fp = pp->nvfun;

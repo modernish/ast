@@ -119,6 +119,8 @@ static int	charlen(const char*,int);
 void *sh_macopen(Shell_t *shp)
 {
 	void *addr = newof(0,Mac_t,1,0);
+	if(!addr)
+		sh_outofmemory();
 	Mac_t *mp = (Mac_t*)addr;
 	mp->shp = shp;
 	return(addr);
