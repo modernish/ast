@@ -519,8 +519,7 @@ char *nv_setdisc(register Namval_t* np,register const char *event,Namval_t *acti
 		Namdisc_t	*dp;
 		if(action==np)
 			return((char*)action);
-		if(!(vp = newof(NIL(struct vardisc*),struct vardisc,1,sizeof(Namdisc_t))))
-			sh_outofmemory();
+		vp = sh_newof(NIL(struct vardisc*),struct vardisc,1,sizeof(Namdisc_t));
 		dp = (Namdisc_t*)(vp+1);
 		vp->fun.disc = dp;
 		memset(dp,0,sizeof(*dp));
@@ -647,8 +646,7 @@ Namfun_t *nv_clone_disc(register Namfun_t *fp, int flags)
 		return(fp);
 	if(!(size=fp->dsize) && (!fp->disc || !(size=fp->disc->dsize)))
 		size = sizeof(Namfun_t);
-	if(!(nfp=newof(NIL(Namfun_t*),Namfun_t,1,size-sizeof(Namfun_t))))
-		sh_outofmemory();
+	nfp = sh_newof(NIL(Namfun_t*),Namfun_t,1,size-sizeof(Namfun_t));
 	memcpy(nfp,fp,size);
 	nfp->nofree &= ~1;
 	nfp->nofree |= (flags&NV_RDONLY)?1:0;
@@ -665,8 +663,7 @@ int nv_adddisc(Namval_t *np, const char **names, Namval_t **funs)
 		while(*av++)
 			n++;
 	}
-	if(!(vp = newof(NIL(Nambfun_t*),Nambfun_t,1,n*sizeof(Namval_t*))))
-		sh_outofmemory();
+	vp = sh_newof(NIL(Nambfun_t*),Nambfun_t,1,n*sizeof(Namval_t*));
 	vp->fun.dsize = sizeof(Nambfun_t)+n*sizeof(Namval_t*);
 	vp->fun.nofree |= 2;
 	vp->num = n;
@@ -824,9 +821,7 @@ int nv_unsetnotify(Namval_t *np, char **addr)
 
 int nv_setnotify(Namval_t *np, char **addr)
 {
-	struct notify *pp = newof(0,struct notify, 1,0);
-	if(!pp)
-		sh_outofmemory();
+	struct notify *pp = sh_newof(0,struct notify, 1,0);
 	pp->ptr = addr;
 	pp->hdr.disc = &notify_disc;
 	nv_stack(np,&pp->hdr);
@@ -836,10 +831,8 @@ int nv_setnotify(Namval_t *np, char **addr)
 static void *newnode(const char *name)
 {
 	register int s;
-	register Namval_t *np = newof(0,Namval_t,1,s=strlen(name)+1);
-	if(!np)
-		sh_outofmemory();
-	else
+	register Namval_t *np = sh_newof(0,Namval_t,1,s=strlen(name)+1);
+	if(np)
 	{
 		np->nvname = (char*)np+sizeof(Namval_t);
 		memcpy(np->nvname,name,s);
@@ -879,8 +872,7 @@ static void *num_clone(register Namval_t *np, void *val)
 		else
 			size = sizeof(int32_t);
 	}
-	if(!(nval = malloc(size)))
-		sh_outofmemory();
+	nval = sh_malloc(size);
 	memcpy(nval,val,size);
 	return(nval);
 }
@@ -959,9 +951,9 @@ int nv_clone(Namval_t *np, Namval_t *mp, int flags)
 		if(np->nvalue.cp && np->nvalue.cp!=Empty && (flags&NV_COMVAR) && !(flags&NV_MOVE))
 		{
 			if(size)
-				mp->nvalue.cp = (char*)memdup(np->nvalue.cp,size);
+				mp->nvalue.cp = (char*)sh_memdup(np->nvalue.cp,size);
 			else
-			        mp->nvalue.cp = strdup(np->nvalue.cp);
+			        mp->nvalue.cp = sh_strdup(np->nvalue.cp);
 			nv_offattr(mp,NV_NOFREE);
 		}
 		else if((np->nvfun || !nv_isattr(np,NV_ARRAY)) && !(mp->nvalue.cp = np->nvalue.cp))
@@ -1038,17 +1030,13 @@ Namval_t *nv_mkclone(Namval_t *mp)
 {
 	Namval_t *np;
 	Namfun_t *dp;
-	np = newof(0,Namval_t,1,0);
-	if(!np)
-		sh_outofmemory();
+	np = sh_newof(0,Namval_t,1,0);
 	np->nvflag = mp->nvflag;
 	np->nvsize = mp->nvsize;
 	np->nvname = mp->nvname;
 	np->nvalue.np = mp;
 	np->nvflag = mp->nvflag;
-	dp = newof(0,Namfun_t,1,0);
-	if(!dp)
-		sh_outofmemory();
+	dp = sh_newof(0,Namfun_t,1,0);
 	dp->disc = &clone_disc;
 	nv_stack(np,dp);
 	dtinsert(nv_dict(sh.namespace),np);
@@ -1445,8 +1433,7 @@ Namval_t *nv_mount(Namval_t *np, const char *name, Dt_t *dict)
 		pp = np;
 	else
 		pp = nv_lastdict();
-	if(!(tp = newof((struct table*)0, struct table,1,0)))
-		sh_outofmemory();
+	tp = sh_newof((struct table*)0, struct table,1,0);
 	if(name)
 	{
 		Namfun_t *fp = pp->nvfun;

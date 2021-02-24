@@ -250,11 +250,9 @@ void sh_siginit(void *ptr)
 		tp++;
 	}
 	shp->gd->sigmax = n++;
-	shp->st.trapcom = (char**)calloc(n,sizeof(char*));
-	shp->sigflag = (unsigned char*)calloc(n,1);
-	shp->gd->sigmsg = (char**)calloc(n,sizeof(char*));
-	if(!shp->st.trapcom || !shp->sigflag || !shp->gd->sigmsg)
-		sh_outofmemory();
+	shp->st.trapcom = (char**)sh_calloc(n,sizeof(char*));
+	shp->sigflag = (unsigned char*)sh_calloc(n,1);
+	shp->gd->sigmsg = (char**)sh_calloc(n,sizeof(char*));
 	for(tp=shtab_signals; sig=tp->sh_number; tp++)
 	{
 		n = (sig>>SH_SIGBITS);

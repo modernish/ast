@@ -181,8 +181,7 @@ getaddrinfo(const char* node, const char* service, const struct addrinfo* hint, 
 		errno = EADDRNOTAVAIL;
 		return EAI_SYSTEM;
 	}
-	if (!(ap = newof(0, struct addrinfo, 1, sizeof(struct sockaddr_in))))
-		sh_outofmemory();
+	ap = sh_newof(0, struct addrinfo, 1, sizeof(struct sockaddr_in));
 	if (hint)
 		*ap = *hint;
 	ap->ai_family = hp->h_addrtype;
@@ -264,13 +263,12 @@ inetopen(const char* path, int flags, Inetintr_f onintr, void* handle)
 	}
 	if(flags==O_NONBLOCK)
 		return 1;
-	if (!(s = strdup(path)))
-		return -1;
+	s = sh_strdup(path);
 	if (t = strchr(s, '/'))
 	{
 		*t++ = 0;
 		if (streq(s, "local"))
-			s = strdup("localhost");
+			s = sh_strdup("localhost");
 		fd = getaddrinfo(s, t, &hint, &addr);
 	}
 	else
@@ -413,9 +411,7 @@ int  sh_iovalidfd(Shell_t *shp, int fd)
 	if(n > max)
 		n = max;
 	max = shp->gd->lim.open_max;
-	shp->sftable = (Sfio_t**)calloc((n+1)*(sizeof(int*)+sizeof(Sfio_t*)+1),1);
-	if(!shp->sftable)
-		sh_outofmemory();
+	shp->sftable = (Sfio_t**)sh_calloc((n+1)*(sizeof(int*)+sizeof(Sfio_t*)+1),1);
 	if(max)
 		memcpy(shp->sftable,sftable,max*sizeof(Sfio_t*));
 	shp->fdptrs = (int**)(&shp->sftable[n]);
@@ -462,9 +458,7 @@ int  sh_inuse(Shell_t *shp, int fd)
 void sh_ioinit(Shell_t *shp)
 {
 	filemapsize = 8;
-	filemap = (struct fdsave*)malloc(filemapsize*sizeof(struct fdsave));
-	if(!filemap)
-		sh_outofmemory();
+	filemap = (struct fdsave*)sh_malloc(filemapsize*sizeof(struct fdsave));
 	sh_iovalidfd(shp,16);
 	shp->sftable[0] = sfstdin;
 	shp->sftable[1] = sfstdout;
@@ -474,10 +468,8 @@ void sh_ioinit(Shell_t *shp)
 	sh_iostream(shp,1);
 	/* all write streams are in the same pool and share outbuff */
 	shp->outpool = sfopen(NIL(Sfio_t*),NIL(char*),"sw");  /* pool identifier */
-	shp->outbuff = (char*)malloc(IOBSIZE+4);
-	shp->errbuff = (char*)malloc(IOBSIZE/4);
-	if(!shp->outbuff || !shp->errbuff)
-		sh_outofmemory();
+	shp->outbuff = (char*)sh_malloc(IOBSIZE+4);
+	shp->errbuff = (char*)sh_malloc(IOBSIZE/4);
 	sfsetbuf(sfstderr,shp->errbuff,IOBSIZE/4);
 	sfsetbuf(sfstdout,shp->outbuff,IOBSIZE);
 	sfpool(sfstdout,shp->outpool,SF_WRITE);
@@ -557,8 +549,7 @@ Sfio_t *sh_iostream(Shell_t *shp, register int fd)
 	}
 	if(status&IOREAD)
 	{
-		if(!(bp = (char *)malloc(IOBSIZE+1)))
-			sh_outofmemory();
+		bp = (char *)sh_malloc(IOBSIZE+1);
 		flags |= SF_READ;
 		if(!(status&IOWRITE))
 			flags &= ~SF_WRITE;
@@ -575,9 +566,7 @@ Sfio_t *sh_iostream(Shell_t *shp, register int fd)
 	}
 	else if(!(iop=sfnew((fd<=2?iop:0),bp,IOBSIZE,fd,flags)))
 		return(NIL(Sfio_t*));
-	dp = newof(0,struct Iodisc,1,0);
-	if(!dp)
-		sh_outofmemory();
+	dp = sh_newof(0,struct Iodisc,1,0);
 	dp->sh = shp;
 	if(status&IOREAD)
 	{
@@ -1575,9 +1564,7 @@ static int io_heredoc(Shell_t *shp,register struct ionod *iop, const char *name,
 			sfclose(infile);
 			if(sffileno(tmp)>0)
 			{
-				sfsetbuf(tmp,malloc(IOBSIZE+1),IOBSIZE);
-				if(!tmp)
-					sh_outofmemory();
+				sfsetbuf(tmp,sh_malloc(IOBSIZE+1),IOBSIZE);
 				sfset(tmp,SF_MALLOC,1);
 			}
 			sfseek(shp->heredocs,off,SEEK_SET);
@@ -1641,8 +1628,7 @@ void sh_iosave(Shell_t *shp, register int origfd, int oldtop, char *name)
 		char 	*oldend = (char*)&filemap[filemapsize];
 		long	moved;
 		filemapsize += 8;
-		if(!(filemap = (struct fdsave*)realloc(filemap,filemapsize*sizeof(struct fdsave))))
-			sh_outofmemory();
+		filemap = (struct fdsave*)sh_realloc(filemap,filemapsize*sizeof(struct fdsave));
 		if(moved = (char*)filemap - oldptr)
 		{
 			for(savefd=shp->gd->lim.open_max; --savefd>=0; )
@@ -2246,8 +2232,6 @@ static void	sftrack(Sfio_t* sp, int flag, void* data)
 			 * built-ins from cleanup
 			 */
 			item = new_of(struct openlist, 0);
-			if(!item)
-				sh_outofmemory();
 			item->strm = sp;
 			item->next = pp->olist;
 			pp->olist = item;
@@ -2298,8 +2282,7 @@ Sfio_t *sh_sfeval(register char *argv[])
 	if(argv[1])
 	{
 		register struct eval *ep;
-		if(!(ep = new_of(struct eval,0)))
-			sh_outofmemory();
+		ep = new_of(struct eval,0);
 		ep->disc = eval_disc;
 		ep->argv = argv;
 		ep->slen  = -1;
@@ -2358,8 +2341,7 @@ static Sfio_t *subopen(Shell_t *shp,Sfio_t* sp, off_t offset, long size)
 	register struct subfile *disp;
 	if(sfseek(sp,offset,SEEK_SET) <0)
 		return(NIL(Sfio_t*));
-	if(!(disp = (struct subfile*)malloc(sizeof(struct subfile)+IOBSIZE+1)))
-		sh_outofmemory();
+	disp = (struct subfile*)sh_malloc(sizeof(struct subfile)+IOBSIZE+1);
 	disp->disc = sub_disc;
 	disp->oldsp = sp;
 	disp->offset = offset;

@@ -103,7 +103,7 @@ int sh_source(Shell_t *shp, Sfio_t *iop, const char *file)
 		return 0;
 	}
 	oid = error_info.id;
-	nid = error_info.id = strdup(file);
+	nid = error_info.id = sh_strdup(file);
 	shp->st.filename = path_fullname(shp,stakptr(PATH_OFFSET));
 	REGRESS(source, "sh_source", ("%s", file));
 	exfile(shp, iop, fd);
@@ -221,7 +221,7 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 			if(!sh_isoption(SH_NOUSRPROFILE) && !sh_isoption(SH_PRIVILEGED) && sh_isoption(SH_RC))
 			{
 				if(name = sh_mactry(shp,nv_getval(ENVNOD)))
-					name = *name ? strdup(name) : (char*)0;
+					name = *name ? sh_strdup(name) : (char*)0;
 #if SHOPT_SYSRC
 				if(!strmatch(name, "?(.)/./*"))
 					sh_source(shp, iop, e_sysrc);
@@ -320,9 +320,7 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 							errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_open,name);
 						/* try sh -c 'name "$@"' */
 						sh_onoption(SH_CFLAG);
-						shp->comdiv = (char*)malloc(strlen(name)+7);
-						if(!shp->comdiv)
-							sh_outofmemory();
+						shp->comdiv = (char*)sh_malloc(strlen(name)+7);
 						name = strcopy(shp->comdiv,name);
 						if(shp->st.dolc)
 							strcopy(name," \"$@\"");

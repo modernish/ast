@@ -100,9 +100,7 @@ static void 		sh_argset(Arg_t*, char *[]);
 
 void *sh_argopen(Shell_t *shp)
 {
-	void *addr = newof(0,Arg_t,1,0);
-	if(!addr)
-		sh_outofmemory();
+	void *addr = sh_newof(0,Arg_t,1,0);
 	Arg_t *ap = (Arg_t*)addr;
 	ap->sh = shp;
 	return(addr);
@@ -344,7 +342,7 @@ int sh_argopts(int argc,register char *argv[], void *context)
 		sfputr(lp->kiafile,";vdb;CIAO/ksh",'\n');
 		lp->kiabegin = sftell(lp->kiafile);
 		lp->entity_tree = dtopen(&_Nvdisc,Dtbag);
-		lp->scriptname = strdup(sh_fmtq(argv[0]));
+		lp->scriptname = sh_strdup(sh_fmtq(argv[0]));
 		lp->script=kiaentity(lp,lp->scriptname,-1,'p',-1,0,0,'s',0,"");
 		lp->fscript=kiaentity(lp,lp->scriptname,-1,'f',-1,0,0,'s',0,"");
 		lp->unknown=kiaentity(lp,"<unknown>",-1,'p',-1,0,0,'0',0,"");
@@ -478,8 +476,6 @@ struct dolnod *sh_argcreate(register char *argv[])
 		size += strlen(sp);
 	n = (pp - argv)-1;
 	dp=new_of(struct dolnod,n*sizeof(char*)+size+n);
-	if(!dp)
-		sh_outofmemory();
 	dp->dolrefcnt=1;	/* use count */
 	dp->dolnum = n;
 	dp->dolnxt = 0;

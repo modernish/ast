@@ -188,7 +188,7 @@ void sh_subfork(void)
 	pid_t pid;
 	char *trap = shp->st.trapcom[0];
 	if(trap)
-		trap = strdup(trap);
+		trap = sh_strdup(trap);
 	/* see whether inside $(...) */
 	if(sp->pipe)
 		sh_subtmpfile(shp->comsub);
@@ -307,9 +307,7 @@ Namval_t *sh_assignok(register Namval_t *np,int add)
 			return(np);
 	}
 	/* first two pointers use linkage from np */
-	lp = (struct Link*)malloc(sizeof(*np)+2*sizeof(void*));
-	if(!lp)
-		sh_outofmemory();
+	lp = (struct Link*)sh_malloc(sizeof(*np)+2*sizeof(void*));
 	memset(lp,0, sizeof(*mp)+2*sizeof(void*));
 	lp->node = np;
 	if(!add &&  nv_isvtree(np))
@@ -609,7 +607,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 			}
 		}
 #endif /* _lib_fchdir */
-		sp->pwd = (shp->pwd?strdup(shp->pwd):0);
+		sp->pwd = (shp->pwd?sh_strdup(shp->pwd):0);
 		sp->mask = shp->mask;
 		sh_stats(STAT_SUBSHELL);
 		/* save trap table */
@@ -617,12 +615,10 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		shp->st.otrap = savst.trap;
 		if((nsig=shp->st.trapmax)>0 || shp->st.trapcom[0])
 		{
-			savsig = malloc(nsig * sizeof(char*));
-			if(!savsig)
-				sh_outofmemory();
+			savsig = sh_malloc(nsig * sizeof(char*));
 			/*
 			 * the data is, usually, modified in code like:
-			 *	tmp = buf[i]; buf[i] = strdup(tmp); free(tmp);
+			 *	tmp = buf[i]; buf[i] = sh_strdup(tmp); free(tmp);
 			 * so shp->st.trapcom needs a "deep copy" to properly save/restore pointers.
 			 */
 			for (isig = 0; isig < nsig; ++isig)
@@ -630,7 +626,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 				if(shp->st.trapcom[isig] == Empty)
 					savsig[isig] = Empty;
 				else if(shp->st.trapcom[isig])
-					savsig[isig] = strdup(shp->st.trapcom[isig]);
+					savsig[isig] = sh_strdup(shp->st.trapcom[isig]);
 				else
 					savsig[isig] = NULL;
 			}

@@ -87,11 +87,10 @@ static Namarr_t *array_scope(Namval_t *np, Namarr_t *ap, int flags)
 	size_t size = ap->hdr.dsize;
 	if(size==0)
 		size = ap->hdr.disc->dsize;
-	if(!(aq=newof(NIL(Namarr_t*),Namarr_t,1,size-sizeof(Namarr_t))))
-		sh_outofmemory();
-        memcpy(aq,ap,size);
+	aq = sh_newof(NIL(Namarr_t*),Namarr_t,1,size-sizeof(Namarr_t));
+	memcpy(aq,ap,size);
 	aq->hdr.nofree &= ~1;
-        aq->hdr.nofree |= (flags&NV_RDONLY)?1:0;
+	aq->hdr.nofree |= (flags&NV_RDONLY)?1:0;
 	if(is_associative(aq))
 	{
 		aq->scope = (void*)dtopen(&_Nvdisc,Dtoset);
@@ -346,9 +345,7 @@ static Namval_t *array_find(Namval_t *np,Namarr_t *arp, int flag)
 		{
 			if(data)
 			{
-				fp->data = (char*)malloc(fp->nelem*fp->size);
-				if(!fp->data)
-					sh_outofmemory();
+				fp->data = (char*)sh_malloc(fp->nelem*fp->size);
 				memcpy(fp->data,data,fp->nelem*fp->size);
 			}
 			else
@@ -490,7 +487,7 @@ static Namfun_t *array_clone(Namval_t *np, Namval_t *mp, int flags, Namfun_t *fp
 	mp->nvflag &= NV_MINIMAL;
 	mp->nvflag |= (np->nvflag&~(NV_MINIMAL|NV_NOFREE));
 	if(!(nelem&(ARRAY_SCAN|ARRAY_UNDEF)) && (sub=nv_getsub(np)))
-		sub = strdup(sub);
+		sub = sh_strdup(sub);
 	ar = (struct index_array*)ap;
 	if(!is_associative(ap))
 		ar->bits = (unsigned char*)&ar->val[ar->maxi];
@@ -816,8 +813,6 @@ static struct index_array *array_grow(Namval_t *np, register struct index_array 
 		errormsg(SH_DICT,ERROR_exit(1),e_subscript, fmtbase((long)maxi,10,0));
 	i = (newsize-1)*sizeof(union Value*)+newsize;
 	ap = new_of(struct index_array,i);
-	if(!ap)
-		sh_outofmemory();
 	memset((void*)ap,0,sizeof(*ap)+i);
 	ap->maxi = newsize;
 	ap->cur = maxi;
@@ -903,9 +898,7 @@ int nv_atypeindex(Namval_t *np, const char *tname)
 			errormsg(SH_DICT,ERROR_exit(1),e_notenum,tp->nvname);
 		if(!ap)
 			ap = array_grow(np,ap,1);
-		ap->xp = calloc(NV_MINSZ,1);
-		if(!ap->xp)
-			sh_outofmemory();
+		ap->xp = sh_calloc(NV_MINSZ,1);
 		np = nv_namptr(ap->xp,0);
 		np->nvname = tp->nvname;
 		nv_onattr(np,NV_MINIMAL);
@@ -1370,9 +1363,7 @@ static void array_fixed_setdata(Namval_t *np,Namarr_t* ap,struct fixed_array* fp
 	ap->nelem = 1;
 	fp->size = fp->ptr?sizeof(void*):nv_datasize(np,0);
 	ap->nelem = n;
-	fp->data = (char*)calloc(fp->nelem,fp->size);
-	if(!fp->data)
-		sh_outofmemory();
+	fp->data = (char*)sh_calloc(fp->nelem,fp->size);
 	if(fp->ptr)
 	{
 		char **cp = (char**)fp->data;
@@ -1395,8 +1386,7 @@ static int array_fixed_init(Namval_t *np, char *sub, char *cp)
 	if(*ep)
 		return(0);
 	sz = sizeof(struct fixed_array)+ 3*n*sizeof(int);
-	if(!(ap=newof(NIL(Namarr_t*),Namarr_t,1,sz)))
-		sh_outofmemory();
+	ap = sh_newof(NIL(Namarr_t*),Namarr_t,1,sz);
 	ap->hdr.disc = &array_disc;
 	ap->hdr.dsize = sizeof(Namarr_t)+sz;
 	ap->hdr.nofree &= ~1;
@@ -1657,19 +1647,15 @@ void *nv_associative(register Namval_t *np,const char *sp,int mode)
 	switch(mode)
 	{
 	    case NV_AINIT:
-		if(ap = (struct assoc_array*)calloc(1,sizeof(struct assoc_array)))
-		{
-			ap->header.table = dtopen(&_Nvdisc,Dtoset);
-			dtuserdata(ap->header.table,&sh,1);
-			ap->cur = 0;
-			ap->pos = 0;
-			ap->header.hdr.disc = &array_disc;
-			nv_disc(np,(Namfun_t*)ap, NV_FIRST);
-			ap->header.hdr.dsize = sizeof(struct assoc_array);
-			ap->header.hdr.nofree &= ~1;
-		}
-		else
-			sh_outofmemory();
+		ap = (struct assoc_array*)sh_calloc(1,sizeof(struct assoc_array));
+		ap->header.table = dtopen(&_Nvdisc,Dtoset);
+		dtuserdata(ap->header.table,&sh,1);
+		ap->cur = 0;
+		ap->pos = 0;
+		ap->header.hdr.disc = &array_disc;
+		nv_disc(np,(Namfun_t*)ap, NV_FIRST);
+		ap->header.hdr.dsize = sizeof(struct assoc_array);
+		ap->header.hdr.nofree &= ~1;
 		return((void*)ap);
 	    case NV_ADELETE:
 		if(ap->cur)

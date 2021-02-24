@@ -118,9 +118,7 @@ static int	charlen(const char*,int);
 
 void *sh_macopen(Shell_t *shp)
 {
-	void *addr = newof(0,Mac_t,1,0);
-	if(!addr)
-		sh_outofmemory();
+	void *addr = sh_newof(0,Mac_t,1,0);
 	Mac_t *mp = (Mac_t*)addr;
 	mp->shp = shp;
 	return(addr);
@@ -973,9 +971,7 @@ static char *prefix(Shell_t *shp, char *id)
 				if(sub)
 					nv_putsub(np,sub,0L);
 			}
-			id = (char*)malloc(strlen(cp)+1+(n=strlen(sp=nv_name(np)))+ (sub?strlen(sub)+3:1));
-			if(!id)
-				sh_outofmemory();
+			id = (char*)sh_malloc(strlen(cp)+1+(n=strlen(sp=nv_name(np)))+ (sub?strlen(sub)+3:1));
 			memcpy(id,sp,n);
 			if(sub)
 			{
@@ -988,7 +984,7 @@ static char *prefix(Shell_t *shp, char *id)
 			return(id);
 		}
 	}
-	return(strdup(id));
+	return(sh_strdup(id));
 }
 
 /*
@@ -1043,7 +1039,7 @@ int sh_macfun(Shell_t *shp, const char *name, int offset)
 		t.node.com.comarg = &d.arg;
 		t.node.com.comline = shp->inlineno;
 		d.dol.dolnum = 1;
-		d.dol.dolval[0] = strdup(name);
+		d.dol.dolval[0] = sh_strdup(name);
 		stkseek(shp->stk,offset);
 		comsubst((Mac_t*)shp->mac_context,&t.node,2);
 		free(d.dol.dolval[0]);
@@ -1365,7 +1361,7 @@ retry1:
 					v = stkptr(stkp,mp->dotdot);
 					dolmax =1;
 					if(array_assoc(ap))
-						arrmax = strdup(v);
+						arrmax = sh_strdup(v);
 					else if((dolmax = (int)sh_arith(mp->shp,v))<0)
 						dolmax += array_maxindex(np);
 					if(type==M_SUBNAME)
@@ -1784,7 +1780,7 @@ retry1:
 			else
 				type = 0;
 		}
-		pattern = strdup(argp);
+		pattern = sh_strdup(argp);
 		if((type=='/' || c=='/') && (repstr = mac_getstring(pattern)))
 		{
 			Mac_t	savemac;
@@ -1796,7 +1792,7 @@ retry1:
 			mp->split = 0;
 			copyto(mp,0,0);
 			sfputc(stkp,0);
-			repstr = strdup(stkptr(stkp,n));
+			repstr = sh_strdup(stkptr(stkp,n));
 			replen = strlen(repstr);
 			stkseek(stkp,n);
 			*mp = savemac;
@@ -2167,9 +2163,7 @@ static void comsubst(Mac_t *mp,register Shnode_t* t, int type)
 			}
 			if(!(sp=mp->shp->sftable[fd]))
 			{
-				char *cp = (char*)malloc(IOBSIZE+1);
-				if(!cp)
-					sh_outofmemory();
+				char *cp = (char*)sh_malloc(IOBSIZE+1);
 				sp = sfnew(NIL(Sfio_t*),cp,IOBSIZE,fd,SF_READ|SF_MALLOC);
 			}
 			type = 3;

@@ -149,8 +149,6 @@ void *nv_diropen(Namval_t *np,const char *name)
 	struct nvdir *save, *dp = new_of(struct nvdir,len+1);
 	Namval_t *nq=0,fake;
 	Namfun_t *nfp=0;
-	if(!dp)
-		sh_outofmemory();
 	memset((void*)dp, 0, sizeof(*dp));
 	dp->data = (char*)(dp+1);
 	if(name[len-1]=='*' || name[len-1]=='@')
@@ -225,8 +223,7 @@ void *nv_diropen(Namval_t *np,const char *name)
 			dp->hp = (Namval_t*)dtnext(dp->root,dp->hp);
 		if(np && ((nfp=nextdisc(np)) || nv_istable(np)))
 		{
-			if(!(save = new_of(struct nvdir,0)))
-				sh_outofmemory();
+			save = new_of(struct nvdir,0);
 			*save = *dp;
 			dp->prev = save;
 			if(nv_istable(np))
@@ -312,8 +309,7 @@ char *nv_dirnext(void *dir)
 					if(save)
 						return(cp);
 					len = strlen(cp);
-					if(!(save = new_of(struct nvdir,len+1)))
-						sh_outofmemory();
+					save = new_of(struct nvdir,len+1);
 					*save = *dp;
 					dp->prev = save;
 					dp->root = root;
@@ -1141,11 +1137,8 @@ void nv_setvtree(register Namval_t *np)
 		sh_assignok(np,1);
 	if(nv_hasdisc(np, &treedisc))
 		return;
-	nfp = newof(NIL(void*),Namfun_t,1,0);
-	if(!nfp)
-		sh_outofmemory();
+	nfp = sh_newof(NIL(void*),Namfun_t,1,0);
 	nfp->disc = &treedisc;
 	nfp->dsize = sizeof(Namfun_t);
 	nv_stack(np, nfp);
 }
-

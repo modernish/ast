@@ -172,9 +172,7 @@ static void typeset_order(const char *str,int line)
 		return;
 	if(!table)
 	{
-		table = calloc(1,256);
-		if(!table)
-			sh_outofmemory();
+		table = sh_calloc(1,256);
 		for(cp=(unsigned char*)"bflmnprstuxACHS";c = *cp; cp++)
 			table[c] = 1;
 		for(cp=(unsigned char*)"aiEFLRXhTZ";c = *cp; cp++)
@@ -829,8 +827,6 @@ static Shnode_t *funct(Lex_t *lexp)
 			{
 				Namval_t *np= nv_open(t->funct.functnam,shp->fun_tree,NV_ADD|NV_VARNAME);
 				np->nvalue.rp = new_of(struct Ufunction,shp->funload?sizeof(Dtlink_t):0);
-				if(!np->nvalue.rp)
-					sh_outofmemory();
 				memset((void*)np->nvalue.rp,0,sizeof(struct Ufunction));
 				np->nvalue.rp->argc = ((struct dolnod*)ac->comarg)->dolnum;
 			}

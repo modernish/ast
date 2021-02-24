@@ -188,8 +188,8 @@ void *sh_timeradd(unsigned long msec,int flags,void (*action)(void*),void *handl
 		return((void*)0);
 	if(tp=tpfree)
 		tpfree = tp->next;
-	else if(!(tp=(Timer_t*)malloc(sizeof(Timer_t))))
-		sh_outofmemory();
+	else
+		tp = (Timer_t*)sh_malloc(sizeof(Timer_t));
 	tp->wakeup = getnow() + t;
 	tp->incr = (flags?t:0);
 	tp->action = action;
@@ -203,14 +203,9 @@ void *sh_timeradd(unsigned long msec,int flags,void (*action)(void*),void *handl
 		fn = (Handler_t)signal(SIGALRM,sigalrm);
 		if((t= setalarm(t))>0 && fn  && fn!=(Handler_t)sigalrm)
 		{
-			Handler_t *hp = (Handler_t*)malloc(sizeof(Handler_t));
-			if(!hp)
-				sh_outofmemory();
-			else
-			{
-				*hp = fn;
-				sh_timeradd((long)(1000*t), 0, oldalrm, (void*)hp);
-			}
+			Handler_t *hp = (Handler_t*)sh_malloc(sizeof(Handler_t));
+			*hp = fn;
+			sh_timeradd((long)(1000*t), 0, oldalrm, (void*)hp);
 		}
 		tp = tptop;
 	}

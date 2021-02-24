@@ -626,9 +626,7 @@ static const Namdisc_t level_disc = {  sizeof(struct Level), put_level };
 
 static struct Level *init_level(Shell_t *shp,int level)
 {
-	struct Level *lp = newof(NiL,struct Level,1,0);
-	if(!lp)
-		sh_outofmemory();
+	struct Level *lp = sh_newof(NiL,struct Level,1,0);
 	lp->maxlevel = level;
 	_nv_unset(SH_LEVELNOD,0);
 	nv_onattr(SH_LEVELNOD,NV_INT16|NV_NOFREE);
@@ -837,7 +835,7 @@ static int set_instance(Shell_t *shp,Namval_t *nq, Namval_t *node, struct Namref
 #endif /* SHOPT_NAMESPACE */
 	shp->instance = 1;
 	if((ap=nv_arrayptr(nq)) && (sp = nv_getsub(nq)))
-		sp = strdup(sp);
+		sp = sh_strdup(sp);
 	shp->instance = 0;
 	if(shp->var_tree!=shp->var_base && !nv_search((char*)nq,nr->root,HASH_BUCKET|HASH_NOSCOPE))
 	{
@@ -1123,7 +1121,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 								if(!shp->strbuf2)
 									shp->strbuf2 = sfstropen();
 								sfprintf(shp->strbuf2,"%s%s%c",NV_CLASS,nv_name(shp->namespace),0);
-								shp->prefix = strdup(sfstruse(shp->strbuf2));
+								shp->prefix = sh_strdup(sfstruse(shp->strbuf2));
 								nv_open(shp->prefix,shp->var_base,NV_VARNAME);
 							}
 							else
@@ -1870,9 +1868,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				if((nsig=shp->st.trapmax*sizeof(char*))>0 || shp->st.trapcom[0])
 				{
 					nsig += sizeof(char*);
-					savsig = malloc(nsig);
-					if(!savsig)
-						sh_outofmemory();
+					savsig = sh_malloc(nsig);
 					memcpy(savsig,(char*)&shp->st.trapcom[0],nsig);
 					shp->st.otrapcom = (char**)savsig;
 				}
@@ -2530,8 +2526,6 @@ int sh_exec(register const Shnode_t *t, int flags)
 			if(!np->nvalue.rp)
 			{
 				np->nvalue.rp = new_of(struct Ufunction,shp->funload?sizeof(Dtlink_t):0);
-				if(!np->nvalue.rp)
-					sh_outofmemory();
 				memset((void*)np->nvalue.rp,0,sizeof(struct Ufunction));
 			}
 			if(t->funct.functstak)
@@ -2692,7 +2686,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 			else
 			{
 				nv_offattr(L_ARGNOD,NV_NOFREE);
-				shp->lastarg = strdup(comn);
+				shp->lastarg = sh_strdup(comn);
 			}
 		}
 		if(!skipexitset)
@@ -3118,12 +3112,10 @@ int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 	/* save trap table */
 	if((nsig=shp->st.trapmax)>0 || shp->st.trapcom[0])
 	{
-		savsig = malloc(nsig * sizeof(char*));
-		if(!savsig)
-			sh_outofmemory();
+		savsig = sh_malloc(nsig * sizeof(char*));
 		/*
 		 * the data is, usually, modified in code like:
-		 *	tmp = buf[i]; buf[i] = strdup(tmp); free(tmp);
+		 *	tmp = buf[i]; buf[i] = sh_strdup(tmp); free(tmp);
 		 * so shp->st.trapcom needs a "deep copy" to properly save/restore pointers.
 		 */
 		for (isig = 0; isig < nsig; ++isig)
@@ -3131,7 +3123,7 @@ int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 			if(shp->st.trapcom[isig] == Empty)
 				savsig[isig] = Empty;
 			else if(shp->st.trapcom[isig])
-				savsig[isig] = strdup(shp->st.trapcom[isig]);
+				savsig[isig] = sh_strdup(shp->st.trapcom[isig]);
 			else
 				savsig[isig] = NULL;
 		}
@@ -3175,9 +3167,7 @@ int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 					np = nv_search(arg[r],shp->var_tree,HASH_NOSCOPE|NV_ADD);
 					if(np && (nq=*nref++))
 					{
-						np->nvalue.nrp = newof(0,struct Namref,1,0);
-						if(!np->nvalue.nrp)
-							sh_outofmemory();
+						np->nvalue.nrp = sh_newof(0,struct Namref,1,0);
 						np->nvalue.nrp->np = nq;
 						nv_onattr(np,NV_REF|NV_NOFREE);
 					}

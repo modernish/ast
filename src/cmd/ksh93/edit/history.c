@@ -87,7 +87,27 @@
 #include	"history.h"
 
 #if !KSHELL
-#   define new_of(type,x)	((type*)malloc((unsigned)sizeof(type)+(x)))
+
+/*
+ * These malloc and strdup wrappers error out when allocation fails
+ */
+static void *sh_malloc(size_t size)
+{
+	char *cp = malloc(size);
+	if(!cp)
+		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+	return(cp);
+}
+
+static void *sh_strdup(const char *s)
+{
+	char *str = strdup(s);
+	if(!str)
+		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+	return(str);
+}
+
+#   define new_of(type,x)	((type*)sh_malloc((unsigned)sizeof(type)+(x)))
 #   define NIL(type)		((type)0)
 #   define path_relative(s,x)	(s,x)
 #   ifdef __STDC__
@@ -145,7 +165,7 @@ static History_t *hist_ptr;
 		else
 			cp = "unknown";
 	}
-	logname = strdup(cp);
+	logname = sh_strdup(cp);
 	if((acctfd=sh_open(acctfile,
 		O_BINARY|O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IWUSR))>=0 &&
 	    (unsigned)acctfd < 10)
@@ -306,11 +326,7 @@ retry:
 	else
 		maxlines = HIST_DFLT;
 	for(histmask=16;histmask <= maxlines; histmask <<=1 );
-	if(!(hp=new_of(History_t,(--histmask)*sizeof(off_t))))
-	{
-		close(fd);
-		sh_outofmemory();
-	}
+	hp = new_of(History_t,(--histmask)*sizeof(off_t));
 	shgd->hist_ptr = hist_ptr = hp;
 	hp->histshell = (void*)shp;
 	hp->histsize = maxlines;
@@ -320,7 +336,7 @@ retry:
 	hp->histind = 1;
 	hp->histcmds[1] = 2;
 	hp->histcnt = 2;
-	hp->histname = strdup(histname);
+	hp->histname = sh_strdup(histname);
 	hp->histdisc = hist_disc;
 	if(hsize==0)
 	{
@@ -395,7 +411,7 @@ retry:
 			if(fd>=0)
 			{
 				fcntl(fd,F_SETFD,FD_CLOEXEC);
-				hp->tty = strdup(isatty(2)?ttyname(2):"notty");
+				hp->tty = sh_strdup(isatty(2)?ttyname(2):"notty");
 				hp->auditfp = sfnew((Sfio_t*)0,NULL,-1,fd,SF_WRITE);
 			}
 		}
@@ -471,9 +487,7 @@ static History_t* hist_trim(History_t *hp, int n)
 		int fd;
 		char *last, *name=hist_old->histname;
 		close(sffileno(hist_old->histfp));
-		tmpname = (char*)malloc(strlen(name)+14);
-		if(!tmpname)
-			sh_outofmemory();
+		tmpname = (char*)sh_malloc(strlen(name)+14);
 		if(last = strrchr(name,'/'))
 		{
 			*last = 0;

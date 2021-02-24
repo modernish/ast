@@ -157,9 +157,7 @@ int	b_read(int argc,char *argv[], Shbltin_t *context)
 		r = 0;
 	if(argc==fixargs)
 	{
-		rp = newof(NIL(struct read_save*),struct read_save,1,0);
-		if(!rp)
-			sh_outofmemory();
+		rp = sh_newof(NIL(struct read_save*),struct read_save,1,0);
 		context->data = (void*)rp;
 		rp->fd = fd;
 		rp->flags = flags;
@@ -351,8 +349,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 		/* reserved buffer */
 		if((c=size)>=sizeof(buf))
 		{
-			if(!(var = (char*)malloc(c+1)))
-				sh_outofmemory();
+			var = (char*)sh_malloc(c+1);
 			end = var + c;
 		}
 		else
@@ -414,17 +411,11 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 						m = (end - var) + (c - (end - cur));
 						if (var == buf)
 						{
-							v = (char*)malloc(m+1);
-							if(!v)
-								sh_outofmemory();
+							v = (char*)sh_malloc(m+1);
 							var = memcpy(v, var, cur - var);
 						}
 						else
-						{
-							var = newof(var, char, m, 1);
-							if(!var)
-								sh_outofmemory();
-						}
+							var = sh_newof(var, char, m, 1);
 						end = var + m;
 						cur = var + cx;
 						up = var + ux;
@@ -473,7 +464,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 			{
 				Namval_t *mp;
 				if(var==buf)
-					var = memdup(var,c+1);
+					var = sh_memdup(var,c+1);
 				nv_putval(np,var,NV_RAW);
 				nv_setsize(np,c);
 				if(!nv_isattr(np,NV_IMPORT|NV_EXPORT)  && (mp=(Namval_t*)np->nvenv))

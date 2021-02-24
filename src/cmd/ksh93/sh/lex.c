@@ -266,9 +266,7 @@ Lex_t *sh_lexopen(Lex_t *lp, Shell_t *sp, int mode)
 {
 	if(!lp)
 	{
-		lp = (Lex_t*)newof(0,Lex_t,1,0);
-		if(!lp)
-			sh_outofmemory();
+		lp = (Lex_t*)sh_newof(0,Lex_t,1,0);
 		lp->sh = sp;
 	}
 	fcnotify(lex_advance,lp);
@@ -1706,9 +1704,7 @@ static void nested_here(register Lex_t *lp)
 		base = stkfreeze(stkp,0);
 	if(lp->lexd.docend)
 		n = fcseek(0)-lp->lexd.docend;
-	iop = newof(0,struct ionod,1,lp->lexd.docextra+n+ARGVAL);
-	if(!iop)
-		sh_outofmemory();
+	iop = sh_newof(0,struct ionod,1,lp->lexd.docextra+n+ARGVAL);
 	iop->iolst = lp->heredoc;
 	stkseek(stkp,ARGVAL);
 	if(lp->lexd.docextra)
@@ -2489,9 +2485,7 @@ done:
 static void setupalias(Lex_t *lp, const char *string,Namval_t *np)
 {
 	register Sfio_t *iop, *base;
-	struct alias *ap = (struct alias*)malloc(sizeof(struct alias));
-	if(!ap)
-		sh_outofmemory();
+	struct alias *ap = (struct alias*)sh_malloc(sizeof(struct alias));
 	ap->disc = alias_disc;
 	ap->lp = lp;
 	ap->buf[1] = 0;
@@ -2528,11 +2522,9 @@ static int stack_grow(Lex_t *lp)
 {
 	lp->lexd.lex_max += STACK_ARRAY;
 	if(lp->lexd.lex_match)
-		lp->lexd.lex_match = (int*)realloc((char*)lp->lexd.lex_match,sizeof(int)*lp->lexd.lex_max);
+		lp->lexd.lex_match = (int*)sh_realloc((char*)lp->lexd.lex_match,sizeof(int)*lp->lexd.lex_max);
 	else
-		lp->lexd.lex_match = (int*)malloc(sizeof(int)*STACK_ARRAY);
-	if(!lp->lexd.lex_match)
-		sh_outofmemory();
+		lp->lexd.lex_match = (int*)sh_malloc(sizeof(int)*STACK_ARRAY);
 	return(1);
 }
 

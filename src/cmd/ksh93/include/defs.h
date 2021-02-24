@@ -290,8 +290,6 @@ struct shared
 /* error exits from various parts of shell */
 #define	NIL(type)	((type)0)
 
-#define new_of(type,x)	((type*)malloc((unsigned)sizeof(type)+(x)))
-
 #define exitset()	(sh.savexit=sh.exitval)
 
 #ifndef SH_DICT
@@ -367,7 +365,6 @@ extern Sfdouble_t	sh_mathfun(Shell_t*, void*, int, Sfdouble_t*);
 extern int		sh_outtype(Shell_t*, Sfio_t*);
 extern char 		*sh_mactry(Shell_t*,char*);
 extern int		sh_mathstd(const char*);
-extern void		sh_outofmemory(void);
 extern void		sh_printopts(Shopt_t,int,Shopt_t*);
 extern int 		sh_readline(Shell_t*,char**,volatile int,int,ssize_t,long);
 extern Sfio_t		*sh_sfeval(char*[]);
@@ -391,6 +388,15 @@ extern int 		sh_whence(char**,int);
 #if SHOPT_NAMESPACE
     extern Namval_t	*sh_fsearch(Shell_t*,const char *,int);
 #endif /* SHOPT_NAMESPACE */
+
+/* malloc related wrappers */
+extern void		*sh_malloc(size_t size);
+extern void		*sh_realloc(void *ptr, size_t size);
+extern void		*sh_calloc(size_t nmemb, size_t size);
+extern char		*sh_strdup(const char *s);
+extern void		*sh_memdup(const void *s, size_t n);
+#define new_of(type,x)	((type*)sh_malloc((unsigned)sizeof(type)+(x)))
+#define sh_newof(p,t,n,x)	((p)?(t*)sh_realloc((char*)(p),sizeof(t)*(n)+(x)):(t*)sh_calloc(1,sizeof(t)*(n)+(x)))
 
 #define URI_RFC3986_UNRESERVED "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
 

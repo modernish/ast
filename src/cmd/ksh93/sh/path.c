@@ -185,9 +185,7 @@ static pid_t path_xargs(Shell_t *shp,const char *path, char *argv[],char *const 
 		if(xv==&argv[shp->xargmin])
 		{
 			n = nlast*sizeof(char*);
-			saveargs = (char**)malloc(n);
-			if(!saveargs)
-				sh_outofmemory();
+			saveargs = (char**)sh_malloc(n);
 			memcpy((void*)saveargs, (void*)av, n);
 			memcpy((void*)av,(void*)avlast,n);
 		}
@@ -567,9 +565,7 @@ char *path_fullname(Shell_t *shp,const char *name)
 		pwd = path_pwd(shp,1);
 		dirlen = strlen(pwd)+1;
 	}
-	path = (char*)malloc(len+dirlen);
-	if(!path)
-		sh_outofmemory();
+	path = (char*)sh_malloc(len+dirlen);
 	if(dirlen)
 	{
 		memcpy((void*)path,(void*)pwd,dirlen);
@@ -1180,9 +1176,7 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 		 * The following code because execv(foo,) and execv(./foo,)
 		 * may not yield the same results
 		 */
-		char *sp = (char*)malloc(strlen(path)+3);
-		if(!sp)
-			sh_outofmemory();
+		char *sp = (char*)sh_malloc(strlen(path)+3);
 		sp[0] = '.';
 		sp[1] = '/';
 		strcpy(sp+2,path);
@@ -1358,7 +1352,7 @@ static void exscript(Shell_t *shp,register char *path,register char *argv[],char
 	sh_accbegin(path) ;  /* reset accounting */
 #endif	/* SHOPT_ACCT */
 	shp->arglist = sh_argcreate(argv);
-	shp->lastarg = strdup(path);
+	shp->lastarg = sh_strdup(path);
 	/* save name of calling command */
 	shp->readscript = error_info.id;
 	/* close history file if name has changed */
@@ -1495,9 +1489,7 @@ static Pathcomp_t *path_addcomp(Shell_t *shp,Pathcomp_t *first, Pathcomp_t *old,
 		}
 	}
 	for(pp=first, oldpp=0; pp; oldpp=pp, pp=pp->next);
-	pp = newof((Pathcomp_t*)0,Pathcomp_t,1,len+1);
-	if(!pp)
-		sh_outofmemory();
+	pp = sh_newof((Pathcomp_t*)0,Pathcomp_t,1,len+1);
 	pp->shp = shp;
 	pp->refcount = 1;
 	memcpy((char*)(pp+1),name,len+1);
@@ -1512,9 +1504,7 @@ static Pathcomp_t *path_addcomp(Shell_t *shp,Pathcomp_t *first, Pathcomp_t *old,
 	{
 		pp->dev = 1;
 		pp->flags |= PATH_BUILTIN_LIB;
-		pp->blib = pp->bbuf = malloc(sizeof(LIBCMD));
-		if(!pp->blib)
-			sh_outofmemory();
+		pp->blib = pp->bbuf = sh_malloc(sizeof(LIBCMD));
 		strcpy(pp->blib,LIBCMD);
 		return(first);
 	}
@@ -1580,13 +1570,11 @@ static int path_chkpaths(Shell_t *shp,Pathcomp_t *first, Pathcomp_t* old,Pathcom
 			{
 				if(pp->bbuf)
 					free(pp->bbuf);
-				pp->blib = pp->bbuf = strdup(ep);
+				pp->blib = pp->bbuf = sh_strdup(ep);
 			}
 			else if(m)
 			{
-				pp->lib = (char*)malloc(cp-sp+pp->len+2);
-				if(!pp->lib)
-					sh_outofmemory();
+				pp->lib = (char*)sh_malloc(cp-sp+pp->len+2);
 				memcpy((void*)pp->lib,(void*)sp,m);
 				memcpy((void*)&pp->lib[m],stakptr(offset),pp->len);
 				pp->lib[k=m+pp->len] = '/';

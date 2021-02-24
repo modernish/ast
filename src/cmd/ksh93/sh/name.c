@@ -124,11 +124,9 @@ static char *getbuf(size_t len)
 	if(buflen < len)
 	{
 		if(buflen==0)
-			buf = (char*)malloc(len);
+			buf = (char*)sh_malloc(len);
 		else
-			buf = (char*)realloc(buf,len);
-		if(!buf)
-			sh_outofmemory();
+			buf = (char*)sh_realloc(buf,len);
 		buflen = len;
 	}
 	return(buf);
@@ -230,9 +228,7 @@ Namval_t *nv_addnode(Namval_t* np, int remove)
 	if(sp->numnodes==sp->maxnodes)
 	{
 		sp->maxnodes += 20;
-		sp->nodes = (Namval_t**)realloc(sp->nodes,sizeof(Namval_t*)*sp->maxnodes);
-		if(!sp->nodes)
-			sh_outofmemory();
+		sp->nodes = (Namval_t**)sh_realloc(sp->nodes,sizeof(Namval_t*)*sp->maxnodes);
 	}
 	sp->nodes[sp->numnodes++] = np;
 	return(np);
@@ -285,9 +281,7 @@ void nv_setlist(register struct argnod *arg,register int flags, Namval_t *typ)
 		shtp.numnodes=0;
 		shtp.maxnodes = 20;
 		shtp.rp = 0;
-		shtp.nodes =(Namval_t**)malloc(shtp.maxnodes*sizeof(Namval_t*));
-		if(!shtp.nodes)
-			sh_outofmemory();
+		shtp.nodes = (Namval_t**)sh_malloc(shtp.maxnodes*sizeof(Namval_t*));
 	}
 #endif /* SHOPT_TYPEDEF*/
 #if SHOPT_NAMESPACE
@@ -1431,11 +1425,9 @@ Namval_t *nv_open(const char *name, Dt_t *root, int flags)
 		if(c > xp->size)
 		{
 			if(xp->size==0)
-				xp->name = malloc(c);
+				xp->name = sh_malloc(c);
 			else
-				xp->name = realloc(xp->name,c);
-			if(!xp->name)
-				sh_outofmemory();
+				xp->name = sh_realloc(xp->name,c);
 			xp->size = c;
 		}
 		memcpy(xp->name,name,xp->len);
@@ -1658,11 +1650,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 					ld = sh_arith(shp,sp);
 				if(!up->ldp)
-				{
 					up->ldp = new_of(Sfdouble_t,0);
-					if(!up->ldp)
-						sh_outofmemory();
-				}
 				else if(flags&NV_APPEND)
 					old = *(up->ldp);
 				*(up->ldp) = old?ld+old:ld;
@@ -1682,11 +1670,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 					d = sh_arith(shp,sp);
 				if(!up->dp)
-				{
 					up->dp = new_of(double,0);
-					if(!up->dp)
-						sh_outofmemory();
-				}
 				else if(flags&NV_APPEND)
 					od = *(up->dp);
 				*(up->dp) = od?d+od:d;
@@ -1730,11 +1714,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else if(sp)
 					ll = (Sflong_t)sh_arith(shp,sp);
 				if(!up->llp)
-				{
 					up->llp = new_of(Sflong_t,0);
-					if(!up->llp)
-						sh_outofmemory();
-				}
 				else if(flags&NV_APPEND)
 					oll = *(up->llp);
 				*(up->llp) = ll+oll;
@@ -1795,11 +1775,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				else
 				{
 					if(!up->lp)
-					{
 						up->lp = new_of(int32_t,0);
-						if(!up->lp)
-							sh_outofmemory();
-					}
 					else if(flags&NV_APPEND)	
 						ol =  *(up->lp);
 					*(up->lp) = l+ol;
@@ -1921,9 +1897,7 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 					size = nv_size(np);
 				if(size==0)
 					size = oldsize + (3*dot/4);
-				cp = (char*)malloc(size+1);
-				if(!cp)
-					sh_outofmemory();
+				cp = (char*)sh_malloc(size+1);
 				*cp = 0;
 				nv_offattr(np,NV_NOFREE);
 				if(oldsize)
@@ -1982,13 +1956,11 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 				{
 					if(tofree && tofree!=Empty && tofree!=Null)
 					{
-						cp = (char*)realloc((void*)tofree, dot+append+1);
+						cp = (char*)sh_realloc((void*)tofree, dot+append+1);
 						tofree = 0;
 					}
 					else
-						cp = (char*)malloc(dot+append+1);
-					if(!cp)
-						sh_outofmemory();
+						cp = (char*)sh_malloc(dot+append+1);
 					cp[dot+append] = 0;
 					nv_offattr(np,NV_NOFREE);
 				}
@@ -2380,7 +2352,7 @@ void	sh_envnolocal (register Namval_t *np, void *data)
 	{
 		nv_putsub(np,NIL(char*),0);
 		if(cp = nv_getval(np))
-			cp = strdup(cp);
+			cp = sh_strdup(cp);
 	}
 	if(nv_isattr(np,NV_EXPORT|NV_NOFREE))
 	{
@@ -2430,7 +2402,7 @@ static void table_unset(Shell_t *shp, register Dt_t *root, int flags, Dt_t *oroo
 					nv_putval(nq,(char*)&d,NV_LDOUBLE);
 				}
 				else if(shp->test&4)
-					nv_putval(nq, strdup(nv_getval(nq)), NV_RDONLY);
+					nv_putval(nq, sh_strdup(nv_getval(nq)), NV_RDONLY);
 				else
 					nv_putval(nq, nv_getval(nq), NV_RDONLY);
 				shp->subshell = subshell;
@@ -2710,11 +2682,7 @@ void nv_optimize(Namval_t *np)
 		if(op = opt_free)
 			opt_free = op->next;
 		else
-		{
-			op=(struct optimize*)calloc(1,sizeof(struct optimize));
-			if(!op)
-				sh_outofmemory();
-		}
+			op=(struct optimize*)sh_calloc(1,sizeof(struct optimize));
 		op->ptr = shp->argaddr;
 		op->np = np;
 		if(xp)
@@ -3069,25 +3037,19 @@ void nv_newattr (register Namval_t *np, unsigned newatts, int size)
 			if(size==0 || (newatts&(NV_INTEGER|NV_BINARY)))
 			{
 				/* allocate to match existing value for numerics and auto length assignment for -L/R/Z */
-				cp = (char*)malloc((size_t)n + 1);
-				if(!cp)
-					sh_outofmemory();
+				cp = (char*)sh_malloc((size_t)n + 1);
 				strcpy(cp, sp);
 			}
 			else if(size>=n)
 			{
 				/* growing string */
-				cp = (char*)malloc((size_t)size + 1);
-				if(!cp)
-					sh_outofmemory();
+				cp = (char*)sh_malloc((size_t)size + 1);
 				strcpy(cp, sp);
 			}
 			else
 			{
 				/* shrinking string */
-				cp = (char*)malloc((size_t)size + 1);
-				if(!cp)
-					sh_outofmemory();
+				cp = (char*)sh_malloc((size_t)size + 1);
 				if(newatts&NV_RJUST)
 					strncpy(cp, n - size + sp, size);
 				else
@@ -3349,7 +3311,7 @@ int nv_rename(register Namval_t *np, int flags)
 		if(index<0)
 			return(0);
 		if(cp = nv_getval(np))
-			cp = strdup(cp);
+			cp = sh_strdup(cp);
 	}
 	_nv_unset(np,NV_EXPORT);
 	if(nr==np)
@@ -3508,9 +3470,7 @@ void nv_setref(register Namval_t *np, Dt_t *hp, int flags)
 	shp->last_root = root;
 	_nv_unset(np,0);
 	nv_delete(np,(Dt_t*)0,0);
-	np->nvalue.nrp = newof(0,struct Namref,1,sizeof(Dtlink_t));
-	if(!np->nvalue.nrp)
-		sh_outofmemory();
+	np->nvalue.nrp = sh_newof(0,struct Namref,1,sizeof(Dtlink_t));
 	np->nvalue.nrp->np = nq;
 	np->nvalue.nrp->root = hp;
 	if(ep)
@@ -3520,7 +3480,7 @@ void nv_setref(register Namval_t *np, Dt_t *hp, int flags)
 			np->nvalue.nrp->curi = ARRAY_FIXED|nv_arrfixed(nq,(Sfio_t*)0,1,&np->nvalue.nrp->dim);
 		else
 #endif /* SHOPT_FIXEDARRAY */
-			np->nvalue.nrp->sub = strdup(ep);
+			np->nvalue.nrp->sub = sh_strdup(ep);
 	}
 	np->nvalue.nrp->table = shp->last_table;
 	nv_onattr(np,NV_REF|NV_NOFREE);
@@ -3616,7 +3576,7 @@ void nv_unref(register Namval_t *np)
 		dtdelete(Refdict,(void*)np->nvalue.nrp);
 	}
 	free((void*)np->nvalue.nrp);
-	np->nvalue.cp = strdup(nv_name(nq));
+	np->nvalue.cp = sh_strdup(nv_name(nq));
 #if SHOPT_OPTIMIZE
 	{
 		Namfun_t *fp;

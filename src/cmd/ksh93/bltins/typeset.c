@@ -440,7 +440,7 @@ endargs:
 	if(tdata.sh->fn_depth && !tdata.pflag)
 		flag |= NV_NOSCOPE;
 	if(tdata.help)
-		tdata.help = strdup(tdata.help);
+		tdata.help = sh_strdup(tdata.help);
 	if(flag&NV_TYPE)
 	{
 		Stk_t *stkp = tdata.sh->stk;
@@ -948,14 +948,12 @@ int sh_addlib(Shell_t* shp, void* dll, char* name, Pathcomp_t* pp)
 	if (nlib >= maxlib)
 	{
 		maxlib += GROWLIB;
-		liblist = newof(liblist, Libcomp_t, maxlib+1, 0);
-		if(!liblist)
-			sh_outofmemory();
+		liblist = sh_newof(liblist, Libcomp_t, maxlib+1, 0);
 	}
 	liblist[nlib].dll = dll;
 	liblist[nlib].attr = (sp->nosfio?BLT_NOSFIO:0);
 	if (name)
-		liblist[nlib].lib = strdup(name);
+		liblist[nlib].lib = sh_strdup(name);
 	if (pp)
 	{
 		liblist[nlib].dev = pp->dev;

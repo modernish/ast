@@ -326,13 +326,11 @@ static int fixnode(Namtype_t *dp, Namtype_t *pp, int i, struct Namref *nrp,int f
 				if(i=nv_size(nq))
 				{
 					const char *cp = nq->nvalue.cp;
-					nq->nvalue.cp = (char*)malloc(i);
-					if(!nq->nvalue.cp)
-						sh_outofmemory();
+					nq->nvalue.cp = (char*)sh_malloc(i);
 					memcpy((char*)nq->nvalue.cp,cp,i);
 				}
 				else
-					nq->nvalue.cp = strdup(nq->nvalue.cp);
+					nq->nvalue.cp = sh_strdup(nq->nvalue.cp);
 				nv_offattr(nq,NV_NOFREE);
 			}
 		}
@@ -367,9 +365,7 @@ static Namfun_t *clone_type(Namval_t* np, Namval_t *mp, int flags, Namfun_t *fp)
 		return(nv_clone_disc(fp,flags));
 	if(size==0 && (!fp->disc || (size=fp->disc->dsize)==0)) 
 		size = sizeof(Namfun_t);
-	dp = (Namtype_t*)malloc(size+pp->nref*sizeof(struct Namref));
-	if(!dp)
-		sh_outofmemory();
+	dp = (Namtype_t*)sh_malloc(size+pp->nref*sizeof(struct Namref));
 	if(pp->nref)
 	{
 		nrp = (struct Namref*)((char*)dp + size);
@@ -579,9 +575,7 @@ static Namval_t *next_type(register Namval_t* np, Dt_t *root,Namfun_t *fp)
 
 static Namfun_t *clone_inttype(Namval_t* np, Namval_t *mp, int flags, Namfun_t *fp)
 {
-	Namfun_t	*pp=  (Namfun_t*)malloc(fp->dsize);
-	if(!pp)
-		sh_outofmemory();
+	Namfun_t	*pp = (Namfun_t*)sh_malloc(fp->dsize);
 	memcpy((void*)pp, (void*)fp, fp->dsize);
 	fp->nofree &= ~1;
 	if(nv_isattr(mp,NV_NOFREE) && mp->nvalue.cp)
@@ -777,9 +771,7 @@ found:
 
 void nv_addtype(Namval_t *np, const char *optstr, Optdisc_t *op, size_t optsz)
 {
-	Namdecl_t	*cp = newof((Namdecl_t*)0,Namdecl_t,1,optsz);
-	if(!cp)
-		sh_outofmemory();
+	Namdecl_t	*cp = sh_newof((Namdecl_t*)0,Namdecl_t,1,optsz);
 	Optdisc_t	*dp = (Optdisc_t*)(cp+1);
 	Shell_t		*shp = sh_getinterp();
 	Namval_t	*mp,*bp;
@@ -915,9 +907,7 @@ Namval_t *nv_mktype(Namval_t **nodes, int numnodes)
 	offset = roundof(offset,sizeof(char*));
 	nv_setsize(mp,offset);
 	k = roundof(sizeof(Namtype_t),sizeof(Sfdouble_t)) - sizeof(Namtype_t);
-	pp = newof(NiL, Namtype_t, 1, nnodes*NV_MINSZ + offset + size + (nnodes+nd)*sizeof(char*) + iref*sizeof(struct Namref)+k);
-	if(!pp)
-		sh_outofmemory();
+	pp = sh_newof(NiL, Namtype_t, 1, nnodes*NV_MINSZ + offset + size + (nnodes+nd)*sizeof(char*) + iref*sizeof(struct Namref)+k);
 	pp->fun.dsize = sizeof(Namtype_t)+nnodes*NV_MINSZ +offset+k;
 	pp->fun.type = mp;
 	pp->parent = nv_lastdict();
@@ -938,11 +928,7 @@ Namval_t *nv_mktype(Namval_t **nodes, int numnodes)
 	pp->strsize = size;
 	cp = (char*)&pp->names[nd+nnodes];
 	if(qp)
-	{
-		mnodes = newof(NiL, Namval_t*, nd+1, 0);
-		if(!mnodes)
-			sh_outofmemory();
-	}
+		mnodes = sh_newof(NiL, Namval_t*, nd+1, 0);
 	nd = 0;
 	nq = nv_namptr(pp->nodes,0);
 	nq->nvname = cp;
@@ -1103,7 +1089,7 @@ Namval_t *nv_mktype(Namval_t **nodes, int numnodes)
 						nv_onattr(nq,NV_NOFREE);
 					}
 					else
-						nq->nvalue.cp = strdup(nr->nvalue.cp);
+						nq->nvalue.cp = sh_strdup(nr->nvalue.cp);
 					nv_disc(nq, &pp->childfun.fun, NV_LAST);
 				}
 				nq->nvsize = nr->nvsize;
@@ -1214,9 +1200,7 @@ Namval_t *nv_mkinttype(char *name, size_t size, int sign, const char *help, Namd
         mp = nv_open(stakptr(offset), sh.var_tree, NV_VARNAME);
 	stakseek(offset);
 	offset = size + sizeof(Namdisc_t);
-	fp = newof(NiL, Namfun_t, 1, offset);
-	if(!fp)
-		sh_outofmemory();
+	fp = sh_newof(NiL, Namfun_t, 1, offset);
 	fp->type = mp;
 	fp->nofree |= 1;
 	fp->dsize = sizeof(Namfun_t)+size;
@@ -1349,7 +1333,7 @@ int nv_settype(Namval_t* np, Namval_t *tp, int flags)
 			flags &= ~NV_APPEND;
 		else if(!nv_isvtree(np))
 		{
-			val = strdup(nv_getval(np));
+			val = sh_strdup(nv_getval(np));
 			if(!(flags&NV_APPEND))
 				_nv_unset(np, NV_RDONLY);
 		}
@@ -1454,9 +1438,7 @@ Namval_t *nv_mkstruct(const char *name, int rsize, Fields_t *fields)
 			}
 		}
 	}
-	pp = newof(NiL,Namtype_t, 1,  nnodes*NV_MINSZ + rsize + size);
-	if(!pp)
-		sh_outofmemory();
+	pp = sh_newof(NiL,Namtype_t, 1,  nnodes*NV_MINSZ + rsize + size);
 	pp->fun.dsize = sizeof(Namtype_t)+nnodes*NV_MINSZ +rsize;
 	pp->fun.type = mp;
 	pp->np = mp;
@@ -1565,9 +1547,7 @@ void nv_mkstat(void)
 	tp = nv_mkstruct("stat_t", sizeof(struct stat), foo);
 	nv_offattr(tp,NV_RDONLY);
 	nv_setvtree(tp);
-	fp = newof(NiL,Namfun_t,1,0);
-	if(!fp)
-		sh_outofmemory();
+	fp = sh_newof(NiL,Namfun_t,1,0);
 	fp->type = tp;
 	fp->disc = &stat_disc;
 	nv_disc(tp,fp,NV_FIRST);

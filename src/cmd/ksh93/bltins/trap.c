@@ -120,7 +120,7 @@ int	b_trap(int argc,char *argv[],Shbltin_t *context)
 					free(shp->st.trap[sig]);
 				shp->st.trap[sig] = 0;
 				if(!clear && *action)
-					shp->st.trap[sig] = strdup(action);
+					shp->st.trap[sig] = sh_strdup(action);
 				if(sig == SH_DEBUGTRAP)
 				{
 					if(shp->st.trap[sig])
@@ -163,7 +163,7 @@ int	b_trap(int argc,char *argv[],Shbltin_t *context)
 					shp->st.trapmax = sig+1;
 				arg = shp->st.trapcom[sig];
 				sh_sigtrap(sig);
-				shp->st.trapcom[sig] = (shp->sigflag[sig]&SH_SIGOFF) ? Empty : strdup(action);
+				shp->st.trapcom[sig] = (shp->sigflag[sig]&SH_SIGOFF) ? Empty : sh_strdup(action);
 				if(arg && arg != Empty)
 					free(arg);
 				if(sig == 0 && (!shp->fn_depth || shp->end_fn))

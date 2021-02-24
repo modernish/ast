@@ -291,9 +291,7 @@ int    b_dot_cmd(register int n,char *argv[],Shbltin_t *context)
 			sh_exec((Shnode_t*)(nv_funtree(np)),sh_isstate(SH_ERREXIT));
 		else
 		{
-			buffer = malloc(IOBSIZE+1);
-			if(!buffer)
-				sh_outofmemory();
+			buffer = sh_malloc(IOBSIZE+1);
 			iop = sfnew(NIL(Sfio_t*),buffer,IOBSIZE,fd,SF_READ);
 			sh_offstate(SH_NOFORK);
 			sh_eval(iop,sh_isstate(SH_PROFILE)?SH_FUNEVAL:0);

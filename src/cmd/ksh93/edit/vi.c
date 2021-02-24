@@ -231,12 +231,8 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 #endif /* SHOPT_RAWONLY */
 	if(!vp)
 	{
-		ed->e_vi = vp = newof(0,Vi_t,1,0);
-		if(!vp)
-			sh_outofmemory();
-		vp->lastline = (genchar*)malloc(MAXLINE*CHARSIZE);
-		if(!vp->lastline)
-			sh_outofmemory();
+		ed->e_vi = vp = sh_newof(0,Vi_t,1,0);
+		vp->lastline = (genchar*)sh_malloc(MAXLINE*CHARSIZE);
 		vp->direction = -1;
 		vp->ed = ed;
 	}
@@ -385,17 +381,9 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 	window[0] = '\0';
 
 	if(!yankbuf)
-	{
-		yankbuf = (genchar*)malloc(MAXLINE*CHARSIZE);
-		if(!yankbuf)
-			sh_outofmemory();
-	}
+		yankbuf = (genchar*)sh_malloc(MAXLINE*CHARSIZE);
 	if(!vp->lastline)
-	{
-		vp->lastline = (genchar*)malloc(MAXLINE*CHARSIZE);
-		if(!vp->lastline)
-			sh_outofmemory();
-	}
+		vp->lastline = (genchar*)sh_malloc(MAXLINE*CHARSIZE);
 	if( vp->last_cmd == '\0' )
 	{
 		/*** first time for this shell ***/
