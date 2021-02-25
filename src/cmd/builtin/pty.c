@@ -646,7 +646,7 @@ masterline(Sfio_t* mp, Sfio_t* lp, char* prompt, int must, int timeout, Master_t
 		r = bp->buf;
 		if (!(bp->buf = vmnewof(bp->vm, bp->buf, char, a, 0)))
 		{
-			error(ERROR_SYSTEM|2, "out of space");
+			error(ERROR_PANIC, "out of memory");
 			return 0;
 		}
 		bp->max = bp->buf + a;
@@ -785,7 +785,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 	    !(master = vmnewof(vm, 0, Master_t, 1, 0)) ||
 	    !(master->buf = vmnewof(vm, 0, char, 2 * SF_BUFSIZE, 0)))
 	{
-		error(ERROR_SYSTEM|2, "out of space");
+		error(ERROR_PANIC, "out of memory");
 		id = 0;
 		line = 0;
 		goto done;
@@ -841,7 +841,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 		case 'i':
 			if (!cond->next && !(cond->next = vmnewof(vm, 0, Cond_t, 1, 0)))
 			{
-				error(ERROR_SYSTEM|2, "out of space");
+				error(ERROR_PANIC, "out of memory");
 				goto done;
 			}
 			cond = cond->next;
@@ -1080,7 +1080,7 @@ b_pty(int argc, char** argv, Shbltin_t* context)
 			if (isspace(*s))
 				n++;
 		if (!(ap = newof(0, Argv_t, 1, (n + 2) * sizeof(char*) + (s - stty + 1))))
-			error(ERROR_system(1), "out of space");
+			error(ERROR_PANIC, "out of memory");
 		ap->argc = n + 1;
 		ap->argv = (char**)(ap + 1);
 		ap->args = (char*)(ap->argv + n + 2);
