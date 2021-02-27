@@ -75,8 +75,8 @@
 #include	"FEATURE/time"
 #include	<error.h>
 #include	<ls.h>
+#include	"defs.h"
 #if KSHELL
-#   include	"defs.h"
 #   include	"variables.h"
 #   include	"path.h"
 #   include	"builtins.h"
@@ -87,27 +87,6 @@
 #include	"history.h"
 
 #if !KSHELL
-
-/*
- * These malloc and strdup wrappers error out when allocation fails
- */
-static void *sh_malloc(size_t size)
-{
-	char *cp = malloc(size);
-	if(!cp)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
-	return(cp);
-}
-
-static void *sh_strdup(const char *s)
-{
-	char *str = strdup(s);
-	if(!str)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
-	return(str);
-}
-
-#   define new_of(type,x)	((type*)sh_malloc((unsigned)sizeof(type)+(x)))
 #   define NIL(type)		((type)0)
 #   define path_relative(s,x)	(s,x)
 #   ifdef __STDC__
@@ -118,7 +97,7 @@ static void *sh_strdup(const char *s)
 #   define e_unknown	 	"unknown"
 #   define sh_translate(x)	(x)
     char login_sh =		0;
-    char hist_fname[] =		"/.history";
+    const char hist_fname[] =	"/.history";
 #endif	/* KSHELL */
 
 #ifndef O_BINARY

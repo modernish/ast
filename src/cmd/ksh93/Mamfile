@@ -345,11 +345,11 @@ make install
 			done deparse.o generated
 			make enum.o
 				make bltins/enum.c
-					prev include/shell.h implicit
+					prev include/defs.h implicit
 				done bltins/enum.c
 				meta enum.o %.c>%.o bltins/enum.c enum
 				prev bltins/enum.c
-				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -Iinclude -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=${SH_DICT} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c bltins/enum.c
+				exec - ${CC} ${mam_cc_FLAGS} ${KSH_RELFLAGS} ${KSH_SHOPTFLAGS} ${CCFLAGS} -I. -Iinclude -I${PACKAGE_ast_INCLUDE} -DERROR_CATALOG=${SH_DICT} -D_BLD_shell -D_API_ast=20100309 -D_PACKAGE_ast -DERROR_CONTEXT_T=Error_context_t -c bltins/enum.c
 				prev SHOPT.sh
 			done enum.o generated
 			make getopts.o

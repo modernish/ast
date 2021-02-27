@@ -219,6 +219,16 @@ static int		shlvl;
 static int		rand_shift;
 
 /*
+ * out of memory routine for stak routines
+ */
+static char *nospace(int unused)
+{
+	NOT_USED(unused);
+	errormsg(SH_DICT, ERROR_SYSTEM|ERROR_PANIC, "out of memory");
+	return(NIL(char*));
+}
+
+/*
  * The following are wrapper functions for memory allocation.
  * These functions will error out if the allocation fails.
  */
@@ -226,7 +236,7 @@ void *sh_malloc(size_t size)
 {
 	void *cp = malloc(size);
 	if(!cp)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+		nospace(0);
 	return(cp);
 }
 
@@ -234,7 +244,7 @@ void *sh_realloc(void *ptr, size_t size)
 {
 	void *cp = realloc(ptr, size);
 	if(!cp)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+		nospace(0);
 	return(cp);
 }
 
@@ -242,7 +252,7 @@ void *sh_calloc(size_t nmemb, size_t size)
 {
 	void *cp = calloc(nmemb, size);
 	if(!cp)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+		nospace(0);
 	return(cp);
 }
 
@@ -250,7 +260,7 @@ char *sh_strdup(const char *s)
 {
 	char *dup = strdup(s);
 	if(!dup)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+		nospace(0);
 	return(dup);
 }
 
@@ -258,18 +268,8 @@ void *sh_memdup(const void *s, size_t n)
 {
 	void *dup = memdup(s, n);
 	if(!dup)
-		errormsg(SH_DICT, ERROR_PANIC, "out of memory");
+		nospace(0);
 	return(dup);
-}
-
-/*
- * out of memory routine for stak routines
- */
-static char *nospace(int unused)
-{
-	NOT_USED(unused);
-	errormsg(SH_DICT, ERROR_PANIC, "out of memory");
-	return(NIL(char*));
 }
 
 #if SHOPT_VSH || SHOPT_ESH

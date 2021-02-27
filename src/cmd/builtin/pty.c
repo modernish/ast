@@ -125,6 +125,11 @@ static const char usage[] =
 #define CMIN		1
 #endif
 
+static void outofmemory(void)
+{
+	error(ERROR_SYSTEM|ERROR_PANIC, "out of memory");
+}
+
 #if !_lib_openpty && !_lib__getpty && !defined(_pty_clone)
 # if !_lib_grantpt || !_lib_unlock
 #   if !_lib_ptsname
@@ -645,10 +650,7 @@ masterline(Sfio_t* mp, Sfio_t* lp, char* prompt, int must, int timeout, Master_t
 		a = roundof(bp->max - bp->buf + n, SF_BUFSIZE);
 		r = bp->buf;
 		if (!(bp->buf = vmnewof(bp->vm, bp->buf, char, a, 0)))
-		{
-			error(ERROR_PANIC, "out of memory");
-			return 0;
-		}
+			outofmemory();
 		bp->max = bp->buf + a;
 		if (bp->buf != r)
 		{
@@ -784,12 +786,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 	    !(cond = vmnewof(vm, 0, Cond_t, 1, 0)) ||
 	    !(master = vmnewof(vm, 0, Master_t, 1, 0)) ||
 	    !(master->buf = vmnewof(vm, 0, char, 2 * SF_BUFSIZE, 0)))
-	{
-		error(ERROR_PANIC, "out of memory");
-		id = 0;
-		line = 0;
-		goto done;
-	}
+		outofmemory();
 	master->vm = vm;
 	master->cur = master->end = master->buf;
 	master->max = master->buf + 2 * SF_BUFSIZE - 1;
@@ -840,10 +837,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 			break;
 		case 'i':
 			if (!cond->next && !(cond->next = vmnewof(vm, 0, Cond_t, 1, 0)))
-			{
-				error(ERROR_PANIC, "out of memory");
-				goto done;
-			}
+				outofmemory();
 			cond = cond->next;
 			cond->flags = IF;
 			if ((cond->prev->flags & SKIP) && !(cond->text = 0) || !(cond->text = masterline(mp, lp, 0, 0, timeout, master)))
@@ -1080,7 +1074,7 @@ b_pty(int argc, char** argv, Shbltin_t* context)
 			if (isspace(*s))
 				n++;
 		if (!(ap = newof(0, Argv_t, 1, (n + 2) * sizeof(char*) + (s - stty + 1))))
-			error(ERROR_PANIC, "out of memory");
+			outofmemory();
 		ap->argc = n + 1;
 		ap->argv = (char**)(ap + 1);
 		ap->args = (char*)(ap->argv + n + 2);
