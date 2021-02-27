@@ -759,7 +759,8 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 	{
 		/* can't use output buffer when reading from stderr */
 		static char *buff;
-		buff = (char*)sh_malloc(MAXLINE);
+		if(!buff)
+			buff = (char*)sh_malloc(MAXLINE);
 		ep->e_outbase = ep->e_outptr = buff;
 		ep->e_outlast = ep->e_outptr + MAXLINE;
 		return;
