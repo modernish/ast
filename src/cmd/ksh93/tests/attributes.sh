@@ -526,16 +526,16 @@ typeset -A expect=(
 	[F12]='typeset -x -r -F 12 foo'
 	[H]='typeset -x -r -H foo'
 	[L]='typeset -x -r -L 0 foo'
-#	[L17]='typeset -x -r -L 17 foo'		# TODO: outputs 'typeset -x -r -L 0 foo'
+	[L17]='typeset -x -r -L 17 foo'
 	[Mtolower]='typeset -x -r -l foo'
 	[Mtoupper]='typeset -x -r -u foo'
 	[R]='typeset -x -r -R 0 foo'
-#	[R17]='typeset -x -r -R 17 foo'		# TODO: outputs 'typeset -x -r -R 0 foo'
+	[R17]='typeset -x -r -R 17 foo'
 	[X17]='typeset -x -r -X 17 foo'
 	[S]='typeset -x -r foo'
 	[T]='typeset -x -r foo'
 	[Z]='typeset -x -r -Z 0 -R 0 foo'
-#	[Z13]='typeset -x -r -Z 13 -R 13 foo'	# TODO: outputs 'typeset -x -r -Z 0 -R 0 foo'
+	[Z13]='typeset -x -r -Z 13 -R 13 foo'
 )
 for flag in "${!expect[@]}"
 do	unset foo
@@ -636,6 +636,28 @@ got=$(typeset -i x=0; typeset -Z5 x; echo $x; typeset -Z3 x; echo $x; typeset -Z
 exp=$'00000\n000\n0000000'
 [[ $got == "$exp" ]] || err_exit 'failed to zero-fill zero' \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
+# Applying the readonly attribute to an existing variable having a non-numeric attribute with a
+# size such as -L, -R, or -Z would be set to 0 when it should have maintained the old size unless
+# -L/R/Z existed as part of the new attributes being applied then its supplied size or default
+# size of 0 should be used.
+[[ $(typeset -L4 x; readonly x; typeset -p x) == 'typeset -r -L 4 x' ]] || err_exit "readonly apply failed to carry oldsize for typeset -r -L 4 x."
+[[ $(typeset -L4 x; typeset -r x; typeset -p x) == 'typeset -r -L 4 x' ]] || err_exit "typeset -r apply failed to carry oldsize for typeset -r -L 4 x."
+
+[[ $(typeset -R4 x; readonly x; typeset -p x) == 'typeset -r -R 4 x' ]] || err_exit "readonly apply failed to carry oldsize for typeset -r -R 4 x."
+[[ $(typeset -R4 x; typeset -r x; typeset -p x) == 'typeset -r -R 4 x' ]] || err_exit "typeset -r apply failed to carry oldsize for typeset -r -R 4 x."
+
+[[ $(typeset -Z4 x; readonly x; typeset -p x) == 'typeset -r -Z 4 -R 4 x' ]] || err_exit "readonly apply failed to carry oldsize for typeset -r -Z 4 -R 4."
+[[ $(typeset -Z4 x; typeset -r x; typeset -p x) == 'typeset -r -Z 4 -R 4 x' ]] || err_exit "typeset -r apply failed to carry oldsize for typeset -r -Z 4 -R 4."
+
+[[ $(typeset -bZ4 x; readonly x; typeset -p x) == 'typeset -r -b -Z 4 -R 4 x' ]] || err_exit "readonly apply failed to carry oldsize for typeset -r -b -Z 4 -R 4."
+[[ $(typeset -bZ4 x; typeset -r x; typeset -p x) == 'typeset -r -b -Z 4 -R 4 x' ]] || err_exit "typeset -r apply failed to carry oldsize for typeset -r -b -Z 4 -R 4."
+
+[[ $(typeset -L4 x; typeset -rL x; typeset -p x) == 'typeset -r -L 0 x' ]] || err_exit "typeset -rL failed to set new size."
+[[ $(typeset -R4 x; typeset -rR x; typeset -p x) == 'typeset -r -R 0 x' ]] || err_exit "typeset -rR failed to set new size."
+[[ $(typeset -Z4 x; typeset -rZ x; typeset -p x) == 'typeset -r -Z 0 -R 0 x' ]] || err_exit "typeset -rZ failed to set new size."
+[[ $(typeset -bZ4 x; typeset -rbZ x; typeset -p x) == 'typeset -r -b -Z 0 -R 0 x' ]] || err_exit "typeset -rbZ failed to set new size."
 
 # ======
 exit $((Errors<125?Errors:125))

@@ -835,7 +835,12 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 				{
 					if(np->nvfun && !nv_isarray(np) && name[strlen(name)-1]=='.')
 						newflag |= NV_NODISC;
-					nv_newattr (np, newflag&~NV_ASSIGN,tp->argnum);
+					if(flag&NV_RDONLY && !tp->argnum && !(flag&(NV_INTEGER|NV_BINARY)) && !(flag&(NV_LJUST|NV_RJUST|NV_ZFILL)))
+						/* New requested attribute(s) are readonly, have a provided or defaulted size of 0, and are
+						   not a string justification nor numeric. Justified or binary strings can have a size of 0. */
+						nv_newattr(np, newflag&~NV_ASSIGN, np->nvsize);
+					else
+						nv_newattr(np, newflag&~NV_ASSIGN, tp->argnum);
 				}
 			}
 			if(tp->help && !nv_isattr(np,NV_MINIMAL|NV_EXPORT))
