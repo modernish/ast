@@ -833,15 +833,14 @@ static void ed_nputchar(register Edit_t *ep, int n, int c)
 
 /*
  * Do read, restart on interrupt unless SH_SIGSET or SH_SIGTRAP is set
- * Use sfpkrd() to poll() or select() to wait for input if possible
+ * Use select(2) (via sfpkrd()) to wait for input if possible
  *
  * The return value is the number of bytes read, or < 0 for EOF.
  *
  * Unfortunately, systems that get interrupted from slow reads update
  * this access time for the terminal (in violation of POSIX).
  * The fixtime() macro resets the time to the time at entry in
- * this case.  This is not necessary for systems that can handle
- * sfpkrd() correctly (i.e., those that support poll() or select()).
+ * this case.  This is not necessary for systems that have select().
  */
 int ed_read(void *context, int fd, char *buff, int size, int reedit)
 {
@@ -851,11 +850,12 @@ int ed_read(void *context, int fd, char *buff, int size, int reedit)
 	Shell_t *shp = ep->sh;
 	int mode = -1;
 	int (*waitevent)(int,long,int) = shp->gd->waitevent;
+	/* sfpkrd must use select(2) to intercept SIGWINCH for ed_read */
 	if(ep->e_raw==ALTMODE)
-		mode = 1;
+		mode = 2;
 	if(size < 0)
 	{
-		mode = 1;
+		mode = 2;
 		size = -size;
 	}
 	sh_onstate(SH_TTYWAIT);

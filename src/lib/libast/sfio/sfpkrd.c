@@ -24,11 +24,12 @@
 /*
  * The preferred method is POSIX recv(2) with MSG_PEEK, which is detected as 'socket_peek'.
  * On Solaris/Illumos (__sun), _stream_peek and _lib_select are needed, as _socket_peek doesn't work correctly.
- * On at least macOS and Linux, sfpkrd() runs significantly faster if we disable these.
+ * On at least macOS and Linux, sfpkrd() runs significantly faster if we disable these. However,
+ * ed_read() still needs to use select to intercept SIGWINCH, so if the last argument given
+ # to sfpkrd is '2' select is always used when available.
  */
 #if _socket_peek && !__sun
 #undef _stream_peek
-#undef _lib_select
 #endif
 
 #if __APPLE__ && !_socket_peek
@@ -55,6 +56,7 @@ long	tm;	/* time-out */
 int	action;	/* >0: peeking, if rc>=0, get action records,
 		   <0: no peeking, if rc>=0, get -action records,
 		   =0: no peeking, if rc>=0, must get a single record
+		   =2: same as >0, but always use select(2)
 		*/
 #endif
 {
@@ -118,7 +120,11 @@ int	action;	/* >0: peeking, if rc>=0, get action records,
 			(t&SOCKET_PEEK) )
 		{	r = -2;
 #if _lib_select
-			if(r == -2)
+			if(r == -2
+#if !__sun /* select(2) is always used on Solaris or if action == 2 on other OSes */
+				&& action == 2
+#endif
+				)
 			{	fd_set		rd;
 				struct timeval	tmb, *tmp;
 				FD_ZERO(&rd);

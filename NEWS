@@ -9,6 +9,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   did not perform an assignment and yielded the value 0 if 'var' was typeset as
   numeric (integer or float) but had not yet been assigned a value.
 
+- Fixed a bug introduced on 2020-08-19: Ctrl+D would break after an
+  interactive shell received SIGWINCH.
+
 2021-03-05:
 
 - Unbalanced quotes and backticks now correctly produce a syntax error
