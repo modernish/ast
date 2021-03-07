@@ -216,7 +216,7 @@ void sh_subfork(void)
 		shp->st.trapcom[0] = (comsub==2 ? NULL : trap);
 		shp->savesig = 0;
 		/* sh_fork() increases ${.sh.subshell} but we forked an existing virtual subshell, so undo */
-		SH_SUBSHELLNOD->nvalue.s--;
+		shgd->realsubshell--;
 	}
 }
 
@@ -537,7 +537,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	savst = shp->st;
 	sh_pushcontext(shp,&buff,SH_JMPSUB);
 	shp->subshell++;		/* increase level of virtual subshells */
-	SH_SUBSHELLNOD->nvalue.s++;	/* increase ${.sh.subshell} */
+	shgd->realsubshell++;		/* increase ${.sh.subshell} */
 	sp->prev = subshell_data;
 	sp->shp = shp;
 	sp->sig = 0;
@@ -883,7 +883,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	if(shp->subshell)
 	{
 		shp->subshell--;		/* decrease level of virtual subshells */
-		SH_SUBSHELLNOD->nvalue.s--;	/* decrease ${.sh.subshell} */
+		shgd->realsubshell--;		/* decrease ${.sh.subshell} */
 	}
 	subshell_data = sp->prev;
 	if(!argsav  ||  argsav->dolrefcnt==argcnt)

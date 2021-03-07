@@ -2949,7 +2949,7 @@ pid_t _sh_fork(Shell_t *shp,register pid_t parent,int flags,int *jobid)
 	/* except for those `lost' by trap   */
 	if(!(flags&FSHOWME))
 		sh_sigreset(2);
-	SH_SUBSHELLNOD->nvalue.s++;	/* increase ${.sh.subshell} */
+	shgd->realsubshell++;		/* increase ${.sh.subshell} */
 	shp->subshell = 0;		/* zero virtual subshells */
 	shp->comsub = 0;
 	shp->spid = 0;

@@ -1201,6 +1201,7 @@ got=$(some_func() { :; }; trap some_func DEBUG; trap - DEBUG; print -r "${.sh.fu
 # =====
 # Before 2021-03-06, ${foo=bar} and ${foo:=bar} did not work if `foo` had a numeric type
 # https://github.com/ksh93/ksh/issues/157
+# https://github.com/ksh93/ksh/pull/211#issuecomment-792336825
 
 unset a b
 typeset -i a
@@ -1208,6 +1209,13 @@ b=3+39
 got=${a=b}
 [[ $got == 42 ]] || err_exit "\${a=b}: expansion not working for integer type (expected '42', got '$got')"
 [[ $a == 42 ]] || err_exit "\${a=b}: a was not assigned the correct integer value (expected '42', got '$a')"
+
+unset a b
+typeset -si a
+b=3+39
+got=${a=b}
+[[ $got == 42 ]] || err_exit "\${a=b}: expansion not working for short integer type (expected '42', got '$got')"
+[[ $a == 42 ]] || err_exit "\${a=b}: a was not assigned the correct short integer value (expected '42', got '$a')"
 
 unset a b
 typeset -F a
@@ -1223,6 +1231,13 @@ b=3+39
 got=${a:=b}
 [[ $got == 42 ]] || err_exit "\${a:=b}: expansion not working for integer type (expected '42', got '$got')"
 [[ $a == 42 ]] || err_exit "\${a:=b}: a was not assigned the correct integer value (expected '42', got '$a')"
+
+unset a b
+typeset -si a
+b=3+39
+got=${a:=b}
+[[ $got == 42 ]] || err_exit "\${a:=b}: expansion not working for short integer type (expected '42', got '$got')"
+[[ $a == 42 ]] || err_exit "\${a:=b}: a was not assigned the correct short integer value (expected '42', got '$a')"
 
 unset a b
 typeset -F a

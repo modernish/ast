@@ -1409,7 +1409,7 @@ retry1:
 		if(np && type==M_BRACE && mp->shp->argaddr)
 			nv_optimize(np);  /* needed before calling nv_isnull() */
 #endif /* SHOPT_OPTIMIZE */
-		if(np && (type==M_BRACE ? !nv_isnull(np) : (type==M_TREE || !c || !ap)))
+		if(np && (type==M_BRACE ? (!nv_isnull(np) || np==SH_LEVELNOD) : (type==M_TREE || !c || !ap)))
 		{
 			/* Either the parameter is set, or it's a special type of expansion where 'unset' doesn't apply. */
 			char *savptr;

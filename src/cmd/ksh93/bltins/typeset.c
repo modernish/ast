@@ -499,7 +499,7 @@ static void print_value(Sfio_t *iop, Namval_t *np, struct tdata *tp)
 	char	 *name;
 	int	aflag=tp->aflag;
 	Namval_t	*table;
-	if(nv_isundef(np)) /* nv_isnull(np) replaced as it excludes short integers. */
+	if(nv_isnull(np))
 	{
 		if(!np->nvflag)
 			return;

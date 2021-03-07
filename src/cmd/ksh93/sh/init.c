@@ -1855,8 +1855,9 @@ static Init_t *nv_init(Shell_t *shp)
 	nv_stack(LCNUMNOD, &ip->LC_NUM_init);
 	nv_stack(LANGNOD, &ip->LANG_init);
 #endif /* _hdr_locale */
-	(PPIDNOD)->nvalue.lp = (&shp->gd->ppid);
-	(SH_PIDNOD)->nvalue.lp = (&shp->gd->current_pid);
+	(PPIDNOD)->nvalue.pidp = (&shp->gd->ppid);
+	(SH_PIDNOD)->nvalue.pidp = (&shp->gd->current_pid);
+	(SH_SUBSHELLNOD)->nvalue.ip = (&shp->gd->realsubshell);
 	(TMOUTNOD)->nvalue.lp = (&shp->st.tmout);
 	(MCHKNOD)->nvalue.lp = (&sh_mailchk);
 	(OPTINDNOD)->nvalue.lp = (&shp->st.optindex);
