@@ -328,6 +328,11 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 					flag |= NV_INTEGER;
 				break;
 			case 'l':
+				if(shortint)
+				{
+					shortint = 0;
+					flag &= ~NV_SHORT;
+				}
 				tdata.wctname = e_tolower;
 				flag |= NV_UTOL;
 				break;
@@ -494,7 +499,7 @@ static void print_value(Sfio_t *iop, Namval_t *np, struct tdata *tp)
 	char	 *name;
 	int	aflag=tp->aflag;
 	Namval_t	*table;
-	if(nv_isnull(np))
+	if(nv_isundef(np)) /* nv_isnull(np) replaced as it excludes short integers. */
 	{
 		if(!np->nvflag)
 			return;

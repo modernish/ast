@@ -172,6 +172,7 @@ struct Ufunction
 #define nv_size(np)	((np)->nvsize)
 #define _nv_hasget(np)  ((np)->nvfun && (np)->nvfun->disc && nv_hasget(np))
 #define nv_isnull(np)	(!(np)->nvalue.cp && (nv_isattr(np,NV_SHORT|NV_INTEGER)!=(NV_SHORT|NV_INTEGER)) && !_nv_hasget(np))
+#define nv_isundef(np)	(!(np)->nvalue.cp && !_nv_hasget(np))
 
 /* ...	for arrays */
 
