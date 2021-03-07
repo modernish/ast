@@ -5,6 +5,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-03-07:
 
+- Fixed the typeset -p display of short integers without an assigned value.
+  Also, the last -s or -l attribute option supplied for an integer is used.
+
 - Fixed a bug with -G/--globstar introduced on 2020-08-09: patterns did not
   match anything if any pathname component was '.' or '..', e.g. '**/./glob.c'
   never matched. The 2020-08-09 fix does still apply to patterns like '.*'.
