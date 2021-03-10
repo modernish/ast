@@ -739,7 +739,7 @@ procsub_freeze &
 sleep 1
 if kill -0 $! 2> /dev/null; then
 	kill -TERM $!
-	err_exit "process substitutions freeze after running 'wait'"
+	err_exit "process substitutions freeze parent shell after running 'wait'"
 fi
 
 # ======
