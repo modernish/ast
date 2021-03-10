@@ -1238,7 +1238,11 @@ Shell_t *sh_init(register int argc,register char *argv[], Shinit_f userinit)
 		sh_regress_init(shp);
 #endif
 		shgd = sh_newof(0,struct shared,1,0);
+#if !SHOPT_DEVFD
+		shgd->parent_pid = shgd->current_pid = shgd->pid = getpid();
+#else
 		shgd->current_pid = shgd->pid = getpid();
+#endif
 		shgd->ppid = getppid();
 		shgd->userid=getuid();
 		shgd->euserid=geteuid();
@@ -1634,7 +1638,11 @@ int sh_reinit(char *argv[])
 	shp->errtrap = 0;
 	shp->end_fn = 0;
 	/* update ${.sh.pid}, $$, $PPID */
+#if !SHOPT_DEVFD
+	shgd->parent_pid = shgd->current_pid = shgd->pid = getpid();
+#else
 	shgd->current_pid = shgd->pid = getpid();
+#endif
 	shgd->ppid = getppid();
 	return(1);
 }

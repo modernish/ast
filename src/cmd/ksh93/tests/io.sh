@@ -716,4 +716,17 @@ got=$(export tmp; "$SHELL" -ec \
 [[ -r $tmp/v.out && $(<$tmp/v.out) == ok2 ]] || err_exit 'redirect {varname}>file not working in a subshell'
 
 # ======
+# Test for process substitution infinite looping
+procsub_pid="$(
+	ulimit -t unlimited  # fork the subshell
+	true >(true)
+	echo "$!"
+)"
+sleep 2 # wait for process to close (long wait to avoid false failures)
+
+kill -0 $procsub_pid 2> /dev/null &&
+	kill -KILL $procsub_pid && # don't leave around what is effectively a zombie process
+	err_exit "process substitutions loop after parent shell finishes"
+
+# ======
 exit $((Errors<125?Errors:125))

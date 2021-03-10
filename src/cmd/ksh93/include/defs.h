@@ -138,6 +138,9 @@ struct shared
 	pid_t		pid;		/* $$, the main shell's PID (invariable) */
 	pid_t		ppid;		/* $PPID, the main shell's parent's PID */
 	pid_t		current_pid;	/* ${.sh.pid}, PID of current ksh process (updates when subshell forks) */
+#if !SHOPT_DEVFD
+	pid_t		parent_pid;	/* PID of the parent shell or subshell (used in process substitutions) */
+#endif
 	int		realsubshell;	/* ${.sh.subshell}, actual subshell level (including virtual and forked) */
 	unsigned char	sigruntime[2];
 	Namval_t	*bltin_nodes;
