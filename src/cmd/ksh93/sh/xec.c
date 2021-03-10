@@ -1700,16 +1700,24 @@ int sh_exec(register const Shnode_t *t, int flags)
 #if !SHOPT_DEVFD
 				if(shp->fifo && (type&(FPIN|FPOU)))
 				{
-					int	fn,fd = (type&FPIN)?0:1;
-					void	*fifo_timer=sh_timeradd(500,1,fifo_check,(void*)shp);
+					int fn, fd, save_errno;
+					void *fifo_timer;
+
+					fd = (type&FPIN) ? 0 : 1;
+					fifo_timer = sh_timeradd(500,1,fifo_check,(void*)shp);
 					fn = sh_open(shp->fifo,fd?O_WRONLY:O_RDONLY);
+					save_errno = errno;
 					timerdel(fifo_timer);
-					sh_iorenumber(shp,fn,fd);
-					sh_close(fn);
-					sh_delay(.001,0);
 					unlink(shp->fifo);
 					free(shp->fifo);
 					shp->fifo = 0;
+					if(fn<0)
+					{
+						errno = save_errno;
+						errormsg(SH_DICT,ERROR_SYSTEM|ERROR_PANIC,"process substitution: FIFO open failed");
+					}
+					sh_iorenumber(shp,fn,fd);
+					sh_close(fn);
 					type &= ~(FPIN|FPOU);
 				}
 #endif /* !SHOPT_DEVFD */
