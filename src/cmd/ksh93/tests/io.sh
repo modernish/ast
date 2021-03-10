@@ -722,11 +722,11 @@ procsub_pid="$(
 	true >(true)
 	echo "$!"
 )"
-sleep 2 # wait for process to close (long wait to avoid false failures)
+sleep 2 # wait for the process to close (long wait to avoid false failures)
 
 kill -0 $procsub_pid 2> /dev/null &&
 	kill -KILL $procsub_pid && # don't leave around what is effectively a zombie process
-	err_exit "process substitutions loop after parent shell finishes"
+	err_exit "process substitutions loop infinitely after parent shell finishes"
 
 # ======
 exit $((Errors<125?Errors:125))
