@@ -85,11 +85,8 @@ struct funenv
     static void fifo_check(void *handle)
     {
 	Shell_t	*shp = (Shell_t*)handle;
-	if(kill(shp->gd->parent_pid,0) < 0)
-	{
-		unlink(shp->fifo);
-		sh_done(shp,0);
-	}
+	unlink(shp->fifo);
+	sh_done(shp,0);
     }
 #endif /* !SHOPT_DEVFD */
 
@@ -1893,11 +1890,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 					_sh_fork(shp,pid,0,0);
 				if(pid==0)
 				{
-#if !SHOPT_DEVFD
-					shgd->parent_pid = shgd->current_pid = getpid();
-#else
 					shgd->current_pid = getpid();
-#endif
 					sh_exec(t->par.partre,flags);
 					shp->st.trapcom[0]=0;
 					sh_done(shp,0);

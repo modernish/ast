@@ -725,8 +725,22 @@ procsub_pid="$(
 sleep 2 # wait for the process to close (long wait to avoid false failures)
 
 kill -0 $procsub_pid 2> /dev/null &&
-	kill -KILL $procsub_pid && # don't leave around what is effectively a zombie process
+	kill -TERM $procsub_pid && # don't leave around what is effectively a zombie process
 	err_exit "process substitutions loop infinitely after parent shell finishes"
+
+# 'wait' shouldn't cause a hangup after running a process substitution
+procsub_freeze()
+{
+	true <(true)
+	wait
+}
+
+procsub_freeze &
+sleep 1
+if kill -0 $! 2> /dev/null; then
+	kill -TERM $!
+	err_exit "process substitutions freeze after running 'wait'"
+fi
 
 # ======
 exit $((Errors<125?Errors:125))

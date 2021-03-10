@@ -215,9 +215,6 @@ void sh_subfork(void)
 		sp->subpid=0;
 		shp->st.trapcom[0] = (comsub==2 ? NULL : trap);
 		shp->savesig = 0;
-#if !SHOPT_DEVFD
-		shgd->parent_pid = shgd->current_pid;
-#endif
 		/* sh_fork() increases ${.sh.subshell} but we forked an existing virtual subshell, so undo */
 		shgd->realsubshell--;
 	}
