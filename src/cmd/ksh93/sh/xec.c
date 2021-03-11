@@ -82,11 +82,16 @@ struct funenv
 /* ========	command execution	========*/
 
 #if !SHOPT_DEVFD
+    static pid_t fifo_save_ppid;
     static void fifo_check(void *handle)
     {
 	Shell_t	*shp = (Shell_t*)handle;
-	unlink(shp->fifo);
-	sh_done(shp,0);
+	pid_t pid = getppid();
+	if(pid != fifo_save_ppid)
+	{
+		unlink(shp->fifo);
+		sh_done(shp,0);
+	}
     }
 #endif /* !SHOPT_DEVFD */
 
@@ -1587,6 +1592,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 					pipes[2] = 0;
 					coproc_init(shp,pipes);
 				}
+#if !SHOPT_DEVFD
+				if(shp->fifo)
+					fifo_save_ppid = shgd->current_pid;
+#endif
 #if SHOPT_SPAWN
 #   ifdef _lib_fork
 				if(com && !job.jobcontrol)
