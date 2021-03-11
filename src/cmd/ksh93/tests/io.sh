@@ -743,5 +743,16 @@ if kill -0 $! 2> /dev/null; then
 	err_exit "process substitutions freeze parent shell after running 'wait'"
 fi
 
+# process substitutions should work correctly with delays
+procsub_delay()
+{
+	sleep 1
+	cat "$1"
+}
+exp="hi"
+got="$(procsub_delay <(echo hi))"
+[[ $exp == $got ]] || err_exit "process substitutions fail with a delay greater than 500ms" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
 # ======
 exit $((Errors<125?Errors:125))
