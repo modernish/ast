@@ -716,42 +716,34 @@ got=$(export tmp; "$SHELL" -ec \
 [[ -r $tmp/v.out && $(<$tmp/v.out) == ok2 ]] || err_exit 'redirect {varname}>file not working in a subshell'
 
 # ======
-# Test for process substitution infinite looping
-procsub_pid="$(
-	ulimit -t unlimited  # fork the subshell
-	true >(true)
+# Test for looping or lingering process substitution processes
+# https://github.com/ksh93/ksh/issues/213
+procsub_pid=$(
+	ulimit -t unlimited 2>/dev/null  # fork the subshell
+	true >(true) <(true) >(true) <(true)
 	echo "$!"
-)"
-sleep 1 # wait for the process to close (long wait to avoid false failures)
-
-if kill -0 $procsub_pid 2> /dev/null; then
-	kill -TERM $procsub_pid # don't leave around what is effectively a zombie process
-	err_exit "process substitutions loop infinitely after parent shell finishes"
+)
+sleep .1
+if kill -0 "$procsub_pid" 2>/dev/null; then
+	kill -TERM "$procsub_pid" # don't leave around what is effectively a zombie process
+	err_exit "process substitutions loop or linger after parent shell finishes"
 fi
-
-# 'wait' shouldn't cause a hangup after running a process substitution
-procsub_freeze()
-{
-	true <(true)
-	wait
-}
-
-procsub_freeze &
-sleep 1
+(true <(true) >(true) <(true) >(true); wait) &
+sleep .1
 if kill -0 $! 2> /dev/null; then
 	kill -TERM $!
-	err_exit "process substitutions freeze parent shell after running 'wait'"
+	err_exit "process substitutions linger when unused"
 fi
 
 # process substitutions should work correctly with delays
 procsub_delay()
 {
-	sleep 1
-	cat "$1"
+	sleep .1  # a delay >50ms, the current fifo_check delay in xec.c
+	cat "$@"
 }
-exp="hi"
-got="$(procsub_delay <(echo hi))"
-[[ $exp == $got ]] || err_exit "process substitutions fail with a delay greater than 500ms" \
+exp=$'hi\nthere\nworld'
+got=$(procsub_delay <(echo hi) <(echo there) <(echo world))
+[[ $got == "$exp" ]] || err_exit "process substitutions passed to function failed" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======

@@ -83,14 +83,31 @@ struct funenv
 
 #if !SHOPT_DEVFD
     static pid_t fifo_save_ppid;
+
     static void fifo_check(void *handle)
     {
 	Shell_t	*shp = (Shell_t*)handle;
-	pid_t pid = getppid();
-	if(pid != fifo_save_ppid)
+	if(getppid() != fifo_save_ppid)
 	{
 		unlink(shp->fifo);
 		sh_done(shp,0);
+	}
+    }
+
+    /* Remove any remaining FIFOs to stop unused process substitutions blocking on trying to open the FIFO */
+    static void fifo_cleanup(void)
+    {
+	if(sh.fifo_tree)
+	{
+		Namval_t	*fifo = dtfirst(sh.fifo_tree);
+		if(fifo)
+		{
+			do
+				unlink(fifo->nvname);
+			while(fifo = dtnext(sh.fifo_tree,fifo));
+			dtclose(sh.fifo_tree);
+			sh.fifo_tree = NIL(Dt_t*);
+		}
 	}
     }
 #endif /* !SHOPT_DEVFD */
@@ -1372,6 +1389,9 @@ int sh_exec(register const Shnode_t *t, int flags)
 						/* failure on special built-ins fatal */
 						if(jmpval<=SH_JMPCMD  && (!nv_isattr(np,BLT_SPC) || command))
 							jmpval=0;
+#if !SHOPT_DEVFD
+						fifo_cleanup();
+#endif
 					}
 					if(bp)
 					{
@@ -1534,6 +1554,9 @@ int sh_exec(register const Shnode_t *t, int flags)
 			else if(!io)
 			{
 			setexit:
+#if !SHOPT_DEVFD
+				fifo_cleanup();
+#endif
 				exitset();
 				break;
 			}
@@ -1683,6 +1706,14 @@ int sh_exec(register const Shnode_t *t, int flags)
 				struct checkpt *buffp = (struct checkpt*)stkalloc(shp->stk,sizeof(struct checkpt));
 				struct ionod *iop;
 				int	rewrite=0;
+#if !SHOPT_DEVFD
+				if(shp->fifo_tree)
+				{
+					/* do not clean up process substitution FIFOs in child; parent handles this */
+					dtclose(shp->fifo_tree);
+					shp->fifo_tree = NIL(Dt_t*);
+				}
+#endif
 				if(no_fork)
 					sh_sigreset(2);
 				sh_pushcontext(shp,buffp,SH_JMPEXIT);
@@ -1709,11 +1740,9 @@ int sh_exec(register const Shnode_t *t, int flags)
 #if !SHOPT_DEVFD
 				if(shp->fifo && (type&(FPIN|FPOU)))
 				{
-					int fn, fd, save_errno;
-					void *fifo_timer;
-
+					int	fn, fd, save_errno;
+					void	*fifo_timer = sh_timeradd(50,1,fifo_check,(void*)shp);
 					fd = (type&FPIN) ? 0 : 1;
-					fifo_timer = sh_timeradd(500,1,fifo_check,(void*)shp);
 					fn = sh_open(shp->fifo,fd?O_WRONLY:O_RDONLY);
 					save_errno = errno;
 					timerdel(fifo_timer);
@@ -1722,8 +1751,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 					shp->fifo = 0;
 					if(fn<0)
 					{
-						errno = save_errno;
-						errormsg(SH_DICT,ERROR_SYSTEM|ERROR_PANIC,"process substitution: FIFO open failed");
+						if((errno = save_errno) != ENOENT)
+							errormsg(SH_DICT, ERROR_SYSTEM|ERROR_PANIC,
+								 "process substitution: FIFO open failed");
+						sh_done(shp,0);
 					}
 					sh_iorenumber(shp,fn,fd);
 					sh_close(fn);
@@ -3242,6 +3273,10 @@ static void sh_funct(Shell_t *shp,Namval_t *np,int argn, char *argv[],struct arg
 	char *fname = nv_getval(SH_FUNNAMENOD);
 	struct Level	*lp =(struct Level*)(SH_LEVELNOD->nvfun);
 	int		level, pipepid=shp->pipepid;
+#if !SHOPT_DEVFD
+	Dt_t		*save_fifo_tree = shp->fifo_tree;
+	shp->fifo_tree = NIL(Dt_t*);
+#endif
 	shp->pipepid = 0;
 	sh_stats(STAT_FUNCT);
 	if(!lp->hdr.disc)
@@ -3296,6 +3331,10 @@ static void sh_funct(Shell_t *shp,Namval_t *np,int argn, char *argv[],struct arg
 			_nv_unset(np, NV_RDONLY);
 		}
 	}
+#if !SHOPT_DEVFD
+	fifo_cleanup();
+	shp->fifo_tree = save_fifo_tree;
+#endif
 }
 
 /*
