@@ -127,7 +127,7 @@ exp=254
 [[ $exp == $status ]] || err_exit 'exit -2' \
 	"(expected '$exp', got '$status')"
 
-$SHELL +E -i 2>/dev/null <<- \! && err_exit 'interactive shell should not exit 0 after false'
+$SHELL +E -i 2>/dev/null <<- \!
 	false
 	exit
 !
@@ -136,4 +136,5 @@ exp=1
 [[ $exp == $status ]] || err_exit 'bare exit after false' \
 	"(expected '$exp', got '$status')"
 
+# ======
 exit $((Errors<125?Errors:125))
