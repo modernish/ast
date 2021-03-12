@@ -686,11 +686,6 @@ then	(
 fi
 cd "$tmp"
 
-$SHELL +E -i 2>/dev/null <<- \! && err_exit 'interactive shell should not exit 0 after false'
-	false
-	exit
-!
-
 if	kill -L > /dev/null 2>&1
 then	[[ $(kill -l HUP) == "$(kill -L HUP)" ]] || err_exit 'kill -l and kill -L are not the same when given a signal name'
 	[[ $(kill -l 9) == "$(kill -L 9)" ]] || err_exit 'kill -l and kill -L are not the same when given a signal number'
@@ -974,7 +969,7 @@ fi
 EOF
 "$SHELL" -i "$sleepsig" 2> /dev/null || err_exit "'sleep -s' doesn't work with intervals of more than 30 seconds"
 
-# ==========
+# ======
 # Builtins should handle unrecognized options correctly
 while IFS= read -r bltin <&3
 do	case $bltin in
@@ -1012,6 +1007,43 @@ then	got=$( { "$SHELL" -c '
 	((!(e = $?))) || err_exit 'crash with alarm and IFS' \
 		"(got status $e$( ((e>128)) && print -n / && kill -l "$e"), $(printf %q "$got"))"
 fi
+
+# ======
+# Regression test for https://github.com/att/ast/issues/1402
+#
+# We throw away stderr because we only want the value of '$t', not the error text from running
+# 'command' with an invalid flag.
+exp='good'
+got=$($SHELL -c 't=good; t=bad command -@; print $t' 2>/dev/null)
+[[ $exp == $got ]] || err_exit "temp var assignment with 'command'" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+# ======
+# Regression test for https://github.com/att/ast/issues/949
+foo_script='#!/bin/sh
+exit 0'
+echo "$foo_script" > "$tmp/foo1.sh"
+echo "$foo_script" > "$tmp/foo2.sh"
+builtin chmod
+chmod +x "$tmp/foo1.sh" "$tmp/foo2.sh"
+$SHELL "$tmp/foo1.sh" || err_exit "builtin 'chmod +x' doesn't work on first script"
+$SHELL "$tmp/foo2.sh" || err_exit "builtin 'chmod +x' doesn't work on second script"
+
+# ======
+# In ksh93v- 2013-10-10 alpha cd doesn't fail on directories without execute permission.
+# Additionally, ksh93v- added a regression test for attempting to use cd on a file.
+mkdir "$tmp/noexecute"
+chmod -x "$tmp/noexecute"
+$SHELL -c "cd $tmp/noexecute" 2> /dev/null && err_exit "'cd' on directories without an execute bit doesn't fail"
+touch "$tmp/notadir"
+$SHELL -c "cd $tmp/notadir" 2> /dev/null && err_exit "'cd' on a normal file doesn't fail"
+
+# ======
+# 'kill %' should fail with exit status 1
+{ $SHELL -c 'kill %' ;} 2> /dev/null
+got=$?
+exp=1
+[[ $got == $exp ]] || err_exit "'kill %' has the wrong exit status (expected '$exp'; got '$got')"
 
 # ======
 exit $((Errors<125?Errors:125))

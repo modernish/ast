@@ -716,4 +716,22 @@ got=$(export tmp; "$SHELL" -ec \
 [[ -r $tmp/v.out && $(<$tmp/v.out) == ok2 ]] || err_exit 'redirect {varname}>file not working in a subshell'
 
 # ======
+# Regression test for a process substitution hang in ksh93v- 2013-10-10 alpha
+{
+	producer() {
+		for ((i = 0; i < 20000; i++ )) do
+			print xxxxx${i}xxxxx
+		done
+	}
+	consumer() {
+		while read var; do
+			print ${var}
+		done < ${1}
+	}
+	consumer <(producer) > /dev/null
+} & pid=$!
+(sleep 5; kill -HUP $pid) 2> /dev/null &
+wait $pid 2> /dev/null || err_exit "process substitution hangs"
+
+# ======
 exit $((Errors<125?Errors:125))

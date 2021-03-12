@@ -409,4 +409,12 @@ do	unset var
 done
 
 # ======
+# Tests from ksh93v- for the -eq operator
+[[ 010 -eq 10 ]] || err_exit '010 is not 10 in [[...]]'
+
+unset foo
+foo=10
+([[ foo -eq 10 ]]) || err_exit 'foo -eq 10 fails in [[...]] with foo=10'
+
+# ======
 exit $((Errors<125?Errors:125))

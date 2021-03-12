@@ -76,4 +76,64 @@ cd /
 cd ~- || err_exit "cd back failed"
 $SHELL -c 'builtin -f cmd getconf; getconf --"?-version"; exit 0' >/dev/null 2>&1 || err_exit 'ksh plugin exit failed -- was ksh built with CCFLAGS+=$(CC.EXPORT.DYNAMIC)?'
 
+# ======
+# Verify the 'exit' command behaves as expected
+
+got=$($SHELL -c 'exit' 2>&1)
+status=$?
+exp=0
+[[ -z $got ]] || err_exit 'bare exit' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'bare exit' \
+	"(expected '$exp', got '$status')"
+
+got=$($SHELL -c 'exit 0' 2>&1)
+status=$?
+exp=0
+[[ -z $got ]] || err_exit 'exit 0' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'exit 0' \
+	"(expected '$exp', got '$status')"
+
+got=$($SHELL -c 'exit 1' 2>&1)
+status=$?
+exp=1
+[[ -z $got ]] || err_exit 'exit 1' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'exit 1' \
+	"(expected '$exp', got '$status')"
+
+got=$($SHELL -c 'function e37 { return 37; } ; e37' 2>&1)
+status=$?
+exp=37
+[[ -z $got ]] || err_exit 'exit 37' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'exit 37' \
+	"(expected '$exp', got '$status')"
+
+got=$($SHELL -c 'exit -1' 2>&1)
+status=$?
+exp=255
+[[ -z $got ]] || err_exit 'exit -1' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'exit -1' \
+	"(expected '$exp', got '$status')"
+
+got=$($SHELL -c 'exit -2' 2>&1)
+status=$?
+exp=254
+[[ -z $got ]] || err_exit 'exit -2' \
+	"(got $(printf %q "$got"))"
+[[ $exp == $status ]] || err_exit 'exit -2' \
+	"(expected '$exp', got '$status')"
+
+$SHELL +E -i 2>/dev/null <<- \! && err_exit 'interactive shell should not exit 0 after false'
+	false
+	exit
+!
+status=$?
+exp=1
+[[ $exp == $status ]] || err_exit 'bare exit after false' \
+	"(expected '$exp', got '$status')"
+
 exit $((Errors<125?Errors:125))

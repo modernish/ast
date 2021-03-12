@@ -103,4 +103,10 @@ got=$(eval 'case x in foo);; if);; esac' 2>&1) || err_exit "'if' as nth pattern 
 got=$(eval 'case x in (foo);; (if);; esac' 2>&1) || err_exit "'(' + 'if' as nth pattern fails: got $(printf %q "$got")"
 
 # ======
+# Verify an invalid character class name is handled without a SIGSEGV or similar failure
+# https://github.com/att/ast/issues/1409
+got="$($SHELL -c 'case x in [x[:bogus:]]) echo x ;; esac')"
+[[ -z $got ]] || err_exit "invalid char class name (got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))

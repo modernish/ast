@@ -224,6 +224,15 @@ print -v cx > /dev/null
 print -v cx | read -C l 2> /dev/null || err_exit 'read -C fails from output of print -v'
 ((SHOPT_FIXEDARRAY)) && [[ ${cx%cx=} != "${l%l=}" ]] && err_exit 'print -v for compound variable with fixed 2d array not working'
 
+unset foo
+typeset -A foo
+typeset -A foo[bar]
+foo[bar][x]=2
+(( foo[bar][x]++ ))
+exp=3
+[[ ${foo[bar][x]} == $exp ]] || err_ext "subscript gets added incorrectly to an associative array when ++ operator is called" \
+	"(expected '$exp', got '${foo[bar][x]}')"
+
 # ======
 # Multidimensional arrays with an unset method shouldn't cause a crash.
 # The test itself must be run inside of a function.

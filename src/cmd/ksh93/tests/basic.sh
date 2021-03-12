@@ -419,8 +419,16 @@ unset foo
 unset foo
 foo=$(false) > /dev/null && err_exit 'failed command substitution with redirection not returning false'
 expected=foreback
+got=`print -n fore; (sleep 2;print back)&`
+[[ $got == $expected ]] || err_exit "\`\` command substitution background process output error (expected '$expected', got '$got')"
 got=$(print -n fore; (sleep .2;print back)&)
-[[ $got == $expected ]] || err_exit "command substitution background process output error -- got '$got', expected '$expected'"
+[[ $got == $expected ]] || err_exit "\$() command substitution background process output error (expected '$expected', got '$got')"
+got=${ print -n fore; (sleep 2;print back)& }
+[[ $got == $expected ]] || err_exit "\${} shared-state command substitution background process output error (expected '$expected', got '$got')"
+function abc { sleep 2; print back; }
+function abcd { abc & }
+got=$(print -n fore;abcd)
+[[ $got == $expected ]] || err_exit "\$() command substitution background with function process output error (expected '$expected', got '$got')"
 
 for false in false $binfalse
 do	x=$($false) && err_exit "x=\$($false) should fail"
@@ -788,6 +796,47 @@ got=$(
 )
 trap - DEBUG  # bug compat
 [[ $got == "$exp" ]] || err_exit "DEBUG trap did not trigger return from POSIX function on status 255" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
+# In ksh93v- and ksh2020 EXIT traps don't work in forked subshells
+# https://github.com/att/ast/issues/1452
+exp="forked subshell EXIT trap okay"
+got="$(ulimit -t unlimited; trap 'echo forked subshell EXIT trap okay' EXIT)"
+[[ $got == $exp ]] || err_exit "EXIT trap did not trigger in forked subshell" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+exp="virtual subshell EXIT trap okay"
+got="$(trap 'echo virtual subshell EXIT trap okay' EXIT)"
+[[ $got == $exp ]] || err_exit "EXIT trap did not trigger in virtual subshell" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
+# Regression test for https://github.com/att/ast/issues/1403
+for t in {A..Z}; do
+	$SHELL -c "trap - $t 2> /dev/null"
+	[[ $? == 1 ]] || err_exit "'trap' throws segfault when given invalid signal name '$t'"
+done
+
+# ======
+# Is an invalid flag handled correctly?
+# ksh2020 regression: https://github.com/att/ast/issues/1284
+actual=$($SHELL --verson 2>&1)
+actual_status=$?
+expect='ksh: verson: bad option(s)'
+expect_status=2
+[[ "$actual" == ${expect}* ]] || err_exit "failed to get version string" \
+	"(expected $(printf %q ${expect}*), got $(printf %q "$actual"))"
+[[ $actual_status == $expect_status ]] ||
+	err_exit "wrong exit status (expected '$expect_status', got '$actual_status')"
+
+# ======
+# Test for illegal seek error (ksh93v- regression)
+# https://www.mail-archive.com/ast-users@lists.research.att.com/msg00816.html
+exp='1
+2'
+got="$(join <(printf '%d\n' 1 2) <(printf '%d\n' 1 2))"
+[[ $exp == $got ]] || err_exit "pipeline fails with illegal seek error" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======

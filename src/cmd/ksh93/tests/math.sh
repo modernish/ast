@@ -261,4 +261,11 @@ unset x
 [[ $(typeset -lX 0 x=5.67; typeset -p x) == 'typeset -l -X 0 x=0x1p+2' ]] || err_exit 'typeset -lX 0 with assignment failed to round.'
 
 # ======
+# typeset -s used without -i shouldn't set foo to garbage
+exp=30000
+got="$(typeset -s foo=30000; echo $foo)"
+[[ $exp == $got ]] || err_exit "unexpected output from typeset -s without -i" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))

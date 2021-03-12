@@ -524,6 +524,7 @@ typeset -m 'a[0]=a[1]'
 typeset -m 'a[1]=j'
 [[ ${a[@]} == 'bb aa cc' ]] || err_exit 'moving index array elements not working'
 unset a j
+[[ $(typeset -p a) ]] && err_exit 'unset associative array after typeset -m not working'
 
 typeset -A a=( [0]="aa" [1]="bb" [2]="cc" )
 typeset -m 'j=a[0]'

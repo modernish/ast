@@ -1259,4 +1259,12 @@ got=$(IFS=/; foo=bar foobar=fbar fool=pity; print -r -- "${!foo*}")
 [[ $got == "$exp" ]] || err_exit "\${!foo*}: expected $(printf %q "$exp"), got $(printf %q "$got")"
 
 # ======
+# In ksh93v- ${.sh.subshell} is unset by the $PS4 prompt
+# https://github.com/att/ast/issues/1092
+exp='0'
+got="$($SHELL -c 'PS4="${.sh.subshell}"; echo ${.sh.subshell}')"
+[[ "$exp" == "$got" ]] || err_exit "\${.sh.subshell} is wrongly unset in the \$PS4 prompt" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))
