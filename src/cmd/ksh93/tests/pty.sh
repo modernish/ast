@@ -329,7 +329,7 @@ L POSIX sh 101(C)
 # control-V, control-W, end-of-file, backslash \ (followed by erase or
 # kill) and <ESC>.
 
-d 10
+d 15
 p :test-1:
 w stty erase ^H intr ^C kill ^X
 p :test-2:
@@ -554,7 +554,7 @@ L escaping backslashes in $mode mode
 # Backslashes should only be escaped if the previous input was a backslash.
 # Other backslashes stored in the input buffer should be erased normally.
 
-d 10
+d 15
 p :test-1:
 w stty erase ^H
 p :test-2:
@@ -612,7 +612,7 @@ EOF
 tst $LINENO <<"!"
 L test -t 1 inside command substitution
 p :test-1:
-d 10
+d 15
 w . ./test_t.sh
 r ^:test-1: \. \./test_t\.sh\r\n$
 r ^OK0\r\n$
@@ -635,7 +635,7 @@ L race condition while launching external commands
 # See discussion at: https://github.com/ksh93/ksh/issues/79
 
 p :test-1:
-d 10
+d 15
 w printf '%s\\n' 1 2 3 4 5 | while read; do ls /dev/null; done
 r ^:test-1: printf '%s\\n' 1 2 3 4 5 | while read; do ls /dev/null; done\r\n$
 r ^/dev/null\r\n$
@@ -650,7 +650,7 @@ r ^:test-2:
 ((SHOPT_ESH)) && [[ -o ?backslashctrl ]] && tst $LINENO <<"!"
 L nobackslashctrl in emacs
 
-d 10
+d 15
 w set -o emacs --nobackslashctrl
 
 # --nobackslashctrl shouldn't be ignored by reverse search
@@ -663,7 +663,7 @@ r ^:test-2: \r\n$
 ((SHOPT_ESH)) && tst $LINENO <<"!"
 L emacs backslash escaping
 
-d 10
+d 15
 w set -o emacs
 
 # Test for too many backslash deletions in reverse-search mode
@@ -680,7 +680,7 @@ r true \^C
 ((SHOPT_VSH)) && touch vi_completion_A_file vi_completion_B_file && tst $LINENO <<"!"
 L vi filename completion menu
 
-d 10
+d 15
 c ls vi_co\t\t
 r ls vi_completion\r\n$
 r ^1) vi_completion_A_file\r\n$
@@ -717,7 +717,7 @@ L syntax error added to history file
 
 # https://github.com/ksh93/ksh/issues/209
 
-d 10
+d 15
 p :test-1:
 w do something
 r ^:test-1: do something\r\n$

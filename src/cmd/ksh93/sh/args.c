@@ -761,6 +761,10 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 	close(pv[1-fd]);
 	sh_iosave(shp,-pv[fd], shp->topfd, (char*)0);
 #else
+	/* remember the FIFO for cleanup in case the command never opens it (see fifo_cleanup(), xec.c) */
+	if(!shp->fifo_tree)
+		shp->fifo_tree = dtopen(&_Nvdisc,Dtoset);
+	nv_search(shp->fifo,shp->fifo_tree,NV_ADD);
 	free(shp->fifo);
 	shp->fifo = 0;
 #endif /* SHOPT_DEVFD */

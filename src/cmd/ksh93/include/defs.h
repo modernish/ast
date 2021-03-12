@@ -158,7 +158,7 @@ struct shared
 	Shwait_f	waitevent;
 };
 
-#define _SH_PRIVATE \
+#define __SH_PRIVATE_1 \
 	struct shared	*gd;		/* global data */ \
 	struct sh_scoped st;		/* scoped information */ \
 	Stk_t		*stk;		/* stack pointer */ \
@@ -189,7 +189,6 @@ struct shared
 	char		*comdiv;	/* points to sh -c argument */ \
 	char		*prefix;	/* prefix for compound assignment */ \
 	sigjmp_buf	*jmplist;	/* longjmp return stack */ \
-	char		*fifo;		/* fifo name for process sub */ \
 	pid_t		bckpid;		/* background process id */ \
 	pid_t		cpid; \
 	pid_t		spid; 		/* subshell process id */ \
@@ -282,6 +281,14 @@ struct shared
 	char 		exittrap; \
 	char 		errtrap; \
 	char 		end_fn;
+#if !SHOPT_DEVFD
+#define __SH_PRIVATE_2 \
+	char		*fifo;		/* FIFO name for current process substitution */ \
+	Dt_t		*fifo_tree;	/* for cleaning up process substitution FIFOs */
+#else
+#define	__SH_PRIVATE_2
+#endif
+#define _SH_PRIVATE	__SH_PRIVATE_1 __SH_PRIVATE_2
 
 #include	<shell.h>
 

@@ -24,6 +24,7 @@ function err_exit
 	let Errors+=1
 }
 alias err_exit='err_exit $LINENO'
+alias warning='err\_exit $((Errors--,LINENO)) warning:'
 
 Command=${0##*/}
 integer Errors=0
@@ -341,7 +342,7 @@ scr=$tmp/script
 exp=126
 
 if [[ $(id -u) == '0' ]]; then
-	print -u2 "\t${Command}[$LINENO]: warning: running as root: skipping tests involving unreadable scripts"
+	warning "running as root: skipping tests involving unreadable scripts"
 else
 
 : > $scr
@@ -571,22 +572,25 @@ sleep_pid=$!
 	' static_argzero "$@" final_static_arg_1 final_static_arg_2
 ) >$ofile &
 pid=$!
-wait $pid
+{ wait $pid; } 2>/dev/null	# wait and suppress signal messages
 e=$?
 trap - TERM INT
 [[ $sleep_pid ]] && kill $sleep_pid
-if	let "e > 0"
-then	err_exit "'command -x' test yielded exit status $e$( let "e>128" && print -n / && kill -l "$e")"
-fi
-if	[[ ! -s $ofile ]]
-then	err_exit "'command -x' test failed to produce output"
-else	save_Command=$Command
-	Command+=": ${ofile##*/}"
-	. "$ofile"
-	Command=$save_Command
-	let "args == expargs && size == expsize" || err_exit "'command -x' did not correctly divide arguments" \
-		"(expected $expargs args of total size $expsize, got $args args of total size $size;" \
-		"divided in $chunks chunks)"
+if	[[ ${ kill -l "$e"; } == KILL ]]
+then	warning "'command -x' test killed, probably due to lack of memory; skipping test"
+else	if	let "e > 0"
+	then	err_exit "'command -x' test yielded exit status $e$( let "e>128" && print -n / && kill -l "$e")"
+	fi
+	if	[[ ! -s $ofile ]]
+	then	err_exit "'command -x' test failed to produce output"
+	else	save_Command=$Command
+		Command+=": ${ofile##*/}"
+		. "$ofile"
+		Command=$save_Command
+		let "args == expargs && size == expsize" || err_exit "'command -x' did not correctly divide arguments" \
+			"(expected $expargs args of total size $expsize, got $args args of total size $size;" \
+			"divided in $chunks chunks)"
+	fi
 fi
 
 # ======

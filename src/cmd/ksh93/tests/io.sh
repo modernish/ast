@@ -716,7 +716,7 @@ got=$(export tmp; "$SHELL" -ec \
 [[ -r $tmp/v.out && $(<$tmp/v.out) == ok2 ]] || err_exit 'redirect {varname}>file not working in a subshell'
 
 # ======
-# Regression test for a process substitution hang in ksh93v- 2013-10-10 alpha
+# Process substitution hang in ksh93v- 2013-10-10 alpha
 {
 	producer() {
 		for ((i = 0; i < 20000; i++ )) do
@@ -732,6 +732,37 @@ got=$(export tmp; "$SHELL" -ec \
 } & pid=$!
 (sleep 5; kill -HUP $pid) 2> /dev/null &
 wait $pid 2> /dev/null || err_exit "process substitution hangs"
+
+# ======
+# Test for looping or lingering process substitution processes
+# https://github.com/ksh93/ksh/issues/213
+procsub_pid=$(
+	ulimit -t unlimited 2>/dev/null  # fork the subshell
+	true >(true) <(true) >(true) <(true)
+	echo "$!"
+)
+sleep .1
+if kill -0 "$procsub_pid" 2>/dev/null; then
+	kill -TERM "$procsub_pid" # don't leave around what is effectively a zombie process
+	err_exit "process substitutions loop or linger after parent shell finishes"
+fi
+(true <(true) >(true) <(true) >(true); wait) &
+sleep .1
+if kill -0 $! 2> /dev/null; then
+	kill -TERM $!
+	err_exit "process substitutions linger when unused"
+fi
+
+# process substitutions should work correctly with delays
+procsub_delay()
+{
+	sleep .1  # a delay >50ms, the current fifo_check delay in xec.c
+	cat "$@"
+}
+exp=$'hi\nthere\nworld'
+got=$(procsub_delay <(echo hi) <(echo there) <(echo world))
+[[ $got == "$exp" ]] || err_exit "process substitutions passed to function failed" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))
