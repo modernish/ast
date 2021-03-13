@@ -1628,7 +1628,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 #   endif /* _lib_fork */
 				if(parent<0)
 				{
-					/* prevent a file descriptor leak from 'command not found */
+					/* prevent a file descriptor leak from a 'not found' error */
 					if(shp->topfd > topfd)
 						sh_iorestore(shp,topfd,0);
 
