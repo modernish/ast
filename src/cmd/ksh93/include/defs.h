@@ -43,14 +43,6 @@
 #   define mbmax()	1
 #endif
 
-/*
- * Until a file descriptor leak with process substitution
- * is fixed, disable /dev/fd use to avoid the problem.
- * https://github.com/ksh93/ksh/issues/67
- */
-#undef SHOPT_DEVFD
-#define SHOPT_DEVFD	0
-
 #include	<sfio.h>
 #include	<error.h>
 #include	"FEATURE/externs"

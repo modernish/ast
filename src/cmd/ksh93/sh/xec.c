@@ -1542,6 +1542,8 @@ int sh_exec(register const Shnode_t *t, int flags)
 						sh_popcontext(shp,buffp);
 						sh_iorestore(shp,indx,jmpval);
 					}
+					if(shp->topfd>topfd)
+						sh_iorestore(shp,topfd,jmpval);
 					if(nq)
 						unset_instance(nq,&node,&nr,mode);
 					sh_funstaks(slp->slchild,-1);
@@ -1550,6 +1552,8 @@ int sh_exec(register const Shnode_t *t, int flags)
 						siglongjmp(*shp->jmplist,jmpval);
 					goto setexit;
 				}
+				else if(command && shp->topfd>topfd)
+					sh_iorestore(shp,topfd,0);
 			}
 			else if(!io)
 			{
