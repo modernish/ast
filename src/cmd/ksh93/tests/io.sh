@@ -650,7 +650,7 @@ err=$(
 	do	notfound <(:) >(:) 2> /dev/null
 	done
 	return 0
-) || err_exit "Process substitution leaks file descriptors when used as argument to 'command' alongside a function" \
+) || err_exit "Process substitution leaks file descriptors when used as argument to nonexistent command" \
 	"(got $(printf %q "$err"))"
 
 # ======
