@@ -629,6 +629,7 @@ fi
 
 # ======
 # File descriptor leak with process substitution
+# https://github.com/ksh93/ksh/issues/67
 err=$(
 	ulimit -n 15 || exit 0
 	fdUser() {
@@ -648,10 +649,13 @@ err=$(
 	PATH=/dev/null
 	for ((i=1; i<10; i++))
 	do	notfound <(:) >(:) 2> /dev/null
-	done
-	return 0
+	done 2>&1
+	exit 0
 ) || err_exit "Process substitution leaks file descriptors when used as argument to nonexistent command" \
 	"(got $(printf %q "$err"))"
+
+got=$(command -x cat <(command -x echo foo) 2>&1) || err_exit "process substitution doesn't work with 'command'" \
+	"(got $(printf %q "$got"))"
 
 # ======
 # A redirection with a null command could crash under certain circumstances (rhbz#1200534)
@@ -776,8 +780,6 @@ got=$(procsub_delay <(echo hi) <(echo there) <(echo world))
 [[ $got == "$exp" ]] || err_exit "process substitutions passed to function failed" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-got=$(command -x cat <(command -x echo foo) 2>&1) || err_exit "process substitution doesn't work with 'command'" \
-	"(got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))
