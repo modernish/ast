@@ -758,7 +758,7 @@ struct argnod *sh_argprocsub(Shell_t *shp,struct argnod *argp)
 	job.jobcontrol = savejobcontrol;
 	sh_setstate(savestates);
 #if SHOPT_DEVFD
-	close(pv[1-fd]);
+	sh_close(pv[1-fd]);
 	sh_iosave(shp,-pv[fd], shp->topfd, (char*)0);
 #else
 	/* remember the FIFO for cleanup in case the command never opens it (see fifo_cleanup(), xec.c) */
