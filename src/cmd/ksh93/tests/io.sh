@@ -764,7 +764,7 @@ got=$(procsub_delay <(echo hi) <(echo there) <(echo world))
 [[ $got == "$exp" ]] || err_exit "process substitutions passed to function failed" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-got="$(command cat <($(whence -p echo foo)) 2>&1)" || err_exit "process substitution doesn't work with 'command'" \
+got=$(command -x cat <(command -x echo foo) 2>&1) || err_exit "process substitution doesn't work with 'command'" \
 	"(got $(printf %q "$got"))"
 
 # ======
