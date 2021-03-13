@@ -1552,7 +1552,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 						siglongjmp(*shp->jmplist,jmpval);
 					goto setexit;
 				}
-				else if(command && shp->topfd>topfd)
+				else if(command && np && shp->topfd>topfd)
 					sh_iorestore(shp,topfd,0);
 			}
 			else if(!io)
