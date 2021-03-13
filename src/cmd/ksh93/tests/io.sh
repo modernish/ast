@@ -780,6 +780,5 @@ got=$(procsub_delay <(echo hi) <(echo there) <(echo world))
 [[ $got == "$exp" ]] || err_exit "process substitutions passed to function failed" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-
 # ======
 exit $((Errors<125?Errors:125))
