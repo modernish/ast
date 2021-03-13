@@ -8,6 +8,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a file descriptor leak that occurred when ksh used /dev/fd for
   process substitutions passed to functions.
 
+- Fixed a separate file descriptor leak that when 'command' was passed
+  a function and process substitution as arguments (like above, this
+  occurred when SHOPT_DEVFD is enabled).
+
 2021-03-11:
 
 - Fixed an intermittent bug that caused process substitutions to infinitely
