@@ -1628,6 +1628,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 #   endif /* _lib_fork */
 				if(parent<0)
 				{
+					/* prevent a file descriptor leak from 'command not found */
+					if(shp->topfd > topfd)
+						sh_iorestore(shp,topfd,0);
+
 					if(shp->comsub==1 && usepipe && unpipe)
 						sh_iounpipe(shp);
 					break;

@@ -641,6 +641,18 @@ err=$(
 ) || err_exit 'Process substitution leaks file descriptors when used as argument to function' \
 	"(got $(printf %q "$err"))"
 
+# File descriptor leak after 'command not found' with process substitution as argument
+err=$(
+	ulimit -n 25 || exit 0
+	set +x
+	PATH=/dev/null
+	for ((i=1; i<10; i++))
+	do	notfound <(:) >(:) 2> /dev/null
+	done
+	return 0
+) || err_exit "Process substitution leaks file descriptors when used as argument to 'command' alongside a function" \
+	"(got $(printf %q "$err"))"
+
 # ======
 # A redirection with a null command could crash under certain circumstances (rhbz#1200534)
 "$SHELL" -i >/dev/null 2>&1 -c '
