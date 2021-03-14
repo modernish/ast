@@ -2620,63 +2620,63 @@ static int	charlen(const char *string,int len)
 }
 
 /*
- * This is the default tilde discipline function
- */
-static int sh_btilde(int argc, char *argv[], Shbltin_t *context)
-{
-	Shell_t *shp = context->shp;
-	char *cp = sh_tilde(shp,argv[1]);
-	NOT_USED(argc);
-	if(!cp)
-		cp = argv[1];
-	sfputr(sfstdout, cp, '\n');
-	return(0);
-}
- 
-/*
  * <offset> is byte offset for beginning of tilde string
  */
 static void tilde_expand2(Shell_t *shp, register int offset)
 {
-	char		shtilde[10], *av[3], *ptr=stkfreeze(shp->stk,1);
-	Sfio_t		*iop, *save=sfstdout;
-	Namval_t	*np;
-	static int	beenhere=0;
-	strcpy(shtilde,".sh.tilde");
-	np = nv_open(shtilde,shp->fun_tree, NV_VARNAME|NV_NOARRAY|NV_NOASSIGN|NV_NOFAIL);
-	if(np && !beenhere)
+	char		*cp = NIL(char*);		/* character pointer for tilde expansion result */
+	char		*stakp = stakptr(0);		/* current stack object (&stakp[offset] is tilde string) */
+	int		curoff = staktell();		/* current offset of current stack object */
+	static char	loopdetect;			/* for avoiding infinite .sh.tilde function recursion */
+	/*
+	 * Allow overriding tilde expansion with a function or custom built-in named ".sh.tilde".
+	 * The item to expand ("~" or "~name") is passed as the one argument to that command.
+	 * If .sh.tilde writes anything to standard output, this replaces the default expansion.
+	 * The result of the last .sh.tilde command run is left in the ${.sh.tilde} variable.
+	 */
+	if(!loopdetect && nv_search(".sh.tilde",shp->fun_tree,0))
 	{
-		beenhere = 1;
-		sh_addbuiltin(shtilde,sh_btilde,0);
-		nv_onattr(np,NV_EXPORT);
+		Namval_t	*np;			/* name-value pointer for .sh.tilde variable */
+		int		e;			/* exit status of the command */
+		/* Prepare and run the command: .sh.tilde=${ '.sh.tilde' '~TILDESTRING'; } */
+		stakfreeze(1);				/* terminate current stack object with null byte and freeze */
+		stakputs(".sh.tilde=${ '.sh.tilde' ");	/* quote command name to avoid alias expansion */
+		sh_fmtq(&stakp[offset]);		/* append shell-quoted tilde string to stack */
+		stakseek(staktell()-1);			/* abandon terminating null byte */
+		stakputs("; }");
+		loopdetect++;
+		e = sh_trap(stakfreeze(1),0);		/* null-terminate command on stack and run it */
+		loopdetect--;
+		/* Check if command succeeded and ${.sh.tilde} contains a result */
+		if(e==0)
+		{
+			np = nv_open(".sh.tilde",shp->var_tree,NV_VARNAME|NV_NOADD);
+			if(np)
+			{
+				cp = nv_getval(np);
+				if(cp[0]=='\0')		/* do not use empty result */
+					cp = NIL(char*);
+			}
+		}
+		/* Restore the stack to the state on function entry */
+		stakset(stakp,curoff);
 	}
-	av[0] = ".sh.tilde";
-	av[1] = &ptr[offset];
-	av[2] = 0;
-	iop = sftmp((IOBSIZE>PATH_MAX?IOBSIZE:PATH_MAX)+1);
-	sfset(iop,SF_READ,0);
-	sfstdout = iop;
-	if(np)
-		sh_fun(np, (Namval_t*)0, av);
-	else
-		sh_btilde(2, av, &shp->bltindata);
-	sfstdout = save;
-	stkset(shp->stk,ptr, offset);
-	sfseek(iop,(Sfoff_t)0,SEEK_SET);
-	sfset(iop,SF_READ,1);
-	if(ptr = sfreserve(iop, SF_UNBOUND, -1))
+	/*
+	 * Perform default tilde expansion if .sh.tilde didn't provide an expansion.
+	 * Either way, write the results to the stack.
+	 */
+	stakputc(0);
+	if(!cp)
+		cp = sh_tilde(shp,&stakp[offset]);
+	if(cp)
 	{
-		Sfoff_t n = sfvalue(iop);
-		while(ptr[n-1]=='\n')
-			n--;
-		if(n==1 && fcpeek(0)=='/' && ptr[n-1])
-			n--;
-		if(n)
-			sfwrite(shp->stk,ptr,n);
+		if(cp[0]=='/' && !cp[1] && fcpeek(0)=='/')
+			cp[0]='\0';		/* for ~ == "/", avoid ~/foo == "//foo" */
+		stakseek(offset);
+		stakputs(cp);
 	}
 	else
-		sfputr(shp->stk,av[1],0);
-	sfclose(iop);
+		stakseek(curoff);
 }
 
 /*

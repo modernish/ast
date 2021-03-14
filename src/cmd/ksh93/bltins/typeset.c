@@ -1359,7 +1359,7 @@ static int print_namval(Sfio_t *file,register Namval_t *np,register int flag, st
 		return(0);
 	if(nv_isattr(np,NV_NOPRINT|NV_INTEGER)==NV_NOPRINT)
 	{
-		if(is_abuiltin(np) && strcmp(np->nvname,".sh.tilde"))
+		if(is_abuiltin(np))
 			sfputr(file,nv_name(np),'\n');
 		return(0);
 	}
