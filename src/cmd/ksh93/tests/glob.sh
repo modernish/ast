@@ -57,7 +57,7 @@ function test_glob
 		fi
 	fi
 	if	[[ $got != "$expected" ]]
-	then	'err_exit' $lineno "glob${ [[ -o globstar ]] && print star; } -- expected '$expected', got '$got'"
+	then	err_exit $lineno "glob${ [[ -o globstar ]] && print star; } -- expected '$expected', got '$got'"
 	fi
 }
 alias test_glob='test_glob $LINENO'
@@ -73,7 +73,7 @@ function test_case
 		esac
 	"
 	if	[[ $got != "$expected" ]]
-	then	'err_exit' $lineno "case $subject in $pattern) -- expected '$expected', got '$got'"
+	then	err_exit $lineno "case $subject in $pattern) -- expected '$expected', got '$got'"
 	fi
 }
 alias test_case='test_case $LINENO'
@@ -302,7 +302,7 @@ function test_sub
 	x='${subject'$2'}'
 	eval g=$x
 	if	[[ "$g" != "$3" ]]
-	then	'err_exit' $1 subject="'$subject' $x failed, expected '$3', got '$g'"
+	then	err_exit $1 subject="'$subject' $x failed, expected '$3', got '$g'"
 	fi
 }
 alias test_sub='test_sub $LINENO'

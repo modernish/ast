@@ -963,7 +963,7 @@ EOF
 # Builtins should handle unrecognized options correctly
 while IFS= read -r bltin <&3
 do	case $bltin in
-	echo | test | true | false | \[ | : | getconf | */getconf | uname | */uname | login | newgrp)
+	echo | test | true | false | \[ | : | getconf | */getconf | uname | */uname | Dt* | X* | login | newgrp )
 		continue ;;
 	/*/*)	expect="Usage: ${bltin##*/} "
 		actual=$({ PATH=${bltin%/*}; "${bltin##*/}" --this-option-does-not-exist; } 2>&1) ;;
