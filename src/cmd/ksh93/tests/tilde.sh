@@ -19,6 +19,7 @@
 ########################################################################
 
 . "${SHTESTS_COMMON:-${0%/*}/_common}"
+saveHOME=$HOME
 
 if	$SHELL -c '[[ ~root == /* ]]'
 then	x=$(print -r -- ~root)
@@ -88,6 +89,23 @@ nl=$'\n'
 [[ $($tmp/tilde foo) == "$PWD$nl$PWD" ]] 2> /dev/null  || err_exit 'tilde fails inside a script run by name'
 
 # ======
+# Tilde expansion should not change the value of $HOME.
+
+HOME=/
+: ~/foo
+[[ $HOME == / ]] || err_exit "tilde expansion changes \$HOME (value: $(printf %q "$HOME"))"
+
+# ======
+# After unsetting HOME, ~ should expand to the current user's OS-configured home directory.
+
+unset HOME
+exp=~${ id -un; }
+got=~
+[[ $got == "$exp" ]] || err_exit 'expansion of bare tilde breaks after unsetting HOME' \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
+# Tilde expansion discipline function tests
 
 .sh.tilde()
 {
@@ -98,11 +116,7 @@ nl=$'\n'
 	esac
 }
 
-HOME=/
-: ~/foo
-[[ $HOME == / ]] || err_exit "tilde expansion changes \$HOME (value: $(printf %q "$HOME"))"
-
-HOME=/dev/null
+HOME=$saveHOME
 [[ ~/foo == "$HOME/foo" ]] || err_exit '.sh.tilde() prevents regular tilde expansion if uncaught'
 
 touch "$tmp/foo.$$"
