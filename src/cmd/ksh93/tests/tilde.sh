@@ -87,4 +87,39 @@ chmod +x $tmp/tilde
 nl=$'\n'
 [[ $($tmp/tilde foo) == "$PWD$nl$PWD" ]] 2> /dev/null  || err_exit 'tilde fails inside a script run by name'
 
+# ======
+
+.sh.tilde()
+{
+	case $1 in
+	'~tmp')	print -r "$tmp" ;;
+	'~INC')	print -r $((++i)) ;;
+	'~spc') print -r $'one\ttwo  three\n\tfour' ;;
+	esac
+}
+
+HOME=/
+: ~/foo
+[[ $HOME == / ]] || err_exit "tilde expansion changes \$HOME (value: $(printf %q "$HOME"))"
+
+HOME=/dev/null
+[[ ~/foo == "$HOME/foo" ]] || err_exit '.sh.tilde() prevents regular tilde expansion if uncaught'
+
+touch "$tmp/foo.$$"
+[[ -f ~tmp/foo.$$ ]] || err_exit '.sh.tilde() not working'
+[[ ${.sh.tilde} == "$tmp" ]] || err_exit "result not left in \${.sh.tilde} (value: $(printf %q "${.sh.tilde-none}"))"
+
+i=0
+set -- ~INC ~INC ~INC ~INC ~INC
+got=$#,$1,$2,$3,$4,$5
+exp=5,1,2,3,4,5
+[[ $got == "$exp" ]] || err_exit "tilde counter: expected $(printf %q "$exp"), got $(printf %q "$got")"
+((i==5)) || err_exit "tilde counter: $i != 5"
+
+set -- ~spc ~spc ~spc
+got=$#,$1,$2,$3
+exp=$'3,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour'
+[[ $got == "$exp" ]] || err_exit "quoting of whitespace: expected $(printf %q "$exp"), got $(printf %q "$got")"
+
+# ======
 exit $((Errors<125?Errors:125))

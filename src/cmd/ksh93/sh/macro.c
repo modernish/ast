@@ -2670,10 +2670,10 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 		cp = sh_tilde(shp,&stakp[offset]);
 	if(cp)
 	{
-		if(cp[0]=='/' && !cp[1] && fcpeek(0)=='/')
-			cp[0]='\0';		/* for ~ == "/", avoid ~/foo == "//foo" */
 		stakseek(offset);
-		stakputs(cp);
+		/* For ~ == "/", avoid ~/foo == "//foo" */
+		if(!(cp[0]=='/' && !cp[1] && fcpeek(0)=='/'))
+			stakputs(cp);
 	}
 	else
 		stakseek(curoff);
