@@ -712,7 +712,6 @@ r \tdo something\r\n$
 tst $LINENO <<"!"
 L value of $? after the shell uses a variable with a discipline function
 
-d 15
 w PS1.get() { true; }; PS2.get() { true; }; false
 u PS1.get\(\) \{ true; \}; PS2.get\(\) \{ true; \}; false
 w echo "Exit status is: $?"
