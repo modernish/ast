@@ -2692,7 +2692,7 @@ static char *sh_tilde(Shell_t *shp,register const char *string)
 {
 	register char		*cp;
 	register int		c;
-	register struct passwd	*pw;
+	register struct passwd	*pw = NIL(struct passwd*);
 	register Namval_t *np=0;
 	unsigned int save;
 	static Dt_t *logins_tree;
@@ -2700,9 +2700,13 @@ static char *sh_tilde(Shell_t *shp,register const char *string)
 		return(NIL(char*));
 	if((c = *string)==0)
 	{
-		if(!(cp=nv_getval(sh_scoped(shp,HOME))))
-			cp = getlogin();
-		return(cp);
+		static char	*username;
+		if(cp = nv_getval(sh_scoped(shp, HOME)))
+			return(cp);
+		/* Fallback for unset HOME: get username and treat ~ like ~username */
+		if(!username && !((pw = getpwuid(getuid())) && (username = sh_strdup(pw->pw_name))))
+			return(NIL(char*));
+		string = username;
 	}
 	if((c=='-' || c=='+') && string[1]==0)
 	{
@@ -2741,7 +2745,7 @@ static char *sh_tilde(Shell_t *shp,register const char *string)
 #endif /* _WINIX */
 	if(logins_tree && (np=nv_search(string,logins_tree,0)))
 		return(nv_getval(np));
-	if(!(pw = getpwnam(string)))
+	if(!pw && !(pw = getpwnam(string)))
 		return(NIL(char*));
 #if _WINIX
 skip:

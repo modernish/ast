@@ -104,6 +104,9 @@ For more details, see the NEWS file and for complete details, see the git log.
 	For example, the following no longer produces an unexpected error:
 	    $ ksh -o nounset -c 'float n; [[ -v n ]] && echo $n'
 
+20.	If the HOME variable is unset, the bare tilde ~ now expands to the
+	current user's system home directory instead of merely the username.
+
 ____________________________________________________________________________
 
 		KSH-93 VS. KSH-88

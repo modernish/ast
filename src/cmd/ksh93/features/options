@@ -1,6 +1,6 @@
 # SHOPT_* option probe
 
-tst	cross{
+tst	note{ SHOPT_* option probe }end cross{
 	: check for shell magic #!
 	cat > "$EXECROOT/file$$" <<!
 	#! /usr/bin/env true
@@ -24,6 +24,8 @@ tst	cross{
 		esac
 	}
 	
+	# if /dev/fd/n exposes file descriptor n, make SHOPT_DEVFD use this for
+	# process substitutions instead of FIFOs, which are not as secure
 	ls /dev/fd/9 9<&0 >/dev/null 2>&1
 	option DEVFD $?
 	case  `echo a | tr a '\012' | wc -l` in
@@ -34,10 +36,17 @@ tst	cross{
 	#test -x /bin/pfexec -o -x /usr/bin/pfexec
 	#option PFSH $?
 
-	/bin/test ! -l . 2> /dev/null
+	# if external 'test' supports lowercase -l as equivalent to -L, enable
+	# SHOPT_TEST_L so ksh supports it for compatibility with local scripts
+	ln -s /dev/null "$EXECROOT/link$$"
+	env test -l "$EXECROOT/link$$" 2>/dev/null && env test ! -l . 2>/dev/null
 	option TEST_L $?
-	test -f /etc/ksh.kshrc -o -f /etc/bash.bashrc &&
-	option SYSRC 0
+	rm -f "$EXECROOT/link$$"
+
+	# if one of these exists, make SHOPT_SYSRC load /etc/ksh.kshrc by default
+	if	test -f /etc/ksh.kshrc || test -f /etc/bash.bashrc
+	then	option SYSRC 0
+	fi
 }end
 
 cat{

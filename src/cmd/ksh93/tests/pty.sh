@@ -391,7 +391,7 @@ r history
 fi
 
 # err_exit #
-((SHOPT_VSH)) && tst $LINENO <<"!"
+((SHOPT_VSH)) && whence -q vi && tst $LINENO <<"!"
 L POSIX sh 137(C)
 
 # If the User Portability Utilities Option is supported and shell

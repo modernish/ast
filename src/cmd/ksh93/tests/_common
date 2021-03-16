@@ -19,7 +19,12 @@ _message()
 {
 	print -r $'\t'"${Command}[$1]: ${@:2}" >&2
 }
-alias err_exit='_message "$((Errors++,LINENO))"'   # inaccurate err_exit name kept for historical integrity :)
+function err_exit
+{
+	_message "$@"
+	let Errors+=1
+}
+alias err_exit='err_exit $LINENO'  # inaccurate err_exit name kept for historical integrity :)
 alias warning='_message "$LINENO" "warning:"'
 
 Command=${0##*/}

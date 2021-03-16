@@ -87,4 +87,12 @@ chmod +x $tmp/tilde
 nl=$'\n'
 [[ $($tmp/tilde foo) == "$PWD$nl$PWD" ]] 2> /dev/null  || err_exit 'tilde fails inside a script run by name'
 
+# ======
+# After unsetting HOME, ~ should expand to the current user's OS-configured home directory.
+unset HOME
+got=~
+[[ $got == /* && -d $got ]] || err_exit "expansion of bare tilde breaks after unsetting HOME (value: $(printf %q "$got"))"
+HOME=$tmp
+
+# ======
 exit $((Errors<125?Errors:125))

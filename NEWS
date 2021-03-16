@@ -3,7 +3,10 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
-2021-03-14:
+2021-03-15:
+
+- If the HOME variable is unset, the bare tilde ~ now expands to the current
+  user's system-configured home directory instead of merely the username.
 
 - Tighten up potential invalid typeset attribute combos when more than
   one numeric type has been requested. In particular, -F and -i are no
