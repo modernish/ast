@@ -708,5 +708,18 @@ r ^:test-2: fc -lN1\r\n$
 r \tdo something\r\n$
 !
 
+# err_exit #
+tst $LINENO <<"!"
+L value of $? after tilde expansion
+
+d 15
+w HOME=/tmp
+w false ~\t
+u HOME=/tmp
+u false /tmp
+w echo "Exit status is: $?"
+u Exit status is: 1
+!
+
 # ======
 exit $((Errors<125?Errors:125))
