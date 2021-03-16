@@ -40,8 +40,6 @@ Darwin | FreeBSD | Linux )
 	exit 0 ;;
 esac
 
-integer lineno=1
-
 # On some systems, the stty command does not appear to work correctly on a pty pseudoterminal.
 # To avoid false regressions, we have to set 'erase' and 'kill' on the real terminal.
 if	test -t 0 2>/dev/null </dev/tty && stty_restore=$(stty -g </dev/tty)
@@ -81,7 +79,7 @@ function tst
 	do	if	[[ $text == *debug* ]]
 		then	print -u2 -r -- "$text"
 		else	offset=${text/*: line +([[:digit:]]):*/\1}
-			err_exit "${text/: line $offset:/: line $(( lineno + offset)):}"
+			err\_exit "$lineno" "${text/: line $offset:/: line $(( lineno + offset)):}"
 		fi
 	done
 }
@@ -92,7 +90,7 @@ unset EDITOR
 export VISUAL=vi PS1=':test-!: ' PS2='> ' PS4=': ' ENV=/./dev/null EXINIT= HISTFILE= TERM=dumb
 
 if	! pty $bintrue < /dev/null
-then	err_exit pty command hangs on $bintrue -- tests skipped
+then	warning "pty command hangs on $bintrue -- tests skipped"
 	exit 0
 fi
 # err_exit #
@@ -709,16 +707,22 @@ r \tdo something\r\n$
 !
 
 # err_exit #
-tst $LINENO <<"!"
-L value of $? after tilde expansion
+((SHOPT_VSH || SHOPT_ESH)) && tst $LINENO <<"!"
+L value of $? after tilde expansion in tab completion
 
-d 15
+# Make sure that a .sh.tilde.set discipline function
+# cannot influence the exit status.
+
+w [[ -o ?vi ]] || set -o emacs
+w .sh.tilde.set() { true; }
 w HOME=/tmp
 w false ~\t
-u HOME=/tmp
 u false /tmp
 w echo "Exit status is: $?"
 u Exit status is: 1
+w (exit 42)
+w echo $? ~\t
+u 42 /tmp
 !
 
 # ======

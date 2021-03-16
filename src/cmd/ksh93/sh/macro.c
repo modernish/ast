@@ -2634,6 +2634,7 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 	if(!loopdetect && nv_search(".sh.tilde.set",shp->fun_tree,0))
 	{
 		Namval_t	*np;			/* node pointer for .sh.tilde variable */
+		int		savexit = shp->savexit;	/* save $? as tilde expansion can happen without running a command */
 		loopdetect++;
 		stakfreeze(1);				/* terminate current stack object with null byte and freeze */
 		stakputs(".sh.tilde=");
@@ -2648,6 +2649,7 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 		}
 		stakset(stakp,curoff);			/* restore stack to state on function entry */
 		loopdetect--;
+		shp->savexit = savexit;
 	}
 	/*
 	 * Perform default tilde expansion unless overridden.
