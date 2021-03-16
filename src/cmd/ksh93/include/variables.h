@@ -91,6 +91,7 @@
 #define SH_MATHNOD	(shgd->bltin_nodes+61)
 #define SH_JOBPOOL	(shgd->bltin_nodes+62)
 #define SH_PIDNOD	(shgd->bltin_nodes+63)
-#define SHLVL		(shgd->bltin_nodes+64)
+#define SH_TILDENOD	(shgd->bltin_nodes+64)
+#define SHLVL		(shgd->bltin_nodes+65)
 
 #endif /* SH_VALNOD */

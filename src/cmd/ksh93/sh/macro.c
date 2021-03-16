@@ -2627,29 +2627,20 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 	char		*cp = NIL(char*);		/* character pointer for tilde expansion result */
 	char		*stakp = stakptr(0);		/* current stack object (&stakp[offset] is tilde string) */
 	int		curoff = staktell();		/* current offset of current stack object */
-	static char	loopdetect;
+	static char	block;				/* for disallowing tilde expansion in .get/.set to change ${.sh.tilde} */
 	/*
-	 * Allow overriding tilde expansion with a .sh.tilde.set discipline function.
+	 * Allow overriding tilde expansion with a .sh.tilde.set or .get discipline function.
 	 */
-	if(!loopdetect && nv_search(".sh.tilde.set",shp->fun_tree,0))
+	if(!block && SH_TILDENOD->nvfun && SH_TILDENOD->nvfun->disc)
 	{
-		Namval_t	*np;			/* node pointer for .sh.tilde variable */
-		int		savexit = shp->savexit;	/* save $? as tilde expansion can happen without running a command */
-		loopdetect++;
-		stakfreeze(1);				/* terminate current stack object with null byte and freeze */
-		stakputs(".sh.tilde=");
-		sh_fmtq(&stakp[offset]);		/* append shell-quoted, null-terminated tilde string to stack */
-		sh_trap(stakfreeze(0),0);		/* execute the assignment */
-		np = nv_open(".sh.tilde",shp->var_tree,NV_VARNAME|NV_NOADD);
-		if(np)
-		{
-			cp = nv_getval(np);
-			if(cp[0]=='\0' || cp[0]=='~')
-				cp = NIL(char*);	/* do not use empty or unexpanded result */
-		}
+		stakfreeze(1);				/* terminate current stack object to avoid data corruption */
+		block++;
+		nv_putval(SH_TILDENOD, &stakp[offset], 0);
+		cp = nv_getval(SH_TILDENOD);
+		block--;
+		if(cp[0]=='\0' || cp[0]=='~')
+			cp = NIL(char*);		/* do not use empty or unexpanded result */
 		stakset(stakp,curoff);			/* restore stack to state on function entry */
-		loopdetect--;
-		shp->savexit = savexit;
 	}
 	/*
 	 * Perform default tilde expansion unless overridden.
@@ -2661,9 +2652,8 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 	if(cp)
 	{
 		stakseek(offset);
-		/* For ~ == "/", avoid ~/foo == "//foo" */
 		if(!(cp[0]=='/' && !cp[1] && fcpeek(0)=='/'))
-			stakputs(cp);
+			stakputs(cp);			/* for ~ == /, avoid ~/foo -> //foo */
 	}
 	else
 		stakseek(curoff);

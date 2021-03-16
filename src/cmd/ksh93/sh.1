@@ -847,14 +847,16 @@ also terminates a
 login name.
 .PP
 The tilde expansion mechanism may be extended or modified
-by defining a shell function called
+by defining a discipline function called either
 .B .sh.tilde.set
+or
+.B .sh.tilde.get
 (see
 .I Functions
 and
 .I Discipline Functions
 below).
-If a function by that name exists,
+If either function exists,
 then upon encountering a tilde word to expand,
 .if \nZ=0 \{\
 .B sh
@@ -865,19 +867,23 @@ then upon encountering a tilde word to expand,
 .if \nZ=2 \{\
 .B ksh93
 .\}
-calls that function with
+calls that function with the tilde word assigned to either
 .B .sh.value
-set to that tilde word.
+(for
+.BR .set )
+or
+.B .sh.tilde
+(for
+.BR .get ).
 Performing tilde expansion within the function will not recursively
 call the function, but default tilde expansion remains active,
 so literal tildes should still be quoted where required.
-If the function assigns a replacement string to
-.B .sh.value
-that is non-empty and does not start with
+Either function may assign a replacement string to
+.BR .sh.value .
+If that string is non-empty and does not start with
 .BR \(ap ,
-then that string,
-with any characters with a special meaning to the shell quoted,
-replaces the default tilde expansion.
+then it replaces the default tilde expansion,
+with any characters with a special meaning to the shell quoted.
 Otherwise, the function has no effect on the expansion.
 .SS Command Substitution.
 The standard output from a command list enclosed in

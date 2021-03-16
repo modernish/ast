@@ -5,17 +5,17 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-03-16:
 
+- Tilde expansion can now be extended or modified by defining a .sh.tilde.get
+  or .sh.tilde.set discipline function. This replaces a 2004 undocumented
+  attempt to add this functionality via a .sh.tilde built-in, which never
+  worked and crashed the shell. See the manual for details on the new method.
+
 - Fixed a bug in interactive shells: if a variable used by the shell called
   a discipline function (such as PS1.get() or COLUMNS.set()), the value of $?
   was set to the exit status of the discipline function instead of the last
   command run.
 
 2021-03-15:
-
-- Tidle expansion can now be extended or modified by defining a discipline
-  function called '.sh.tilde.set'. This replaces a 2004 attempt to add this
-  functionality via a '.sh.tilde' function, which never worked and crashed
-  the shell. See the manual for details on the new method.
 
 - If the HOME variable is unset, the bare tilde ~ now expands to the current
   user's system-configured home directory instead of merely the username.
