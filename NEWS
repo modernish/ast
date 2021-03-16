@@ -5,9 +5,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-03-16:
 
-- Fixed a bug in interactive shells: if the $PS1 prompt used a discipline
-  function (such as PS1.get()), the value of $? was set to the exit status
-  of PS1.get() instead of the last command run.
+- Fixed a bug in interactive shells: if a variable used by the shell called
+  a discipline function (such as PS1.get() or COLUMNS.set()), the value of $?
+  was set to the exit status of the discipline function instead of the last
+  command run.
 
 2021-03-15:
 

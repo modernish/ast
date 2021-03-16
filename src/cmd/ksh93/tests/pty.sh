@@ -710,13 +710,19 @@ r \tdo something\r\n$
 
 # err_exit #
 tst $LINENO <<"!"
-L value of $? after PS1.get()
+L value of $? after the shell uses a variable with a discipline function
 
 d 15
-w PS1.get() {; true; }; false
-u PS1.get\(\) \{; true; \}; false
+w PS1.get() { true; }; false
+u PS1.get\(\) \{ true; \}; false
 w echo "Exit status is: $?"
 u Exit status is: 1
+w LINES.set() { return 13; }
+u LINES.set\(\) \{ return 13; \}
+w true
+u true
+w echo "Exit status is: $?"
+u Exit status is: 0
 !
 
 # ======

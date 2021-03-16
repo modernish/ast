@@ -2094,7 +2094,6 @@ static int	io_prompt(Shell_t *shp,Sfio_t *iop,register int flag)
 	sfflags = sfset(sfstderr,SF_SHARE|SF_PUBLIC|SF_READ,0);
 	if(!(shp->prompt=(char*)sfreserve(sfstderr,0,0)))
 		shp->prompt = "";
-	int savexit = shp->savexit;
 	switch(flag)
 	{
 		case 1:
@@ -2143,7 +2142,6 @@ static int	io_prompt(Shell_t *shp,Sfio_t *iop,register int flag)
 	if(cp)
 		sfputr(sfstderr,cp,-1);
 done:
-	shp->savexit = savexit;
 	if(*shp->prompt && (endprompt=(char*)sfreserve(sfstderr,0,0)))
 		*endprompt = 0;
 	if(was_ttywait_on)
