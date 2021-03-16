@@ -719,8 +719,6 @@ w echo "Exit status is: $?"
 u Exit status is: 1
 w LINES.set() { return 13; }
 u LINES.set\(\) \{ return 13; \}
-w true
-u true
 w echo "Exit status is: $?"
 u Exit status is: 0
 !
