@@ -257,6 +257,11 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 				else if (tdata.argnum==0)
 					tdata.argnum = NV_FLTSIZEZERO;
 				isfloat = 1;
+				if(shortint)
+				{
+					shortint = 0;
+					flag &= ~NV_INT16P;
+				}
 				if(n=='E')
 				{
 					flag &= ~NV_HEXFLOAT;
@@ -268,8 +273,9 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 					flag |= NV_HEXFLOAT;
 				}
 				else
-					/* n=='F' Remove possible collision with NV_UNSIGN/NV_HEXFLOAT */
-					flag &= ~NV_HEXFLOAT;
+					/* n=='F' Remove possible collision with NV_UNSIGN/NV_HEXFLOAT
+					   and allow it to not be covered up by -E */
+					flag &= ~(NV_HEXFLOAT|NV_EXPNOTE);
 				break;
 			case 'b':
 				flag |= NV_BINARY;
@@ -319,6 +325,11 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 			case 'i':
 				if(!opt_info.arg || (tdata.argnum = opt_info.num) <2 || tdata.argnum >64)
 					tdata.argnum = 10;
+				if(isfloat)
+				{
+					isfloat = 0;
+					flag &= ~(NV_HEXFLOAT|NV_EXPNOTE);
+				}
 				if(shortint)
 				{
 					flag &= ~NV_LONG;
@@ -354,11 +365,14 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 				break;
 #endif /*SHOPT_TYPEDEF*/
 			case 's':
-				shortint=1;
-				if(flag&NV_INTEGER)
+				if(!isfloat)
 				{
-					flag &= ~NV_LONG;
-					flag |= NV_INT16P;
+					shortint=1;
+					if(flag&NV_INTEGER)
+					{
+						flag &= ~NV_LONG;
+						flag |= NV_INT16P;
+					}
 				}
 				break;
 			case 't':

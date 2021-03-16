@@ -589,6 +589,7 @@ got=$(< $tmpfile)
 # ======
 # Combining -u with -F or -E caused an incorrect variable type
 # https://github.com/ksh93/ksh/pull/163
+# Allow the last numeric type to win out
 typeset -A expect=(
 	[uF]='typeset -F a=2.0000000000'
 	[Fu]='typeset -F a=2.0000000000'
@@ -596,6 +597,20 @@ typeset -A expect=(
 	[Ful]='typeset -l -F a=2.0000000000'
 	[Eu]='typeset -E a=2'
 	[Eul]='typeset -l -E a=2'
+	[EF]='typeset -F a=2.0000000000'
+	[XF]='typeset -F a=2.0000000000'
+	[FE]='typeset -E a=2'
+	[XE]='typeset -E a=2'
+	[FX12]='typeset -X 12 a=0x1.000000000000p+1'
+	[EX12]='typeset -X 12 a=0x1.000000000000p+1'
+	[Fi]='typeset -i a=2'
+	[Ei]='typeset -i a=2'
+	[Xi]='typeset -i a=2'
+	[iF]='typeset -F a=2.0000000000'
+	[iFs]='typeset -F a=2.0000000000'
+	[iE]='typeset -E a=2'
+	[iEs]='typeset -E a=2'
+	[iX12]='typeset -X 12 a=0x1.000000000000p+1'
 )
 for flag in "${!expect[@]}"
 do	unset a
@@ -611,6 +626,8 @@ do	unset a
 	fi
 done
 unset expect
+
+[[ $(typeset -iX12 -s a=2; typeset -p a) == 'typeset -X 12 a=0x1.000000000000p+1' ]] || err_exit "typeset -iX12 -s failed to become typeset -X 12 a=0x1.000000000000p+1."
 
 # ======
 # Bug introduced in 0e4c4d61: could not alter the size of an existing justified string attribute

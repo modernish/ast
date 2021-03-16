@@ -289,7 +289,7 @@ static void	assign(Namval_t *np,const char* val,int flags,Namfun_t *handle)
 		nq =  vp->disc[type=UNASSIGN];
 	if(nq && !isblocked(bp,type))
 	{
-		int bflag=0;
+		int bflag=0, savexit=sh.savexit;
 		block(bp,type);
 		if (type==APPEND && (bflag= !isblocked(bp,LOOKUPS)))
 			block(bp,LOOKUPS);
@@ -299,6 +299,7 @@ static void	assign(Namval_t *np,const char* val,int flags,Namfun_t *handle)
 			unblock(bp,LOOKUPS);
 		if(!vp->disc[type])
 			chktfree(np,vp);
+		sh.savexit = savexit;	/* avoid influencing $? */
 	}
 	if(nv_isarray(np))
 		np->nvalue.up = up;
@@ -381,6 +382,7 @@ static char*	lookup(Namval_t *np, int type, Sfdouble_t *dp,Namfun_t *handle)
 	union Value		*up = np->nvalue.up;
 	if(nq && !isblocked(bp,type))
 	{
+		int		savexit = sh.savexit;
 		node = *SH_VALNOD;
 		if(!nv_isnull(SH_VALNOD))
 		{
@@ -410,6 +412,7 @@ static char*	lookup(Namval_t *np, int type, Sfdouble_t *dp,Namfun_t *handle)
 			/* restore everything but the nvlink field */
 			memcpy(&SH_VALNOD->nvname,  &node.nvname, sizeof(node)-sizeof(node.nvlink));
 		}
+		sh.savexit = savexit;	/* avoid influencing $? */
 	}
 	if(nv_isarray(np))
 		np->nvalue.up = up;

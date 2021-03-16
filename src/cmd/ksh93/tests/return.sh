@@ -237,5 +237,8 @@ foo && err_exit "'exit' within 'for' with redirection does not preserve exit sta
 foo() ( false; { exit; } 2>&1 )
 foo && err_exit "'exit' within { block; } with redirection does not preserve exit status"
 
+foo() { false; (exit); }
+foo && err_exit "'exit' within subshell does not preserve exit status"
+
 # ======
 exit $((Errors<125?Errors:125))

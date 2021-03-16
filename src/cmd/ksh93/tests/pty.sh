@@ -398,6 +398,7 @@ L POSIX sh 137(C)
 # file. When the editor exits, the commands in the temporary file are
 # executed.
 
+d 15
 p :test-1:
 c echo hello\E
 s 400
@@ -704,6 +705,30 @@ r : syntax error: `do' unexpected\r\n$
 w fc -lN1
 r ^:test-2: fc -lN1\r\n$
 r \tdo something\r\n$
+!
+
+# err_exit #
+tst $LINENO <<"!"
+L value of $? after the shell uses a variable with a discipline function
+
+w PS1.get() { true; }; PS2.get() { true; }; false
+u PS1.get\(\) \{ true; \}; PS2.get\(\) \{ true; \}; false
+w echo "Exit status is: $?"
+u Exit status is: 1
+w LINES.set() { return 13; }
+u LINES.set\(\) \{ return 13; \}
+w echo "Exit status is: $?"
+u Exit status is: 0
+
+# It's worth noting that the test below will always fail in ksh93u+ and ksh2020,
+# even when $PS2 lacks a discipline function (see https://github.com/ksh93/ksh/issues/117).
+# After that bug was fixed the test below could still fail if PS2.get() existed.
+w false
+w (
+w exit
+w )
+w echo "Exit status is: $?"
+u Exit status is: 1
 !
 
 # err_exit #

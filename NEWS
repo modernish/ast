@@ -3,6 +3,13 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-03-16:
+
+- Fixed a bug in interactive shells: if a variable used by the shell called
+  a discipline function (such as PS1.get() or COLUMNS.set()), the value of $?
+  was set to the exit status of the discipline function instead of the last
+  command run.
+
 2021-03-15:
 
 - Tidle expansion can now be extended or modified by defining a discipline
@@ -12,6 +19,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - If the HOME variable is unset, the bare tilde ~ now expands to the current
   user's system-configured home directory instead of merely the username.
+
+- Tighten up potential invalid typeset attribute combos when more than
+  one numeric type has been requested. In particular, -F and -i are no
+  longer masked over by previously given float types.
 
 2021-03-13:
 
