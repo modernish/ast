@@ -708,5 +708,16 @@ r ^:test-2: fc -lN1\r\n$
 r \tdo something\r\n$
 !
 
+# err_exit #
+tst $LINENO <<"!"
+L value of $? after PS1.get
+
+d 15
+w PS1.get() {; true; }; false
+u PS1.get\(\) \{; true; \}; false
+w echo "Exit status is: $?"
+u Exit status is: 1
+!
+
 # ======
 exit $((Errors<125?Errors:125))
