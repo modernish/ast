@@ -710,7 +710,7 @@ r \tdo something\r\n$
 
 # err_exit #
 tst $LINENO <<"!"
-L value of $? after PS1.get
+L value of $? after PS1.get()
 
 d 15
 w PS1.get() {; true; }; false
