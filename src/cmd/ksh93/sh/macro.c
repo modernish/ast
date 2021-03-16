@@ -2627,43 +2627,31 @@ static void tilde_expand2(Shell_t *shp, register int offset)
 	char		*cp = NIL(char*);		/* character pointer for tilde expansion result */
 	char		*stakp = stakptr(0);		/* current stack object (&stakp[offset] is tilde string) */
 	int		curoff = staktell();		/* current offset of current stack object */
-	static char	loopdetect;			/* for avoiding infinite .sh.tilde function recursion */
+	static char	loopdetect;
 	/*
-	 * Allow overriding tilde expansion with a function or custom built-in named ".sh.tilde".
-	 * The item to expand ("~" or "~name") is passed as the one argument to that command.
-	 * If .sh.tilde writes anything to standard output, this replaces the default expansion.
-	 * The result of the last .sh.tilde command run is left in the ${.sh.tilde} variable.
+	 * Allow overriding tilde expansion with a .sh.tilde.set discipline function.
 	 */
-	if(!loopdetect && nv_search(".sh.tilde",shp->fun_tree,0))
+	if(!loopdetect && nv_search(".sh.tilde.set",shp->fun_tree,0))
 	{
-		Namval_t	*np;			/* name-value pointer for .sh.tilde variable */
-		int		e;			/* exit status of the command */
-		/* Prepare and run the command: .sh.tilde=${ '.sh.tilde' '~TILDESTRING'; } */
-		stakfreeze(1);				/* terminate current stack object with null byte and freeze */
-		stakputs(".sh.tilde=${ '.sh.tilde' ");	/* quote command name to avoid alias expansion */
-		sh_fmtq(&stakp[offset]);		/* append shell-quoted tilde string to stack */
-		stakseek(staktell()-1);			/* abandon terminating null byte */
-		stakputs("; }");
+		Namval_t	*np;			/* node pointer for .sh.tilde variable */
 		loopdetect++;
-		e = sh_trap(stakfreeze(1),0);		/* null-terminate command on stack and run it */
-		loopdetect--;
-		/* Check if command succeeded and ${.sh.tilde} contains a result */
-		if(e==0)
+		stakfreeze(1);				/* terminate current stack object with null byte and freeze */
+		stakputs(".sh.tilde=");
+		sh_fmtq(&stakp[offset]);		/* append shell-quoted, null-terminated tilde string to stack */
+		sh_trap(stakfreeze(0),0);		/* execute the assignment */
+		np = nv_open(".sh.tilde",shp->var_tree,NV_VARNAME|NV_NOADD);
+		if(np)
 		{
-			np = nv_open(".sh.tilde",shp->var_tree,NV_VARNAME|NV_NOADD);
-			if(np)
-			{
-				cp = nv_getval(np);
-				if(cp[0]=='\0')		/* do not use empty result */
-					cp = NIL(char*);
-			}
+			cp = nv_getval(np);
+			if(cp[0]=='\0' || cp[0]=='~')
+				cp = NIL(char*);	/* do not use empty or unexpanded result */
 		}
-		/* Restore the stack to the state on function entry */
-		stakset(stakp,curoff);
+		stakset(stakp,curoff);			/* restore stack to state on function entry */
+		loopdetect--;
 	}
 	/*
-	 * Perform default tilde expansion if .sh.tilde didn't provide an expansion.
-	 * Either way, write the results to the stack.
+	 * Perform default tilde expansion unless overridden.
+	 * Write the result to the stack, if any.
 	 */
 	stakputc(0);
 	if(!cp)

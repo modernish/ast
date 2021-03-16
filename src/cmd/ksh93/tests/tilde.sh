@@ -88,6 +88,14 @@ chmod +x $tmp/tilde
 nl=$'\n'
 [[ $($tmp/tilde foo) == "$PWD$nl$PWD" ]] 2> /dev/null  || err_exit 'tilde fails inside a script run by name'
 
+HOME=/
+: ~/foo
+[[ $HOME == / ]] || err_exit "tilde expansion changes \$HOME (value: $(printf %q "$HOME"))"
+unset HOME
+got=~
+[[ $got == /* && -d $got ]] || err_exit "expansion of bare tilde breaks after unsetting HOME (value: $(printf %q "$got"))"
+HOME=$tmp
+
 # ======
 # Tilde expansion should not change the value of $HOME.
 
@@ -103,37 +111,53 @@ exp=~${ id -un; }
 got=~
 [[ $got == "$exp" ]] || err_exit 'expansion of bare tilde breaks after unsetting HOME' \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+HOME=$saveHOME
 
 # ======
 # Tilde expansion discipline function tests
 
-.sh.tilde()
-{
-	case $1 in
-	'~tmp')	print -r "$tmp" ;;
-	'~INC')	print -r $((++i)) ;;
-	'~spc') print -r $'one\ttwo  three\n\tfour' ;;
-	esac
-}
+(
+	ulimit -t unlimited 2>/dev/null  # fork subshell to cope with a possible crash
 
-HOME=$saveHOME
-[[ ~/foo == "$HOME/foo" ]] || err_exit '.sh.tilde() prevents regular tilde expansion if uncaught'
+	.sh.tilde.set()
+	{
+		case ${.sh.value} in
+		'~tmp')	.sh.value=$tmp ;;
+		'~INC')	.sh.value=$((++i)) ;;
+		'~spc') .sh.value=$'one\ttwo  three\n\tfour' ;;
+		esac
+	}
 
-touch "$tmp/foo.$$"
-[[ -f ~tmp/foo.$$ ]] || err_exit '.sh.tilde() not working'
-[[ ${.sh.tilde} == "$tmp" ]] || err_exit "result not left in \${.sh.tilde} (value: $(printf %q "${.sh.tilde-none}"))"
+	got=~/foo
+	exp=$HOME/foo
+	[[ $got == "$exp" ]] || err_exit 'discipline: default tilde expansion:' \
+		"expected $(printf %q "$exp"), got $(printf %q "$got")"
 
-i=0
-set -- ~INC ~INC ~INC ~INC ~INC
-got=$#,$1,$2,$3,$4,$5
-exp=5,1,2,3,4,5
-[[ $got == "$exp" ]] || err_exit "tilde counter: expected $(printf %q "$exp"), got $(printf %q "$got")"
-((i==5)) || err_exit "tilde counter: $i != 5"
+	touch "$tmp/foo.$$"
+	[[ -f ~tmp/foo.$$ ]] || err_exit 'discipline: test file not found'
+	[[ ${.sh.tilde} == "$tmp" ]] || err_exit 'discipline: result left in ${.sh.tilde}:' \
+		"expected $(printf %q "$tmp"), got $(printf %q "${.sh.tilde}")"
 
-set -- ~spc ~spc ~spc
-got=$#,$1,$2,$3
-exp=$'3,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour'
-[[ $got == "$exp" ]] || err_exit "quoting of whitespace: expected $(printf %q "$exp"), got $(printf %q "$got")"
+	i=0
+	set -- ~INC ~INC ~INC ~INC ~INC
+	got=$#,$1,$2,$3,$4,$5
+	exp=5,1,2,3,4,5
+	[[ $got == "$exp" ]] || err_exit "discipline: counter: expected $(printf %q "$exp"), got $(printf %q "$got")"
+	((i==5)) || err_exit "discipline: counter: $i != 5"
+
+	set -- ~spc ~spc ~spc
+	got=$#,$1,$2,$3
+	exp=$'3,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour,one\ttwo  three\n\tfour'
+	[[ $got == "$exp" ]] || err_exit 'discipline: quoting of whitespace:' \
+		"expected $(printf %q "$exp"), got $(printf %q "$got")"
+
+	print "$Errors" >$tmp/Errors
+)
+if	((!(e = $?)))
+then	read Errors <$tmp/Errors
+else	err_exit '.sh.tilde discipline function crashes the shell' \
+		"(got status $e$( ((e>128)) && print -n / && kill -l "$e"))"
+fi
 
 # ======
 exit $((Errors<125?Errors:125))

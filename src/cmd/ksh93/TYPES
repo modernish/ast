@@ -17,7 +17,7 @@ To define a type, use
 where definition contains assignment commands, declaration commands,
 and function definitions.  A declaration command (for example typeset,
 readonly, and export), is a built-in that differs from other builtins in
-that tilde substitution is performed on arguments after an =, assignments
+that tilde expansion is performed on arguments after an =, assignments
 do not have to precede the command name, and field splitting and pathname
 expansion is not performed on the arguments.
 For example,

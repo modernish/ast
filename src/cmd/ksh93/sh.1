@@ -782,11 +782,11 @@ Preset aliases can be unset or redefined.
 .B "r=\(fmhist \-s\(fm"
 .PD
 .RE
-.SS Tilde Substitution.
+.SS Tilde Expansion.
 After alias substitution is performed, each word
 is checked to see if it begins with an unquoted
 .BR \(ap .
-For tilde substitution,
+For tilde expansion,
 .I word\^
 also refers to the
 .I word\^
@@ -810,7 +810,9 @@ by itself, or in front of a
 .BR / ,
 is replaced by
 .SM
-.BR $HOME .
+.B $HOME
+or, if that variable is not set,
+by the current user's home directory as configured in the operating system.
 A
 .B \(ap
 followed by a
@@ -827,9 +829,10 @@ respectively.
 .PP
 In addition,
 when expanding a
-.IR "variable assignment" ,
-.I tilde
-substitution is attempted when
+variable assignment (see
+.I Variable Assignments
+above),
+tilde expansion is attempted when
 the value of the assignment
 begins with a
 .BR \(ap ,
@@ -842,6 +845,40 @@ The
 also terminates a
 .B \(ap
 login name.
+.PP
+The tilde expansion mechanism may be extended or modified
+by defining a shell function called
+.B .sh.tilde.set
+(see
+.I Functions
+and
+.I Discipline Functions
+below).
+If a function by that name exists,
+then upon encountering a tilde word to expand,
+.if \nZ=0 \{\
+.B sh
+.\}
+.if \nZ=1 \{\
+.B ksh
+.\}
+.if \nZ=2 \{\
+.B ksh93
+.\}
+calls that function with
+.B .sh.value
+set to that tilde word.
+Performing tilde expansion within the function will not recursively
+call the function, but default tilde expansion remains active,
+so literal tildes should still be quoted where required.
+If the function assigns a replacement string to
+.B .sh.value
+that is non-empty and does not start with
+.BR \(ap ,
+then that string,
+with any characters with a special meaning to the shell quoted,
+replaces the default tilde expansion.
+Otherwise, the function has no effect on the expansion.
 .SS Command Substitution.
 The standard output from a command list enclosed in
 parentheses preceded by a dollar sign (
@@ -5549,7 +5586,7 @@ Commands that are preceded by a \(dd symbol below are
 Any following words
 that are in the format of a variable assignment
 are expanded with the same rules as a variable assignment.
-This means that tilde substitution is performed after the
+This means that tilde expansion is performed after the
 .B =
 sign, array assignments of the form
 \f2varname\^\fP\f3=(\fP\f2assign_list\^\fP\f3)\fP
