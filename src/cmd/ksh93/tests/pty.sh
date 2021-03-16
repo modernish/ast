@@ -713,14 +713,24 @@ tst $LINENO <<"!"
 L value of $? after the shell uses a variable with a discipline function
 
 d 15
-w PS1.get() { true; }; false
-u PS1.get\(\) \{ true; \}; false
+w PS1.get() { true; }; PS2.get() { true; }; false
+u PS1.get\(\) \{ true; \}; PS2.get\(\) \{ true; \}; false
 w echo "Exit status is: $?"
 u Exit status is: 1
 w LINES.set() { return 13; }
 u LINES.set\(\) \{ return 13; \}
 w echo "Exit status is: $?"
 u Exit status is: 0
+
+# It's worth noting that the test below will always fail in ksh93u+ and ksh2020,
+# even when $PS2 lacks a discipline function (see https://github.com/ksh93/ksh/issues/117).
+# After that bug was fixed the test below could still fail if PS2.get() existed.
+w false
+w (
+w exit
+w )
+w echo "Exit status is: $?"
+u Exit status is: 1
 !
 
 # ======
