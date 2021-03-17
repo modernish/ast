@@ -794,10 +794,12 @@ portion of parameter expansion
 (see
 .I "Parameter Expansion\^"
 below).
-If it does, then the word up to a
+If a
+.I word\^
+is preceded by a tilde, then it is checked up to a
 .B /
-is checked to see if it matches a user name in the
-password database (See
+to see if it matches a user name in the
+password database (see
 .IR getpwname (3).)
 If a match is found, the
 .B \(ap
@@ -810,19 +812,22 @@ by itself, or in front of a
 .BR / ,
 is replaced by
 .SM
-.B $HOME
-or, if that variable is not set,
-by the current user's home directory as configured in the operating system.
+.BR $HOME ,
+unless the
+.B HOME
+variable is unset, in which case
+the current user's home directory as configured in the operating system
+is used.
 A
 .B \(ap
 followed by a
 .B +
 or
 .B \-
-is replaced by the value of
+is replaced by
 .B
 .SM $PWD
-and
+or
 .B
 .SM $OLDPWD
 respectively.
@@ -840,14 +845,13 @@ and when a
 .B \(ap
 appears after a
 .BR : .
-The
+A
 .B :
-also terminates a
-.B \(ap
-login name.
+also terminates a user name following a
+.BR \(ap .
 .PP
 The tilde expansion mechanism may be extended or modified
-by defining a discipline function called either
+by defining one of the discipline functions
 .B .sh.tilde.set
 or
 .B .sh.tilde.get
@@ -856,35 +860,26 @@ or
 and
 .I Discipline Functions
 below).
-If either function exists,
+If either exists,
 then upon encountering a tilde word to expand,
-.if \nZ=0 \{\
-.B sh
-.\}
-.if \nZ=1 \{\
-.B ksh
-.\}
-.if \nZ=2 \{\
-.B ksh93
-.\}
-calls that function with the tilde word assigned to either
+that function is called with the tilde word assigned to either
 .B .sh.value
-(for
-.BR .set )
-or
+(for the
+.B .sh.tilde.set
+function) or
 .B .sh.tilde
-(for
-.BR .get ).
-Performing tilde expansion within the function will not recursively
-call the function, but default tilde expansion remains active,
+(for the
+.B .sh.tilde.get
+function).
+Performing tilde expansion within a discipline function will not recursively
+call that function, but default tilde expansion remains active,
 so literal tildes should still be quoted where required.
 Either function may assign a replacement string to
 .BR .sh.value .
-If that string is non-empty and does not start with
+If this value is non-empty and does not start with a
 .BR \(ap ,
-then it replaces the default tilde expansion,
-with any characters with a special meaning to the shell quoted.
-Otherwise, the function has no effect on the expansion.
+it replaces the default tilde expansion when the function terminates.
+Otherwise, the tilde expansion is left unchanged.
 .SS Command Substitution.
 The standard output from a command list enclosed in
 parentheses preceded by a dollar sign (
