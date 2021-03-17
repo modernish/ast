@@ -733,5 +733,22 @@ w echo "Exit status is: $?"
 u Exit status is: 1
 !
 
+((SHOPT_ESH)) && ((SHOPT_VSH)) && tst $LINENO <<"!"
+L crash after switching from emacs to vi mode
+
+# In ksh93r using the vi 'r' command after switching from emacs mode could
+# trigger a memory fault: https://bugzilla.opensuse.org/show_bug.cgi?id=179917
+
+d 15
+w exec $SHELL -o emacs
+u emacs
+w set -o vi
+u set -o vi
+c \Erri
+w echo Success
+u echo
+r ^Success\r?\n$
+!
+
 # ======
 exit $((Errors<125?Errors:125))
