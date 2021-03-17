@@ -93,6 +93,7 @@ if	! pty $bintrue < /dev/null
 then	warning "pty command hangs on $bintrue -- tests skipped"
 	exit 0
 fi
+
 # err_exit #
 tst $LINENO <<"!"
 L POSIX sh 026(C)
@@ -729,6 +730,27 @@ w exit
 w )
 w echo "Exit status is: $?"
 u Exit status is: 1
+!
+
+# err_exit #
+((SHOPT_ESH)) && ((SHOPT_VSH)) && tst $LINENO <<"!"
+L crash after switching from emacs to vi mode
+
+# In ksh93r using the vi 'r' command after switching from emacs mode could
+# trigger a memory fault: https://bugzilla.opensuse.org/show_bug.cgi?id=179917
+
+d 15
+p :test-1:
+w exec "$SHELL" -o emacs
+r ^:test-1: exec "\$SHELL" -o emacs\r\n$
+p :test-1:
+w set -o vi
+r ^:test-1: set -o vi\r\n$
+p :test-2:
+c \Erri
+w echo Success
+r ^:test-2: echo Success\r\n$
+r ^Success\r\n$
 !
 
 # err_exit #
