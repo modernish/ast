@@ -173,7 +173,7 @@ unit [ command [ arg ... ] ]
             the next explicit \bSET\b.]
         [+TALLY?Called by \bregress\b display the \bTEST\b results.]
         [+TEST \b\anumber\a [ \adescription\a ... ]]?Define a new test
-            group labelled \anumber\a with optional \adescripion\a.]
+            group labelled \anumber\a with optional \adescription\a.]
         [+TITLE \b[+]] \atext\a?Set the \bTEST\b output title to
             \atext\a. If \b+\b is specified then \atext\a is appended to
             the default title. The default title is the test file base

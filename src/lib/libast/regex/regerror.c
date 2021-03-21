@@ -44,7 +44,7 @@ static const char*	reg_error[] =
 	/* REG_EBRACE	*/	"\\{...\\} or {...} imbalance",
 	/* REG_BADBR	*/	"invalid {...} digits",
 	/* REG_ERANGE	*/	"invalid [...] range endpoint",
-	/* REG_ESPACE	*/	"out of space",
+	/* REG_ESPACE	*/	"out of memory",
 	/* REG_BADRPT	*/	"unary op not preceded by re",
 	/* REG_ENULL	*/	"empty subexpr in pattern",
 	/* REG_ECOUNT	*/	"re component count overflow",

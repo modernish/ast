@@ -213,7 +213,7 @@ b_paste(int argc, char** argv, Shbltin_t* context)
 		delim[1] = 0;
 	}
 	if (!(delim = strdup(delim)))
-		error(ERROR_system(1), "out of space");
+		error(ERROR_system(1), "out of memory");
 	dlen = dsiz = stresc(delim);
 	mp = 0;
 	if (mbwide())
@@ -231,7 +231,7 @@ b_paste(int argc, char** argv, Shbltin_t* context)
 			if (!(mp = newof(0, Delim_t, dlen, 0)))
 			{
 				free(delim);
-				error(ERROR_system(1), "out of space");
+				error(ERROR_system(1), "out of memory");
 			}
 			cp = delim;
 			dlen = 0;
@@ -254,7 +254,7 @@ b_paste(int argc, char** argv, Shbltin_t* context)
 	if(!sflag)
 	{
 		if (!(streams = (Sfio_t**)stakalloc(n*sizeof(Sfio_t*))))
-			error(ERROR_exit(1), "out of space");
+			error(ERROR_exit(1), "out of memory");
 		n = 0;
 	}
 	do

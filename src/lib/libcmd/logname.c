@@ -75,4 +75,3 @@ b_logname(int argc, char** argv, Shbltin_t* context)
 	sfputr(sfstdout, logname, '\n');
 	return 0;
 }
-

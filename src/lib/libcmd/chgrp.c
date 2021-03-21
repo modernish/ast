@@ -286,7 +286,7 @@ b_chgrp(int argc, char** argv, Shbltin_t* context)
 			mapdisc.key = offsetof(Map_t, key);
 			mapdisc.size = sizeof(Key_t);
 			if (!(map = dtopen(&mapdisc, Dtset)))
-				error(ERROR_exit(1), "out of space [id map]");
+				error(ERROR_exit(1), "out of memory [id map]");
 			continue;
 		case 'n':
 			options |= OPT_SHOW;
@@ -358,7 +358,7 @@ b_chgrp(int argc, char** argv, Shbltin_t* context)
 			if (!(m = (Map_t*)dtmatch(map, &key)))
 			{
 				if (!(m = (Map_t*)stakalloc(sizeof(Map_t))))
-					error(ERROR_exit(1), "out of space [id dictionary]");
+					error(ERROR_exit(1), "out of memory [id dictionary]");
 				m->key = key;
 				m->to.uid = m->to.gid = NOID;
 				dtinsert(map, m);

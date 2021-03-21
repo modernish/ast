@@ -20,7 +20,7 @@
 #pragma prototyped
 
 /*
- * tables for the test builin [[...]] and [...]
+ * tables for the test builtin [[...]] and [...]
  */
 
 #include	<ast.h>

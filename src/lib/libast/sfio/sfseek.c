@@ -203,7 +203,7 @@ int	type;	/* 0: from org, 1: from here, 2: from end */
 
 #ifdef MAP_TYPE
 	if(f->bits&SF_MMAP)
-	{	/* if mmap is not great, stop mmaping if moving around too much */
+	{	/* if mmap is not great, stop mmapping if moving around too much */
 #if _mmap_worthy < 2
 		if((f->next - f->data) < ((f->endb - f->data)/4) )
 		{	SFSETBUF(f,(Void_t*)f->tiny,(size_t)SF_UNBOUND);

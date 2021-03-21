@@ -53,7 +53,7 @@
 09-09-09 fds.c: add --unit=fd
 09-08-25 tail.c: initialize Tail_t.fifo=0 !!
 09-08-15 tail.c: fix fifo logic
-09-08-11 wc.c: add setlocale(LC_CTYPE,"C") cleanup, add utf8 optimzations
+09-08-11 wc.c: add setlocale(LC_CTYPE,"C") cleanup, add UTF-8 optimizations
 09-08-10 uniq.c: replace -c 1..9999 sfsprintf() with inline conversion
 09-08-01 join.c: fix empty field null pointer deref
 09-07-23 pathchk.c: add -P,--path and -a,--all

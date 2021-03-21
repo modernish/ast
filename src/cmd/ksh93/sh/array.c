@@ -1793,7 +1793,7 @@ void nv_setvec(register Namval_t *np,int append,register int argc,register char 
 	{
 		ap = (struct index_array*)nv_arrayptr(np);
 		if(ap && is_associative(ap))
-			errormsg(SH_DICT,ERROR_exit(1),"cannot append index array to associative array %s",nv_name(np));
+			errormsg(SH_DICT,ERROR_exit(1),"cannot append indexed array to associative array %s",nv_name(np));
 	}
 	if(append)
 	{
@@ -1818,4 +1818,3 @@ void nv_setvec(register Namval_t *np,int append,register int argc,register char 
 		nv_putval(np,argv[argc],0);
 	}
 }
-

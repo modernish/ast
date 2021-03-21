@@ -215,7 +215,7 @@ static const char id[] = "\n@(#)$Id: dll library (AT&T Research) 2010-10-20 $\0\
 			char *loc;
 			/* the symbol name representation is a nuisance since
 			 * 8 character names appear in l_name but may
-			 * not be null terminated. This code works around
+			 * not be null-terminated. This code works around
 			 * that by brute force
 			 */
 			if (ldsym->l_zeroes)
@@ -335,7 +335,7 @@ static const char id[] = "\n@(#)$Id: dll library (AT&T Research) 2010-10-20 $\0\
 
 	static const char	e_cover[] = T("cannot access covered library");
 	static const char	e_handle[] = T("invalid handle");
-	static const char	e_space[] = T("out of space");
+	static const char	e_nomemory[] = T("out of memory");
 	static const char	e_static[] = T("image statically linked");
 	static const char	e_undefined[] = T("undefined symbol");
 
@@ -382,7 +382,7 @@ static const char id[] = "\n@(#)$Id: dll library (AT&T Research) 2010-10-20 $\0\
 			dll = &global;
 		else if (!(dll = newof(0, Dll_t, 1, strlen(path))))
 		{
-			dlmessage = e_space;
+			dlmessage = e_nomemory;
 			return 0;
 		}
 		else

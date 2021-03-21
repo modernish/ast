@@ -199,7 +199,7 @@ native_setlocale(int category, const char* locale)
 /*
  * LC_COLLATE and LC_CTYPE debug support
  *
- * mutibyte debug encoding
+ * multibyte debug encoding
  *
  *	DL0 [ '0' .. '4' ] c1 ... c4 DR0
  *	DL1 [ '0' .. '4' ] c1 ... c4 DR1

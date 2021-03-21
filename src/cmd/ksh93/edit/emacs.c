@@ -101,7 +101,7 @@ One line screen editor for any program
 #   define print(c)	isprint(c)
 #   define isword(c)	(isalnum(out[c]) || (out[c]=='_'))
 #   define digit(c)	isdigit(c)
-#endif /*SHOPT_MULTIBYTE */
+#endif /* SHOPT_MULTIBYTE */
 
 typedef struct _emacs_
 {
@@ -1461,11 +1461,11 @@ static void draw(register Emacs_t *ep,Draw_t option)
 		drawbuff[cur+1]=0;
 #   if SHOPT_MULTIBYTE
 		ed_external(drawbuff,(char*)drawbuff);
-#   endif /*SHOPT_MULTIBYTE */
+#   endif /* SHOPT_MULTIBYTE */
 		n = ed_histgen(ep->ed,(char*)drawbuff);
 #   if SHOPT_MULTIBYTE
 		ed_internal((char*)drawbuff,drawbuff);
-#   endif /*SHOPT_MULTIBYTE */
+#   endif /* SHOPT_MULTIBYTE */
 		if(ep->ed->hlist)
 		{
 			ed_histlist(ep->ed,n);

@@ -1107,7 +1107,7 @@ error(DEBUG_TRACE, "AHA#%d _ast_iconv_open f=%s:%s:%d t=%s:%s:%d\n", __LINE__, f
 	cc->cvt = (iconv_t)(-1);
 
 	/*
-	 * 8 bit maps are the easiest
+	 * 8-bit maps are the easiest
 	 */
 
 	if (fc >= 0 && tc >= 0)

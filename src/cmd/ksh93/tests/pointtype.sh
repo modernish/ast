@@ -115,7 +115,7 @@ A_t r
 r.b[1]=(y=2)
 r.b[2]=(y=5)
 eval s="$r"
-[[ $r == "$s" ]] || err_exit 'expansion of type containing index array of types is incorrect'
+[[ $r == "$s" ]] || err_exit 'expansion of type containing indexed array of types is incorrect'
 eval "$(typeset -p s)"
 [[ $y == "$z" ]] || err_exit 'typeset -p z for type containing index of types is incorrect'
 unset r s
@@ -123,7 +123,7 @@ B_t r
 r.b[1]=(y=2)
 r.b[2]=(y=5)
 eval s="$r"
-[[ $r == "$s" ]] || err_exit 'expansion of type containing index array of types is incorrect'
+[[ $r == "$s" ]] || err_exit 'expansion of type containing indexed array of types is incorrect'
 eval "$(typeset -p s)"
 [[ $y == "$z" ]] || err_exit 'typeset -p z for type containing index of types is incorrect'
 

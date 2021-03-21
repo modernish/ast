@@ -288,13 +288,13 @@ fi
 unset x
 x=( 1 2 3)
 (x[1]=8)
-[[ ${x[1]} == 2 ]] || err_exit 'index array produce side effects in subshells'
+[[ ${x[1]} == 2 ]] || err_exit 'indexed array produce side effects in subshells'
 x=( 1 2 3)
 (
 	x+=(8)
-	[[ ${#x[@]} == 4 ]] || err_exit 'index array append in subshell error'
+	[[ ${#x[@]} == 4 ]] || err_exit 'indexed array append in subshell error'
 )
-[[ ${#x[@]} == 3 ]] || err_exit 'index array append in subshell effects parent'
+[[ ${#x[@]} == 3 ]] || err_exit 'indexed array append in subshell effects parent'
 x=( [one]=1 [two]=2 [three]=3)
 (x[two]=8)
 [[ ${x[two]} == 2 ]] || err_exit 'associative array produce side effects in subshells'
@@ -310,7 +310,7 @@ integer i
 for ((i=0; i < 40; i++))
 do	x[i]=$i
 done
-[[  ${#x[@]} == 40 ]] || err_exit 'index arrays losing values'
+[[  ${#x[@]} == 40 ]] || err_exit 'indexed arrays losing values'
 [[ $( ($SHELL -c 'typeset -A var; (IFS=: ; set -A var a:b:c ;print ${var[@]});:' )2>/dev/null) == 'a b c' ]] || err_exit 'change associative to index failed'
 unset foo
 [[ $(foo=good
@@ -482,7 +482,7 @@ function x.get
 }
 x[2]=
 z=$(: ${x[1]} )
-[[ $z == sub=1 ]] || err_exit 'get function not invoked for index array'
+[[ $z == sub=1 ]] || err_exit 'get function not invoked for indexed array'
 
 unset x
 typeset -A x
@@ -498,8 +498,8 @@ unset y
 i=1
 a=(11 22)
 typeset -m y=a[i]
-[[ $y == 22 ]] || err_exit 'typeset -m for index array not working'
-[[ ${a[i]} || ${a[0]} != 11 ]] && err_exit 'typeset -m for index array not deleting element'
+[[ $y == 22 ]] || err_exit 'typeset -m for indexed array not working'
+[[ ${a[i]} || ${a[0]} != 11 ]] && err_exit 'typeset -m for indexed array not deleting element'
 
 unset y
 a=([0]=11 [1]=22)
@@ -512,7 +512,7 @@ typeset -a a=( [0]="aa" [1]="bb" [2]="cc" )
 typeset -m 'j=a[0]'
 typeset -m 'a[0]=a[1]'
 typeset -m 'a[1]=j'
-[[ ${a[@]} == 'bb aa cc' ]] || err_exit 'moving index array elements not working'
+[[ ${a[@]} == 'bb aa cc' ]] || err_exit 'moving indexed array elements not working'
 unset a j
 [[ $(typeset -p a) ]] && err_exit 'unset associative array after typeset -m not working'
 
@@ -526,12 +526,12 @@ unset a j
 z=(a b c)
 unset x
 typeset -m x[1]=z
-[[ ${x[1][@]} == 'a b c' ]] || err_exit 'moving indexed array to index array element not working'
+[[ ${x[1][@]} == 'a b c' ]] || err_exit 'moving indexed array to indexed array element not working'
 
 unset x z
 z=([0]=a [1]=b [2]=c)
 typeset -m x[1]=z
-[[ ${x[1][@]} == 'a b c' ]] || err_exit 'moving associative array to index array element not working'
+[[ ${x[1][@]} == 'a b c' ]] || err_exit 'moving associative array to indexed array element not working'
 
 {
 typeset -a arr=(
@@ -583,7 +583,7 @@ foo=( ${foo[yy]} ${foo[zz]} )
 
 unset foo
 typeset -a foo=(abc=1 def=2)
-[[ ${foo[1]} == def=2 ]] || err_exit "index array with elements containing = not working"
+[[ ${foo[1]} == def=2 ]] || err_exit "indexed array with elements containing = not working"
 
 unset foo
 typeset -a foo=( a b )
@@ -607,7 +607,7 @@ x=$(
 ) 2> /dev/null
 [[ $x == "$exp" ]] || err_exit 'setting element 1 of array to compound variable failed'
 
-#test for cloning a very large index array - can core dump
+# test for cloning a very large indexed array - can core dump
 (	
     trap 'x=$?;exit $(( $x!=0 ))' EXIT
     $SHELL <<- \EOF

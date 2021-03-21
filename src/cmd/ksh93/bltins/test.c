@@ -151,8 +151,8 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 	cp = argv[1];
 	if(c_eq(cp,'(') && argc<=6 && c_eq(argv[argc-1],')'))
 	{
-		/* special case  ( binop ) to conform with standard */
-		if(!(argc==4  && (not=sh_lookup(cp=argv[2],shtab_testops))))
+		/* special case ( binop ) to conform with standard */
+		if(!(argc==4 && (not=sh_lookup(cp=argv[2],shtab_testops))))
 		{
 			cp =  (++argv)[1];
 			argc -= 2;
@@ -490,7 +490,7 @@ int test_unop(Shell_t *shp,register int op,register const char *arg)
 		static char a[3] = "-?";
 		a[1]= op;
 		errormsg(SH_DICT,ERROR_exit(2),e_badop,a);
-		/* NOTREACHED  */
+		/* NOTREACHED */
 		return(0);
 	    }
 	}

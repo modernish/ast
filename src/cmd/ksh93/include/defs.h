@@ -37,7 +37,7 @@
 #endif
 #if !SHOPT_MULTIBYTE
     /*
-     * Disable multibyte without need for excessive '#if SHOPT_MULTIBYTE' peprocessor conditionals.
+     * Disable multibyte without need for excessive '#if SHOPT_MULTIBYTE' preprocessor conditionals.
      * If we redefine the maximum character size mbmax() as 1 byte, the mbwide() macro will always
      * evaluate to 0. All the other multibyte macros have multibtye code conditional upon mbwide(),
      * so the compiler should optimize all of that code away. See src/lib/libast/include/ast.h
@@ -161,7 +161,7 @@ struct shared
 	Sfio_t		*funlog;	/* for logging function definitions */ \
 	int		**fdptrs;	/* pointer to file numbers */ \
 	char		*lastarg; \
-	char		*lastpath;	/* last alsolute path found */ \
+	char		*lastpath;	/* last absolute path found */ \
 	int		path_err;	/* last error on path search */ \
 	Dt_t		*track_tree;	/* for tracked aliases*/ \
 	Dt_t		*var_base;	/* global level variables */ \
@@ -199,7 +199,7 @@ struct shared
 	char		binscript; \
 	char		deftype; \
 	char		funload; \
-	char		used_pos;	/* used postional parameter */\
+	char		used_pos;	/* used positional parameter */\
 	char		universe; \
 	char		winch; \
 	char		inarith; 	/* set when in ((...)) */ \

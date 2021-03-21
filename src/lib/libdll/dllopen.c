@@ -80,7 +80,7 @@ dllopen(const char* name, int mode)
 #else
 
 /*
- * dlopen() wrapper -- waiting for prestidigitaions
+ * dlopen() wrapper -- waiting for prestidigitations
  */
 
 void*

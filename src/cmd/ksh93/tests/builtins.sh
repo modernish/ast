@@ -84,7 +84,7 @@ hello \
 	world \
 
 !
-[[ $REPLY == 'hello 	world' ]] || err_exit "read continuation2 failed"
+[[ $REPLY == 'hello 	world' ]] || err_exit "read continuation 2 failed"
 print "one\ntwo" | { read line
 	print $line | "$bincat" > /dev/null
 	read line
@@ -729,20 +729,20 @@ PATH=$tmp:$PATH $SHELL <<-\EOF || err_exit "'whence' gets wrong path on init"
 EOF
 
 # ======
-# `builtin -d` should not delete special builtins
+# 'builtin -d' should not delete special builtins
 (builtin -d export 2> /dev/null
 PATH=/dev/null
-whence -q export) || err_exit '`builtin -d` deletes special builtins'
+whence -q export) || err_exit "'builtin -d' deletes special builtins"
 
 # ======
-# `read -r -d` should not ignore `-r`
+# 'read -r -d' should not ignore '-r'
 printf '\\\000' | read -r -d ''
 [[ $REPLY == $'\\' ]] || err_exit "read -r -d '' ignores -r"
 
 # ======
-# Preceding a special builtin with `command` should disable its special properties
+# Preceding a special builtin with 'command' should disable its special properties
 foo=BUG command eval ':'
-[[ $foo == BUG ]] && err_exit '`command` fails to disable the special properties of special builtins'
+[[ $foo == BUG ]] && err_exit "'command' fails to disable the special properties of special builtins"
 
 # ======
 # 'whence -f' should ignore functions

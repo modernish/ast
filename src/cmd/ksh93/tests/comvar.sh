@@ -20,7 +20,7 @@
 
 . "${SHTESTS_COMMON:-${0%/*}/_common}"
 
-#test for compound variables
+# regression tests for compound variables
 Command=${0##*/}
 integer Errors=0
 Point=(
@@ -209,7 +209,7 @@ unset z
 stack=()
 typeset -a stack.items=([0]=foo [1]=bar)
 [[ ${stack.items[0]} == foo ]] || err_exit 'typeset -a variable not expanding correctly'
-$SHELL -c 'typeset -a info=( [1]=( passwd=( since=2005-07-20) ))'  || err_exit 'problem with embedded index array in compound variable'
+$SHELL -c 'typeset -a info=( [1]=( passwd=( since=2005-07-20) ))'  || err_exit 'problem with embedded indexed array in compound variable'
 x=(foo=([1]=(y=([2]=(z=4)))))
 [[ $x == *'.y'=* ]] && err_exit 'expansion with bogus leading . in name'
 unset z
@@ -453,7 +453,7 @@ typeset -C more_content=(
 )
 mica01[4]+=more_content
 expected=$'typeset -C -a mica01=([4]=(a_string=\'foo bar\';some_stuff=hello))'
-[[ $(typeset -p mica01) == "$expected" ]] || err_exit 'appened to indexed array compound variable not working'
+[[ $(typeset -p mica01) == "$expected" ]] || err_exit 'append to indexed array compound variable not working'
 
 unset x
 compound x=( integer x= ; )
@@ -542,7 +542,7 @@ compound x=(
         )
 ) 
 expected='typeset -C x=(typeset -C -a nodes=([4]=());)'
-[[ $(typeset -p x) == "$expected" ]] || err_exit 'typeset -p with nested compound index array not working'
+[[ $(typeset -p x) == "$expected" ]] || err_exit 'typeset -p with nested compound indexed array not working'
 
 unset v
 compound v=(
@@ -556,7 +556,7 @@ expected='typeset -C v=(typeset -A -l -i ar=([aa]=4 [bb]=9);)'
 unset x
 compound -a x
 x[1]=( a=1 b=2 )
-[[ $(print -v x[1]) == "${x[1]}" ]] || err_exit  'print -v x[1] not working for index array of compound variables'
+[[ $(print -v x[1]) == "${x[1]}" ]] || err_exit  'print -v x[1] not working for indexed array of compound variables'
 
 unset x
 z='typeset -a x=(hello (x=12;y=5) world)'
@@ -588,9 +588,9 @@ compound vx=(
 	)
 )
 eval "vy=$(print -C vx)"
-[[ $vx == "$vy" ]] || err_exit 'print -C with multi-dimensional array not working'
+[[ $vx == "$vy" ]] || err_exit 'print -C with multidimensional array not working'
 eval "vy=$(print -v vx)"
-[[ $vx == "$vy" ]] || err_exit 'print -v with multi-dimensional array not working'
+[[ $vx == "$vy" ]] || err_exit 'print -v with multidimensional array not working'
 
 unset x
 typeset -C -A x=( [0]=(a=1) [1]=(b=2) )

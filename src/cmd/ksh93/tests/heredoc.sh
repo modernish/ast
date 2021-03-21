@@ -271,7 +271,7 @@ set -- $(wc < $tmpfile2)
 (( $1 == 1000 )) || err_exit "heredoc $1 lines, should be 1000 lines"
 (( $2 == 4000 )) || err_exit "heredoc $2 words, should be 4000 words"
 
-# comment with here document looses line number count
+# comment with here document loses line number count
 integer line=$((LINENO+5))
 function tst
 {

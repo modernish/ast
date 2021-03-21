@@ -82,7 +82,7 @@ struct adata
 	short		numnodes;
 	short		maxnodes;
     };
-#endif /*SHOPT_TYPEDEF */
+#endif /* SHOPT_TYPEDEF */
 
 #if NVCACHE
     struct Namcache
@@ -1227,7 +1227,7 @@ Namval_t *nv_create(const char *name,  Dt_t *root, int flags, Namfun_t *dp)
  * delete the node <np> from the dictionary <root> and clear from the cache
  * if <root> is NULL, only the cache is cleared
  * if flags does not contain NV_NOFREE, the node is freed
- * if np==0  && !root && flags==0,  delete the Refdict dictionary
+ * if np==0 && !root && flags==0, delete the Refdict dictionary
  */
 void nv_delete(Namval_t* np, Dt_t *root, int flags)
 {
@@ -2232,7 +2232,7 @@ static int scanfilter(Dt_t *dict, void *arg, void *data)
 #if SHOPT_TYPEDEF
 	if(!is_abuiltin(np) && tp && tp->tp && nv_type(np)!=tp->tp)
 		return(0);
-#endif /*SHOPT_TYPEDEF */
+#endif /* SHOPT_TYPEDEF */
 	if(sp->scanmask==NV_TABLE && nv_isvtree(np))
 		k = NV_TABLE;
 	if(sp->scanmask?(k&sp->scanmask)==sp->scanflags:(!sp->scanflags || (k&sp->scanflags)))

@@ -34,8 +34,8 @@ struct list
 };
 
 /*
- * elimnates shell quoting as inserted with sh_fmtq
- * result relaces <string>
+ * eliminates shell quoting as inserted with sh_fmtq
+ * result replaces <string>
  * length of resulting string is returned.
  */
 static int	sh_unquote(char* string)

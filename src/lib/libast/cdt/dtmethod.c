@@ -49,7 +49,7 @@ Dtmethod_t*	meth;
 	list = dtextract(dt); /* extract elements out of dictionary */
 
 	/* try to create internal structure for new method */
-	if(dt->searchf == oldmt->searchf) /* ie, not viewpathing */
+	if(dt->searchf == oldmt->searchf) /* i.e., not viewpathing */
 		dt->searchf = meth->searchf;
 	dt->meth = meth;
 	dt->data = NIL(Dtdata_t*);

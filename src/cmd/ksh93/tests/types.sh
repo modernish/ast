@@ -501,9 +501,9 @@ fi
 { $SHELL -c '(sleep 3;kill $$)& typeset -T x=( typeset -a s );compound c;x c.i;c.i.s[7][5][3]=hello;x c.j=c.i;[[ ${c.i} == "${c.j}" ]]';} 2> /dev/null
 exitval=$?
 if	[[ $(kill -l $exitval) == TERM ]]
-then	err_exit 'clone of multi-dimensional array timed out'
+then	err_exit 'clone of multidimensional array timed out'
 elif	((exitval))
-then	err_exit "c.i and c.j are not the same multi-dimensional array"
+then	err_exit "c.i and c.j are not the same multidimensional array"
 fi
 
 typeset -T foobar_t=(

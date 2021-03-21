@@ -946,7 +946,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 			}
 			if (*s && !(master->ignore = vmstrdup(vm, s)))
 			{
-				error(ERROR_SYSTEM|2, "out of space");
+				error(ERROR_SYSTEM|2, "out of memory");
 				goto done;
 			}
 			break;
@@ -958,7 +958,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 			}
 			if (*s && !(error_info.id = vmstrdup(vm, s)))
 			{
-				error(ERROR_SYSTEM|2, "out of space");
+				error(ERROR_SYSTEM|2, "out of memory");
 				goto done;
 			}
 			break;
@@ -970,7 +970,7 @@ dialogue(Sfio_t* mp, Sfio_t* lp, int delay, int timeout)
 			}
 			if (*s && !(master->prompt = vmstrdup(vm, s)))
 			{
-				error(ERROR_SYSTEM|2, "out of space");
+				error(ERROR_SYSTEM|2, "out of memory");
 				goto done;
 			}
 			break;

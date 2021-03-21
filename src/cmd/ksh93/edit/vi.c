@@ -297,7 +297,7 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 			/*** ESC was typed as first char of line ***/
 			esc_or_hang = 1;
 			term_char = ESC;
-			shbuf[i--] = '\0';	/* null terminate line */
+			shbuf[i--] = '\0';	/* null-terminate line */
 		}
 		else if( i<0 || c==usreof )
 		{
@@ -321,12 +321,12 @@ int ed_viread(void *context, int fd, register char *shbuf, int nchar, int reedit
 #endif
 			if( term_char=='\n' || term_char==usreof )
 			{
-				/*** remove terminator & null terminate ***/
+				/*** remove terminator & null-terminate ***/
 				shbuf[i--] = '\0';
 			}
 			else
 			{
-				/** terminator was ESC, which is not xmitted **/
+				/** terminator was ESC, which is not emitted **/
 				term_char = ESC;
 				shbuf[i+1] = '\0';
 			}
@@ -933,7 +933,7 @@ static int cntlmode(Vi_t *vp)
 				cur_virt = 0;
 				vi_redraw((void*)vp);
 			}
-#endif /*SHOPT_EDPREDICT */
+#endif /* SHOPT_EDPREDICT */
 			break;
 
 
@@ -2265,7 +2265,7 @@ static int search(register Vi_t* vp,register int mode)
 		first_virt = 1;
 		getline(vp,SEARCH);
 		first_virt = 0;
-		virtual[last_virt + 1] = '\0';	/*** make null terminated ***/
+		virtual[last_virt + 1] = '\0';	/*** make null-terminated ***/
 		vp->direction = mode=='/' ? -1 : 1;
 	}
 

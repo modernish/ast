@@ -339,4 +339,3 @@ b_uniq(int argc, char** argv, Shbltin_t* context)
 		sfclose(fpout);
 	return(error_info.errors);
 }
-

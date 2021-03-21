@@ -20,7 +20,7 @@
 #pragma prototyped
 /*
  * regression test intercept control
- * enable with SHOPT_REGRESS==1 in Makefile
+ * enable with 'SHOPT REGRESS=1' in src/cmd/ksh93/SHOPT.sh
  * not for production use
  * see --man for details
  * all string constants inline here instead of in data/...
@@ -83,7 +83,7 @@ static const char	usage[] =
     "trace line info is either \beuid==ruid\b or \beuid!=ruid\b. The "
     "intercepts are:]#?[original-euid:=1]"
     "{"
-        "[+geteuid()?The intercept effecive uid is returned. The "
+        "[+geteuid()?The intercept effective uid is returned. The "
             "\bsetuid\b() intercept may change this between the real uid and "
             "\aoriginal-euid\a.]"
         "[+setuid(uid)?Sets the intercept effective uid to \auid\a. "

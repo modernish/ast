@@ -1439,7 +1439,7 @@ static void exscript(Shell_t *shp,register char *path,register char *argv[],char
 
 
 /*
- * add a pathcomponent to the path search list and eliminate duplicates
+ * add a path component to the path search list and eliminate duplicates
  * and non-existing absolute paths.
  */
 static Pathcomp_t *path_addcomp(Shell_t *shp,Pathcomp_t *first, Pathcomp_t *old,const char *name, int flag)
@@ -1813,4 +1813,3 @@ void path_alias(register Namval_t *np,register Pathcomp_t *pp)
 	else
 		_nv_unset(np,0);
 }
-

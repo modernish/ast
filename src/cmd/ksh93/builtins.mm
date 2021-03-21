@@ -79,7 +79,7 @@ The development kit has three directories,
 It is best to set the value of the environment variable
 \f5PACKAGE_ast\fP to the pathname of the directory
 containing the development kit.
-The \f5include\fP directory contains a sub-directory
+The \f5include\fP directory contains a subdirectory
 named \f5ast\fP that contains interface prototypes
 for functions that you can call from built-ins.  The \f5lib\fP
 directory contains the \f5ast\fP library

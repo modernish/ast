@@ -460,7 +460,7 @@ typeset -a x=( a=3 b=4)
 
 unset z
 z='typeset -a q=(a b c)'
-$SHELL -c "$z; [[ \$(typeset -pa) == '$z' ]]" || err_exit 'typeset -pa does not list only index arrays'
+$SHELL -c "$z; [[ \$(typeset -pa) == '$z' ]]" || err_exit 'typeset -pa does not list only indexed arrays'
 z='typeset -C z=(foo=bar)'
 $SHELL -c "$z; [[ \$(typeset -pC) == '$z' ]]" || err_exit 'typeset -pC does not list only compound variables'
 unset y

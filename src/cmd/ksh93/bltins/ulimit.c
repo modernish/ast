@@ -19,7 +19,7 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * ulimit [-HSacdfmnstuv] [limit]
+ * ulimit [-HSaMctdfxlqenupmrbiswTv] [limit]
  *
  *   David Korn
  *   AT&T Labs

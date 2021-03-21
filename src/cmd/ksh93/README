@@ -117,7 +117,7 @@ and/or execute only script.  Note, that ksh does not read the .profile
 or $ENV file when it the real and effective user/group id's are not
 equal.
 
-The tests sub-directory contains a number of regression tests for ksh.
+The tests subdirectory contains a number of regression tests for ksh.
 To run all these tests with the shell you just built, run the command
 	bin/shtests
 For help and more options, type
@@ -198,4 +198,3 @@ https://github.com/ksh93/ksh
 Originally written by:
 David Korn
 dgk@research.att.com
-

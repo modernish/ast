@@ -195,20 +195,20 @@ unset x
 integer y[3]=9 y[4]=2 i=3
 (( x = y[3] + y[4] ))
 if	[[ $x != 11 ]]
-then	err_exit "constant index array arithmetic failure"
+then	err_exit "constant indexed array arithmetic failure"
 fi
 (( x = $empty y[3] + y[4] ))
 if	[[ $x != 11 ]]
-then	err_exit "empty constant index array arithmetic failure"
+then	err_exit "empty constant indexed array arithmetic failure"
 fi
 (( x = y[i] + y[i+1] ))
 if	[[ $x != 11 ]]
-then	err_exit "variable subscript index array arithmetic failure"
+then	err_exit "variable subscript indexed array arithmetic failure"
 fi
 integer a[5]=3 a[2]=4
 (( x = y[a[5]] + y[a[2]] ))
 if	[[ $x != 11 ]]
-then	err_exit "nested subscript index array arithmetic failure"
+then	err_exit "nested subscript indexed array arithmetic failure"
 fi
 unset y
 typeset -Ai y
@@ -667,7 +667,7 @@ $SHELL 2> /dev/null -c 'str="0x1.df768ed398ee1e01329a130627ae0000p-1";typeset -l
 
 x=(3 6 12)
 (( x[2] /= x[0]))
-(( x[2] == 4 ))  || err_exit '(( x[2] /= x[0])) fails for index array'
+(( x[2] == 4 ))  || err_exit '(( x[2] /= x[0])) fails for indexed array'
 
 x=([0]=3 [1]=6 [2]=12)
 (( x[2] /= x[0]))
@@ -699,27 +699,27 @@ unset A[a]
 A[a]=(typeset -a AA)
 A[a].AA[aa]=1
 (( z += A[a].AA[aa++]++ ))
-(( z == 2 )) ||  err_exit "z should be '2' but is '$z' for associative array of index array arithmetic"
+(( z == 2 )) ||  err_exit "z should be '2' but is '$z' for associative array of indexed array arithmetic"
 (( aa == 3 )) || err_exit "subscript aa should be '3' but is '$aa' after ++"
 [[ ${A[a].AA[aa-1]} == 2 ]] || err_exit "\${A[a].AA[aa]} should be '2' but is '${A[a].AA[aa]}'" \
-	'after ++ operation for associative array of index array arithmetic'
+	'after ++ operation for associative array of indexed array arithmetic'
 unset A
 
 typeset -a A
 A[a]=(typeset -A AA)
 A[a].AA[aa]=1
 (( z += A[a].AA[aa]++ ))
-(( z == 3 )) ||  err_exit "z should be '3' but is '$z' for index array of associative array arithmetic"
+(( z == 3 )) ||  err_exit "z should be '3' but is '$z' for indexed array of associative array arithmetic"
 [[ ${A[a].AA[aa]} == 2 ]] || err_exit "\${A[a].AA[aa]} should be '2' but is '${A[a].AA[aa]}'" \
-	'after ++ operation for index array of associative array arithmetic'
+	'after ++ operation for indexed array of associative array arithmetic'
 unset A[a]
 
 A[a]=(typeset -a AA)
 A[a].AA[aa]=1
 (( z += A[a++].AA[aa++]++ ))
-(( z == 4 )) ||  err_exit "z should be '4' but is '$z' for index array of index array arithmetic"
+(( z == 4 )) ||  err_exit "z should be '4' but is '$z' for indexed array of indexed array arithmetic"
 [[ ${A[a-1].AA[aa-1]} == 2 ]] || err_exit "\${A[a].AA[aa]} should be '2' but is '${A[a].AA[aa]}'" \
-	'after ++ operation for index array of index array arithmetic'
+	'after ++ operation for indexed array of indexed array arithmetic'
 (( aa == 4 )) || err_exit "subscript aa should be '4' but is '$aa' after ++"
 (( a == 2 )) || err_exit "subscript a should be '2' but is '$a' after ++"
 unset A

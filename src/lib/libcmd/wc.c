@@ -53,7 +53,7 @@ static const char usage[] =
 "[L:longest-line|max-line-length?List the longest line length; the newline,"
     "if any, is not counted in the length.]"
 "[N!:utf8?For \bUTF-8\b locales \b--noutf8\b disables \bUTF-8\b "
-    "optimzations and relies on the native \bmbtowc\b(3).]"
+    "optimizations and relies on the native \bmbtowc\b(3).]"
 "\n"
 "\n[file ...]\n"
 "\n"

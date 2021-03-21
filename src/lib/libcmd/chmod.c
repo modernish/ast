@@ -106,7 +106,7 @@ static const char usage[] =
 "[P:physical|nofollow?Don't follow symbolic links when traversing directories.]"
 "[R:recursive?Change the mode for files in subdirectories recursively.]"
 "[c:changes?Describe only files whose permission actually change.]"
-"[f:quiet|silent?Do not report files whose permissioins fail to change.]"
+"[f:quiet|silent?Do not report files whose permissions fail to change.]"
 "[h|l:symlink?Change the mode of symbolic links on systems that "
     "support \blchmod\b(2). Implies \b--physical\b.]"
 "[i:ignore-umask?Ignore the \bumask\b(2) value in symbolic mode "

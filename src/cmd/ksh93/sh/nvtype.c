@@ -1327,7 +1327,7 @@ int nv_settype(Namval_t* np, Namval_t *tp, int flags)
 		}
 	}
 	else
-#endif /*SHOPT_TYPEDEF */
+#endif /* SHOPT_TYPEDEF */
 	{
 		if(isnull)
 			flags &= ~NV_APPEND;

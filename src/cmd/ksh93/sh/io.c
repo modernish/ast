@@ -286,7 +286,7 @@ inetopen(const char* path, int flags, Inetintr_f onintr, void* handle)
 	for (p = addr; p; p = p->ai_next)
 	{
 		/*
-		 * some api's don't take the hint
+		 * some APIs don't take the hint
 		 */
 
 		if (!p->ai_protocol)
@@ -1533,7 +1533,7 @@ static int io_heredoc(Shell_t *shp,register struct ionod *iop, const char *name,
 	{
 		/*
 		 * the locking is only needed in case & blocks process
-		 * here-docs so this can be eliminted in some cases
+		 * here-docs so this can be eliminated in some cases
 		 */
 		struct flock	lock;
 		int	fno = sffileno(shp->heredocs);
@@ -2676,4 +2676,3 @@ int sh_chdir(const char* dir)
 		errno = err;
 	return(r);
 }
-

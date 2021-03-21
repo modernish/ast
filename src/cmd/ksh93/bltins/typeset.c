@@ -21,11 +21,17 @@
 /*
  * export [-p] [arg...]
  * readonly [-p] [arg...]
- * typeset [options]  [arg...]
+ * typeset [options] [arg...]
+ * autoload [options] [arg...]
+ * compound [options] [arg...]
+ * float [options] [arg...]
+ * functions [options] [arg...]
+ * integer [options] [arg...]
+ * nameref [options] [arg...]
  * alias [-ptx] [arg...]
- * unalias [arg...]
+ * unalias [-a] [arg...]
  * hash [-r] [utility...]
- * builtin [-sd] [-f file] [name...]
+ * builtin [-dls] [-f file] [name...]
  * set [options] [name...]
  * unset [-fnv] [name...]
  *
@@ -363,7 +369,7 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 			case 'h':
 				tdata.help = opt_info.arg;
 				break;
-#endif /*SHOPT_TYPEDEF*/
+#endif /* SHOPT_TYPEDEF */
 			case 's':
 				if(!isfloat)
 				{
@@ -706,7 +712,7 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 				ap->nelem--;
 			}
 			else if(iarray && ap && ap->fun) 
-				errormsg(SH_DICT,ERROR_exit(1),"cannot change associative array %s to index array",nv_name(np));
+				errormsg(SH_DICT,ERROR_exit(1),"cannot change associative array %s to indexed array",nv_name(np));
 			else if( (iarray||(flag&NV_ARRAY)) && nv_isvtree(np) && !nv_type(np))
 				_nv_unset(np,NV_EXPORT);
 			if(tp->pflag)
@@ -1169,7 +1175,7 @@ int    b_set(int argc,register char *argv[],Shbltin_t *context)
 			sh_offstate(SH_VERBOSE);
 	}
 	else
-		/*scan name chain and print*/
+		/* scan name chain and print */
 		print_scan(sfstdout,0,tdata.sh->var_tree,0,&tdata);
 	return(0);
 }
@@ -1574,4 +1580,3 @@ static void pushname(Namval_t *np,void *data)
 	struct tdata *tp = (struct tdata*)data;
 	*tp->argnam++ = nv_name(np);
 }
-

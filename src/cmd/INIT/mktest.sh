@@ -83,7 +83,7 @@ unit.rt [ unit [ arg ... ] ]
         [+PROG \acommand\a [ \aarg\a ... ]]?Run \acommand\a with
             optional arguments.]
         [+TEST [ \anumber\a ]] [ \adescription\a ... ]]?Define a new
-            test group with optional \anumber\a and \adescripion\a.]
+            test group with optional \anumber\a and \adescription\a.]
         [+TWD [ \adir\a ... ]]?Set the temporary test dir to \adir\a.
             The default is \aunit\a\b.tmp\b, where \aunit\a is the test
             input file sans directory and suffix. If \adir\a matches \b/*\b

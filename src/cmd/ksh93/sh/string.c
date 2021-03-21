@@ -48,7 +48,7 @@
 /*
  *  Table lookup routine
  *  <table> is searched for string <sp> and corresponding value is returned
- *  This is only used for small tables and is used to save non-sharable memory 
+ *  This is only used for small tables and is used to save non-shareable memory
  */
 
 const Shtable_t *sh_locate(register const char *sp,const Shtable_t *table,int size)
@@ -353,7 +353,7 @@ static int	sh_isprint(int c)
 
 /*
  * print <str> quoting chars so that it can be read by the shell
- * puts null terminated result on stack, but doesn't freeze it
+ * puts null-terminated result on stack, but doesn't freeze it
  */
 char	*sh_fmtq(const char *string)
 {
@@ -475,7 +475,7 @@ char	*sh_fmtq(const char *string)
 
 /*
  * print <str> quoting chars so that it can be read by the shell
- * puts null terminated result on stack, but doesn't freeze it
+ * puts null-terminated result on stack, but doesn't freeze it
  * single!=0 limits quoting to '...'
  * fold>0 prints raw newlines and inserts appropriately
  * escaped newlines every (fold-x) chars

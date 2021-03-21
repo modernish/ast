@@ -50,7 +50,7 @@ export ENV=/.$rc
 if	[[ -o privileged ]]
 then
 	[[ $(print env_hit | $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'privileged nointeractive shell reads $ENV file'
+		err_exit 'privileged noninteractive shell reads $ENV file'
 	[[ $(print env_hit | $SHELL -E 2>&1) == "OK" ]] &&
 		err_exit 'privileged -E reads $ENV file'
 	[[ $(print env_hit | $SHELL +E 2>&1) == "OK" ]] &&
@@ -61,7 +61,7 @@ then
 		err_exit 'privileged --norc reads $ENV file'
 else
 	[[ $(print env_hit | $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'nointeractive shell reads $ENV file'
+		err_exit 'noninteractive shell reads $ENV file'
 	[[ $(print env_hit | $SHELL -E 2>&1) == "OK" ]] ||
 		err_exit '-E ignores $ENV file'
 	[[ $(print env_hit | $SHELL +E 2>&1) == "OK" ]] &&
@@ -78,7 +78,7 @@ export ENV=/./dev/null
 if	[[ -o privileged ]]
 then
 	[[ $(print env_hit | HOME=$tmp $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'privileged nointeractive shell reads $HOME/.kshrc file'
+		err_exit 'privileged noninteractive shell reads $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] &&
 		err_exit 'privileged -E ignores empty $ENV'
 	[[ $(print env_hit | HOME=$tmp $SHELL +E 2>&1) == "OK" ]] &&
@@ -89,7 +89,7 @@ then
 		err_exit 'privileged --norc reads $HOME/.kshrc file'
 else
 	[[ $(print env_hit | HOME=$tmp $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'nointeractive shell reads $HOME/.kshrc file'
+		err_exit 'noninteractive shell reads $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] &&
 		err_exit '-E ignores empty $ENV'
 	[[ $(print env_hit | HOME=$tmp $SHELL +E 2>&1) == "OK" ]] &&
@@ -104,7 +104,7 @@ unset ENV
 if	[[ -o privileged ]]
 then
 	[[ $(print env_hit | HOME=$tmp $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'privileged nointeractive shell reads $HOME/.kshrc file'
+		err_exit 'privileged noninteractive shell reads $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] &&
 		err_exit 'privileged -E reads $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL +E 2>&1) == "OK" ]] &&
@@ -115,7 +115,7 @@ then
 		err_exit 'privileged --norc reads $HOME/.kshrc file'
 else
 	[[ $(print env_hit | HOME=$tmp $SHELL 2>&1) == "OK" ]] &&
-		err_exit 'nointeractive shell reads $HOME/.kshrc file'
+		err_exit 'noninteractive shell reads $HOME/.kshrc file'
 	[[ $(set +x; print env_hit | HOME=$tmp $SHELL -E 2>&1) == "OK" ]] ||
 		err_exit '-E ignores $HOME/.kshrc file'
 	[[ $(print env_hit | HOME=$tmp $SHELL +E 2>&1) == "OK" ]] &&

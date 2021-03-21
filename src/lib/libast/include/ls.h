@@ -35,7 +35,7 @@
 #include <ast_mode.h>
 
 /*
- * some systems (could it beee AIX) pollute the std name space
+ * some systems (could be AIX) pollute the std name space
  */
 
 #undef	fileid

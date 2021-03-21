@@ -58,7 +58,7 @@ val='(
 )'
 [[ $z == "$val" ]] || err_exit 'compound variable with mixed arrays not working'
 z.bar[1]=yesyes
-[[ ${z.bar[1]} == yesyes ]] || err_exit 'reassign of index array compound variable fails'
+[[ ${z.bar[1]} == yesyes ]] || err_exit 'reassign of indexed array compound variable fails'
 z.bar[1]=(x=12 y=5)
 [[ ${z.bar[1]} == $'(\n\tx=12\n\ty=5\n)' ]] || err_exit 'reassign array simple to compound variable fails'
 eval val="$z"
@@ -72,7 +72,7 @@ eval val="$z"
 	z.foo[two]=ok
 	[[ ${z.foo[two]} == ok ]] || err_exit 'associative array assignment to compound variable in subshell not working'
 	z.bar[1]=yes
-	[[ ${z.bar[1]} == yes ]] || err_exit 'index array assignment to compound variable in subshell not working'
+	[[ ${z.bar[1]} == yes ]] || err_exit 'indexed array assignment to compound variable in subshell not working'
 )
 [[ $z == "$val" ]] || err_exit 'compound variable changes after associative array assignment'
 
@@ -130,7 +130,7 @@ do	$SHELL -c '
 	(( no == (BS * nb) )) || err_exit "shell hangs on command substitution output size >= $BS*$nb with write size $bs and trailing redirection -- expected $((BS*nb)), got ${no:-0}"
 done
 
-# exercise command substitutuion trailing newline logic w.r.t. pipe vs. tmp file io
+# exercise command substitution trailing newline logic w.r.t. pipe vs. tmp file io
 
 set -- \
 	'post-line print'								\

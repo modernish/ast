@@ -681,4 +681,3 @@ void sh_done(void *ptr, register int sig)
 
 	exit(savxit&SH_EXITMASK);
 }
-

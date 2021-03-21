@@ -237,7 +237,7 @@ if	[[ $(print -r s"!\2${x}\1\a!") != 's!\2\1\a!' ]]
 then	err_exit  'print -r s"!\2${x}\1\a!" not equal s!\2\1\a!'
 fi
 if	[[ $(print -r $'foo\n\n\n') != foo ]]
-then	err_exit 'trailing newlines on comsubstitution not removed'
+then	err_exit 'trailing newlines on command substitution not removed'
 fi
 unset x
 if	[[ ${x:='//'} != '//' ]]

@@ -109,7 +109,7 @@ b_mktemp(int argc, char** argv, Shbltin_t* context)
 			continue;
 		case 'R':
 			if (!pathtemp(NiL, 0, opt_info.arg, "/seed", NiL))
-				error(2, "%s: regression test initializtion failed", opt_info.arg);
+				error(2, "%s: regression test initialization failed", opt_info.arg);
 			continue;
 		case ':':
 			error(2, "%s", opt_info.arg);

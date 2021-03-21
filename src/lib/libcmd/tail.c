@@ -611,7 +611,7 @@ b_tail(int argc, char** argv, Shbltin_t* context)
 	if (flags & FOLLOW)
 	{
 		if (!(fp = (Tail_t*)stakalloc(argc * sizeof(Tail_t))))
-			error(ERROR_system(1), "out of space");
+			error(ERROR_system(1), "out of memory");
 		files = 0;
 		s = *argv;
 		do

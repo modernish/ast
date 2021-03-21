@@ -167,4 +167,3 @@ int _fcmbget(short *len)
 	}
 	return(c);
 } 
-

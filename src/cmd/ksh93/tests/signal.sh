@@ -380,7 +380,7 @@ x=$(
         print ok
 	++EOF
 )
-[[ $x == ok ]] || err_exit 'SIGPIPE exit status causes PIPE signal to be propogaged'
+[[ $x == ok ]] || err_exit 'SIGPIPE exit status causes PIPE signal to be propagated'
 
 x=$(
     $SHELL <<- \EOF

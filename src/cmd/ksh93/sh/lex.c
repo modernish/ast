@@ -1649,7 +1649,7 @@ static int comsub(register Lex_t *lp, int endtok)
 					goto rbrace;
 				if(c>0)
 					fcseek(-LEN);
-				/* fall through*/
+				/* fall through */
 			    default:
 				lp->lex.reservok = 1;
 			}
@@ -2495,4 +2495,3 @@ static int stack_grow(Lex_t *lp)
 		lp->lexd.lex_match = (int*)sh_malloc(sizeof(int)*STACK_ARRAY);
 	return(1);
 }
-

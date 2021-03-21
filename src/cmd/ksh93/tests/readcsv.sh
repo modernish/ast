@@ -56,10 +56,9 @@ done
 diff "$tmp1" "$tmp2" >/dev/null 2>&1 || err_exit "files $tmp1 and $tmp2 differ"
 
 # ======
-# `read -S` should handle double quotes correctly
+# 'read -S' should handle double quotes correctly
 IFS=',' read -S a b c <<<'foo,"""title"" data",bar'
 [[ $b == '"title" data' ]] || err_exit '"" inside "" not handled correctly with read -S'
 
 # ======
 exit $((Errors<125?Errors:125))
-

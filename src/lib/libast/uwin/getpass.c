@@ -75,5 +75,4 @@ extern char*	getpass(const char *prompt)
 	return(cp?passwd:0);
 }
 
-
 #endif

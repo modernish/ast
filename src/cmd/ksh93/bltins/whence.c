@@ -20,7 +20,7 @@
 #pragma prototyped
 /*
  * command [-pvVx] name [arg...]
- * whence [-afvp] name...
+ * whence [-afpqv] name...
  *
  *   David Korn
  *   AT&T Labs
@@ -311,4 +311,3 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 	}
 	return(ret);
 }
-

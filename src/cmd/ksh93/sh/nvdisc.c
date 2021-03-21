@@ -909,7 +909,7 @@ void clone_all_disc( Namval_t *np, Namval_t *mp, int flags)
  * NV_APPEND - append <np> onto <mp>
  * NV_MOVE - move <np> to <mp>
  * NV_NOFREE - mark the new node as nofree
- * NV_NODISC - discplines with funs non-zero will not be copied
+ * NV_NODISC - disciplines with funs non-zero will not be copied
  * NV_COMVAR - cloning a compound variable
  */
 int nv_clone(Namval_t *np, Namval_t *mp, int flags)

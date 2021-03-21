@@ -218,7 +218,7 @@ Sfio_t*	f;
 # if defined(__linux__) && _lib_statfs
 	/*
 	 * Use the area of POSIX shared memory objects for the new temporary file descriptor
-	 * that is do not access HD or SSD but only the memory based tmpfs of the POSIX SHM
+	 * that is do not access the HDD or SSD but only the memory based tmpfs of the POSIX SHM
 	 */
 	static int doshm;
 	static char *shm = "/dev/shm";

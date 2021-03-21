@@ -19,7 +19,7 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * sleep delay
+ * sleep [-s] duration
  *
  *   David Korn
  *   AT&T Labs

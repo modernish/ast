@@ -149,7 +149,7 @@ cmdopen_20120411(char** argv, int argmax, int size, const char* argpat, Cmddisc_
 	if (!(cmd = newof(0, Cmdarg_t, 1, n + m)))
 	{
 		if (disc->errorf)
-			(*disc->errorf)(NiL, sh, ERROR_SYSTEM|2, "out of space");
+			(*disc->errorf)(NiL, sh, ERROR_SYSTEM|2, "out of memory");
 		return 0;
 	}
 	cmd->id = lib;

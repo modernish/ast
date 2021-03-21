@@ -30,7 +30,7 @@
 #include "hashlib.h"
 
 /*
- * return the hash of the null terminated string s
+ * return the hash of the null-terminated string s
  */
 
 unsigned int

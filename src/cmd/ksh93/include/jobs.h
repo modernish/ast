@@ -189,5 +189,4 @@ extern void	job_chldtrap(Shell_t*, const char*,int);
 #	define job_fork(p)
 #endif	/* JOBS */
 
-
 #endif /* !JOB_NFLAG */

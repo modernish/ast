@@ -386,7 +386,7 @@ buffer(void)
 	if (buf = state.old)
 		state.old = state.old->old;
 	else if (!(buf = newof(0, Buf_t, 1, 0)) || !(buf->buf = newof(0, char, CHUNK, 0)))
-		report(3, "out of space [buffer]", NiL, (unsigned long)0);
+		report(3, "out of memory [buffer]", NiL, (unsigned long)0);
 	buf->end = buf->buf + CHUNK;
 	buf->nxt = buf->buf;
 	return buf;
@@ -418,7 +418,7 @@ appendn(Buf_t* buf, char* str, int n)
 		i = buf->nxt - buf->buf;
 		m = (((buf->end - buf->buf) + n + CHUNK + 1) / CHUNK) * CHUNK;
 		if (!(buf->buf = newof(buf->buf, char, m, 0)))
-			report(3, "out of space [buffer resize]", NiL, (unsigned long)0);
+			report(3, "out of memory [buffer resize]", NiL, (unsigned long)0);
 		buf->end = buf->buf + m;
 		buf->nxt = buf->buf + i;
 	}
@@ -453,7 +453,7 @@ duplicate(char* s)
 
 	n = strlen(s);
 	if (!(t = newof(0, char, n, 1)))
-		report(3, "out of space [duplicate]", s, (unsigned long)0);
+		report(3, "out of memory [duplicate]", s, (unsigned long)0);
 	strcpy(t, s);
 	return t;
 }
@@ -468,7 +468,7 @@ dictionary(void)
 	Dict_t*	dict;
 
 	if (!(dict = newof(0, Dict_t, 1, 0)))
-		report(3, "out of space [dictionary]", NiL, (unsigned long)0);
+		report(3, "out of memory [dictionary]", NiL, (unsigned long)0);
 	return dict;
 }
 
@@ -542,7 +542,7 @@ search(register Dict_t* dict, char* name, void* value)
 	else if (value)
 	{
 		if (!(root = newof(0, Dict_item_t, 1, strlen(name))))
-			report(3, "out of space [dictionary]", name, (unsigned long)0);
+			report(3, "out of memory [dictionary]", name, (unsigned long)0);
 		strcpy(root->name, name);
 	}
 	if (root)
@@ -609,7 +609,7 @@ rule(char* name)
 	if (!(r = (Rule_t*)search(state.rules, name, NiL)))
 	{
 		if (!(r = newof(0, Rule_t, 1, 0)))
-			report(3, "out of space [rule]", name, (unsigned long)0);
+			report(3, "out of memory [rule]", name, (unsigned long)0);
 		r->name = (char*)search(state.rules, name, (void*)r);
 	}
 	return r;
@@ -628,7 +628,7 @@ cons(Rule_t* r, Rule_t* p)
 	if (!x)
 	{
 		if (!(x = newof(0, List_t, 1, 0)))
-			report(3, "out of space [list]", r->name, (unsigned long)0);
+			report(3, "out of memory [list]", r->name, (unsigned long)0);
 		x->rule = p;
 		x->next = r->prereqs;
 		r->prereqs = x;
@@ -712,7 +712,7 @@ view(void)
 			}
 			n = strlen(s);
 			if (!(vp = newof(0, View_t, 1, strlen(p) + n + 1)))
-				report(3, "out of space [view]", s, (unsigned long)0);
+				report(3, "out of memory [view]", s, (unsigned long)0);
 			vp->node = n + 1;
 			strcpy(vp->dir, s);
 			*(vp->dir + n) = '/';

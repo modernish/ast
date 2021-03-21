@@ -1192,7 +1192,7 @@ void	ed_putchar(register Edit_t *ep,register int c)
 #if SHOPT_ESH || SHOPT_VSH
 /*
  * returns the line and column corresponding to offset <off> in the physical buffer
- * if <cur> is non-zero and <= <off>, then correspodning <curpos> will start the search 
+ * if <cur> is non-zero and <= <off>, then corresponding <curpos> will start the search
  */
 Edpos_t ed_curpos(Edit_t *ep,genchar *phys, int off, int cur, Edpos_t curpos)
 {

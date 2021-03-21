@@ -42,7 +42,7 @@
 #define S_SPC1	21	/* special prefix characters after $ */
 #define S_SPC2	22	/* special characters after $ */
 #define S_DIG	23	/* digit character after $ */
-#define S_ALP	24	/* alpahbetic character after $ */
+#define S_ALP	24	/* alphabetic character after $ */
 #define S_LBRA	25	/* left brace after $ */
 #define S_RBRA	26	/* right brace after $ */
 #define S_PAR	27	/* set for $( */
@@ -55,7 +55,7 @@
 #define S_DOT	34	/* . char */
 #define S_META	35	/* | & ; < > inside ${...} reserved for future use */
 #define S_SPACE	S_BREAK	/* IFS space characters */
-#define S_DELIM	S_RES	/* IFS delimter characters */
+#define S_DELIM	S_RES	/* IFS delimiter characters */
 #define S_MBYTE S_NAME	/* IFS first byte of multi-byte char */
 #define S_BLNK	36	/* space or tab */
 /* The following must be the highest numbered states */

@@ -232,7 +232,7 @@ getids(Sfio_t* sp, const char* name, register int flags)
 			if ((maxgroups = getgroups(0, groups)) <= 0)
 				maxgroups = NGROUPS_MAX;
 			if (!(groups = newof(0, gid_t, maxgroups + 1, 0)))
-				error(ERROR_exit(1), "out of space [group array]");
+				error(ERROR_exit(1), "out of memory [group array]");
 		}
 		ngroups = getgroups(maxgroups, groups);
 		for (i = j = 0; i < ngroups; i++)

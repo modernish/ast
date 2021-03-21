@@ -28,7 +28,7 @@ function abspath
         cd ~-
         print $newdir/$base
 }
-#test for proper exit of shell
+# test for proper exit of shell
 builtin getconf
 ABSHELL=$(abspath)
 print exit 0 >.profile

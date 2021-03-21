@@ -114,7 +114,7 @@ typedef struct edit
 	genchar	*e_physbuf;	/* temporary workspace buffer */
 	int	e_lbuf[LOOKAHEAD];/* pointer to look-ahead buffer */
 	int	e_fd;		/* file descriptor */
-	int	e_ttyspeed;	/* line speed, also indicates tty parms are valid */
+	int	e_ttyspeed;	/* line speed, also indicates tty parameters are valid */
 	int	e_tabcount;
 #ifdef _hdr_utime
 	ino_t	e_tty_ino;

@@ -34,7 +34,7 @@ int sfpoll(Sfio_t** fa, reg int n, int tm)
 int sfpoll(fa, n, tm)
 Sfio_t**	fa;	/* array of streams to poll		*/
 reg int		n;	/* number of streams in array		*/
-int		tm;	/* time in millisecs for select/poll	*/
+int		tm;	/* time in milliseconds for select/poll	*/
 #endif
 {
 	reg int		r, c, m, np, eintr;

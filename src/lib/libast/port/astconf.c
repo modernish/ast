@@ -813,7 +813,7 @@ feature(register Feature_t* fp, const char* name, const char* path, const char* 
 		if (!(fp = newof(0, Feature_t, 1, n + 1)))
 		{
 			if (conferror)
-				(*conferror)(&state, &state, 2, "%s: out of space", name);
+				(*conferror)(&state, &state, 2, "%s: out of memory", name);
 			return 0;
 		}
 		fp->op = -1;

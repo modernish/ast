@@ -236,7 +236,7 @@ omitted features that are completely upward compatible.
 	the stty lnext character is set to control-v or is unset.
 	The sequence escape control-v will display the shell version.
 
-29.	In ksh-88, DEBUG traps were executed. after each command.  In ksh-93
+29.	In ksh-88, DEBUG traps were executed after each command.  In ksh-93
 	DEBUG traps are executed before each command.
 
 30.	In ksh-88, a redirection to a file name given by an empty string was

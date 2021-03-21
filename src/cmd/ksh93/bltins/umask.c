@@ -95,4 +95,3 @@ int	b_umask(int argc,char *argv[],Shbltin_t *context)
 	}
 	return(0);
 }
-

@@ -54,7 +54,7 @@ size_t	n;	/* buffer size */
 int	rc;	/* record character */
 long	tm;	/* time-out */
 int	action;	/* >0: peeking, if rc>=0, get action records,
-		   <0: no peeking, if rc>=0, get -action records,
+		   <0: no peeking, if rc>=0, get action records,
 		   =0: no peeking, if rc>=0, must get a single record
 		   =2: same as >0, but always use select(2)
 		*/
@@ -107,12 +107,12 @@ int	action;	/* >0: peeking, if rc>=0, get action records,
 					break;
 			}
 		}
-#endif /* stream_peek */
+#endif /* _stream_peek */
 
 		if(ntry == 1)
 			break;
 
-		/* poll or select to see if data is present.  */
+		/* use select to see if data is present */
 		while(tm >= 0 || action > 0 ||
 			/* block until there is data before peeking again */
 			((t&STREAM_PEEK) && rc >= 0) ||

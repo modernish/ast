@@ -834,8 +834,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   $RANDOM
   $LINENO
 
-- Fixed two bugs that caused `unset .sh.lineno` to always produce a memory
-  fault and `(unset .sh.level)` to memory fault when run in nested
+- Fixed two bugs that caused 'unset .sh.lineno' to always produce a memory
+  fault and '(unset .sh.level)' to memory fault when run in nested
   functions.
 
 2020-06-18:
@@ -880,7 +880,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 2020-06-13:
 
 - Fixed a timezone name determination bug on FreeBSD that caused the
-  output from `LC_ALL=C printf '%T' now` to print the wrong time zone name.
+  output from "LC_ALL=C printf '%T\n' now" to print the wrong time zone name.
 
 2020-06-11:
 
@@ -927,14 +927,14 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   Emacs editing mode is bugged in ksh93u+ and ksh2020. Let's
   say you were to run the following commands after starting
   a fresh instance of ksh:
-  $ alias foo='true'
+  $ alias foo=true
   $ unalias foo
   If you type 'a' and then press the up arrow on your keyboard,
-  ksh will complete 'a' to `alias foo='true'` by doing a reverse
+  ksh will complete 'a' to 'alias foo=true' by doing a reverse
   search for the last command that starts with 'a'.
   Run the alias command again, then type 'u' and press the up
-  arrow key again. If ksh is in Vi mode, you will get `unalias foo`,
-  but in Emacs mode you will get `alias foo='true'` again.
+  arrow key again. If ksh is in Vi mode, you will get 'unalias foo',
+  but in Emacs mode you will get 'alias foo=true' again.
   All subsequent commands were ignored as ksh was saving the first
   command and only based later searches off of it.
 

@@ -410,7 +410,7 @@ done:
 	_Sfi = f->val = obuf ? osize : 0;
 
 	/* blksz is used for aligning disk block boundary while reading data to
-	** optimize data transfer from disk (eg, via direct I/O). blksz can be
+	** optimize data transfer from disk (e.g., via direct I/O). blksz can be
 	** at most f->size/2 so that data movement in buffer can be optimized.
 	** blksz should also be a power-of-2 for optimal disk seeks.
 	*/

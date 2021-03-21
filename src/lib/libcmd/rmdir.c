@@ -123,4 +123,3 @@ b_rmdir(int argc, char** argv, Shbltin_t* context)
 	}
 	return(error_info.errors != 0);
 }
-

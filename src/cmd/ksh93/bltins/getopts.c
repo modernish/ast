@@ -19,7 +19,7 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * getopts  optstring name [arg...]
+ * getopts [-a name] optstring name [args...]
  *
  *   David Korn
  *   AT&T Labs
@@ -200,4 +200,3 @@ int	b_getopts(int argc,char *argv[],Shbltin_t *context)
         opt_info.disc = 0;
 	return(r);
 }
-

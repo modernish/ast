@@ -24,7 +24,7 @@
  * Glenn Fowler
  * AT&T Research
  *
- * return 1 if path exisis
+ * return 1 if path exists
  * maintains a cache to minimize stat(2) calls
  * path is modified in-place but restored on return
  * path components checked in pairs to cut stat()'s

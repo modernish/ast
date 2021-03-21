@@ -7,10 +7,10 @@
 #
 # @(#)mamexec (gsf@research.att.com) 07/17/94
 #
-# mamexec [ -dfins ] [ target ... ] < mam-file
+# mamexec [ -dfins ] [ target ... ] < mamfile
 #
 # NOTE: variables defined in this script may conflict with
-#	mam-file variables
+#	mamfile variables
 #
 
 _command_=mamexec
@@ -39,7 +39,7 @@ do	case $# in
 		;;
 	-*)	case $1 in
 		-*[abceghjklmopqrtuvwxyz_A-Z0-9]*) # [!...] not portable
-			echo "Usage: $_command_ [ -dfins ] [ target ... ] < mam-file" >&2; exit 2
+			echo "Usage: $_command_ [ -dfins ] [ target ... ] < mamfile" >&2; exit 2
 			;;
 		*)	case $1 in
 			*d*)	_debug_="eval echo $_command_: debug: >&2" ;;

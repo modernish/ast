@@ -148,7 +148,7 @@ spliceline(Sfio_t* s, int op, void* val, Sfdisc_t* ad)
  *
  *	flags: 0		arg: open Sfio_t* 
  *	flags: SF_READ		arg: file name
- *	flags: SF_STRING	arg: null terminated char*
+ *	flags: SF_STRING	arg: null-terminated char*
  *
  * if line!=0 then it points to a line count that starts at 0
  * and is incremented for each input line

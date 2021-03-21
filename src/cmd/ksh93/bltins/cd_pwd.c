@@ -254,4 +254,3 @@ int	b_pwd(int argc, char *argv[],Shbltin_t *context)
 	sfputr(sfstdout,cp,'\n');
 	return(0);
 }
-

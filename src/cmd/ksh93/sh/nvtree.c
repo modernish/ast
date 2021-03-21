@@ -885,7 +885,7 @@ static char **genvalue(char **argv, const char *prefix, int n, struct Walk *wp)
 			}
 			else if(outfile && *cp=='[' && cp[-1]!='.')
 			{
-				/* skip multi-dimensional arrays */
+				/* skip multidimensional arrays */
 				if(*nv_endsubscript((Namval_t*)0,cp,0)=='[')
 					continue;
 				if(wp->indent>0)

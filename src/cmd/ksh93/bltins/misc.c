@@ -19,15 +19,20 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * exec [arg...]
+ * bg [job...]
+ * disown [job...]
+ * exec [-c] [-a name] [command [arg ...]]
  * eval [arg...]
+ * fg [job...]
  * jobs [-lnp] [job...]
- * login [arg...]
  * let expr...
+ * redirect [redirection...]
+ * source file [arg...]
  * . file [arg...]
  * :, true, false
  * wait [job...]
  * shift [n]
+ * times
  *
  *   David Korn
  *   AT&T Labs
@@ -322,7 +327,7 @@ int    b_dot_cmd(register int n,char *argv[],Shbltin_t *context)
 }
 
 /*
- * null, true  command
+ * null, true command
  */
 int    b_true(int argc,register char *argv[],Shbltin_t *context)
 {
@@ -333,7 +338,7 @@ int    b_true(int argc,register char *argv[],Shbltin_t *context)
 }
 
 /*
- * false  command
+ * false command
  */
 int    b_false(int argc,register char *argv[], Shbltin_t *context)
 {
@@ -571,4 +576,3 @@ int	b_universe(int argc, char *argv[],Shbltin_t *context)
 	return(0);
 }
 #endif /* cmd_universe */
-

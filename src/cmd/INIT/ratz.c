@@ -1313,7 +1313,7 @@ typedef struct internal_state {
     gz_headerp  gzhead;  /* gzip header information to write */
     uInt   gzindex;      /* where in extra, name, or comment */
     Byte  method;        /* STORED (for zip only) or DEFLATED */
-    int   last_flush;    /* value of flush param for previous deflate call */
+    int   last_flush;    /* value of flush parameter for previous deflate call */
 
                 /* used by deflate.c: */
 
@@ -4939,7 +4939,7 @@ char**	argv;
 	while (block(stdin, gz, (char*)&header))
 	{
 		/*
-		 * last 2 blocks are NUL
+		 * last 2 blocks are NULL
 		 */
 
 		if (!*header.name)

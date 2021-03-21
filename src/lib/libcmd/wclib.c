@@ -512,4 +512,3 @@ int wc_count(Wc_t *wp, Sfio_t *fd, const char* file)
 	wp->lines = nlines;
 	return 0;
 }
-

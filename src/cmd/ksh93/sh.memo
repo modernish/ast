@@ -484,7 +484,7 @@ prior to evaluation.
 A convenient alias,
 .ce
 \f5alias r='hist -s'\fP
-has been pre-defined so that
+has been predefined so that
 the single key-stroke
 \f5r\fP
 can be used to re-execute the previous command
@@ -975,7 +975,7 @@ The value of
 variable
 is the value of the most
 recent assignment plus the elapsed time.
-By default, the time is measured in milli-seconds,
+By default, the time is measured in milliseconds,
 but since
 .B \s-1SECONDS\s+1
 is a floating point variable, the
@@ -2706,7 +2706,7 @@ A third reason to have a command built-in is so that
 it will be unaffected by the setting of the
 .B \s-1PATH\s+1
 variable.
-The \f5print\fP  command fits this category.
+The \f5print\fP command fits this category.
 Scripts that use \f5print\fP will be portable
 to all sites that run \f5ksh\fP.
 .P

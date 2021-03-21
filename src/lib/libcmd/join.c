@@ -704,7 +704,7 @@ sfprintf(sfstdout, "[2#%d:0,%lld,%lld]", __LINE__, lo, hi);
 						jp->samesize = roundof(n2, 16);
 						if (!(jp->same = newof(jp->same, char, jp->samesize, 0)))
 						{
-							error(ERROR_SYSTEM|2, "out of space");
+							error(ERROR_SYSTEM|2, "out of memory");
 							return -1;
 						}
 					}
@@ -824,7 +824,7 @@ b_join(int argc, char** argv, Shbltin_t* context)
 	cmdinit(argc, argv, context, ERROR_CATALOG, ERROR_NOTIFY);
 #endif
 	if (!(jp = init()))
-		error(ERROR_system(1),"out of space");
+		error(ERROR_system(1),"out of memory");
 	jp->context = context;
 	for (;;)
 	{

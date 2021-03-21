@@ -1077,7 +1077,7 @@ static struct argnod *assign(Lex_t *lexp, register struct argnod *ap, int type)
 			struct argnod *arg = lexp->arg;
 			if(n!=0)
 				sh_syntax(lexp);
-			/* check for sys5 style function */
+			/* check for SysV style function */
 			if(sh_lex(lexp)!=LPAREN || sh_lex(lexp)!=RPAREN)
 			{
 				lexp->arg = arg;
@@ -1384,7 +1384,7 @@ static Shnode_t *simple(Lex_t *lexp,int flag, struct ionod *io)
 		associative = 1;
 	}
 	t = (struct comnod*)getnode(comnod);
-	t->comio=io; /*initial io chain*/
+	t->comio=io; /* initial io chain */
 	/* set command line number for error messages */
 	t->comline = sh_getlineno(lexp);
 	argtail = &(t->comarg);

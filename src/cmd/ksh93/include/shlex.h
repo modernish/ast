@@ -155,5 +155,4 @@ extern void 		sh_syntax(Lex_t*);
     extern unsigned long        kiaentity(Lex_t*, const char*,int,int,int,int,unsigned long,int,int,const char*);
 #endif /* SHOPT_KIA */
 
-
 #endif /* !NOTSYM */

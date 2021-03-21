@@ -56,9 +56,9 @@
 	  could core dump has been fixed.
 12-06-06  A bug in which unset of an associative array of compound variables
 	  did not completely unset the variable has been fixed.
-12-06-06  A bug in which exporting left or right justified fields could loose
+12-06-06  A bug in which exporting left or right justified fields could lose
 	  the field width has been fixed.
-12-06-06  A bug on Solaris11 in which >; did not work for /dev/null was fixed.
+12-06-06  A bug on Solaris 11 in which >; did not work for /dev/null was fixed.
 12-06-05  A race condition which occurred when stopping a builtin command
 	  invoked from a subshell has been fixed.
 12-06-05  A bug with appending elements to an empty indexed array has been
@@ -99,7 +99,7 @@
 12-05-15  Fixed a .paths bug in which only the first BUILTIN_LIB assignment worked.
 12-05-14  Arithmetic expressions and subexpressions that are not floating point
 	  now treat -0 as 0, so that $((-0)) is 0 and $((-0.0)) is -0.
-12-05-11  'unset .sh' now fails with readonly message instead of coredump.
+12-05-11  'unset .sh' now fails with a readonly message instead of a coredump.
 12-05-11  A bug which left an associative array arr containing one element in
 	  the wrong state after expanding with ${arr[@]} has been fixed.
 12-05-10  A bug in which typeset -f did not display options that called getopts
@@ -163,9 +163,9 @@
 12-04-02  Made some namespace changes and added a regression test.
 12-03-30  A bug with namespaces in which PATH and FPATH set in a namespace was
 	  not restored when leaving the namespace has been fixed.
-12-03-29  A bug in which appending an index array onto an array without elements
+12-03-29  A bug in which appending an indexed array onto an array without elements
 	  caused the first element to be 1 rather than 0 has been fixed.
-12-03-29  A bug which could cause a core dump when copying a large index array
+12-03-29  A bug which could cause a core dump when copying a large indexed array
 	  has been fixed.
 12-03-28  The shell now generates an error message when the sizes with L, Z, and
 	  R are > 32767 on 32 bit binaries instead of generating a core dump.
@@ -185,7 +185,7 @@
 	  ref is a name reference to arr[i] has been fixed.
 12-03-21  A bug in which assigning a compound variable into arr[i], where
 	  arr[i] is an array variable did not work correctly has been fixed.
-12-03-21  A bug with multi-dimenstional index arrays in which ${arr[i][j]}
+12-03-21  A bug with multidimensional indexed arrays in which ${arr[i][j]}
 	  could generate a bogus error message when i was > 9 has been fixed.
 12-03-21  A bug in which typeset v=foo, typeset -p v[0] generated a core dump
 	  has been fixed.
@@ -207,7 +207,7 @@
 	  error since a is not an assignment command.
 12-03-16  A bug in which an unset discipline from a variable defined in a
 	  subshell is not invoked in the subshell has been fixed.
-12-03-08  The assignment typeset -a (x=1 y=2) now creates an index array
+12-03-08  The assignment typeset -a (x=1 y=2) now creates an indexed array
 	  of two elements rather than an array of one element which is
 	  a compound variable.
 12-03-02 +The vi and emacs edit modes now list all the entries in a directory
@@ -353,7 +353,7 @@
 	  jobs to complete has been fixed.
 11-06-09  A bug which caused the options.sh regression test to fail on OS390
 	  Linux has been fixed.  The bug could also have affected other systems.
-11-06-07 +A number of changes to support the still undocuments namespace option
+11-06-07 +A number of changes to support the still undocumented namespace option
 	  have been added.
 11-06-06  A bug in which command substitution of eval would hang when it  had
 	  standard error redirected to standard output has been fixed.
@@ -402,7 +402,7 @@
 	  an a core dump for not fixed arrays.
 11-04-25  A bug in the references to two dimensional compound arrays has
 	  been fixed.
-11-04-20  A bug in which a name reference to a multidimentional index array
+11-04-20  A bug in which a name reference to a multidimensional indexed array
 	  index, nameref x=foo[3][4], did not work correctly has been fixed.
 11-04-18  Changes were added to allow fixed size arrays of variable sized
 	  objects when the SHOPT_FIXEDARRAY compile option defined on 10-09-28.
@@ -538,7 +538,7 @@
 10-11-18  Fixed a bug in which typeset -T foo; typeset -T could cause a
 	  core dump.
 10-11-17  Fixed a bug in which the error message for set -u could come out
-	  garbelled.
+	  garbled.
 10-11-17  Modified the parser so that typeset -a var=(...) no longer checks
 	  the first index for aliases and reserved words.
 10-11-17  A bug in which a subshell command consisted of only a for or until
@@ -641,7 +641,7 @@
 	  has been fixed.
 10-09-08  A bug in the processing of references to multidimensional arrays
 	  in arithmetic expressions has been fixed.
-10-09-08  A bug in the handling of multi-dimensional arrays which caused
+10-09-08  A bug in the handling of multidimensional arrays which caused
 	  the number of elements in each dimension to be incorrect has
 	  been fixed.
 10-09-07  The change for messages on 10-08-09 did not handle message in
@@ -716,7 +716,7 @@
 10-07-09  A bug in the handling of process substitution inside command
 	  substitution as part of a pipeline has been fixed.
 10-07-07  A bug in the output for compound variables containing
-	  multi-dimensional arrays has been fixed.
+	  multidimensional arrays has been fixed.
 10-07-06  ksh now recovers from changes made by bash to the history file without
 	  losing history commands.
 10-06-25  A bug in which a large here document containing command substitutions
@@ -789,7 +789,7 @@
 10-05-19  <<< with an empty string no longer gives an error.
 10-05-19  A bug in arithmetic evaluation when a name reference to an array
 	  instance was used has been fixed.
-10-05-14  A bug in which the shell treats a valid index array assignment,
+10-05-14  A bug in which the shell treats a valid indexed array assignment,
 	  typeset -a x=(foo (x=3;y=4) bar) as a syntax error has been fixed.
 10-05-13  A bug in creating name references to associative array variable
 	  after a lookup of one of its elements has been fixed.
@@ -996,7 +996,7 @@
 09-09-09  A bug in which a subshell containing a background process could
 	  block until the background process completed has been fixed.
 09-09-04  A bug in handling ${var[sub]}, where var is a nameref has been fixed.
-09-09-03  A bug which caused an index array to have the wrong number of elements
+09-09-03  A bug which caused an indexed array to have the wrong number of elements
 	  when it was converted from a compound variable by adding an another
 	  element has been fixed.
 09-09-03  Specifying export for a compound variable now generates an error.
@@ -1270,7 +1270,7 @@
 08-09-10  The shell now prints an error message when the type name specified
 	  for an indexed array subscript is not an enumeration type.
 08-09-10  A bug in which a subshell that spawned a background process could
-	  loose output that was produced after the foreground completed
+	  lose output that was produced after the foreground completed
 	  has been fixed.
 08-09-10  A timing bug on some systems that could cause coprocesses started by a
 	  subshell to not clean up and prevent other coprocesses has been fixed.
@@ -1335,7 +1335,7 @@
 	  jobs completed has been fixed.
 08-06-23  _KSH_VERSION added as a name reference to .sh.version.
 08-06-20  type now outputs 'special builtin' for special builtins.
-08-06-19  A couple of bugs in multi-dimensional arrays have been fixed.
+08-06-19  A couple of bugs in multidimensional arrays have been fixed.
 08-06-19  A bug in which a syntax error in a dot script could generate
 	  a syntax error in the next subsequent command has been fixed.
 08-06-17  Reduced the maximum function call depth to 2048 to avoid exceptions
@@ -1496,7 +1496,7 @@
 07-10-03  A bug in which : was not allowed as part of an alias name has been
 	  fixed.
 07-09-26  A bug in which appending a compound variable to a compound variable
-	  or to an index array didn't work has been fixed.
+	  or to an indexed array didn't work has been fixed.
 07-09-19  In both emacs and vi edit mode, the escape sequence \E[A (usually
 	  cursor up, when the cursor is at the end of the line will fetch
 	  the most recent line starting with the current line.
@@ -1543,7 +1543,7 @@
 	  returned by a process that catches the SIGCONT signal is stopped
 	  and then continued.
 07-12-13  A race condition in which a program that has been stopped and then
-	  continued could loose the exit status has been fixed.
+	  continued could lose its exit status has been fixed.
 07-12-12  Code to check for file system out of space write errors for all
 	  writes has been added.
 07-12-11  A bug in the macro expander for multibyte characters in which
@@ -1574,7 +1574,7 @@
 	  signs of { -NaN -Inf -0.0 } have been fixed.
 07-11-15 +The full { SIGRTMIN SIGRTMIN+1 ... SIGRTMAX-1 SIGRTMAX } range
 	  of signals, determined at runtime, are now supported.
-07-11-15  A bug in which creating an index array with only subscript 0 created
+07-11-15  A bug in which creating an indexed array with only subscript 0 created
 	  only a simple variable has been fixed.
 07-11-14  A bug in which appending to an indexed array using the form
 	  name+=([sub]=value) could cause the array to become an associative
@@ -1853,7 +1853,7 @@
 05-08-31 +In the case that IFS contains to adjacent new-lines so that
 	  new-line is not treated as a space delimiter, only a single
 	  new-line is deleted at the end of a command substitution.
-05-08-19 +When a tilde substitution expands to the / directory and is
+05-08-19 +When a tilde expansion expands to the / directory and is
 	  followed by a /, it is replaced by the empty string.
 05-08-16  A bug in which n<&m did not synchronize m has been fixed.
 05-08-16  A bug in which process substitution  ( <() and >() ) was not
@@ -2168,7 +2168,7 @@
 	  displays the function name followed by a comment containing the
 	  line number and the path name for the file that defined this function.
 03-02-28  A bug in which the value of $LINENO was not correct when executing
-	  command contained inside mult-line command substitutions has been
+	  command contained inside multi-line command substitutions has been
 	  fixed.
 03-02-19 +Since some existing ksh88 scripts use the undocumented and
 	  unintended ability to insert a : in front of the % and # parameter
@@ -2889,7 +2889,7 @@
 96-07-31  The error message for ksh -o unknown was incorrect.
 96-07-31  Functions invoked as name=value name, did not use
 	  values from the calling scope when evaluating value.
-96-07-31  A bug in which the shell would reexecute previously
+96-07-31  A bug in which the shell would re-execute previously
 	  executed code when a shell script or coprocess was
 	  run in the background has been fixed.
 96-07-31  A bug in which an empty here-document would leave

@@ -355,7 +355,7 @@
 	 regress.sh: INPUT and OUTPUT handle -f for printf instead of print
 04-06-11 package.sh: make sure $INSTALLROOT/bin is in front of $PATH
 	 package.sh: skip nmake if older than 2000-10-31
-04-05-20 package.sh: fix arg vs. package parse with - or '' to disambuguate
+04-05-20 package.sh: fix arg vs. package parse with - or '' to disambiguate
 04-05-11 package.sh: package verbose update lists closure for package setup
 	 package.sh: add src/lib/libardir to nmake proto bootstrap
 	 regress.sh: probe for rm -u vs. chmod -R u+rwx

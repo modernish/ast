@@ -287,4 +287,3 @@ static void hist_subst(const char *command,int fd,char *replace)
 	*(newp-1) =  '=';
 	sh_eval(sfopen(NIL(Sfio_t*),sp,"s"),1);
 }
-

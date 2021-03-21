@@ -265,7 +265,7 @@ of ksh.
 	r.  The error message for ksh -o unknown was incorrect.
 	s.  Functions invoked as name=value name, did not use
 	    values from the calling scope when evaluating value.
-	t.  A bug in which the shell would reexecute previously
+	t.  A bug in which the shell would re-execute previously
 	    executed code when a shell script or coprocess was
 	    run in the background has been fixed.
 	u.  A bug in which an empty here-document would leave
@@ -452,4 +452,3 @@ of ksh.
 
 18.	Incompatibilities with 12/28/93 version.
 	None intentional.
-

@@ -30,7 +30,7 @@ hash:			generic, scoped hash table support
 	hashsize	explicitly change table size (usually automatic)
 	hashwalk	apply function to each table entry
 	memhash		return hash code for n-char chunk of memory
-	strhash		return hash code for null terminated string
+	strhash		return hash code for null-terminated string
 
 include/ast:		libast support headers
 

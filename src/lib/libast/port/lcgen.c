@@ -421,7 +421,7 @@ char**		argv;
 		case CHARSET:
 			if (!(cp = newof(0, Charset_t, 1, s - b + 1)))
 			{
-				fprintf(stderr, "%s: %d: out of space\n", command, line);
+				fprintf(stderr, "%s: %d: out of memory\n", command, line);
 				return 1;
 			}
 			b = (char*)(cp + 1);
@@ -437,7 +437,7 @@ char**		argv;
 		case TERRITORY:
 			if (!(tp = newof(0, Territory_t, 1, s - b + 1)))
 			{
-				fprintf(stderr, "%s: %d: out of space\n", command, line);
+				fprintf(stderr, "%s: %d: out of memory\n", command, line);
 				return 1;
 			}
 			b = (char*)(tp + 1);
@@ -459,7 +459,7 @@ char**		argv;
 					}
 					if (!(ll = newof(0, Language_list_t, 1, 0)))
 					{
-						fprintf(stderr, "%s: %d: out of space\n", command, line);
+						fprintf(stderr, "%s: %d: out of memory\n", command, line);
 						return 1;
 					}
 					if (!tp->languages)
@@ -491,7 +491,7 @@ char**		argv;
 		case LANGUAGE:
 			if (!(lp = newof(0, Language_t, 1, s - b + 1)))
 			{
-				fprintf(stderr, "%s: %d: out of space\n", command, line);
+				fprintf(stderr, "%s: %d: out of memory\n", command, line);
 				return 1;
 			}
 			b = (char*)(lp + 1);
@@ -527,14 +527,14 @@ char**		argv;
 						fprintf(lf, "0,");
 					if (!(ap = newof(0, Attribute_t, 1, 0)))
 					{
-						fprintf(stderr, "%s: %d: out of space\n", command, line);
+						fprintf(stderr, "%s: %d: out of memory\n", command, line);
 						return 1;
 					}
 					ap->link.code = b;
 					ap->link.index = i++;
 					if (!(al = newof(0, Attribute_list_t, 1, 0)))
 					{
-						fprintf(stderr, "%s: %d: out of space\n", command, line);
+						fprintf(stderr, "%s: %d: out of memory\n", command, line);
 						return 1;
 					}
 					if (!lp->attributes)
@@ -560,7 +560,7 @@ char**		argv;
 		case MAP:
 			if (!(mp = newof(0, Map_t, 1, s - b + 1)))
 			{
-				fprintf(stderr, "%s: %d: out of space\n", command, line);
+				fprintf(stderr, "%s: %d: out of memory\n", command, line);
 				return 1;
 			}
 			b = (char*)(mp + 1);

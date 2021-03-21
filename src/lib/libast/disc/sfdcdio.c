@@ -88,7 +88,7 @@ int		type;
 	}
 
 	if(done < n && (di->cntl & FDIRECT) )
-	{	/* turn off directIO for remaining IO operation */
+	{	/* turn off direct IO for remaining IO operation */
 		di->cntl &= ~FDIRECT;
 		(void)fcntl(f->file, F_SETFL, di->cntl);
 	}

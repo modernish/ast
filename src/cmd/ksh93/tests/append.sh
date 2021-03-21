@@ -34,13 +34,13 @@ fi
 iarray=( one two three )
 { iarray+= (four five six) ;} 2> /dev/null
 if	[[ ${iarray[@]} != 'one two three four five six' ]]
-then	err_exit 'index array append fails'
+then	err_exit 'indexed array append fails'
 fi
 unset iarray
 iarray=one
 { iarray+= (four five six) ;} 2> /dev/null
 if	[[ ${iarray[@]} != 'one four five six' ]]
-then	err_exit 'index array append to scalar fails'
+then	err_exit 'indexed array append to scalar fails'
 fi
 typeset -A aarray
 aarray=( [1]=1 [3]=4 [xyz]=xyz )
@@ -68,8 +68,8 @@ fi
 unset foo
 foo[0]=(x=3)
 foo+=(x=4)
-[[ ${foo[1].x} == 4 ]] || err_exit 'compound append to index array not working'
-[[ ${foo[0].x} == 3 ]] || err_exit 'compound append to index array unsets existing variables'
+[[ ${foo[1].x} == 4 ]] || err_exit 'compound append to indexed array not working'
+[[ ${foo[0].x} == 3 ]] || err_exit 'compound append to indexed array unsets existing variables'
 
 unset foo
 foo=a
@@ -80,23 +80,23 @@ unset x z arr
 typeset -a x=(a b)
 x+=(c d)
 exp='typeset -a x=(a b c d)'
-[[ $(typeset -p x) == "$exp" ]] || err_exit 'append (c d) to index array not working'
+[[ $(typeset -p x) == "$exp" ]] || err_exit 'append (c d) to indexed array not working'
 
 typeset -a arr=(a=b b=c)
 arr+=(c=d d=e)
 exp='typeset -a arr=(a\=b b\=c c\=d d\=e)'
-[[ $(typeset -p arr) == "$exp" ]] || err_exit 'append (c=d d=e) to index array not working'
+[[ $(typeset -p arr) == "$exp" ]] || err_exit 'append (c=d d=e) to indexed array not working'
 
 exp='typeset -a z=(a\=b b\=c d\=3 e f\=l)'
 typeset -a z=(a=b b=c)
 { z+=(d=3 e f=l); } 2> /dev/null
-[[ $(typeset -p z) == "$exp" ]] || err_exit 'append (d=3 e f=l) to index array not working'
+[[ $(typeset -p z) == "$exp" ]] || err_exit 'append (d=3 e f=l) to indexed array not working'
 
 unset arr2
 exp='typeset -a arr2=(b\=c :)'
 typeset -a arr2
 arr2+=(b=c :)
-[[ $(typeset -p arr2) == "$exp" ]] || err_exit 'append (b=c :) to index array not working'
+[[ $(typeset -p arr2) == "$exp" ]] || err_exit 'append (b=c :) to indexed array not working'
 
 unset arr2
 exp='typeset -a arr2=(b\=c xxxxx)'
@@ -104,6 +104,6 @@ typeset -a arr2
 {
 	arr2+=(b=c xxxxx)
 } 2> /dev/null
-[[ $(typeset -p arr2) == "$exp" ]] || err_exit 'append (b=c xxxxx) to index array not working'
+[[ $(typeset -p arr2) == "$exp" ]] || err_exit 'append (b=c xxxxx) to indexed array not working'
 
 exit $((Errors<125?Errors:125))

@@ -27,7 +27,7 @@ void _STUB_vmlast(){}
 
 #include	"vmhdr.h"
 
-/*	Allocation with freeing and reallocing of last allocated block only.
+/*	Allocation with freeing and reallocating of last allocated block only.
 **
 **	Written by Kiem-Phong Vo, kpv@research.att.com, 01/16/94.
 */

@@ -1091,7 +1091,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				if(!np && !strchr(com0,'/'))
 				{
 					Dt_t *root = command?shp->bltin_tree:shp->fun_tree;
-					np = nv_bfsearch(com0, root, &nq, &cp); 
+					np = nv_bfsearch(com0, root, &nq, &cp);
 #if SHOPT_NAMESPACE
 					if(shp->namespace && !nq && !cp)
 						np = sh_fsearch(shp,com0,0);
@@ -1844,7 +1844,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				sh_iorenumber(shp,shp->inpipe[0],0);
 				/*
 				 * if read end of pipe is a simple command
-				 * treat as non-sharable to improve performance
+				 * treat as non-shareable to improve performance
 				 */
 				if(simple)
 					sfset(sfstdin,SF_PUBLIC|SF_SHARE,0);
@@ -2051,7 +2051,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 #ifdef SIGTSTP
 			if(!pipejob && sh_isstate(SH_MONITOR) && job.jobcontrol)
 				tcsetpgrp(JOBTTY,shp->gd->pid);
-#endif /*SIGTSTP */
+#endif /* SIGTSTP */
 			job.curpgid = savepgid;
 			job.exitval = saveexitval;
 			job.waitall = savewaitall;
@@ -2204,7 +2204,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 			sh_optclear(shp,optlist);
 			if(jmpval)
 				siglongjmp(*shp->jmplist,jmpval);
-#endif /*SHOPT_OPTIMIZE */
+#endif /* SHOPT_OPTIMIZE */
 			if(shp->st.breakcnt>0)
 				shp->st.execbrk = (--shp->st.breakcnt !=0);
 			shp->st.loopcnt--;
@@ -2221,7 +2221,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 #if SHOPT_FILESCAN
 			Sfio_t *iop=0;
 			int savein=-1;
-#endif /*SHOPT_FILESCAN*/
+#endif /* SHOPT_FILESCAN */
 #if SHOPT_OPTIMIZE
 			int  jmpval = ((struct checkpt*)shp->jmplist)->mode;
 			struct checkpt *buffp = (struct checkpt*)stkalloc(shp->stk,sizeof(struct checkpt));
@@ -2243,7 +2243,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				if(tt->com.comset)
 					nv_setlist(tt->com.comset,NV_IDENT|NV_ASSIGN,0);
 			}
-#endif /*SHOPT_FILESCAN */
+#endif /* SHOPT_FILESCAN */
 			shp->st.loopcnt++;
 			while(shp->st.execbrk==0)
 			{
@@ -2254,7 +2254,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 						break;
 				}
 				else
-#endif /*SHOPT_FILESCAN */
+#endif /* SHOPT_FILESCAN */
 				if((sh_exec(tt,first)==0)!=(type==TWH))
 					break;
 				r = sh_exec(t->wh.dotre,first|errorflg);
@@ -2268,7 +2268,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 #if SHOPT_FILESCAN
 				shp->offsets[0] = -1;
 				shp->offsets[1] = 0;
-#endif /*SHOPT_FILESCAN */
+#endif /* SHOPT_FILESCAN */
 			}
 #if SHOPT_OPTIMIZE
 		endwhile:
@@ -2278,7 +2278,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 			sh_optclear(shp,optlist);
 			if(jmpval)
 				siglongjmp(*shp->jmplist,jmpval);
-#endif /*SHOPT_OPTIMIZE */
+#endif /* SHOPT_OPTIMIZE */
 			if(shp->st.breakcnt>0)
 				shp->st.execbrk = (--shp->st.breakcnt !=0);
 			shp->st.loopcnt--;
@@ -2291,7 +2291,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				dup(savein);
 				shp->cur_line = 0;
 			}
-#endif /*SHOPT_FILESCAN */
+#endif /* SHOPT_FILESCAN */
 			break;
 		    }
 		    case TARITH: /* (( expression )) */

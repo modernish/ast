@@ -288,7 +288,7 @@ then	PATH=
 	fi
 	unset PATH
 	if	[[ $(whence rm) != /*rm ]]
-	then	err_exit 'unsetting path  not working'
+	then	err_exit 'unsetting PATH not working'
 	fi
 fi
 PATH=/dev:$tmp
@@ -442,7 +442,7 @@ print FPATH=../xxfun > $tmp/bin/.paths
 cp "$(whence -p echo)" $tmp/new/bin
 PATH=$tmp/bin:$tmp/new/bin:$PATH
 x=$(whence -p echo 2> /dev/null)
-[[ $x == "$tmp/new/bin/echo" ]] ||  err_exit 'nonexistant FPATH directory in .paths file causes path search to fail'
+[[ $x == "$tmp/new/bin/echo" ]] ||  err_exit 'nonexistent FPATH directory in .paths file causes path search to fail'
 
 $SHELL 2> /dev/null <<- \EOF || err_exit 'path search problem with non-existent directories in PATH'
 	builtin getconf

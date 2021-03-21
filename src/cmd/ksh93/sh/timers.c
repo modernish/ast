@@ -242,4 +242,3 @@ void	timerdel(void *handle)
 		signal(SIGALRM,(sh.sigflag[SIGALRM]&SH_SIGFAULT)?sh_fault:SIG_DFL);
 	}
 }
-

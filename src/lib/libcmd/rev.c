@@ -76,7 +76,7 @@ static int rev_char(Sfio_t *in, Sfio_t *out)
 				w = roundof(n + 1, 1024);
 				if (!(wp = newof(wp, wchar_t, w, 0)))
 				{
-					error(ERROR_SYSTEM|2, "out of space");
+					error(ERROR_SYSTEM|2, "out of memory");
 					return 0;
 				}
 			}

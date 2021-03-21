@@ -289,7 +289,7 @@ visit(State_t* state, register FTSENT* ent)
 	if (state->directory)
 	{
 		if ((state->postsiz + len) > state->pathsiz && !(state->path = newof(state->path, char, state->pathsiz = roundof(state->postsiz + len, PATH_CHUNK), 0)))
-			error(ERROR_SYSTEM|3, "out of space");
+			error(ERROR_SYSTEM|3, "out of memory");
 		if (state->hierarchy && ent->fts_level == 0 && strchr(base, '/'))
 		{
 			s = state->path + state->postsiz;
@@ -688,7 +688,7 @@ b_cp(int argc, register char** argv, Shbltin_t* context)
 	if (!(sh = CMD_CONTEXT(context)) || !(state = (State_t*)sh->ptr))
 	{
 		if (!(state = newof(0, State_t, 1, 0)))
-			error(ERROR_SYSTEM|3, "out of space");
+			error(ERROR_SYSTEM|3, "out of memory");
 		if (sh)
 			sh->ptr = state;
 	}
@@ -873,7 +873,7 @@ b_cp(int argc, register char** argv, Shbltin_t* context)
 		argv++;
 	}
 	if (!(v = (char**)stkalloc(stkstd, (argc + 2) * sizeof(char*))))
-		error(ERROR_SYSTEM|3, "out of space");
+		error(ERROR_SYSTEM|3, "out of memory");
 	memcpy(v, argv, (argc + 1) * sizeof(char*));
 	argv = v;
 	if (!standard)
@@ -960,7 +960,7 @@ b_cp(int argc, register char** argv, Shbltin_t* context)
 		error(3, "%s: not a directory", file);
 	state->postsiz = strlen(file);
 	if (state->pathsiz < roundof(state->postsiz + 2, PATH_CHUNK) && !(state->path = newof(state->path, char, state->pathsiz = roundof(state->postsiz + 2, PATH_CHUNK), 0)))
-		error(ERROR_SYSTEM|3, "out of space");
+		error(ERROR_SYSTEM|3, "out of memory");
 	memcpy(state->path, file, state->postsiz + 1);
 	if (state->directory && state->path[state->postsiz - 1] != '/')
 		state->path[state->postsiz++] = '/';

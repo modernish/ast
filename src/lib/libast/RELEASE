@@ -706,7 +706,7 @@
 03-09-23 modedata.c: table is for external modes, so no arch specific hacks
 	 optget.c: fix option prefix match translation bug
 	 optget.c: add `<length> <name>=<value>\n' to optstr()
-	 features/lib: add memcmp() test for sgi optimzation bug
+	 features/lib: add memcmp() test for sgi optimization bug
 03-09-22 regex.h,regcomp.c: add regncomp()
 	 regclass.c: fix for loop dangling ; in regaddclass()
 03-09-20 sftable.c,sfvprintf.c: fix SFFMT_CHAR handling to match extf api
@@ -963,7 +963,7 @@
 02-06-27 ast_std.h: map _sysconf => _ast_sysconf for sun
 02-06-26 cdt,sfio,vmalloc: kpv sync -- is this ever easy?
 02-06-24 sfio: kpv sync, vfwscanf(),fputw() fix (wcslen(x)*sizeof(wchar_t)!!)
-	 misc/fts.c: fix symlink chdir() optimzation bug
+	 misc/fts.c: fix symlink chdir() optimization bug
 02-06-11 sfio/sfwrite.c: string to file fix
 	 Makefile: __OBSOLETE__==20020101
 02-06-01 regex/regcomp.c: REG_DELIMITED now consumes the delimiter
@@ -1076,7 +1076,7 @@
 	 misc/glob.c: fix \ trim() bug that restored / to wrong position
 	 string/fmtre.c: fix { ^ . $ } translations
 	 misc/optget.c: use original string if translation fails -- duh
-	 sfio/sfhdr.h: assume <errno.h> assigns proper atttibutes to errno
+	 sfio/sfhdr.h: assume <errno.h> assigns proper attributes to errno
 	 comp/regcmp.c: __ia64 workaround fixed by proper CC.DLL probe
 	 comp/getdate.c: __ia64 workaround fixed by proper CC.DLL probe
 	 features/lib: add lib getdate
@@ -1090,7 +1090,7 @@
 	 string/fmtmode.c: fix bug that omitted trailing '\0'
 01-10-12 misc/optget.c: . => \&. for --??nroff
 	 comp/wc.c: fix mbstate_t initialization typo
-	 features/float: fix max integer / float loop termiation
+	 features/float: fix max integer / float loop termination
 	 features/float: fix LDBL_UINTMAX_MAX typo that did DBL_UINTMAX_MAX
 01-10-11 include/sfio.h: fix _Sfstd* import/export
 	 features/common: fix _UWIN __DYNAMIC__() definition

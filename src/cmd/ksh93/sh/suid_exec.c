@@ -58,7 +58,7 @@
 #define SPECIAL		04100	/* setuid execute only by owner */
 #define FDIN		10	/* must be same as /dev/fd below */
 #undef FDSYNC 
-#define FDSYNC		11	/* used on sys5 to synchronize cleanup */
+#define FDSYNC		11	/* used on SysV to synchronize cleanup */
 #define FDVERIFY	12	/* used to validate /tmp process */
 #undef BLKSIZE 
 #define BLKSIZE		sizeof(char*)*1024
@@ -514,5 +514,3 @@ static int mycopy(int fdi, int fdo)
 }
 
 #endif /* _lib_setreuid */
-
-

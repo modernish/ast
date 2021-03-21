@@ -19,7 +19,7 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * read [-ACprs] [-d delim] [-u filenum] [-t timeout] [-n n] [-N n] [name...]
+ * read [-ACprsSv] [-d delim] [-u fd] [-t timeout] [-n count] [-N count] [var?prompt] [var ...]
  *
  *   David Korn
  *   AT&T Labs
@@ -201,7 +201,7 @@ static void timedout(void *handle)
  *  <names> is an array of variable names
  *  <fd> is the file descriptor
  *  <flags> is union of -A, -r, -s, and contains delimiter if not '\n'
- *  <timeout> is number of milli-seconds until timeout
+ *  <timeout> is the number of milliseconds until timeout
  */
 
 int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,ssize_t size,long timeout)
@@ -563,7 +563,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 			else
 				c = 0;
 			continue;
-#endif /*SHOPT_MULTIBYTE */
+#endif /* SHOPT_MULTIBYTE */
 		    case S_QUOTE:
 			c = shp->ifstable[*cp++];
 			if(inquote && c==S_QUOTE)
@@ -828,4 +828,3 @@ done:
 		siglongjmp(*shp->jmplist,jmpval);
 	return(jmpval);
 }
-

@@ -156,7 +156,7 @@ done
 [[ ${#ar[*]} == 9 ]] || err_exit  "\${#ar[*]} is '${#ar[*]}', should be 9"
 [[ ${ar[4][4]} == 40 ]] || err_exit "ar[4][4] is '${ar[4][4]}', should be 40"
 
-$SHELL 2> /dev/null -c 'compound c;float -a c.ar;(( c.ar[2][3][3] = 5))' || 'multi-dimensional arrays in arithmetic expressions not working'
+$SHELL 2> /dev/null -c 'compound c;float -a c.ar;(( c.ar[2][3][3] = 5))' || 'multidimensional arrays in arithmetic expressions not working'
 
 expected='typeset -a -l -E c.ar=([2]=([3]=([3]=5) ) )'
 unset c

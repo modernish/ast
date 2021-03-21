@@ -43,7 +43,7 @@ static const char usage[] =
     "other than a single byte:]"
     "{"
         "[+b?512 bytes.]"
-        "[+k?1-killobyte.]"
+        "[+k?1-kilobyte.]"
         "[+m?1-megabyte.]"
     "}"
 "[+?For backwards compatibility, \b-\b\anumber\a is equivalent to \b-n\b "

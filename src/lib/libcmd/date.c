@@ -95,8 +95,8 @@ static const char usage[] =
 "		[+d?day of month number]"
 "		[+D?date as \amm/dd/yy\a]"
 "		[+e?blank padded day of month number]"
-"		[+f?print a date with the format '\%Y.\%m.\%d-\%H:\%M:\%S']"
-"		[+F?%ISO 8601:2000 standard date format; equivalent to Y-%m-%d]"
+"		[+f?print a date with the format \b%Y.%m.%d-%H:%M:%S\b]"
+"		[+F?ISO 8601:2000 standard date format; equivalent to \b%Y-%m-%d\b]"
 "		[+g?\bls\b(1) \b-l\b recent date with \ahh:mm\a]"
 "		[+G?\bls\b(1) \b-l\b distant date with \ayyyy\a]"
 "		[+h?abbreviated month name]"
@@ -114,9 +114,10 @@ static const char usage[] =
 "		[+n?newline character]"
 "		[+N?nanoseconds 000000000-999999999]"
 "		[+p?meridian (e.g., \bAM\b or \bPM\b)]"
+"		[+P?lowercase meridian (e.g., \bam\b or \bpm\b)]"
 "		[+q?quarter of the year]"
 "		[+Q?\a<del>recent<del>distant<del>\a: \a<del>\a is a unique"
-"			delimter character; \arecent\a format for recent"
+"			delimiter character; \arecent\a format for recent"
 "			dates, \adistant\a format otherwise]"
 "		[+r?12-hour time as \ahh:mm:ss meridian\a]"
 "		[+R?24-hour time as \ahh:mm\a]"
@@ -344,7 +345,7 @@ b_date(int argc, register char** argv, Shbltin_t* context)
 			continue;
 		case 'p':
 			if (!(f = newof(0, Fmt_t, 1, 0)))
-				error(ERROR_SYSTEM|3, "out of space [format]");
+				error(ERROR_SYSTEM|3, "out of memory [format]");
 			f->next = fmts;
 			f->format = opt_info.arg;
 			fmts = f;

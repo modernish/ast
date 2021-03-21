@@ -588,4 +588,3 @@ static void here_body(register const struct ionod *iop)
 		sfclose(infile);
 	sfputr(outfile,iop->iodelim,'\n');
 }
-
