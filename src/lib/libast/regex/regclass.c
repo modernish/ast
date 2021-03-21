@@ -269,7 +269,7 @@ regaddclass(const char* name, regclass_t fun)
 			return 0;
 		}
 	if (!(np = newof(0, Ctype_t, 1, n + 1)))
-		return REG_ENOMEM;
+		return REG_ESPACE;
 	np->size = n;
 	np->name = strcpy((char*)(np + 1), name);
 	np->ctype = fun;

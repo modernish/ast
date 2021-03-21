@@ -257,7 +257,7 @@ _matchpush(Env_t* env, Rex_t* rex)
 		num = 0;
 	if (!(f = (Match_frame_t*)stkpush(stkstd, sizeof(Match_frame_t) + (num - 1) * sizeof(regmatch_t))))
 	{
-		env->error = REG_ENOMEM;
+		env->error = REG_ESPACE;
 		return 1;
 	}
 	f->size = num * sizeof(regmatch_t);
@@ -283,7 +283,7 @@ pospush(Env_t* env, Rex_t* rex, unsigned char* p, int be)
 
 	if (!(pos = vector(Pos_t, env->pos, env->pos->cur)))
 	{
-		env->error = REG_ENOMEM;
+		env->error = REG_ESPACE;
 		return 1;
 	}
 	pos->serial = rex->serial;
@@ -963,7 +963,7 @@ DEBUG_TEST(0x0008,(sfprintf(sfstdout, "AHA#%04d 0x%04x parse %s `%-.*s'\n", __LI
 			{
 				if (!(b = (unsigned char*)stkpush(stkstd, n)))
 				{
-					env->error = REG_ENOMEM;
+					env->error = REG_ESPACE;
 					return BAD;
 				}
 				for (i = 0; s < e && i < n && collmatch(rex, s, e, &t); i++)
@@ -1063,7 +1063,7 @@ DEBUG_TEST(0x0008,(sfprintf(sfstdout, "AHA#%04d 0x%04x parse %s `%-.*s'\n", __LI
 			n = env->pos->cur;
 			if (!vector(Pos_t, env->bestpos, n))
 			{
-				env->error = REG_ENOMEM;
+				env->error = REG_ESPACE;
 				return BAD;
 			}
 			env->bestpos->cur = n;
@@ -1109,7 +1109,7 @@ DEBUG_TEST(0x0008,(sfprintf(sfstdout, "AHA#%04d 0x%04x parse %s `%-.*s'\n", __LI
 				{
 					if (!(b = (unsigned char*)stkpush(stkstd, n)))
 					{
-						env->error = REG_ENOMEM;
+						env->error = REG_ESPACE;
 						return BAD;
 					}
 					e = env->end;
@@ -1520,7 +1520,7 @@ DEBUG_TEST(0x0200,(sfprintf(sfstdout,"AHA#%04d 0x%04x parse %s=>%s `%-.*s'\n", _
 				{
 					if (!(b = (unsigned char*)stkpush(stkstd, n)))
 					{
-						env->error = REG_ENOMEM;
+						env->error = REG_ESPACE;
 						return BAD;
 					}
 					e = env->end;
@@ -1838,7 +1838,7 @@ list(Env_t* env, Rex_t* rex)
 #endif
 
 /*
- * returning REG_BADPAT or REG_ENOMEM is not explicitly
+ * returning REG_BADPAT or REG_ESPACE is not explicitly
  * countenanced by the standard
  */
 
@@ -1879,7 +1879,7 @@ regnexec(const regex_t* p, const char* s, size_t len, size_t nmatch, regmatch_t*
 		    !env->pos && !(env->pos = vecopen(16, sizeof(Pos_t))) ||
 		    !env->bestpos && !(env->bestpos = vecopen(16, sizeof(Pos_t))))
 		{
-			k = REG_ENOMEM;
+			k = REG_ESPACE;
 			goto done;
 		}
 		env->pos->cur = env->bestpos->cur = 0;

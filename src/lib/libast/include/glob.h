@@ -130,7 +130,7 @@ struct _glob_
 /* error return values */
 #define GLOB_ABORTED	1
 #define GLOB_NOMATCH	2
-#define GLOB_ENOMEM	3
+#define GLOB_NOSPACE	3	/* note: this error is for ENOMEM */
 #define GLOB_INTR	4
 #define GLOB_APPERR	5
 #define GLOB_NOSYS	6
