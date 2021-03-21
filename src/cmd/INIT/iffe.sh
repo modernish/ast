@@ -31,10 +31,24 @@ AIX)	unset LIBPATH ;;
 esac
 
 command=iffe
-version=2021-02-03 # update in USAGE too #
+version=2021-03-21 # update in USAGE too #
 
 compile() # $cc ...
 {
+	# tcc can't combine -l* and -c
+	case "`$1 --version 2> /dev/null`" in
+	tcc*)	if echo "$@" | grep ' -c' | grep -q ' -l'
+		then	for arg
+			do	shift
+				case $arg in
+				-l*) : ;;
+				*) set -- "$@" "$arg"
+				esac
+			done
+		fi
+		;;
+	esac
+
 	"$@" 2>$tmp.err
 	_compile_status=$?
 	if	test -s $tmp.err
@@ -753,7 +767,7 @@ set=
 case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 0123)	USAGE=$'
 [-?
-@(#)$Id: iffe (ksh 93u+m) 2021-02-03 $
+@(#)$Id: iffe (ksh 93u+m) 2021-03-21 $
 ]
 [-author?Glenn Fowler <gsf@research.att.com>]
 [-author?Phong Vo <kpv@research.att.com>]
