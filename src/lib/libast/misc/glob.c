@@ -573,7 +573,7 @@ skip:
 	if (prei)
 		regfree(prei);
 	if (err == REG_ENOMEM)
-		gp->gl_error = GLOB_NOSPACE;
+		gp->gl_error = GLOB_ENOMEM;
 }
 
 int
@@ -675,7 +675,7 @@ glob(const char* pattern, int flags, int (*errfn)(const char*, int), register gl
 		if (gp->gl_flags & GLOB_STACK)
 			gp->gl_stak = 0;
 		else if (!(gp->gl_stak = stakcreate(0)))
-			return GLOB_NOSPACE;
+			return GLOB_ENOMEM;
 		if ((gp->gl_flags & GLOB_COMPLETE) && !gp->gl_nextdir)
 			gp->gl_nextdir = gl_nextdir;
 	}
