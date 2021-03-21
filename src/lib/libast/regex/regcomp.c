@@ -2922,7 +2922,7 @@ alt(Cenv_t* env, int number, int cond)
 	}
 	if (!(g = node(env, REX_ALT, 0, 0, 0)))
 	{
-		env->error = REG_ESPACE;
+		env->error = REG_ENOMEM;
 		goto bad;
 	}
 	g->re.group.number = number;
@@ -3260,14 +3260,14 @@ regcomp(regex_t* p, const char* pattern, regflags_t flags)
 	if (!(fold = (unsigned char*)LCINFO(AST_LC_CTYPE)->data))
 	{
 		if (!(fold = newof(0, unsigned char, UCHAR_MAX, 1)))
-			return fatal(disc, REG_ESPACE, pattern);
+			return fatal(disc, REG_ENOMEM, pattern);
 		for (i = 0; i <= UCHAR_MAX; i++)
 			fold[i] = toupper(i);
 		LCINFO(AST_LC_CTYPE)->data = (void*)fold;
 	}
  again:
 	if (!(p->env = (Env_t*)alloc(disc, 0, sizeof(Env_t))))
-		return fatal(disc, REG_ESPACE, pattern);
+		return fatal(disc, REG_ENOMEM, pattern);
 	memset(p->env, 0, sizeof(*p->env));
 	memset(&env, 0, sizeof(env));
 	env.regex = p;
@@ -3342,7 +3342,7 @@ regcomp(regex_t* p, const char* pattern, regflags_t flags)
 		if (!(e = node(&env, REX_BEG, 0, 0, 0)))
 		{
 			regfree(p);
-			return fatal(disc, REG_ESPACE, pattern);
+			return fatal(disc, REG_ENOMEM, pattern);
 		}
 		e->next = p->env->rex;
 		p->env->rex = e;
@@ -3358,7 +3358,7 @@ regcomp(regex_t* p, const char* pattern, regflags_t flags)
 		if (!(f = node(&env, REX_END, 0, 0, 0)))
 		{
 			regfree(p);
-			return fatal(disc, REG_ESPACE, pattern);
+			return fatal(disc, REG_ENOMEM, pattern);
 		}
 		f->flags = e->flags;
 		f->map = e->map;
@@ -3411,8 +3411,8 @@ regcomp(regex_t* p, const char* pattern, regflags_t flags)
  bad:
 	regfree(p);
 	if (!env.error)
-		env.error = REG_ESPACE;
-	if (env.type >= SRE && env.error != REG_ESPACE && !(flags & REG_LITERAL))
+		env.error = REG_ENOMEM;
+	if (env.type >= SRE && env.error != REG_ENOMEM && !(flags & REG_LITERAL))
 	{
 		flags |= REG_LITERAL;
 		pattern = (const char*)env.literal;
@@ -3433,7 +3433,7 @@ regncomp(regex_t* p, const char* pattern, size_t size, regflags_t flags)
 	int	r;
 
 	if (!(s = malloc(size + 1)))
-		return fatal((flags & REG_DISCIPLINE) ? p->re_disc : &state.disc, REG_ESPACE, pattern);
+		return fatal((flags & REG_DISCIPLINE) ? p->re_disc : &state.disc, REG_ENOMEM, pattern);
 	memcpy(s, pattern, size);
 	s[size] = 0;
 	r = regcomp(p, s, flags);
@@ -3511,7 +3511,7 @@ regcomb(regex_t* p, regex_t* q)
 		if (!(e = node(&env, REX_BEG, 0, 0, 0)))
 		{
 			regfree(p);
-			return fatal(p->env->disc, REG_ESPACE, NiL);
+			return fatal(p->env->disc, REG_ENOMEM, NiL);
 		}
 		e->next = p->env->rex;
 		p->env->rex = e;
@@ -3525,7 +3525,7 @@ regcomb(regex_t* p, regex_t* q)
 			if (!(e = node(&env, REX_END, 0, 0, 0)))
 			{
 				regfree(p);
-				return fatal(p->env->disc, REG_ESPACE, NiL);
+				return fatal(p->env->disc, REG_ENOMEM, NiL);
 			}
 			f->next = e;
 		}
@@ -3541,7 +3541,7 @@ regcomb(regex_t* p, regex_t* q)
 	if (special(&env, p))
 	{
 		regfree(p);
-		return fatal(p->env->disc, env.error ? env.error : REG_ESPACE, NiL);
+		return fatal(p->env->disc, env.error ? env.error : REG_ENOMEM, NiL);
 	}
 	p->env->min = g->re.trie.min;
 	return 0;

@@ -40,7 +40,7 @@
 			if (!((b)->re_buf = alloc(p->env->disc, (b)->re_buf, a))) \
 			{ \
 				(b)->re_buf = (b)->re_cur = (b)->re_end = 0; \
-				c = REG_ESPACE; \
+				c = REG_ENOMEM; \
 				r; \
 			} \
 			(b)->re_cur = (b)->re_buf + o; \

@@ -572,7 +572,7 @@ skip:
 		regfree(prec);
 	if (prei)
 		regfree(prei);
-	if (err == REG_ESPACE)
+	if (err == REG_ENOMEM)
 		gp->gl_error = GLOB_NOSPACE;
 }
 

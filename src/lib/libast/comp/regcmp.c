@@ -174,7 +174,7 @@ regcmp(const char* pattern, ...)
 		regalloc(re, block, REG_NOFREE);
 		c = regcomp(&re->re, s, REG_EXTENDED|REG_LENIENT|REG_NULL);
 		regalloc(NiL, NiL, 0);
-	} while (c == REG_ESPACE);
+	} while (c == REG_ENOMEM);
 	sfstrclose(sp);
 	if (c)
 	{

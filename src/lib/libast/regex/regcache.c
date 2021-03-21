@@ -158,7 +158,7 @@ regcache(const char* pattern, regflags_t reflags, int* status)
 		if (!(cp = matchstate.cache[unused]) && !(cp = matchstate.cache[unused] = newof(0, Cache_t, 1, 0)))
 		{
 			if (status)
-				*status = REG_ESPACE;
+				*status = REG_ENOMEM;
 			return 0;
 		}
 		if (cp->keep)
@@ -172,7 +172,7 @@ regcache(const char* pattern, regflags_t reflags, int* status)
 			if (!(cp->pattern = newof(cp->pattern, char, cp->size, 0)))
 			{
 				if (status)
-					*status = REG_ESPACE;
+					*status = REG_ENOMEM;
 				return 0;
 			}
 		}
