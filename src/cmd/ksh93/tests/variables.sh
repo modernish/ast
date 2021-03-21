@@ -991,11 +991,14 @@ $SHELL -c '
 	"(exit status $e$( ((e>128)) && print -n / && kill -l "$e"))"
 
 # ... readonly in subshell
+# KSH_VERSION is removed from shtab_variables because as a nameref it would have made .sh.version readonly
+# before the .sh.version test.
 $SHELL -c '
 	errors=0
+	vars=${@/KSH_VERSION}
 	(
-		readonly "$@"
-		for var
+		readonly $vars
+		for var in $vars
 		do	if	(eval "$var=") 2>/dev/null
 			then	echo "	$0: special variable $var not made readonly in subshell" >&2
 				let errors++
@@ -1003,7 +1006,7 @@ $SHELL -c '
 		done
 		exit $errors
 	) || errors=$?
-	for var
+	for var in $vars
 	do	if	! (eval "$var=")
 		then	echo "	$0: special variable $var still readonly outside subshell" >&2
 			let errors++

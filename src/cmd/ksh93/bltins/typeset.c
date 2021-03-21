@@ -798,6 +798,8 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 			if (shp->typeinit)
 				continue;
 			curflag = np->nvflag;
+			if(curflag&NV_RDONLY)
+				errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
 			if(!(flag&NV_INTEGER) && (flag&(NV_LTOU|NV_UTOL)))
 			{
 				Namfun_t *fp;
@@ -847,8 +849,6 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 			}
 			else
 			{
-				if((flag&NV_RDONLY) && (curflag&NV_RDONLY))
-					errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
 				newflag = curflag & ~flag;
 			}
 			if (tp->aflag && (tp->argnum || (curflag!=newflag)))
