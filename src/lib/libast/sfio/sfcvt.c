@@ -160,44 +160,16 @@ int		format;		/* conversion format		*/
 			return SF_INF;
 		}
 #endif
-# if __STDC_VERSION__ >= 199901L
-#  if _lib_signbit
+
+#if _lib_signbit
 		if (signbit(f))
-#  else
-#   if _lib_copysignl
-		if (copysignl(1.0, f) < 0.0)
-#   else
-#    if _lib_copysign
-		if (copysign(1.0, (double)f) < 0.0)
-#    else
-		if (f < 0.0)
-#    endif
-#   endif
-#  endif
-		{	f = -f;
-			*sign = 1;
-		}
-#  if _lib_fpclassify
-		switch (fpclassify(f))
-		{
-		case FP_INFINITE:
-			return SF_INF;
-		case FP_NAN:
-			return SF_NAN;
-		case FP_ZERO:
-			return SF_ZERO;
-		}
-#  endif
-# else
-#  if _lib_signbit
-		if (signbit(f))
-#  else
+#else
 		if (f < 0.0 || f == 0.0 && neg0ld(f))
-#  endif
+#endif
 		{	f = -f;
 			*sign = 1;
 		}
-# endif
+
 		if(f < LDBL_MIN)
 			return SF_ZERO;
 		if(f > LDBL_MAX)
@@ -338,40 +310,16 @@ int		format;		/* conversion format		*/
 			return SF_INF;
 		}
 #endif
-#if __STDC_VERSION__ >= 199901L
-# if _lib_signbit
+
+#if _lib_signbit
 		if (signbit(f))
-# else
-#  if _lib_copysign
-		if (copysign(1.0, f) < 0.0)
-#  else
-		if (f < 0.0)
-#  endif
-# endif
-		{	f = -f;
-			*sign = 1;
-		}
-# if _lib_fpclassify
-		switch (fpclassify(f))
-		{
-		case FP_INFINITE:
-			return SF_INF;
-		case FP_NAN:
-			return SF_NAN;
-		case FP_ZERO:
-			return SF_ZERO;
-		}
-# endif
 #else
-# if _lib_signbit
-		if (signbit(f))
-# else
 		if (f < 0.0 || f == 0.0 && neg0d(f))
-# endif
+#endif
 		{	f = -f;
 			*sign = 1;
 		}
-#endif
+
 		if(f < DBL_MIN)
 			return SF_ZERO;
 		if(f > DBL_MAX)
