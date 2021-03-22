@@ -36,7 +36,7 @@ version=2021-03-21 # update in USAGE too #
 compile() # $cc ...
 {
 	# tcc can't combine -l* and -c
-	case "`$1 --version 2> /dev/null`" in
+	case "`$1 -version 2> /dev/null`" in
 	tcc*)	if echo "$@" | grep ' -c' | grep -q ' -l'
 		then	for arg
 			do	shift
