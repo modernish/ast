@@ -4,7 +4,7 @@ cmd	universe
 
 hdr	dirent,direntry,filio,fmtmsg,fnmatch,jioctl,libgen,limits
 hdr	locale,ndir,nl_types,process,spawn,syslog,utime,vfork
-hdr	linux/fs,sys/ioctl
+hdr	linux/fs,linux/msdos_fs,sys/ioctl
 hdr	wchar note{ <wchar.h> and isw*() really work }end execute{
 	#include <wchar.h>
 	int

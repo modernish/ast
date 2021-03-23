@@ -17,9 +17,21 @@
 #include <ast.h>
 #include <error.h>
 
-#if _hdr_linux_fs && _hdr_sys_ioctl
+#if _hdr_linux_fs
 #include <linux/fs.h>
+#endif
+#if _hdr_linux_msdos_fs
+#include <linux/msdos_fs.h>
+#endif
+#if _hdr_sys_ioctl
 #include <sys/ioctl.h>
+#endif
+
+#if _hdr_sys_ioctl && _hdr_linux_fs && defined(FS_IOC_GETFLAGS) && defined(FS_CASEFOLD_FL)
+#define _linux_casefold	1
+#endif
+#if _hdr_sys_ioctl && _hdr_linux_msdos_fs && defined(FAT_IOCTL_GET_ATTRIBUTES)
+#define _linux_fatfs	1
 #endif
 
 /*
@@ -40,14 +52,22 @@ pathicase(const char *path)
 	/* Cygwin */
 	long r = pathconf(path, _PC_CASE_INSENSITIVE);
 	return r < 0L ? -1 : r > 0L;
-#elif _hdr_linux_fs && _hdr_sys_ioctl && defined(FS_IOC_GETFLAGS) && defined(FS_CASEFOLD_FL)
-	/* Linux 5.2+ */
+#elif _linux_fatfs
 	int attr = 0, fd, r;
-	if ((fd = open(path, O_RDONLY|O_NONBLOCK)) < 0)
+	if((fd = open(path, O_RDONLY|O_NONBLOCK)) < 0)
 		return -1;
-	r = ioctl(fd, FS_IOC_GETFLAGS, &attr);
+	r = ioctl(fd, FAT_IOCTL_GET_ATTRIBUTES, &attr);
+#	if _linux_casefold
+	if(r < 0 && errno == ENOTTY)
+	{
+		/* Linux 5.2+ */
+		r = ioctl(fd, FS_IOC_GETFLAGS, &attr);
+		close(fd);
+		return r < 0 ? -1 : (attr & FS_CASEFOLD_FL) != 0;
+	}
+#	endif /* _linux_casefold */
 	close(fd);
-	return r < 0 ? -1 : attr & FS_CASEFOLD_FL != 0;
+	return r < 0 ? (errno != ENOTTY ? -1 : 0) : 1;
 #elif _WINIX || __APPLE__
 	/* Windows or Mac without pathconf probe: assume case insensitive */
 	return 1;
