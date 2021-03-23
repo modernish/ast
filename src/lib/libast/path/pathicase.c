@@ -53,19 +53,20 @@ pathicase(const char *path)
 	long r = pathconf(path, _PC_CASE_INSENSITIVE);
 	return r < 0L ? -1 : r > 0L;
 #elif _linux_fatfs
+	/* Linux */
 	int attr = 0, fd, r;
-	if((fd = open(path, O_RDONLY|O_NONBLOCK)) < 0)
+	if ((fd = open(path, O_RDONLY|O_NONBLOCK)) < 0)
 		return -1;
 	r = ioctl(fd, FAT_IOCTL_GET_ATTRIBUTES, &attr);
-#	if _linux_casefold
-	if(r < 0 && errno == ENOTTY)
+#   if _linux_casefold
+	/* Linux 5.2+ */
+	if (r < 0 && errno == ENOTTY)	/* if it's not VFAT/FAT32...*/
 	{
-		/* Linux 5.2+ */
 		r = ioctl(fd, FS_IOC_GETFLAGS, &attr);
 		close(fd);
 		return r < 0 ? -1 : (attr & FS_CASEFOLD_FL) != 0;
 	}
-#	endif /* _linux_casefold */
+#   endif /* _linux_casefold */
 	close(fd);
 	return r < 0 ? (errno != ENOTTY ? -1 : 0) : 1;
 #elif _WINIX || __APPLE__
