@@ -62,17 +62,8 @@ tst	note{ can we probe file system case insensitivity }end output{
 	static char *o = "SHOPT_GLOBCASEDET";
 	int main(int argc,char *argv[])
 	{
-		char *dir;
 		int r;
-		/* Prioritize /boot/EFI and /boot since those could
-		   be VFAT boot partitions. */
-		if(access("/boot/EFI", R_OK) == 0)
-			dir = "/boot/EFI";
-		else if(access("/boot", R_OK) == 0)
-			dir = "/boot";
-		else
-			dir = "/";
-		r = pathicase(dir);
+		r = pathicase("/");
 		r = (r > -1 || errno != ENOSYS);
 		printf("#ifndef %s\n#   define %s\t%d\n#endif\n", o, o, r);
 		return !r;
