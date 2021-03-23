@@ -79,6 +79,19 @@ struct _sfio_s;
 #endif
 
 /*
+ * tcc on FreeBSD: Avoid using nonexistent math
+ * builtins by pretending to be an ancient gcc.
+ */
+#if __TINYC__ && __GNUC__ >= 3 && __FreeBSD__
+#undef __GNUC__
+#undef __GNUC_MINOR__
+#undef __GNUC_PATCHLEVEL__
+#define __GNUC__ 2
+#define __GNUC_MINOR__ 95
+#define __GNUC_PATCHLEVEL__ 3
+#endif
+
+/*
  * exit() support -- this matches shell exit codes
  */
 
