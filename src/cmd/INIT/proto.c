@@ -2110,7 +2110,7 @@ astlicense __PARAM__((char* p, int size, char* file, char* options, int cc1, int
 							break;
 						case -1:
 							c = 12;
- 
+							/* FALLTHROUGH */
 						default:
 							notice.type = c;
 							notice.item[1].data = lic[lic[c].quote].data;

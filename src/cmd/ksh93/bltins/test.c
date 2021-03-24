@@ -166,7 +166,7 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 			if(!not)
 				break;
 			argv++;
-			/* fall through */
+			/* FALLTHROUGH */
 		case 4:
 		{
 			register int op = sh_lookup(cp=argv[2],shtab_testops);
@@ -434,6 +434,7 @@ int test_unop(Shell_t *shp,register int op,register const char *arg)
 		return(*arg == 0);
 	    case 's':
 		sfsync(sfstdout);
+		/* FALLTHROUGH */
 	    case 'O':
 	    case 'G':
 		if(*arg==0 || test_stat(arg,&statb)<0)

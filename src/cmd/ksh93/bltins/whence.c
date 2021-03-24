@@ -109,7 +109,7 @@ int	b_whence(int argc,char *argv[],Shbltin_t *context)
 	{
 	    case 'a':
 		flags |= A_FLAG;
-		/* FALL THRU */
+		/* FALLTHROUGH */
 	    case 'v':
 		flags |= V_FLAG;
 		break;

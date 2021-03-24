@@ -936,7 +936,7 @@ b_stty(int argc, char** argv, Shbltin_t* context)
 				}
 				continue;
 			}
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case ':':
 			if (!opt_info.offset)
 				error(2, "%s", opt_info.arg);

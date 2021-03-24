@@ -932,12 +932,14 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 				shp->toomany = 1;
 				errno = saveerrno;
 				errormsg(SH_DICT,ERROR_system(1),e_redirect);
+				break;
 			case 2:
 				/* reinit PWD as it will be wrong */
 				shp->pwd = NULL;
 				path_pwd(shp,0);
 				errno = saveerrno;
 				errormsg(SH_DICT,ERROR_system(1),"Failed to restore PWD upon exiting subshell");
+				break;
 			default:
 				errormsg(SH_DICT,ERROR_system(1),"Subshell error %d",fatalerror);
 		}

@@ -256,6 +256,7 @@ int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 					tdata.argnum = (int)opt_info.num;
 					break;
 				}
+				/* FALLTHROUGH */
 			case 'F':
 			case 'X':
 				if(!opt_info.arg || (tdata.argnum = opt_info.num) <0)
@@ -1230,6 +1231,7 @@ static int unall(int argc, char **argv, register Dt_t *troot, Shell_t* shp)
 			break;
 		case 'n':
 			nflag = NV_NOREF;
+			/* FALLTHROUGH */
 		case 'v':
 			troot = shp->var_tree;
 			break;

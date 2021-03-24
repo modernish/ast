@@ -211,6 +211,7 @@ int	b_kill(int argc,char *argv[],Shbltin_t *context)
 			goto endopts;
 		case 'L':
 			usemenu = -1;
+			/* FALLTHROUGH */
 		case 'l':
 			flag |= L_FLAG;
 			break;
