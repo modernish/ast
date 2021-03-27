@@ -998,7 +998,7 @@ fi
 
 # ==========
 # Verify that the POSIX 'test' builtin complains loudly when the '=~' operator is used rather than
-# failing silently. See //github.com/att/ast/issues/1152.
+# failing silently. See https://github.com/att/ast/issues/1152.
 actual=$($SHELL -c 'test foo =~ foo' 2>&1)
 actual_status=$?
 actual=${actual#*: }
