@@ -510,7 +510,6 @@ int test_binop(Shell_t *shp,register int op,const char *left,const char *right)
 	}
 	switch(op)
 	{
-		/* op must be one of the following values */
 		case TEST_AND:
 		case TEST_OR:
 			return(*left!=0);
@@ -544,14 +543,19 @@ int test_binop(Shell_t *shp,register int op,const char *left,const char *right)
 			return(lnum>=rnum);
 		case TEST_LE:
 			return(lnum<=rnum);
-		case TEST_REP:
-			/* the =~ operator is only valid when used with [[ */
-			errormsg(SH_DICT,ERROR_exit(2),"=~: operator not supported; use [[...]]");
-			break;
 		default:
-			/* this should never be reached when handling a bad operator */
-			errormsg(SH_DICT,ERROR_ERROR,"%d: operator not handled",op);
-			abort();
+		{
+			/* fallback for operators not supported by the test builtin */
+			int i=0;
+			char *e_msg;
+			while(shtab_testops[i].sh_number && shtab_testops[i].sh_number != op)
+				i++;
+			if(op==TEST_END)
+				e_msg = e_badop;
+			else
+				e_msg = e_unsupported_op;
+			errormsg(SH_DICT,ERROR_exit(2),e_msg,shtab_testops[i].sh_name);
+		}
 	}
 }
 

@@ -1009,14 +1009,18 @@ expect_status=2
     err_exit "test =~ failed with the wrong exit status (expected $expect_status, got $actual_status)"
 
 # Invalid operators 'test' and '[[...]]' both reject should also cause an error with exit status 2.
-actual=$($SHELL -c 'test foo === foo' 2>&1)
-actual_status=$?
-actual=${actual#*: }
-expect='test: ===: unknown operator'
-expect_status=2
-[[ "$actual" = "$expect" ]] || err_exit "test === failed (expected $expect, got $actual)"
-[[ "$actual_status" = "$expect_status" ]] ||
-    err_exit "test === failed with the wrong exit status (expected $expect_status, got $actual_status)"
+for operator in '===' ']]'
+do
+	actual="$($SHELL -c "test foo $operator foo" 2>&1)"
+	actual_status=$?
+	actual=${actual#*: }
+	expect="test: $operator: unknown operator"
+	expect_status=2
+	[[ "$actual" = "$expect" ]] || err_exit "test $operator failed"
+		"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	[[ "$actual_status" = "$expect_status" ]] ||
+		err_exit "'test foo $operator foo' failed with the wrong exit status (expected $expect_status, got $actual_status)"
+done
 
 # ======
 # Regression test for https://github.com/att/ast/issues/1402

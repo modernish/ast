@@ -166,5 +166,6 @@ const char test_opchars[]	= "HLNRSVOGCaeohrwxdcbfugkv"
 const char e_argument[]		= "argument expected";
 const char e_missing[]		= "%s missing";
 const char e_badop[]		= "%s: unknown operator";
+const char e_unsupported_op[]	= "%s: operator not supported; use [[...]]";
 const char e_tstbegin[]		= "[[ ! ";
 const char e_tstend[]		= " ]]\n";
