@@ -1016,7 +1016,7 @@ do
 	actual=${actual#*: }
 	expect="test: $operator: unknown operator"
 	expect_status=2
-	[[ "$actual" = "$expect" ]] || err_exit "test $operator failed"
+	[[ "$actual" = "$expect" ]] || err_exit "test $operator failed" \
 		"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 	[[ "$actual_status" = "$expect_status" ]] ||
 		err_exit "'test foo $operator foo' failed with the wrong exit status (expected $expect_status, got $actual_status)"
