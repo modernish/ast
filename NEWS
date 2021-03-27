@@ -7,8 +7,8 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - The 'test' builtin will now show an error message when given the invalid ']]'
   or '=~' operators; it also properly returns with exit status 2 now (instead
-  of exit status 1). If the invalid operator is supported by [[...]] (such as
-  '=~'), test will now suggest the usage of [[...]] instead.
+  of exit status 1). If the invalid operator is supported by [[ ... ]] (such
+  as '=~'), test will now suggest the usage of [[ ... ]] instead.
 
 2021-03-22:
 
