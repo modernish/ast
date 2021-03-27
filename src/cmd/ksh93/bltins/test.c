@@ -544,9 +544,15 @@ int test_binop(Shell_t *shp,register int op,const char *left,const char *right)
 			return(lnum>=rnum);
 		case TEST_LE:
 			return(lnum<=rnum);
+		case TEST_REP:
+			/* the =~ operator is only valid when used with [[ */
+			errormsg(SH_DICT,ERROR_exit(2),"=~: operator not supported; use [[...]]");
+			break;
+		default:
+			/* this should never be reached when handling a bad operator */
+			errormsg(SH_DICT,ERROR_ERROR,"%d: operator not handled",op);
+			abort();
 	}
-	/* NOTREACHED */
-	return(0);
 }
 
 /*

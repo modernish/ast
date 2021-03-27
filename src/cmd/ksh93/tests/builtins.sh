@@ -996,6 +996,28 @@ then	got=$( { "$SHELL" -c '
 		"(got status $e$( ((e>128)) && print -n / && kill -l "$e"), $(printf %q "$got"))"
 fi
 
+# ==========
+# Verify that the POSIX 'test' builtin complains loudly when the '=~' operator is used rather than
+# failing silently. See //github.com/att/ast/issues/1152.
+actual=$($SHELL -c 'test foo =~ foo' 2>&1)
+actual_status=$?
+actual=${actual#*: }
+expect='test: =~: operator not supported; use [[...]]'
+expect_status=2
+[[ "$actual" = "$expect" ]] || err_exit "test =~ failed (expected $expect, got $actual)"
+[[ "$actual_status" = "$expect_status" ]] ||
+    err_exit "test =~ failed with the wrong exit status (expected $expect_status, got $actual_status)"
+
+# Invalid operators 'test' and '[[...]]' both reject should also cause an error with exit status 2.
+actual=$($SHELL -c 'test foo === foo' 2>&1)
+actual_status=$?
+actual=${actual#*: }
+expect='test: ===: unknown operator'
+expect_status=2
+[[ "$actual" = "$expect" ]] || err_exit "test === failed (expected $expect, got $actual)"
+[[ "$actual_status" = "$expect_status" ]] ||
+    err_exit "test === failed with the wrong exit status (expected $expect_status, got $actual_status)"
+
 # ======
 # Regression test for https://github.com/att/ast/issues/1402
 #
