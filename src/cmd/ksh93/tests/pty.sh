@@ -770,5 +770,17 @@ w : XX\t
 r ^:test-1: : XXX\r\n$
 !
 
+((SHOPT_VSH)) && tst $LINENO <<"!"
+L Using b, B, w and W commands in vi mode
+
+d 15
+p :test-1:
+w set -o vi
+r ^:test-1: set -o vi\r\n$
+w echo asdf\EbwBwa
+r ^:test-2: echo asdf\r\n$
+r ^asdf\r\n$
+!
+
 # ======
 exit $((Errors<125?Errors:125))

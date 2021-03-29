@@ -664,8 +664,7 @@ static void backword(Vi_t *vp,int nwords, register int cmd)
 	register int tcur_virt = cur_virt;
 	while( nwords-- && tcur_virt > first_virt )
 	{
-		if( !isblank(tcur_virt) && isblank(tcur_virt-1)
-			&& tcur_virt>first_virt )
+		if( !isblank(tcur_virt) && isblank(tcur_virt-1) )
 			--tcur_virt;
 		else if(cmd != 'B')
 		{
@@ -674,21 +673,20 @@ static void backword(Vi_t *vp,int nwords, register int cmd)
 			if((!cur && last) || (cur && !last))
 				--tcur_virt;
 		}
-		while( isblank(tcur_virt) && tcur_virt>=first_virt )
+		while( tcur_virt >= first_virt && isblank(tcur_virt) )
 			--tcur_virt;
 		if( cmd == 'B' )
 		{
-			while( !isblank(tcur_virt) && tcur_virt>=first_virt )
+			while( tcur_virt >= first_virt && !isblank(tcur_virt) )
 				--tcur_virt;
 		}
 		else
 		{
 			if(isalph(tcur_virt))
-				while( isalph(tcur_virt) && tcur_virt>=first_virt )
+				while( tcur_virt >= first_virt && isalph(tcur_virt) )
 					--tcur_virt;
 			else
-				while( !isalph(tcur_virt) && !isblank(tcur_virt)
-					&& tcur_virt>=first_virt )
+				while( tcur_virt >= first_virt && !isalph(tcur_virt) && !isblank(tcur_virt) )
 					--tcur_virt;
 		}
 		cur_virt = ++tcur_virt;
@@ -1235,23 +1233,22 @@ static void endword(Vi_t *vp, int nwords, register int cmd)
 	register int tcur_virt = cur_virt;
 	while( nwords-- )
 	{
-		if( !isblank(tcur_virt) && tcur_virt<=last_virt )
+		if( tcur_virt <= last_virt && !isblank(tcur_virt) )
 			++tcur_virt;
-		while( isblank(tcur_virt) && tcur_virt<=last_virt )
+		while( tcur_virt <= last_virt && isblank(tcur_virt) )
 			++tcur_virt;	
 		if( cmd == 'E' )
 		{
-			while( !isblank(tcur_virt) && tcur_virt<=last_virt )
+			while( tcur_virt <= last_virt && !isblank(tcur_virt) )
 				++tcur_virt;
 		}
 		else
 		{
 			if( isalph(tcur_virt) )
-				while( isalph(tcur_virt) && tcur_virt<=last_virt )
+				while( tcur_virt <= last_virt && isalph(tcur_virt) )
 					++tcur_virt;
 			else
-				while( !isalph(tcur_virt) && !isblank(tcur_virt)
-					&& tcur_virt<=last_virt )
+				while( tcur_virt <= last_virt && !isalph(tcur_virt) && !isblank(tcur_virt) )
 					++tcur_virt;
 		}
 		if( tcur_virt > first_virt )
@@ -1274,24 +1271,23 @@ static void forward(Vi_t *vp,register int nwords, int cmd)
 	{
 		if( cmd == 'W' )
 		{
-			while( !isblank(tcur_virt) && tcur_virt < last_virt )
+			while( tcur_virt < last_virt && !isblank(tcur_virt) )
 				++tcur_virt;
 		}
 		else
 		{
 			if( isalph(tcur_virt) )
 			{
-				while( isalph(tcur_virt) && tcur_virt<last_virt )
+				while( tcur_virt < last_virt && isalph(tcur_virt) )
 					++tcur_virt;
 			}
 			else
 			{
-				while( !isalph(tcur_virt) && !isblank(tcur_virt)
-					&& tcur_virt < last_virt )
+				while( tcur_virt < last_virt && !isalph(tcur_virt) && !isblank(tcur_virt) )
 					++tcur_virt;
 			}
 		}
-		while( isblank(tcur_virt) && tcur_virt < last_virt )
+		while( tcur_virt < last_virt && isblank(tcur_virt) )
 			++tcur_virt;
 	}
 	cur_virt = tcur_virt;
@@ -1606,7 +1602,7 @@ static int mvcursor(register Vi_t* vp,register int motion)
 
 	case '^':		/** First nonblank character **/
 		tcur_virt = first_virt;
-		while( isblank(tcur_virt) && tcur_virt < last_virt )
+		while( tcur_virt < last_virt && isblank(tcur_virt) )
 			++tcur_virt;
 		break;
 
