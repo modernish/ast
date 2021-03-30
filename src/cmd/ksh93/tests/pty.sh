@@ -777,7 +777,7 @@ d 15
 p :test-1:
 w set -o vi
 r ^:test-1: set -o vi\r\n$
-w echo asdf\EbwBwa
+w echo asdf\EbwBWa
 r ^:test-2: echo asdf\r\n$
 r ^asdf\r\n$
 !
