@@ -1055,8 +1055,7 @@ static int cntlmode(Vi_t *vp)
 		refresh(vp,CONTROL);
 		vp->repeat = 1;
 	}
-/* NOTREACHED */
-	return(0);
+	UNREACHABLE();
 }
 
 /*{	CURSOR( new_current_physical )

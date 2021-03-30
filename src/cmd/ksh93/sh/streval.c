@@ -1021,7 +1021,7 @@ Sfdouble_t strval(Shell_t *shp,const char *s,char **end,Sfdouble_t(*conv)(const 
 	}
 	level=0;
 	errormsg(SH_DICT,ERROR_exit(1),message,ep->name);
-	return(0);
+	UNREACHABLE();
     }
 
 #undef	extern

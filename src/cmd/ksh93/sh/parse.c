@@ -354,7 +354,10 @@ void	*sh_parse(Shell_t *shp, Sfio_t *iop, int flag)
 			fcrestore(&sav_input);
 			lexp->arg = sav_arg;
 			if(version > SHCOMP_HDR_VERSION)
+			{
 				errormsg(SH_DICT,ERROR_exit(1),e_lexversion);
+				UNREACHABLE();
+			}
 			if(sffileno(iop)==shp->infd || (flag&SH_FUNEVAL))
 				shp->binscript = 1;
 			sfgetc(iop);
@@ -794,7 +797,10 @@ static Shnode_t *funct(Lex_t *lexp)
 			int		c=-1;
 			t->funct.functargs = ac = (struct comnod*)simple(lexp,SH_NOIO|SH_FUNDEF,NIL(struct ionod*));
 			if(ac->comset || (ac->comtyp&COMSCAN))
+			{
 				errormsg(SH_DICT,ERROR_exit(3),e_lexsyntax4,lexp->sh->inlineno);
+				UNREACHABLE();
+			}
 			argv0 = argv = ((struct dolnod*)ac->comarg)->dolval+ARG_SPARE;
 			while(cp= *argv++)
 			{
@@ -803,7 +809,10 @@ static Shnode_t *funct(Lex_t *lexp)
 		                        while(c=mbchar(cp), isaname(c));
 			}
 			if(c)
+			{
 				errormsg(SH_DICT,ERROR_exit(3),e_lexsyntax4,lexp->sh->inlineno);
+				UNREACHABLE();
+			}
 			nargs = argv-argv0;
 			size += sizeof(struct dolnod)+(nargs+ARG_SPARE)*sizeof(char*);
 			if(shp->shcomp && memcmp(".sh.math.",t->funct.functnam,9)==0)
@@ -1271,7 +1280,10 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 		while(argp)
 		{
 			if(strcmp(argp->argval,lexp->arg->argval)==0)
+			{
 				errormsg(SH_DICT,ERROR_exit(3),e_lexsyntax3,lexp->sh->inlineno,argp->argval);
+				UNREACHABLE();
+			}
 			argp = argp->argnxt.ap;
 		}
 		lexp->arg->argnxt.ap = label_list;
