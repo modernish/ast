@@ -772,6 +772,7 @@ r ^:test-1: : XXX\r\n$
 
 ((SHOPT_VSH)) && tst $LINENO <<"!"
 L Using b, B, w and W commands in vi mode
+# https://github.com/att/ast/issues/1467
 
 d 15
 p :test-1:
