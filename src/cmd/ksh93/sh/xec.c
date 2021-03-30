@@ -3598,10 +3598,8 @@ static pid_t sh_ntfork(Shell_t *shp,const Shnode_t *t,char *argv[],int *jobid,in
 		{
 		    case ENOENT:
 			errormsg(SH_DICT,ERROR_system(ERROR_NOENT),e_found+4);
-			break;
 		    default:
 			errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_exec+4);
-			break;
 		}
 		job_unlock();
 	}

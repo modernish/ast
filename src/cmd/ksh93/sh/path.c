@@ -1205,7 +1205,6 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 			((struct checkpt*)shp->jmplist)->mode = SH_JMPEXIT;
 		}
 		exscript(shp,path,argv,envp);
-		break;
 	    case EACCES:
 	    {
 		struct stat statb;

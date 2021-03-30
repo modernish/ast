@@ -527,7 +527,6 @@ int	b_times(int argc, char *argv[], Shbltin_t *context)
 	    case ':':
 		errormsg(SH_DICT, 2, "%s", opt_info.arg);
 		errormsg(SH_DICT, ERROR_usage(2), "%s", optusage((char*)0));
-		break;
 	    default:
 		errormsg(SH_DICT, ERROR_usage(0), "%s", opt_info.arg);
 		return(2);
