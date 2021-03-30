@@ -575,7 +575,7 @@ static void out_pattern(Sfio_t *iop, register const char *cp, int n)
 		    case '\\':
 			if (!(c = *++cp))
 				c = '\\';
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		    case ' ':
 		    case '<': case '>': case ';':
 		    case '$': case '`': case '\t':
@@ -1564,6 +1564,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				break;
 			}
 		    }
+		    /* FALLTHROUGH */
 		    case TFORK:
 		    {
 			register pid_t parent;
@@ -1830,6 +1831,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				sh_done(shp,0);
 			}
 		    }
+		    /* FALLTHROUGH */
 
 		    case TSETIO:
 		    {

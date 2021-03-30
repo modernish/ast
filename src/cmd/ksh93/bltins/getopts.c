@@ -134,7 +134,7 @@ int	b_getopts(int argc,char *argv[],Shbltin_t *context)
 			UNREACHABLE();
 		}
 		opt_info.option[1] = '?';
-		/* FALL THRU */
+		/* FALLTHROUGH */
 	    case ':':
 		key[0] = opt_info.option[1];
 		if(strmatch(opt_info.arg,"*unknown*"))

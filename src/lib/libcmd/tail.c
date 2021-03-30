@@ -462,7 +462,7 @@ b_tail(int argc, char** argv, Shbltin_t* context)
 				t = opt_info.arg;
 				goto suffix;
 			}
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case 'n':
 			flags |= COUNT;
 			if (s = opt_info.arg)

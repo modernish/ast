@@ -198,7 +198,7 @@ rm(State_t* state, register FTSENT* ent)
 		}
 		else if (ent->fts_info == FTS_D)
 			break;
-		/*FALLTHROUGH*/
+		/* FALLTHROUGH */
 	case FTS_DP:
 		if (isempty(ent) || state->directory)
 		{
@@ -223,7 +223,7 @@ rm(State_t* state, register FTSENT* ent)
 							fts_set(NiL, ent, FTS_AGAIN);
 							break;
 						}
-						/*FALLTHROUGH*/
+						/* FALLTHROUGH */
 					default:
 						nonempty(ent);
 						if (!state->force)

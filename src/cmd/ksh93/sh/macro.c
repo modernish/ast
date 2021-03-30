@@ -393,7 +393,7 @@ void sh_machere(Shell_t *shp,Sfio_t *infile, Sfio_t *outfile, char *string)
 			    case S_EOF:
 				if((c=fcfill()) > 0)
 					goto again;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			    default:
 			    regular:
 				sfputc(outfile,'$');
@@ -467,6 +467,7 @@ static void copyto(register Mac_t *mp,int endch, int newquote)
 				    case -1:	/* illegal multi-byte char */
 				    case 0:
 					len = 1;
+					/* FALLTHROUGH */
 				    case 1:
 					n = state[*(unsigned char*)cp++];
 					break;
@@ -646,6 +647,7 @@ static void copyto(register Mac_t *mp,int endch, int newquote)
 					goto pattern;
 				continue;
 			}
+			/* FALLTHROUGH */
 		    case S_EOF:
 			if(c)
 			{
@@ -670,6 +672,7 @@ static void copyto(register Mac_t *mp,int endch, int newquote)
 		    case S_QUOTE:
 			if(mp->lit || mp->arith)
 				break;
+			/* FALLTHROUGH */
 		    case S_LIT:
 			if(mp->arith)
 			{
@@ -735,6 +738,7 @@ static void copyto(register Mac_t *mp,int endch, int newquote)
 				cp = first = fcseek(0);
 				break;
 			}
+			/* FALLTHROUGH */
 		    case S_PAT:
 			if(mp->pattern && !(mp->quote || mp->lit))
 			{
@@ -1108,7 +1112,7 @@ retry1:
 		/* This code handles ${#} */
 		c = mode;
 		mode = type = 0;
-		/* FALL THRU */
+		/* FALLTHROUGH */
 	    case S_SPC1:
 		if(type==M_BRACE)
 		{
@@ -1135,7 +1139,7 @@ retry1:
 				goto retry1;
 			}
 		}
-		/* FALL THRU */
+		/* FALLTHROUGH */
 	    case S_SPC2:
 		var = 0;
 		*id = c;

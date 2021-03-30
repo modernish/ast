@@ -87,7 +87,7 @@ b_head(int argc, register char** argv, Shbltin_t* context)
 		{
 		case 'c':
 			delim = -1;
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case 'n':
 			if (opt_info.offset && argv[opt_info.index][opt_info.offset] == 'c')
 			{

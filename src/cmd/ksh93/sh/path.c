@@ -1235,11 +1235,12 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 #endif
 		}
 	    }
-		/* FALL THROUGH */
 #ifdef ENAMETOOLONG
+	    /* FALLTHROUGH */
 	    case ENAMETOOLONG:
 #endif /* ENAMETOOLONG */
 #if !SHOPT_SUID_EXEC
+	    /* FALLTHROUGH */
 	    case EPERM:
 #endif
 		shp->path_err = errno;
@@ -1262,6 +1263,7 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 			}
 			return(pid);
 		}
+		/* FALLTHROUGH */
 	    default:
 		errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_exec,path);
 		UNREACHABLE();

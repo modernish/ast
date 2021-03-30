@@ -92,6 +92,7 @@ int	b_hist(int argc,char *argv[], Shbltin_t *context)
 			range[++indx] = flag;
 			break;
 		}
+		/* FALLTHROUGH */
 	    case ':':
 		errormsg(SH_DICT,2, "%s", opt_info.arg);
 		break;
