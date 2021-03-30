@@ -736,26 +736,15 @@ unset r v x
 )
 Errors=$?  # ensure error count survives subshell
 (
-	errmsg=$({ LANG=bad_LOCALE; } 2>&1)
-
 	# $x must be an unknown locale.
-	case "$(uname)" in
-	OpenBSD)
-		# "x" acts as a known alias of "C", but "x.x" is unknown (see
-		# https://man.openbsd.org/setlocale). For worse, "locale -a" doesn't
-		# list "x", so "locale -a | grep -q '^x$'" doesn't work.
-		x=x.x ;;
-	*)
-		# Most systems agree that "x" is an unknown locale.
-		# The error output from locale(1) is redirected because it will complain
-		# about C.UTF-8 on Linux (which is a ksh-specific locale).
-		if locale -a 2> /dev/null | grep -q '^x$'
-		then	# Someone added "x" using localedef(1)?
-			warning "skipping test: 'x' is a known locale"
-			exit $Errors
-		else	x=x
-		fi ;;
-	esac
+	for x in x x.b@d xx_XX xx_XX.b@d
+	do	errmsg=$({ LANG=$x; } 2>&1)
+		[[ -n $errmsg ]] && break
+	done
+	if	[[ -z $errmsg ]]
+	then	warning "C library does not seem to verify locales: skipping LC_* tests"
+		exit $Errors
+	fi
 
 	for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC
 	do	nameref r=$v
