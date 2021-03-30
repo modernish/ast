@@ -750,9 +750,8 @@ Errors=$?  # ensure error count survives subshell
 	do	nameref r=$v
 		unset $v
 		[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
-		# Test disabled: some system libraries do not verify the locale, so no diagnostic is printed.
-		#d=$($SHELL -c "$v=$x" 2>&1)
-		#[[ $d ]] || err_exit "$v=$x failed -- expected locale diagnostic"
+		d=$($SHELL -c "$v=$x" 2>&1)
+		[[ $d ]] || err_exit "$v=$x failed -- expected locale diagnostic"
 		{ g=$( r=$x; print -- $r ); } 2>/dev/null
 		[[ $g == '' ]] || err_exit "$v=$x failed -- expected '', got '$g'"
 		{ g=$( r=C; r=$x; print -- $r ); } 2>/dev/null
