@@ -1088,29 +1088,33 @@ actual=$($SHELL -c 'function fn { typeset PWD=bug; cd /tmp; echo $PWD; }; fn')
 	err_exit "PWD isn't set after cd if already set in function scope" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
-expect='/tmp'
+# Test for $OLDPWD and/or $PWD leaking out of subshell
+expect='/tmp /dev'
 actual=$($SHELL -c '
+	PWD=/dev
 	OLDPWD=/tmp
 	(
 		cd /usr; cd /bin
 		cd - > /dev/null
 	)
-	echo $OLDPWD
+	echo $OLDPWD $PWD
 ')
 [[ $actual == $expect ]] ||
-	err_exit "OLDPWD leaks out of subshell" \
+	err_exit "OLDPWD and/or PWD leak out of subshell" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
-expect='/tmp'
+# $OLDPWD and $PWD should survive after being set in a subshare
+expect='/usr /bin'
 actual=$($SHELL -c '
-	PWD=/tmp
-	(
-		cd /bin
-	)
-	echo $PWD
+	PWD=/dev
+	OLDPWD=/tmp
+	foo=${
+		cd /usr; cd /bin
+	}
+	echo $OLDPWD $PWD
 ')
 [[ $actual == $expect ]] ||
-	err_exit "PWD leaks out of subshell" \
+	err_exit "OLDPWD and/or PWD fail to survive subshare" \
 	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
