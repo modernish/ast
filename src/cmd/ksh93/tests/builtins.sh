@@ -1061,36 +1061,50 @@ exp=1
 
 # ======
 # 'cd -' should recognize the value of an overriden $OLDPWD variable
+# https://github.com/ksh93/ksh/pull/249
+# https://github.com/att/ast/issues/8
+
 mkdir "$tmp/oldpwd" "$tmp/otherpwd"
-expect=$tmp/oldpwd
-OLDPWD=$expect
+exp=$tmp/oldpwd
+OLDPWD=$exp
 cd - > /dev/null
-actual=$PWD
-[[ $actual == $expect ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+got=$PWD
+[[ $got == "$exp" ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 cd "$tmp"
 OLDPWD=$tmp/otherpwd
-actual=$(OLDPWD="$tmp/oldpwd" cd -)
-[[ $actual == $expect ]] ||
+got=$(OLDPWD=$tmp/oldpwd cd -)
+[[ $got == "$exp" ]] ||
 	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in new scope" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-expect='/tmp'
-actual=$(OLDPWD=/bin $SHELL -c 'function fn { typeset OLDPWD=/tmp; cd -; }; fn')
-[[ $actual == $expect ]] ||
+function fn
+{
+	typeset OLDPWD=/tmp
+	cd -
+}
+exp='/tmp'
+got=$(OLDPWD=/bin fn)
+[[ $got == "$exp" ]] ||
 	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in function scope" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-expect='/tmp'
-actual=$($SHELL -c 'function fn { typeset PWD=bug; cd /tmp; echo $PWD; }; fn')
-[[ $actual == $expect ]] ||
+function fn
+{
+	typeset PWD=bug
+	cd /tmp
+	echo "$PWD"
+}
+exp='/tmp'
+got=$(fn)
+[[ $got == "$exp" ]] ||
 	err_exit "PWD isn't set after cd if already set in function scope" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # Test for $OLDPWD and/or $PWD leaking out of subshell
-expect='/tmp /dev'
-actual=$($SHELL -c '
+exp='/tmp /dev'
+got=$(
 	PWD=/dev
 	OLDPWD=/tmp
 	(
@@ -1098,24 +1112,24 @@ actual=$($SHELL -c '
 		cd - > /dev/null
 	)
 	echo $OLDPWD $PWD
-')
-[[ $actual == $expect ]] ||
+)
+[[ $got == "$exp" ]] ||
 	err_exit "OLDPWD and/or PWD leak out of subshell" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # $OLDPWD and $PWD should survive after being set in a subshare
-expect='/usr /bin'
-actual=$($SHELL -c '
+exp='/usr /bin'
+got=$(
 	PWD=/dev
 	OLDPWD=/tmp
 	foo=${
 		cd /usr; cd /bin
 	}
 	echo $OLDPWD $PWD
-')
-[[ $actual == $expect ]] ||
+)
+[[ $got == "$exp" ]] ||
 	err_exit "OLDPWD and/or PWD fail to survive subshare" \
-	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))

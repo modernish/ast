@@ -7,6 +7,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Fixed a bug that caused 'cd -' to ignore the current value of $OLDPWD
   when it's set to a different directory in a new scope.
+
 - Fixed a related bug that caused ksh to use the wrong value for $PWD
   when in a new scope.
 
