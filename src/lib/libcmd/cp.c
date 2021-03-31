@@ -361,7 +361,7 @@ visit(State_t* state, register FTSENT* ent)
 			error(2, "%s: cannot search directory", ent->fts_path);
 			fts_set(NiL, ent, FTS_SKIP);
 
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case FTS_D:
 			if (state->directory)
 				memcpy(state->path + state->postsiz, base, len);
@@ -520,7 +520,7 @@ visit(State_t* state, register FTSENT* ent)
 				sfprintf(state->tmp, "%s.%s%d%s", state->path, state->suffix, v + 1, state->suffix);
 				goto backup;
 			}
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case BAK_simple:
 			sfprintf(state->tmp, "%s%s", state->path, state->suffix);
 		backup:
@@ -564,7 +564,7 @@ visit(State_t* state, register FTSENT* ent)
 			else
 				break;
 		}
-		/*FALLTHROUGH*/
+		/* FALLTHROUGH */
 	case CP:
 		if (S_ISLNK(ent->fts_statp->st_mode))
 		{

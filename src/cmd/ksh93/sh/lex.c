@@ -470,7 +470,7 @@ int sh_lex(Lex_t* lp)
 					return(lp->token=EOFSYM);
 				n = S_NLTOK;
 				shp->inlineno--;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_NLTOK:
 				/* check for here-document */
 				if(lp->heredoc)
@@ -491,7 +491,7 @@ int sh_lex(Lex_t* lp)
 				}
 				lp->lex.reservok = !lp->lex.intest;
 				lp->lex.skipword = 0;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_NL:
 				/* skip over new-lines */
 				lp->lex.last_quote = 0;
@@ -502,6 +502,7 @@ int sh_lex(Lex_t* lp)
 					lp->comp_assign = 0;
 					return(lp->token='\n');
 				}
+				/* FALLTHROUGH */
 			case S_BLNK:
 				if(lp->lex.incase<=TEST_RE)
 					continue;
@@ -686,7 +687,7 @@ int sh_lex(Lex_t* lp)
 			case S_NAME:
 				if(!lp->lex.skipword)
 					lp->lex.reservok *= 2;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_TILDE:
 				if(c=='~' && mode==ST_NESTED)
 				{
@@ -697,6 +698,7 @@ int sh_lex(Lex_t* lp)
 					}
 					continue;
 				}
+				/* FALLTHROUGH */
 			case S_RES:
 				if(!lp->lexd.dolparen)
 					lp->lexd.first = fcseek(0)-LEN;
@@ -808,7 +810,7 @@ int sh_lex(Lex_t* lp)
 				wordflags |=(ARG_MAC|ARG_EXP);
 				if(mode==ST_QUOTE)
 					ingrave = !ingrave;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_QUOTE:
 				if(oldmode(lp)==ST_NONE && lp->lexd.arith)	/*  in ((...)) */
 				{
@@ -914,10 +916,11 @@ int sh_lex(Lex_t* lp)
 					setchar(lp,c);
 					continue;
 				}
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_ALP:
 				if(c=='.' && endchar(lp)=='$')
 					goto err;
+				/* FALLTHROUGH */
 			case S_SPC2:
 			case S_DIG:
 				wordflags |= ARG_MAC;
@@ -938,9 +941,11 @@ int sh_lex(Lex_t* lp)
 					case '!':
 						if(n!=S_ALP)
 							goto dolerr;
+						/* FALLTHROUGH */
 					case '#':
 						if(c=='#')
 							n = S_ALP;
+						/* FALLTHROUGH */
 					case RBRACE:
 						if(n==S_ALP)
 						{
@@ -1150,7 +1155,7 @@ int sh_lex(Lex_t* lp)
 				continue;
 			case S_EQ:
 				assignment = lp->assignok;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_COLON:
 				if(assignment)
 				{
@@ -1254,7 +1259,7 @@ int sh_lex(Lex_t* lp)
 			}
 			case S_PAT:
 				wordflags |= ARG_EXP;
-				/* FALL THRU */
+				/* FALLTHROUGH */
 			case S_EPAT:
 			epat:
 				if(fcgetc(n)==LPAREN && c!='[')
@@ -1419,7 +1424,7 @@ breakloop:
 		case TEST_SEQ:
 			if(lp->lexd.warn && state[1]==0)
 				errormsg(SH_DICT,ERROR_warn(0),e_lexobsolete3,shp->inlineno);
-			/* FALL THRU */
+			/* FALLTHROUGH */
 		default:
 			if(lp->lex.testop2)
 			{
@@ -1434,7 +1439,7 @@ breakloop:
 				lp->token = TESTBINOP;	
 				return(lp->token);	
 			}
-
+			/* FALLTHROUGH */
 		case TEST_OR: case TEST_AND:
 		case 0:
 			return(lp->token=0);
@@ -1649,7 +1654,7 @@ static int comsub(register Lex_t *lp, int endtok)
 					goto rbrace;
 				if(c>0)
 					fcseek(-LEN);
-				/* fall through */
+				/* FALLTHROUGH */
 			    default:
 				lp->lex.reservok = 1;
 			}

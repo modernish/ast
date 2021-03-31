@@ -165,7 +165,7 @@ cutinit(int mode, char* str, Delim_t* wdelim, Delim_t* ldelim, size_t reclen)
 		case '\t':
 			while(*cp==' ' || *cp=='\t')
 				cp++;
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case 0:
 		case ',':
 			if(range)

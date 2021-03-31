@@ -348,7 +348,7 @@ getrec(Join_t* jp, int index, int discard)
 						cp = tp;
 						break;
 					}
-					/*FALLTHROUGH*/
+					/* FALLTHROUGH */
 				default:
 					goto next;
 				}
@@ -866,7 +866,7 @@ b_join(int argc, char** argv, Shbltin_t* context)
 				jp->file[0].field = (int)(opt_info.num-1);
 				n = '2';
 			}
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
  		case '1':
 		case '2':
 			if (opt_info.num <=0)
@@ -875,7 +875,7 @@ b_join(int argc, char** argv, Shbltin_t* context)
 			continue;
 		case 'v':
 			jp->outmode &= ~C_COMMON;
-			/*FALLTHROUGH*/
+			/* FALLTHROUGH */
 		case 'a':
 			if (opt_info.num!=1 && opt_info.num!=2)
 				error(2,"%s: file number must be 1 or 2", opt_info.name);

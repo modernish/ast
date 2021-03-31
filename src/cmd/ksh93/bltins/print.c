@@ -125,7 +125,7 @@ static char* 	nullarg[] = { 0, 0 };
 	{
 		if(strcmp(argv[1],"-n")==0)
 			prdata.echon = 1;
-#if !SHOPT_ECHOE
+#if !SHOPT_NOECHOE
 		else if(strcmp(argv[1],"-e")==0)
 			prdata.raw = 0;
 		else if(strcmp(argv[1],"-ne")==0 || strcmp(argv[1],"-en")==0)
@@ -133,7 +133,7 @@ static char* 	nullarg[] = { 0, 0 };
 			prdata.raw = 0;
 			prdata.echon = 1;
 		}
-#endif /* SHOPT_ECHOE */
+#endif /* SHOPT_NOECHOE */
 		else
 			break;
 		argv++;
@@ -716,7 +716,7 @@ static int extend(Sfio_t* sp, void* v, Sffmt_t* fe)
 			break;
 		case 'q':
 			format = 's';
-			/* FALL THROUGH */
+			/* FALLTHROUGH */
 		case 's':
 		case 'H':
 		case 'B':
@@ -798,6 +798,7 @@ static int extend(Sfio_t* sp, void* v, Sffmt_t* fe)
 						fe->flags |=SFFMT_ALTER;
 				}
 			}
+			/* FALLTHROUGH */
 		case 'b':
 		case 's':
 		case 'B':
@@ -837,12 +838,14 @@ static int extend(Sfio_t* sp, void* v, Sffmt_t* fe)
 		case 'u':
 		case 'U':
 			longmax = LDBL_ULLONG_MAX;
+			/* FALLTHROUGH */
 		case '.':
 			if(fe->size==2 && strchr("bcsqHPRQTZ",*fe->form))
 			{
 				value->ll = ((unsigned char*)argp)[0];
 				break;
 			}
+			/* FALLTHROUGH */
 		case 'd':
 		case 'D':
 		case 'i':
@@ -1096,6 +1099,7 @@ static int fmtvecho(const char *string, struct printf *pp)
 					c <<= 3;
 					c |= (*cp-'0');
 				}
+				/* FALLTHROUGH */
 			default:
 				cp--;
 		}

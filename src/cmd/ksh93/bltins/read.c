@@ -599,6 +599,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 
 		    case S_ERR:
 			cp++;
+			/* FALLTHROUGH */
 		    case S_EOF:
 			/* check for end of buffer */
 			if(val && *val)
@@ -660,7 +661,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 #endif /* SHOPT_MULTIBYTE */
 			if(c!=S_DELIM)
 				break;
-			/* FALL THRU */
+			/* FALLTHROUGH */
 
 		    case S_DELIM:
 			if(!del)
@@ -671,7 +672,7 @@ int sh_readline(register Shell_t *shp,char **names, volatile int fd, int flags,s
 				while((c=shp->ifstable[*cp++])==S_SPACE);
 				break;
 			}
-			/* FALL THRU */
+			/* FALLTHROUGH */
 
 		    case 0:
 			if(val==0 || was_escape)

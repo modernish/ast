@@ -166,7 +166,7 @@ int b_test(int argc, char *argv[],Shbltin_t *context)
 			if(!not)
 				break;
 			argv++;
-			/* fall through */
+			/* FALLTHROUGH */
 		case 4:
 		{
 			register int op = sh_lookup(cp=argv[2],shtab_testops);
@@ -434,6 +434,7 @@ int test_unop(Shell_t *shp,register int op,register const char *arg)
 		return(*arg == 0);
 	    case 's':
 		sfsync(sfstdout);
+		/* FALLTHROUGH */
 	    case 'O':
 	    case 'G':
 		if(*arg==0 || test_stat(arg,&statb)<0)
@@ -510,7 +511,6 @@ int test_binop(Shell_t *shp,register int op,const char *left,const char *right)
 	}
 	switch(op)
 	{
-		/* op must be one of the following values */
 		case TEST_AND:
 		case TEST_OR:
 			return(*left!=0);
@@ -544,6 +544,14 @@ int test_binop(Shell_t *shp,register int op,const char *left,const char *right)
 			return(lnum>=rnum);
 		case TEST_LE:
 			return(lnum<=rnum);
+		default:
+		{
+			/* fallback for operators not supported by the test builtin */
+			int i=0;
+			while(shtab_testops[i].sh_number && shtab_testops[i].sh_number != op)
+				i++;
+			errormsg(SH_DICT, ERROR_exit(2), op==TEST_END ? e_badop : e_unsupported_op, shtab_testops[i].sh_name);
+		}
 	}
 	/* NOTREACHED */
 	return(0);

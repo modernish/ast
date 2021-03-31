@@ -501,7 +501,7 @@ static Shnode_t	*sh_cmd(Lex_t *lexp, register int sym, int flag)
 	{
 	    case COOPSYM:		/* set up a cooperating process */
 		type |= (FPIN|FPOU|FPCL|FCOOP);
-		/* FALL THRU */		
+		/* FALLTHROUGH */
 	    case '&':
 		if(left)
 		{
@@ -510,7 +510,7 @@ static Shnode_t	*sh_cmd(Lex_t *lexp, register int sym, int flag)
 				left = left->par.partre;
 			left = makeparent(lexp,TFORK|type, left);
 		}
-		/* FALL THRU */		
+		/* FALLTHROUGH */
 	    case ';':
 		if(!left)
 			sh_syntax(lexp);
@@ -520,6 +520,7 @@ static Shnode_t	*sh_cmd(Lex_t *lexp, register int sym, int flag)
 	    case EOFSYM:
 		if(sym==NL)
 			break;
+		/* FALLTHROUGH */
 	    default:
 		if(sym && sym!=lexp->token)
 		{
@@ -782,18 +783,7 @@ static Shnode_t *funct(Lex_t *lexp)
 		lexp->current = kiaentity(lexp,t->funct.functnam,-1,'p',-1,-1,lexp->script,'p',0,"");
 #endif /* SHOPT_KIA */
 	if(flag)
-	{
 		lexp->token = sh_lex(lexp);
-#if SHOPT_BASH
-		if(lexp->token == LPAREN)
-		{
-			if((lexp->token = sh_lex(lexp)) == RPAREN)
-				t->funct.functtyp |= FPOSIX;
-			else
-				sh_syntax(lexp);
-		}
-#endif
-	}
 	if(t->funct.functtyp&FPOSIX)
 		skipnl(lexp,0);
 	else
@@ -1315,7 +1305,7 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 	    default:
 		if(io==0)
 			return(0);
-
+		/* FALLTHROUGH */
 	    case ';':
 		if(io==0)
 		{
@@ -1325,6 +1315,7 @@ static Shnode_t	*item(Lex_t *lexp,int flag)
 				sh_syntax(lexp);
 			showme =  FSHOWME;
 		}
+		/* FALLTHROUGH */
 	    /* simple command */
 	    case 0:
 		t = (Shnode_t*)simple(lexp,flag,io);

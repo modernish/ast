@@ -28,6 +28,8 @@ tst	note{ SHOPT_* option probe }end cross{
 	# process substitutions instead of FIFOs, which are not as secure
 	ls /dev/fd/9 9<&0 >/dev/null 2>&1
 	option DEVFD $?
+
+	# test for multibyte support
 	case  `echo a | tr a '\012' | wc -l` in
 	*1*)	option MULTIBYTE 0 ;;
 	esac
@@ -40,7 +42,7 @@ tst	note{ SHOPT_* option probe }end cross{
 	# SHOPT_TEST_L so ksh supports it for compatibility with local scripts
 	ln -s /dev/null "$EXECROOT/link$$"
 	env test -l "$EXECROOT/link$$" 2>/dev/null && env test ! -l . 2>/dev/null
-	option TEST_L $?
+	[ $? = 0 ] && option TEST_L 0
 	rm -f "$EXECROOT/link$$"
 
 	# if one of these exists, make SHOPT_SYSRC load /etc/ksh.kshrc by default
@@ -53,4 +55,19 @@ cat{
 	#if !_PACKAGE_ast && ( (MB_LEN_MAX-1)<=0 || !defined(_lib_mbtowc) )
 	#   undef SHOPT_MULTIBYTE
 	#endif
+}end
+
+tst	note{ can we probe file system case insensitivity }end output{
+	#include <ast.h>
+	#include <error.h>
+	#include <stdio.h>
+	static char *o = "SHOPT_GLOBCASEDET";
+	int main(int argc,char *argv[])
+	{
+		int r;
+		r = pathicase("/");
+		r = (r > -1 || errno != ENOSYS);
+		printf("#ifndef %s\n#   define %s\t%d\n#endif\n", o, o, r);
+		return !r;
+	}
 }end
