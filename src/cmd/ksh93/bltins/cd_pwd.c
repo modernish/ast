@@ -89,7 +89,7 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	else if(!dir)
 		dir = nv_getval(HOME);
 	else if(*dir == '-' && dir[1]==0)
-		dir = nv_getval(opwdnod);
+		dir = (char*)sh_scoped(shp,opwdnod)->nvalue.cp;
 	if(!dir || *dir==0)
 		errormsg(SH_DICT,ERROR_exit(1),argc==2?e_subst+4:e_direct);
 	/*
@@ -188,7 +188,7 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 		errormsg(SH_DICT,ERROR_system(1),"%s:",dir);
 	}
 success:
-	if(dir == nv_getval(opwdnod) || argc==2)
+	if(dir == sh_scoped(shp,opwdnod)->nvalue.cp || argc==2)
 		dp = dir;	/* print out directory for cd - */
 	if(flag)
 	{

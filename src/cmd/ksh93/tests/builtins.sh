@@ -1060,4 +1060,18 @@ exp=1
 [[ $got == $exp ]] || err_exit "'kill %' has the wrong exit status (expected '$exp'; got '$got')"
 
 # ======
+# 'cd -' should recognize the value of an overriden $OLDPWD variable
+mkdir "$tmp/oldpwd" "$tmp/otherpwd"
+expect="$tmp/oldpwd"
+OLDPWD="$expect"
+cd - > /dev/null
+[[ $PWD == $tmp/oldpwd ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable (expected $expect, got $PWD)"
+
+cd "$tmp"
+OLDPWD="$tmp/otherpwd"
+actual="$(OLDPWD="$tmp/oldpwd" cd -)"
+[[ $actual == $expect ]] ||
+	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in new scope (expected $expect, got $actual)"
+
+# ======
 exit $((Errors<125?Errors:125))
