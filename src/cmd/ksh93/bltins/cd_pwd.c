@@ -82,14 +82,19 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	if(error_info.errors>0 || argc >2)
 		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage((char*)0));
 	oldpwd = path_pwd(shp,0);
-	opwdnod = (shp->subshell?sh_assignok(OLDPWDNOD,1):OLDPWDNOD); 
-	pwdnod = (shp->subshell?sh_assignok(PWDNOD,1):PWDNOD); 
+	opwdnod = sh_scoped(shp,OLDPWDNOD);
+	pwdnod = sh_scoped(shp,PWDNOD);
+	if(shp->subshell)
+	{
+		opwdnod = sh_assignok(opwdnod,1);
+		pwdnod = sh_assignok(pwdnod,1);
+	}
 	if(argc==2)
 		dir = sh_substitute(oldpwd,dir,argv[1]);
 	else if(!dir)
 		dir = nv_getval(HOME);
 	else if(*dir == '-' && dir[1]==0)
-		dir = (char*)sh_scoped(shp,opwdnod)->nvalue.cp;
+		dir = nv_getval(opwdnod);
 	if(!dir || *dir==0)
 		errormsg(SH_DICT,ERROR_exit(1),argc==2?e_subst+4:e_direct);
 	/*
@@ -188,7 +193,7 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 		errormsg(SH_DICT,ERROR_system(1),"%s:",dir);
 	}
 success:
-	if(dir == sh_scoped(shp,opwdnod)->nvalue.cp || argc==2)
+	if(dir == nv_getval(opwdnod) || argc==2)
 		dp = dir;	/* print out directory for cd - */
 	if(flag)
 	{

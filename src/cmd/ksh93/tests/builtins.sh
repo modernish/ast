@@ -1062,16 +1062,56 @@ exp=1
 # ======
 # 'cd -' should recognize the value of an overriden $OLDPWD variable
 mkdir "$tmp/oldpwd" "$tmp/otherpwd"
-expect="$tmp/oldpwd"
-OLDPWD="$expect"
+expect=$tmp/oldpwd
+OLDPWD=$expect
 cd - > /dev/null
-[[ $PWD == $tmp/oldpwd ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable (expected $expect, got $PWD)"
+actual=$PWD
+[[ $actual == $expect ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 cd "$tmp"
-OLDPWD="$tmp/otherpwd"
-actual="$(OLDPWD="$tmp/oldpwd" cd -)"
+OLDPWD=$tmp/otherpwd
+actual=$(OLDPWD="$tmp/oldpwd" cd -)
 [[ $actual == $expect ]] ||
-	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in new scope (expected $expect, got $actual)"
+	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in new scope" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+expect='/tmp'
+actual=$(OLDPWD=/bin $SHELL -c 'function fn { typeset OLDPWD=/tmp; cd -; }; fn')
+[[ $actual == $expect ]] ||
+	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in function scope" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+expect='/tmp'
+actual=$($SHELL -c 'function fn { typeset PWD=bug; cd /tmp; echo $PWD; }; fn')
+[[ $actual == $expect ]] ||
+	err_exit "PWD isn't set after cd if already set in function scope" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+expect='/tmp'
+actual=$($SHELL -c '
+	OLDPWD=/tmp
+	(
+		cd /usr; cd /bin
+		cd - > /dev/null
+	)
+	echo $OLDPWD
+')
+[[ $actual == $expect ]] ||
+	err_exit "OLDPWD leaks out of subshell" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+expect='/tmp'
+actual=$($SHELL -c '
+	PWD=/tmp
+	(
+		cd /bin
+	)
+	echo $PWD
+')
+[[ $actual == $expect ]] ||
+	err_exit "PWD leaks out of subshell" \
+	"(expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
 # ======
 exit $((Errors<125?Errors:125))
