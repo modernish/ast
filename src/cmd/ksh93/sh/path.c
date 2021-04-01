@@ -254,10 +254,16 @@ char *path_pwd(Shell_t *shp,int flag)
 	cp = nv_getval(pwdnod);
 	if(!(cp && *cp=='/' && test_inode(cp,e_dot)))
 	{
-		/* Get PWD using getcwd(3), fall back to "." */
-		cp = getcwd(NIL(char*),0);
-		if(!cp)
-			return((char*)e_dot);
+		/* Check if $HOME is a path to the PWD; this ensures $PWD == $HOME
+		   at login, even if $HOME is a path that contains symlinks */
+		cp = nv_getval(sh_scoped(shp,HOME));
+		if(!(cp && *cp=='/' && test_inode(cp,e_dot)))
+		{
+			/* Get physical PWD (no symlinks) using getcwd(3), fall back to "." */
+			cp = getcwd(NIL(char*),0);
+			if(!cp)
+				return((char*)e_dot);
+		}
 		/* Store in PWD variable */
 		if(shp->subshell)
 			pwdnod = sh_assignok(pwdnod,1);
