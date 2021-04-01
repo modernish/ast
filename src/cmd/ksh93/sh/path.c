@@ -254,7 +254,7 @@ char *path_pwd(Shell_t *shp,int flag)
 	cp = nv_getval(pwdnod);
 	if(!(cp && *cp=='/' && test_inode(cp,e_dot)))
 	{
-		/* Get PWD using getcwd(2), fall back to "." */
+		/* Get PWD using getcwd(3), fall back to "." */
 		cp = getcwd(NIL(char*),0);
 		if(!cp)
 			return((char*)e_dot);
