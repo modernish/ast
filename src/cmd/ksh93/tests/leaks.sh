@@ -418,4 +418,20 @@ err_exit_if_leak 'unset PATH in subshell'
 disabled
 
 # ======
+# Test for a memory leak after 'cd' (in relation to $PWD and $OLDPWD)
+original_pwd=$PWD
+before=$(getmem)
+for ((i=0; i < N; i++))
+do	cd /tmp
+	cd - > /dev/null
+	cd /bin
+	cd /usr
+	cd /home
+	cd - > /dev/null
+done
+after=$(getmem)
+err_exit_if_leak 'PWD and/or OLDPWD changed by cd'
+cd $original_pwd
+
+# ======
 exit $((Errors<125?Errors:125))
