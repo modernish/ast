@@ -116,7 +116,7 @@ For more details, see the NEWS file and for complete details, see the git log.
 	For example:
 		ksh -c 'OLDPWD=/bin; OLDPWD=/tmp cd - > /dev/null; echo $OLDPWD'
 		ksh -c 'cd /var; PWD=/tmp cd /usr; echo $PWD'
-	prints '/bin' followed by '/var'.
+	now prints '/bin' followed by '/var'.
 ____________________________________________________________________________
 
 		KSH-93 VS. KSH-88
