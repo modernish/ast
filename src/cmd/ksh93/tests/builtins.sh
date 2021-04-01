@@ -1102,7 +1102,7 @@ got=$(fn)
 	err_exit "PWD isn't set after cd if already set in function scope" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-# $PWD should be set correctly after cd (disabled for now)
+# $PWD should be set correctly after cd
 exp="$PWD
 $PWD"
 got=$(echo $PWD; PWD=/tmp cd /home; echo $PWD)
