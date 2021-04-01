@@ -714,7 +714,9 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 
 			case '\a':
 				/* cut out bells */
-				break;
+				if(!shp->winch)
+					break;
+				/* FALLTHROUGH */
 
 			default:
 				if(c==myquote)
@@ -909,11 +911,11 @@ int ed_read(void *context, int fd, char *buff, int size, int reedit)
 			emacs_redraw(ep->e_emacs);
 #endif
 		}
-		shp->winch = 0;
 		/* an interrupt that should be ignored */
 		errno = 0;
 		if(!waitevent || (rv=(*waitevent)(fd,-1L,0))>=0)
 			rv = sfpkrd(fd,buff,size,delim,-1L,mode);
+		shp->winch = 0;
 	}
 	if(rv < 0)
 	{
