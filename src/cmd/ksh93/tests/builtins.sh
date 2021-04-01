@@ -1102,7 +1102,6 @@ got=$(fn)
 	err_exit "PWD isn't set after cd if already set in function scope" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
-: <<'disabled'
 # $PWD should be set correctly after cd (disabled for now)
 exp="$PWD
 $PWD"
@@ -1110,7 +1109,6 @@ got=$(echo $PWD; PWD=/tmp cd /home; echo $PWD)
 [[ $got == "$exp" ]] ||
 	err_exit "PWD is incorrect after cd" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
-disabled
 
 # Test for $OLDPWD and/or $PWD leaking out of subshell
 exp='/tmp /dev'

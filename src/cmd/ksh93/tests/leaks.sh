@@ -424,8 +424,11 @@ before=$(getmem)
 for ((i=0; i < N; i++))
 do	cd /tmp
 	cd - > /dev/null
+	PWD=/foo
+	OLDPWD=/bar
 	cd /bin
 	cd /usr
+	cd /home
 	cd /home
 	cd - > /dev/null
 done
