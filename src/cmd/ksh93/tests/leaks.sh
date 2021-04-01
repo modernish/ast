@@ -431,6 +431,9 @@ do	cd /tmp
 	cd /home
 	cd /home
 	cd - > /dev/null
+	unset OLDPWD PWD
+	cd /bin
+	cd /tmp
 done
 after=$(getmem)
 err_exit_if_leak 'PWD and/or OLDPWD changed by cd'
