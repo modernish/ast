@@ -665,22 +665,32 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 			case ESC:
 			{
 				int skip=0;
-				if(last[0]==']' && last[1]>='0' && last[1]<='9' && last[2]==';')
+				if(*last == ']')
 				{
-					/* Cut out dtterm/xterm sequences that set window/icon title */
-					while(c = mbchar(last))
+					/*
+					 * Cut out dtterm/xterm Operating System Commands that set window/icon title, etc.
+					 * See: https://invisible-island.net/xterm/ctlseqs/ctlseqs.html
+					 */
+					char *cp = last + 1;
+					while(*cp >= '0' && *cp <= '9')
+						cp++;
+					if(*cp++ == ';')
 					{
-						if(c=='\a')			/* legacy terminator */
-							break;
-						if(c==ESC && *last=='\\')	/* recommended terminator */
+						while(c = *cp++)
 						{
-							last++;
-							break;
+							if(c == '\a')			/* legacy terminator */
+								break;
+							if(c == ESC && *cp == '\\')	/* recommended terminator */
+							{
+								cp++;
+								break;
+							}
 						}
+						if(!c)
+							break;
+						last = cp;
+						continue;
 					}
-					if(!c)
-						break;
-					continue;
 				}
 				ep->e_crlf = 0;
 				if(pp<ppmax)
