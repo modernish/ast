@@ -714,9 +714,7 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 
 			case '\a':
 				/* cut out bells */
-				if(!shp->winch)
-					break;
-				/* FALLTHROUGH */
+				break;
 
 			default:
 				if(c==myquote)
