@@ -1060,4 +1060,84 @@ exp=1
 [[ $got == $exp ]] || err_exit "'kill %' has the wrong exit status (expected '$exp'; got '$got')"
 
 # ======
+# 'cd -' should recognize the value of an overriden $OLDPWD variable
+# https://github.com/ksh93/ksh/pull/249
+# https://github.com/att/ast/issues/8
+
+mkdir "$tmp/oldpwd" "$tmp/otherpwd"
+exp=$tmp/oldpwd
+OLDPWD=$exp
+cd - > /dev/null
+got=$PWD
+[[ $got == "$exp" ]] || err_exit "cd - doesn't recognize overridden OLDPWD variable" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+cd "$tmp"
+OLDPWD=$tmp/otherpwd
+got=$(OLDPWD=$tmp/oldpwd cd -)
+[[ $got == "$exp" ]] ||
+	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in new scope" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+function fn
+{
+	typeset OLDPWD=/tmp
+	cd -
+}
+exp='/tmp'
+got=$(OLDPWD=/bin fn)
+[[ $got == "$exp" ]] ||
+	err_exit "cd - doesn't recognize overridden OLDPWD variable if it is overridden in function scope" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+function fn
+{
+	typeset PWD=bug
+	cd /tmp
+	echo "$PWD"
+}
+exp='/tmp'
+got=$(fn)
+[[ $got == "$exp" ]] ||
+	err_exit "PWD isn't set after cd if already set in function scope" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# $PWD should be set correctly after cd
+exp="$PWD
+$PWD"
+got=$(echo $PWD; PWD=/tmp cd /home; echo $PWD)
+[[ $got == "$exp" ]] ||
+	err_exit "PWD is incorrect after cd" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# Test for $OLDPWD and/or $PWD leaking out of subshell
+exp='/tmp /dev'
+got=$(
+	PWD=/dev
+	OLDPWD=/tmp
+	(
+		cd /usr; cd /bin
+		cd - > /dev/null
+	)
+	echo $OLDPWD $PWD
+)
+[[ $got == "$exp" ]] ||
+	err_exit "OLDPWD and/or PWD leak out of subshell" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# $OLDPWD and $PWD should survive after being set in a subshare
+exp='/usr /bin'
+got=$(
+	PWD=/dev
+	OLDPWD=/tmp
+	foo=${
+		cd /usr; cd /bin
+	}
+	echo $OLDPWD $PWD
+)
+[[ $got == "$exp" ]] ||
+	err_exit "OLDPWD and/or PWD fail to survive subshare" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))
