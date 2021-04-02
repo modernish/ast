@@ -651,6 +651,10 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 	ep->e_winsz = ep->e_wsize+2;
 	ep->e_crlf = 1;
 	ep->e_plen = 0;
+	/*
+	 * Prepare e_prompt buffer for use when redrawing the command line.
+	 * Use only the last line of the potentially multi-line prompt.
+	 */
 	pp = ep->e_prompt;
 	ppmax = pp+PRSIZE-1;
 	*pp++ = '\r';
@@ -661,6 +665,23 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 			case ESC:
 			{
 				int skip=0;
+				if(last[0]==']' && last[1]>='0' && last[1]<='9' && last[2]==';')
+				{
+					/* Cut out dtterm/xterm sequences that set window/icon title */
+					while(c = mbchar(last))
+					{
+						if(c=='\a')			/* legacy terminator */
+							break;
+						if(c==ESC && *last=='\\')	/* recommended terminator */
+						{
+							last++;
+							break;
+						}
+					}
+					if(!c)
+						break;
+					continue;
+				}
 				ep->e_crlf = 0;
 				if(pp<ppmax)
 					*pp++ = c;
@@ -710,6 +731,10 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 						break;
 					*pp++ = ' ';
 				}
+				break;
+
+			case '\a':
+				/* cut out bells */
 				break;
 
 			default:
