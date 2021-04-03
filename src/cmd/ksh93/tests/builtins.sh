@@ -1145,8 +1145,11 @@ got=$(
 builtin uname
 exp=$(uname -o)
 
-# Test for a possible crash (to avoid crashing the script, fork the command substitution)
-[[ ! -z $(ulimit -t unlimited; uname -d) ]] || err_exit "'uname -d' failed"
+# Test for a possible crash (to avoid crashing the script, fork the subshell)
+(
+	ulimit -t unlimited
+	uname -d > /dev/null
+) || err_exit "'uname -d' crashes"
 
 # 'uname -d' shouldn't change the output of 'uname -o'
 got=$(ulimit -t unlimited; uname -d > /dev/null; uname -o)
