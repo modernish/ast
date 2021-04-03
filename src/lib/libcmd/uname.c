@@ -494,7 +494,8 @@ b_uname(int argc, char** argv, Shbltin_t* context)
 		{
 			if (!*(s = astconf("SRPC_DOMAIN", NiL, NiL)))
 #if _lib_getdomainname
-				getdomainname(s, sizeof(buf));
+				getdomainname(buf, sizeof(buf));
+				s = buf;
 #else
 				/*NOP*/;
 #endif

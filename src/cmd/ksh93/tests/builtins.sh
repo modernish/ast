@@ -1140,4 +1140,18 @@ got=$(
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
+# Test for bugs related to 'uname -d'
+# https://github.com/att/ast/pull/1187
+builtin uname
+exp=$(uname -o)
+
+# Test for a possible crash (to avoid crashing the script, fork the command substitution)
+[[ ! -z $(ulimit -t unlimited; uname -d) ]] || err_exit "'uname -d' failed"
+
+# 'uname -d' shouldn't change the output of 'uname -o'
+got=$(ulimit -t unlimited; uname -d > /dev/null; uname -o)
+[[ $exp == $got ]] || err_exit "'uname -d' changes the output of 'uname -o'" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))
