@@ -57,7 +57,7 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	register Shell_t *shp = context->shp;
 	int saverrno=0;
 	int rval,flag=0;
-	char *oldpwd;
+	static char *oldpwd;
 	Namval_t *opwdnod, *pwdnod;
 	if(sh_isoption(SH_RESTRICTED))
 		errormsg(SH_DICT,ERROR_exit(1),e_restricted+4);
@@ -81,9 +81,16 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	dir =  argv[0];
 	if(error_info.errors>0 || argc >2)
 		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage((char*)0));
+	if(oldpwd && oldpwd!=shp->pwd && oldpwd!=e_dot)
+		free(oldpwd);
 	oldpwd = path_pwd(shp,0);
-	opwdnod = (shp->subshell?sh_assignok(OLDPWDNOD,1):OLDPWDNOD); 
-	pwdnod = (shp->subshell?sh_assignok(PWDNOD,1):PWDNOD); 
+	opwdnod = sh_scoped(shp,OLDPWDNOD);
+	pwdnod = sh_scoped(shp,PWDNOD);
+	if(shp->subshell)
+	{
+		opwdnod = sh_assignok(opwdnod,1);
+		pwdnod = sh_assignok(pwdnod,1);
+	}
 	if(argc==2)
 		dir = sh_substitute(oldpwd,dir,argv[1]);
 	else if(!dir)
@@ -216,8 +223,6 @@ success:
 	nv_scan(sh_subtracktree(1),rehash,(void*)0,NV_TAGGED,NV_TAGGED);
 	path_newdir(shp,shp->pathlist);
 	path_newdir(shp,shp->cdpathlist);
-	if(oldpwd && oldpwd!=e_dot)
-		free(oldpwd);
 	return(0);
 }
 

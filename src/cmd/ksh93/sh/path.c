@@ -244,49 +244,35 @@ static pid_t path_xargs(Shell_t *shp,const char *path, char *argv[],char *const 
 char *path_pwd(Shell_t *shp,int flag)
 {
 	register char *cp;
-	register int count = 0;
+	Namval_t *pwdnod;
 	NOT_USED(flag);
+	/* Don't bother if PWD already set */
 	if(shp->pwd)
 		return((char*)shp->pwd);
-	while(1) 
+	/* First see if PWD variable is correct */
+	pwdnod = sh_scoped(shp,PWDNOD);
+	cp = nv_getval(pwdnod);
+	if(!(cp && *cp=='/' && test_inode(cp,e_dot)))
 	{
-		/* try from lowest to highest */
-		switch(count++)
+		/* Check if $HOME is a path to the PWD; this ensures $PWD == $HOME
+		   at login, even if $HOME is a path that contains symlinks */
+		cp = nv_getval(sh_scoped(shp,HOME));
+		if(!(cp && *cp=='/' && test_inode(cp,e_dot)))
 		{
-			case 0:
-				cp = nv_getval(PWDNOD);
-				break;
-			case 1:
-				cp = nv_getval(HOME);
-				break;
-			case 2:
-				cp = "/";
-				break;
-			case 3:
-			{
-				if(cp=getcwd(NIL(char*),0))
-				{  
-					nv_offattr(PWDNOD,NV_NOFREE);
-					_nv_unset(PWDNOD,0);
-					PWDNOD->nvalue.cp = cp;
-					goto skip;
-				}
-				break;
-			}
-			case 4:
+			/* Get physical PWD (no symlinks) using getcwd(3), fall back to "." */
+			cp = getcwd(NIL(char*),0);
+			if(!cp)
 				return((char*)e_dot);
 		}
-		if(cp && *cp=='/' && test_inode(cp,e_dot))
-			break;
+		/* Store in PWD variable */
+		if(shp->subshell)
+			pwdnod = sh_assignok(pwdnod,1);
+		nv_offattr(pwdnod,NV_NOFREE);
+		nv_putval(pwdnod,cp,NV_RDONLY);
 	}
-	if(count>1)
-	{
-		nv_offattr(PWDNOD,NV_NOFREE);
-		nv_putval(PWDNOD,cp,NV_RDONLY);
-	}
-skip:
-	nv_onattr(PWDNOD,NV_NOFREE|NV_EXPORT);
-	shp->pwd = (char*)(PWDNOD->nvalue.cp);
+	nv_onattr(pwdnod,NV_NOFREE|NV_EXPORT);
+	/* Set shell PWD */
+	shp->pwd = (char*)(pwdnod->nvalue.cp);
 	return(cp);
 }
 
