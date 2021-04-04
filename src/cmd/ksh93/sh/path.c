@@ -1000,7 +1000,7 @@ char *path_relative(Shell_t *shp,register const char* file)
 	return((char*)file);
 }
 
-void path_exec(Shell_t *shp,register const char *arg0,register char *argv[],struct argnod *local)
+noreturn void path_exec(Shell_t *shp,register const char *arg0,register char *argv[],struct argnod *local)
 {
 	char **envp;
 	const char *opath;

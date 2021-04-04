@@ -166,7 +166,6 @@ int    b_exec(int argc,char *argv[], Shbltin_t *context)
 		sh_sigreset(2);
 		sh_freeup(logdata.sh);
 		path_exec(logdata.sh,pname,argv,NIL(struct argnod*));
-		sh_done(logdata.sh,0);
         }
 	return(1);
 }
