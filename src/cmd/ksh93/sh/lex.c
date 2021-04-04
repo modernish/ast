@@ -1638,7 +1638,7 @@ static int comsub(register Lex_t *lp, int endtok)
 				lp->lastline = line;
 				lp->lasttok = endtok;
 				sh_syntax(lp);
-				UNREACHABLE();
+				/* UNREACHABLE */
 			    case IOSEEKSYM:
 				if(fcgetc(c)!='#' && c>0)
 					fcseek(-LEN);

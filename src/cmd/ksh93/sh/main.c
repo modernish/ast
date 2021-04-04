@@ -356,7 +356,6 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 	nv_putval(IFSNOD,(char*)e_sptbnl,NV_RDONLY);
 	exfile(shp,iop,fdin);
 	sh_done(shp,0);
-	UNREACHABLE();
 }
 
 /*
