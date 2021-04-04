@@ -332,4 +332,7 @@ do
 	[[ ${rtests[$i].exp} == "$got" ]] || err_exit "Readonly variable changed on rtests[$i]: "\
 		"expected '${rtests[$i].exp}', got '$got'"
 done
-unset i got rtests
+unset i n got rtests
+
+# ======
+exit $((Errors<125?Errors:125))
