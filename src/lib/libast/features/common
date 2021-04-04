@@ -659,7 +659,11 @@ tst - note{ does this compiler have __builtin_unreachable() }end output{
 		case 0:
 			__builtin_unreachable();
 		default:
-			printf("#define UNREACHABLE()\t__builtin_unreachable()\n");
+			printf("#if _AST_ksh_release\n");
+			printf("#   define UNREACHABLE()\t__builtin_unreachable()\n");
+			printf("#else\n");
+			printf("#   define UNREACHABLE()\tabort()\n");
+			printf("#endif\n");
 		}
 	}
 	int main(int argc, char *argv[])
@@ -668,5 +672,9 @@ tst - note{ does this compiler have __builtin_unreachable() }end output{
 		return 0;
 	}
 }end fail{
-	echo '#define UNREACHABLE()	0'
+	echo '#if _AST_ksh_release'
+	echo '#   define UNREACHABLE()	0'
+	echo '#else'
+	echo '#   define UNREACHABLE()	abort()'
+	echo '#endif'
 }end
