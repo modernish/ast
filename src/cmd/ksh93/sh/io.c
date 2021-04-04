@@ -510,7 +510,11 @@ static int outexcept(register Sfio_t *iop,int type,void *data,Sfdisc_t *handle)
 				sfpurge(iop);
 				sfpool(iop,NIL(Sfio_t*),SF_WRITE);
 				errno = save;
-				/* Note: __builtin_unreachable() is avoided here because of https://github.com/att/ast/issues/1336 */
+				/*
+				 * Note: UNREACHABLE() is avoided here because this errormsg() call will return.
+				 * The ERROR_system flag causes sh_exit() to be called, but if shp->jmplist->mode
+				 * is 0 (see above), then sh_exit() neither exits nor longjmps. See fault.c.
+				 */
 				errormsg(SH_DICT,ERROR_system(1),e_badwrite,sffileno(iop));
 				active = 0;
 				((struct checkpt*)shp->jmplist)->mode = mode;
