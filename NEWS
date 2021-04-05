@@ -13,6 +13,14 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   expanded if it is part of an ANSI/vt100/xterm escape sequence, which avoids
   breaking such sequences.
 
+2021-04-03:
+
+- Fixed a bug that caused the uname builtin's -d option to change the output
+  of the -o option.
+
+- Fixed a possible crash that could occur when showing the domain name
+  with the uname builtin's -d option.
+
 2021-03-31:
 
 - Fixed a bug that caused 'cd -' to ignore the current value of $OLDPWD

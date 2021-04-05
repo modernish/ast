@@ -405,6 +405,7 @@ int sh_lex(Lex_t* lp)
 						errno = ENOEXEC;
 						error_info.id = shp->readscript;
 						errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_exec,cp);
+						UNREACHABLE();
 					}
 					else
 					{
@@ -1190,7 +1191,10 @@ int sh_lex(Lex_t* lp)
 					if(n>0 && n==']')
 					{
 						if(mode==ST_NAME)
+						{
 							errormsg(SH_DICT,ERROR_exit(SYNBAD),e_lexsyntax1, shp->inlineno, "[]", "empty subscript");
+							UNREACHABLE();
+						}
 						if(!epatchar || epatchar=='%')
 							continue;
 					}
@@ -1634,6 +1638,7 @@ static int comsub(register Lex_t *lp, int endtok)
 				lp->lastline = line;
 				lp->lasttok = endtok;
 				sh_syntax(lp);
+				/* UNREACHABLE */
 			    case IOSEEKSYM:
 				if(fcgetc(c)!='#' && c>0)
 					fcseek(-LEN);
@@ -1668,7 +1673,10 @@ done:
 	lp->lex = save;
 	lp->assignok = (endchar(lp)==RBRACT?assignok:0);
 	if(lp->heredoc && !inheredoc)
+	{
 		errormsg(SH_DICT,ERROR_exit(SYNBAD),e_lexsyntax5,lp->sh->inlineno,lp->heredoc->ioname);
+		UNREACHABLE();
+	}
 	return(messages);
 }
 
@@ -2094,7 +2102,7 @@ static char	*fmttoken(Lex_t *lp, register int sym, char *tok)
  * print a bad syntax message
  */
 
-void	sh_syntax(Lex_t *lp)
+noreturn void sh_syntax(Lex_t *lp)
 {
 	register Shell_t *shp = lp->sh;
 	register const char *cp = sh_translate(e_unexpected);
@@ -2131,6 +2139,7 @@ void	sh_syntax(Lex_t *lp)
 		errormsg(SH_DICT,ERROR_exit(SYNBAD),e_lexsyntax1,lp->lastline,tokstr,cp);
 	else
 		errormsg(SH_DICT,ERROR_exit(SYNBAD),e_lexsyntax2,tokstr,cp);
+	UNREACHABLE();
 }
 
 static char *stack_shift(Stk_t *stkp, register char *sp,char *dp)

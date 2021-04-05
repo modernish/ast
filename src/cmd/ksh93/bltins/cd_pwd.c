@@ -60,7 +60,10 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	static char *oldpwd;
 	Namval_t *opwdnod, *pwdnod;
 	if(sh_isoption(SH_RESTRICTED))
+	{
 		errormsg(SH_DICT,ERROR_exit(1),e_restricted+4);
+		UNREACHABLE();
+	}
 	while((rval = optget(argv,sh_optcd))) switch(rval)
 	{
 		case 'L':
@@ -74,13 +77,16 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 			break;
 		case '?':
 			errormsg(SH_DICT,ERROR_usage(2), "%s", opt_info.arg);
-			break;
+			UNREACHABLE();
 	}
 	argv += opt_info.index;
 	argc -= opt_info.index;
 	dir =  argv[0];
 	if(error_info.errors>0 || argc >2)
+	{
 		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage((char*)0));
+		UNREACHABLE();
+	}
 	if(oldpwd && oldpwd!=shp->pwd && oldpwd!=e_dot)
 		free(oldpwd);
 	oldpwd = path_pwd(shp,0);
@@ -98,7 +104,10 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 	else if(*dir == '-' && dir[1]==0)
 		dir = nv_getval(opwdnod);
 	if(!dir || *dir==0)
+	{
 		errormsg(SH_DICT,ERROR_exit(1),argc==2?e_subst+4:e_direct);
+		UNREACHABLE();
+	}
 	/*
 	 * If sh_subshell() in subshell.c cannot use fchdir(2) to restore the PWD using a saved file descriptor,
 	 * we must fork any virtual subshell now to avoid the possibility of ending up in the wrong PWD on exit.
@@ -193,6 +202,7 @@ int	b_cd(int argc, char *argv[],Shbltin_t *context)
 		if(saverrno)
 			errno = saverrno;
 		errormsg(SH_DICT,ERROR_system(1),"%s:",dir);
+		UNREACHABLE();
 	}
 success:
 	if(dir == nv_getval(opwdnod) || argc==2)
@@ -204,6 +214,7 @@ success:
 		{
 			dir = stakptr(PATH_OFFSET);
 			errormsg(SH_DICT,ERROR_system(1),"%s:",dir);
+			UNREACHABLE();
 		}
 		stakseek(dir-stakptr(0));
 	}
@@ -245,12 +256,18 @@ int	b_pwd(int argc, char *argv[],Shbltin_t *context)
 			break;
 		case '?':
 			errormsg(SH_DICT,ERROR_usage(2), "%s", opt_info.arg);
-			break;
+			UNREACHABLE();
 	}
 	if(error_info.errors)
+	{
 		errormsg(SH_DICT,ERROR_usage(2),"%s",optusage((char*)0));
+		UNREACHABLE();
+	}
 	if(*(cp = path_pwd(shp,0)) != '/')
+	{
 		errormsg(SH_DICT,ERROR_system(1), e_pwd);
+		UNREACHABLE();
+	}
 	if(flag)
 	{
 		cp = strcpy(stakseek(strlen(cp)+PATH_MAX),cp);
