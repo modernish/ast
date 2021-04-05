@@ -113,6 +113,11 @@ main()
 #endif
 	printf("#undef	getdate\n");
 	printf("#define getdate		_ast_getdate\n");
+#endif
+	/* note: libast always provides its own getopt implementation */
+	printf("#undef	getopt\n");
+	printf("#define getopt		_ast_getopt\n");
+#if _map_libc
 #if _lib_getopt || _lib_getsubopt || _lib_getopt_long || _lib_getopt_long_only
 	printf("#undef	getopt\n");
 	printf("#define getopt		_ast_getopt\n");
