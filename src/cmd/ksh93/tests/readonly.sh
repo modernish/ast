@@ -11,7 +11,7 @@
 #          http://www.eclipse.org/org/documents/epl-v10.html           #
 #         (with md5 checksum b35adb5213ca9657e911e9befb180842)         #
 #                                                                      #
-#                  Martijn Dekker <martijn@inlv.org>                   #
+#                              hyenias                                 #
 #                                                                      #
 ########################################################################
 
