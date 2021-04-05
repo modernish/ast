@@ -452,9 +452,6 @@ main()
 	printf("#undef	realloc\n");
 	printf("#define realloc		_ast_realloc\n");
 	printf("extern void*		realloc(void*, size_t);\n");
-	printf("#undef	strdup\n");
-	printf("#define strdup		_ast_strdup\n");
-	printf("extern char*		strdup(const char*);\n");
 #if _lib_valloc
 	printf("#undef	valloc\n");
 	printf("#define valloc		_ast_valloc\n");
@@ -462,6 +459,10 @@ main()
 #endif
 #endif
 #endif
+	/* note: we always use the libast strdup implementation */
+	printf("#undef	strdup\n");
+	printf("#define strdup		_ast_strdup\n");
+	printf("extern char*		strdup(const char*);\n");
 
 	/*
 	 * overriding <stdlib.h> strto*() is problematic to say the least
