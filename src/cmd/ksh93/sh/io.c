@@ -2138,7 +2138,7 @@ static int	io_prompt(Shell_t *shp,Sfio_t *iop,register int flag)
 	{
 		case 1:
 		{
-			int c, escseq = 0;
+			register int c;
 #if defined(TIOCLBIC) && defined(LFLUSHO)
 			if(!sh_isoption(SH_VI) && !sh_isoption(SH_EMACS) && !sh_isoption(SH_GMACS))
 			{
@@ -2154,21 +2154,18 @@ static int	io_prompt(Shell_t *shp,Sfio_t *iop,register int flag)
 			shp->exitval = 0;
 			for(;c= *cp;cp++)
 			{
-				/* don't expand ! in an escape sequence */
-				if((escseq==0 && c==ESC) || (escseq==1 && (c=='[' || c==']' || c=='(')))
-					escseq++;
-				else if(c==HIST_CHAR && escseq==0)
+				if(c==HIST_CHAR)
 				{
 					/* look at next character */
 					c = *++cp;
 					/* print out line number if not !! */
 					if(c!= HIST_CHAR)
+					{
 						sfprintf(sfstderr,"%d", shp->gd->hist_ptr?(int)shp->gd->hist_ptr->histind:++cmdno);
+					}
 					if(c==0)
 						goto done;
 				}
-				else
-					escseq = 0;
 				sfputc(sfstderr,c);
 			}
 			goto done;

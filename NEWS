@@ -9,10 +9,6 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   command line if the last line of the prompt includes an xterm escape
   sequence that is terminated by $'\a' (the bell character).
 
-- When the PS1 prompt is expanded on an interactive shell, '!' is no longer
-  expanded if it is part of an ANSI/vt100/xterm escape sequence, which avoids
-  breaking such sequences.
-
 - Harden readonly variables. Readonly variables or arrays no longer allow
   attribute changes which would otherwise allow their value to be altered.
   Expanded support for readonly variables within multidimensional arrays.

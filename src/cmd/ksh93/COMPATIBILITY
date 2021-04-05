@@ -51,7 +51,7 @@ For more details, see the NEWS file and for complete details, see the git log.
 		alias newgrp='exec newgrp'
 
 8.	'case' no longer retries to match patterns as literal strings if they
-	fail to match as patterns. This undocumented behavior broke validation
+	fail to match as patterns. This undocumented behaviour broke validation
 	use cases that are expected to work. For example:
 		n='[0-9]'
 		case $n in
@@ -117,10 +117,6 @@ For more details, see the NEWS file and for complete details, see the git log.
 		ksh -c 'OLDPWD=/bin; OLDPWD=/tmp cd - > /dev/null; echo $OLDPWD'
 		ksh -c 'cd /var; PWD=/tmp cd /usr; echo $PWD'
 	now prints '/bin' followed by '/var'.
-
-23.	When the PS1 prompt is expanded on an interactive shell, '!' is no
-	longer expanded if it is part of an ANSI/vt100/xterm escape sequence.
-
 ____________________________________________________________________________
 
 		KSH-93 VS. KSH-88

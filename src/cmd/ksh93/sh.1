@@ -2141,10 +2141,12 @@ Two successive occurrences of
 will produce a single
 .B !
 when the prompt string is printed.
-However, the
+Note that any terminal escape sequences used in the
+.B PS1
+prompt thus also need every instance of
 .B !
-character is left untouched if the shell finds it to be part of an
-ANSI/vt100/xterm-style escape sequence.
+in them to be changed to
+.BR !! .
 .TP
 .SM
 .B PS2
