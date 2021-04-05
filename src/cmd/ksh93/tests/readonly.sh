@@ -115,19 +115,19 @@ rtests=(
 		exp=$'typeset -r old=RDONLY\nnew=RDONLY'
 	)
 	(
-		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x);'
+		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x)'
 		chg='arr.name=y; arr.alphas[1]=b'
 		res='typeset -p arr'
 		exp='typeset -C arr=(typeset -r -a alphas=(a b c);name=y)'
 	)
 	(
-		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x);'
+		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x)'
 		chg='arr.name=y; arr.alphas[1]=()'
 		res='typeset -p arr'
 		exp='typeset -C arr=(typeset -r -a alphas=(a b c);name=y)'
 	)
 	(
-		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x);'
+		ini='typeset -C arr=(typeset -r -a alphas=(a b c);name=x)'
 		chg='arr.name=y; arr.alphas[1]=(b)'
 		res='typeset -p arr'
 		exp='typeset -C arr=(typeset -r -a alphas=(a b c);name=y)'
@@ -151,7 +151,7 @@ rtests=(
 		exp='typeset -r -a -E arr=(0 1 2 3)'
 	)
 	(
-		ini='typeset -T FB_t=(typeset x=foo y=bar; typeset -r z=${_.y}; create() { _.y=bam; }; );'
+		ini='typeset -T FB_t=(typeset x=foo y=bar; typeset -r z=${_.y}; create() { _.y=bam; }; )'
 		chg='FB_t fb; fb.z=foo'
 		res='typeset -p fb'
 		exp='FB_t fb=(x=foo;y=bam;typeset -r z=bar)'
@@ -264,57 +264,54 @@ rtests=(
 		res='typeset -p arr'
 		exp='typeset -r -A arr=([a]=([10]=X [11]=XI [12]=XII) [b]=20)'
 	)
-
-# Below tests cause a 'recursion too deep' error condition
-#	(
-#		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#		chg='(( arr[b] += 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#		chg='(( arr[b] -= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#		chg='(( arr[b] *= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#		chg='(( arr[b] /= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#		chg='(( arr[a][XI] += 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#		chg='(( arr[a][XI] -= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#		chg='(( arr[a][XI] *= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#	)
-#	(
-#		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#		chg='(( arr[a][XI] /= 5 ))'
-#		res='typeset -p arr'
-#		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
-#	)
-
+	(
+		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+		chg='(( arr[b] += 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+		chg='(( arr[b] -= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+		chg='(( arr[b] *= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+		chg='(( arr[b] /= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=10 [b]=20 [c]=30)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+		chg='(( arr[a][XI] += 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+		chg='(( arr[a][XI] -= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+		chg='(( arr[a][XI] *= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+	)
+	(
+		ini='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+		chg='(( arr[a][XI] /= 5 ))'
+		res='typeset -p arr'
+		exp='typeset -r -A -i arr=([a]=([X]=10 [XI]=11 [XII]=12) [b]=20)'
+	)
 )
 
 typeset -i i
