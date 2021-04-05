@@ -1522,6 +1522,15 @@ char *nv_endsubscript(Namval_t *np, register char *cp, int mode)
 	}
 	if(mode && np)
 	{
+		/* Block an attempt to alter a readonly array via subscript assignment or by appending the array.
+		   However need to allow instances of type variables. This exception is observed when np->nvflag
+		   has NV_BINARY and NV_LJUST set besides NV_RDONLY and NV_ARRAY. */
+		if(nv_isattr(np,NV_RDONLY) && nv_isattr(np,NV_ARRAY) && mode&NV_ASSIGN && np->nvflag&(NV_BINARY|NV_LJUST)^(NV_BINARY|NV_LJUST))
+		{
+			errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
+			UNREACHABLE();
+		}
+
 		Namarr_t *ap = nv_arrayptr(np);
 		int scan = 0;
 #if SHOPT_FIXEDARRAY
