@@ -114,13 +114,11 @@ main()
 	printf("#undef	getdate\n");
 	printf("#define getdate		_ast_getdate\n");
 #endif
-	/* note: libast always provides its own getopt implementation */
+	/* libast always provides its own getopt implementation */
 	printf("#undef	getopt\n");
 	printf("#define getopt		_ast_getopt\n");
 #if _map_libc
 #if _lib_getopt || _lib_getsubopt || _lib_getopt_long || _lib_getopt_long_only
-	printf("#undef	getopt\n");
-	printf("#define getopt		_ast_getopt\n");
 	printf("#undef	getsubopt\n");
 	printf("#define getsubopt       _ast_getsubopt\n");
 	printf("#undef	getopt_long\n");
@@ -459,7 +457,7 @@ main()
 #endif
 #endif
 #endif
-	/* note: we always use the libast strdup implementation */
+	/* we always use the libast strdup implementation */
 	printf("#undef	strdup\n");
 	printf("#define strdup		_ast_strdup\n");
 	printf("extern char*		strdup(const char*);\n");
