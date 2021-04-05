@@ -692,9 +692,13 @@ void	ed_setup(register Edit_t *ep, int fd, int reedit)
 						continue;
 					}
 				}
+				/*
+				 * Try to add the length of included escape sequences to qlen
+				 * which is subtracted from the physical length of the prompt.
+				 */
 				ep->e_crlf = 0;
 				if(pp<ppmax)
-					*pp++ = c;
+					*pp++ = ESC;
 				for(n=1; c = *last++; n++)
 				{
 					if(pp < ppmax)
