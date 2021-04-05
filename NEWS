@@ -7,7 +7,23 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Harden readonly variables. Readonly variables or arrays no longer allow
   attribute changes which would otherwise allow their value to be altered.
-  Expanded support for readonly variables withiin multidimensional arrays.
+  Expanded support for readonly variables within multidimensional arrays.
+
+2021-04-03:
+
+- Fixed a bug that caused the uname builtin's -d option to change the output
+  of the -o option.
+
+- Fixed a possible crash that could occur when showing the domain name
+  with the uname builtin's -d option.
+
+2021-03-31:
+
+- Fixed a bug that caused 'cd -' to ignore the current value of $OLDPWD
+  when it's set to a different directory in a new scope.
+
+- Fixed a related bug that caused ksh to use the wrong value for $PWD
+  when in a new scope.
 
 2021-03-29:
 

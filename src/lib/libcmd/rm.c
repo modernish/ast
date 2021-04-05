@@ -366,8 +366,8 @@ b_rm(int argc, register char** argv, Shbltin_t* context)
 			state.verbose = 1;
 			continue;
 		case '?':
-			error(ERROR_USAGE|4, "%s", opt_info.arg);
-			break;
+			error(ERROR_usage(2), "%s", opt_info.arg);
+			UNREACHABLE();
 		case ':':
 			error(2, "%s", opt_info.arg);
 			break;
@@ -378,7 +378,10 @@ b_rm(int argc, register char** argv, Shbltin_t* context)
 	if (*argv && streq(*argv, "-") && !streq(*(argv - 1), "--"))
 		argv++;
 	if (error_info.errors || !*argv && !state.force)
-		error(ERROR_USAGE|4, "%s", optusage(NiL));
+	{
+		error(ERROR_usage(2), "%s", optusage(NiL));
+		UNREACHABLE();
+	}
 	if (!*argv)
 		return 0;
 

@@ -133,7 +133,10 @@ static void get_cpu_times(Shell_t *shp, struct timeval *tv_usr, struct timeval *
 	double dtime;
 
 	if(times(&cpu_times) == (clock_t)-1)
+	{
 		errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+		UNREACHABLE();
+	}
 
 	dtime = (double)cpu_times.tms_utime / shp->gd->lim.clk_tck;
 	tv1.tv_sec = dtime / 60;
@@ -1307,8 +1310,11 @@ int sh_exec(register const Shnode_t *t, int flags)
 								if(!com[1])
 									type = 2;
 								else
+								{
 									errormsg(SH_DICT, ERROR_exit(2), "%s: %s: %s",
 										 SYSREDIR->nvname, e_badsyntax, com[1]);
+									UNREACHABLE();
+								}
 							else
 								type = (execflg && !shp->subshell && !shp->st.trapcom[0]);
 							shp->redir0 = 1;
@@ -1749,8 +1755,11 @@ int sh_exec(register const Shnode_t *t, int flags)
 					if(fn<0)
 					{
 						if((errno = save_errno) != ENOENT)
+						{
 							errormsg(SH_DICT, ERROR_SYSTEM|ERROR_PANIC,
 								 "process substitution: FIFO open failed");
+							UNREACHABLE();
+						}
 						sh_done(shp,0);
 					}
 					sh_iorenumber(shp,fn,fd);
@@ -2408,7 +2417,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 #else
 				bt = times(&before);
 				if(bt == (clock_t)-1)
+				{
 					errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+					UNREACHABLE();
+				}
 #endif
 				job.waitall = 1;
 				sh_onstate(SH_TIMING);
@@ -2431,7 +2443,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 #ifndef timeofday
 			at = times(&after) - bt;
 			if(at == (clock_t)-1)
+			{
 				errormsg(SH_DICT, ERROR_exit(1), "times(3) failed: %s", strerror(errno));
+				UNREACHABLE();
+			}
 			tm[0] = at;
 #else
 			get_cpu_times(shp, &after_usr, &after_sys);
@@ -2479,7 +2494,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 				int offset = stktell(stkp);
 				int	flags=NV_NOASSIGN|NV_NOARRAY|NV_VARNAME;
 				if(cp)
+				{
 					errormsg(SH_DICT,ERROR_exit(1),e_ident,fname);
+					UNREACHABLE();
+				}
 				sfputc(stkp,'.');
 				sfputr(stkp,fname,0);
 				np = nv_open(stkptr(stkp,offset),shp->var_tree,flags);
@@ -2525,7 +2543,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 				fname = stkptr(stkp,offset);
 			}
 			else if((mp=nv_search(fname,shp->bltin_tree,0)) && nv_isattr(mp,BLT_SPC))
+			{
 				errormsg(SH_DICT,ERROR_exit(1),e_badfun,fname);
+				UNREACHABLE();
+			}
 #if SHOPT_NAMESPACE
 			if(shp->namespace && !shp->prefix && *fname!='.')
 				np = sh_fsearch(shp,fname,NV_ADD|HASH_NOSCOPE);
@@ -2537,7 +2558,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 				if(!shp->mktype)
 					cp = nv_setdisc(npv,cp,np,(Namfun_t*)npv);
 				if(!cp)
+				{
 					errormsg(SH_DICT,ERROR_exit(1),e_baddisc,fname);
+					UNREACHABLE();
+				}
 			}
 			if(np->nvalue.rp)
 			{
@@ -2871,6 +2895,7 @@ pid_t _sh_fork(Shell_t *shp,register pid_t parent,int flags,int *jobid)
 		{
 			forkcnt=1000L;
 			errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_nofork);
+			UNREACHABLE();
 		}
 		timeout = (void*)sh_timeradd(forkcnt, 0, timed_out, NIL(void*));
 		nochild = job_wait((pid_t)1);
@@ -3222,7 +3247,10 @@ int sh_funscope(int argn, char *argv[],int(*fun)(void*),void *arg,int execflg)
 	if(shp->topscope != (Shscope_t*)shp->st.self)
 		sh_setscope(shp->topscope);
 	if(--shp->fn_depth==1 && jmpval==SH_JMPERRFN)
+	{
 		errormsg(SH_DICT,ERROR_exit(1),e_toodeep,argv[0]);
+		UNREACHABLE();
+	}
 	sh_popcontext(shp,buffp);
 	sh_unscope(shp);
 	shp->namespace = nspace;
@@ -3420,7 +3448,10 @@ static void coproc_init(Shell_t *shp, int pipes[])
 {
 	int outfd;
 	if(shp->coutpipe>=0 && shp->cpid)
+	{
 		errormsg(SH_DICT,ERROR_exit(1),e_pexists);
+		UNREACHABLE();
+	}
 	shp->cpid = 0;
 	if(shp->cpipe[0]<=0 || shp->cpipe[1]<=0)
 	{
@@ -3536,7 +3567,10 @@ static pid_t sh_ntfork(Shell_t *shp,const Shnode_t *t,char *argv[],int *jobid,in
 			}
 		}
 		else if(sh_isoption(SH_RESTRICTED))
+		{
 			errormsg(SH_DICT,ERROR_exit(1),e_restricted,path);
+			UNREACHABLE();
+		}
 		if(!path)
 		{
 			spawnpid = -1;
@@ -3598,8 +3632,10 @@ static pid_t sh_ntfork(Shell_t *shp,const Shnode_t *t,char *argv[],int *jobid,in
 		{
 		    case ENOENT:
 			errormsg(SH_DICT,ERROR_system(ERROR_NOENT),e_found+4);
+			UNREACHABLE();
 		    default:
 			errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_exec+4);
+			UNREACHABLE();
 		}
 		job_unlock();
 	}
