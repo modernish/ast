@@ -194,6 +194,7 @@ typedef struct _init_
 	Namfun_t	SH_MATH_init;
 #ifdef _hdr_locale
 	Namfun_t	LC_TYPE_init;
+	Namfun_t	LC_TIME_init;
 	Namfun_t	LC_NUM_init;
 	Namfun_t	LC_COLL_init;
 	Namfun_t	LC_MSG_init;
@@ -438,6 +439,8 @@ static void put_cdpath(register Namval_t* np,const char *val,int flags,Namfun_t 
 		type = LC_COLLATE;
 	else if(name==(LCNUMNOD)->nvname)
 		type = LC_NUMERIC;
+	else if(name==(LCTIMENOD)->nvname)
+		type = LC_TIME;
 #ifdef LC_LANG
 	else if(name==(LANGNOD)->nvname)
 		type = LC_LANG;
@@ -1654,7 +1657,7 @@ Namfun_t *nv_cover(register Namval_t *np)
 	if(np==IFSNOD || np==PATHNOD || np==SHELLNOD || np==FPATHNOD || np==CDPNOD || np==SECONDS || np==ENVNOD || np==LINENO)
 		return(np->nvfun);
 #ifdef _hdr_locale
-	if(np==LCALLNOD || np==LCTYPENOD || np==LCMSGNOD || np==LCCOLLNOD || np==LCNUMNOD || np==LANGNOD)
+	if(np==LCALLNOD || np==LCTYPENOD || np==LCMSGNOD || np==LCCOLLNOD || np==LCNUMNOD || np==LCTIMENOD || np==LANGNOD)
 		return(np->nvfun);
 #endif
 	 return(0);
@@ -1821,6 +1824,8 @@ static Init_t *nv_init(Shell_t *shp)
 #ifdef _hdr_locale
 	ip->LC_TYPE_init.disc = &LC_disc;
 	ip->LC_TYPE_init.nofree = 1;
+	ip->LC_TIME_init.disc = &LC_disc;
+	ip->LC_TIME_init.nofree = 1;
 	ip->LC_NUM_init.disc = &LC_disc;
 	ip->LC_NUM_init.nofree = 1;
 	ip->LC_COLL_init.disc = &LC_disc;
@@ -1863,6 +1868,7 @@ static Init_t *nv_init(Shell_t *shp)
 	nv_stack(LCMSGNOD, &ip->LC_MSG_init);
 	nv_stack(LCCOLLNOD, &ip->LC_COLL_init);
 	nv_stack(LCNUMNOD, &ip->LC_NUM_init);
+	nv_stack(LCTIMENOD, &ip->LC_TIME_init);
 	nv_stack(LANGNOD, &ip->LANG_init);
 #endif /* _hdr_locale */
 	(PPIDNOD)->nvalue.pidp = (&shp->gd->ppid);
