@@ -298,7 +298,7 @@ skip2:
 		n = sh_iocheckfd(shp,fd);
 	if(!(n&IOWRITE))
 	{
-		/* for compatibility, don't print an error message to stdout */
+		/* don't print error message for stdout for compatibility */
 		if(fd==1)
 			return(1);
 		errormsg(SH_DICT,ERROR_system(1),msg);
