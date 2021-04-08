@@ -732,7 +732,8 @@ static int     setall(char **argv,register int flag,Dt_t *troot,struct tdata *tp
 			np = nv_open(name,troot,nvflags|((nvflags&NV_ASSIGN)?0:NV_ARRAY)|((iarray|(nvflags&(NV_REF|NV_NOADD)==NV_REF))?NV_FARRAY:0));
 			if(!np)
 				continue;
-			if(np->nvflag&NV_RDONLY && !tp->pflag && (flag & ~NV_NOFREE) != NV_RDONLY)
+			if(np->nvflag&NV_RDONLY && !tp->pflag
+			&& (flag & ~(NV_ASSIGN|NV_RDONLY|NV_EXPORT)))	/* allow readonly/export on readonly vars */
 			{
 				errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
 				UNREACHABLE();

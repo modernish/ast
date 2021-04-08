@@ -746,7 +746,7 @@ Errors=$?  # ensure error count survives subshell
 		exit $Errors
 	fi
 
-	for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC
+	for v in LC_ALL LC_CTYPE LC_MESSAGES LC_COLLATE LC_NUMERIC LC_TIME
 	do	nameref r=$v
 		unset $v
 		[[ $r ]] && err_exit "unset $v failed -- expected '', got '$r'"
@@ -921,6 +921,7 @@ set -- \
 	"LC_CTYPE" \
 	"LC_MESSAGES" \
 	"LC_NUMERIC" \
+	"LC_TIME" \
 	"FIGNORE" \
 	"KSH_VERSION" \
 	"JOBMAX" \

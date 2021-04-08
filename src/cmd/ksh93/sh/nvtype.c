@@ -1531,42 +1531,6 @@ Namval_t *nv_mkstruct(const char *name, int rsize, Fields_t *fields)
 	return(mp);
 }
 
-static void put_stat(Namval_t* np, const char* val, int flag, Namfun_t* nfp)
-{
-	if(val)
-	{
-		if(stat(val,(struct stat*)np->nvalue.cp)<0)
-			sfprintf(sfstderr,"stat of %s failed\n",val);
-		return;
-	}
-	nv_putv(np,val,flag,nfp);
-	nv_disc(np,nfp,NV_POP);
-	if(!(nfp->nofree&1))
-		free((void*)nfp);
-}
-
-static const Namdisc_t stat_disc =
-{
-        0,
-        put_stat
-};
-
-
-void nv_mkstat(void)
-{
-	Namval_t *tp;
-	Namfun_t *fp;
-	tp = nv_mkstruct("stat_t", sizeof(struct stat), foo);
-	nv_offattr(tp,NV_RDONLY);
-	nv_setvtree(tp);
-	fp = sh_newof(NiL,Namfun_t,1,0);
-	fp->type = tp;
-	fp->disc = &stat_disc;
-	nv_disc(tp,fp,NV_FIRST);
-	nv_putval(tp,e_devnull,0);
-	nv_onattr(tp,NV_RDONLY);
-}
-
 static void write_indent(Sfio_t *out,char *str,int n,int indent)
 {
 	register int	c, first=1;

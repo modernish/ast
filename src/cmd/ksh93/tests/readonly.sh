@@ -332,4 +332,13 @@ done
 unset i n got rtests
 
 # ======
+# readonly variables should still accept setting the readonly or export attributes
+# https://github.com/ksh93/ksh/issues/258
+(readonly v=1; readonly v) 2>/dev/null || err_exit "readonly variable cannot be set readonly (1)"
+(readonly v=1; typeset -r v) 2>/dev/null || err_exit "readonly variable cannot be set readonly (2)"
+(readonly v=1; export v) 2>/dev/null || err_exit "readonly variable cannot be exported (1)"
+(readonly v=1; typeset -x v) 2>/dev/null || err_exit "readonly variable cannot be exported (2)"
+(readonly v=1; typeset -rx v) 2>/dev/null || err_exit "readonly variable cannot be set readonly and exported"
+
+# ======
 exit $((Errors<125?Errors:125))
