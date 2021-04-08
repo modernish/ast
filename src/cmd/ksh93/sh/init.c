@@ -210,13 +210,6 @@ static char		*env_init(Shell_t*);
 static void		env_import_attributes(Shell_t*,char*);
 static Init_t		*nv_init(Shell_t*);
 static int		shlvl;
-
-#ifdef _WINIX
-#   define EXE	"?(.exe)"
-#else
-#   define EXE
-#endif
-
 static int		rand_shift;
 
 /*
@@ -284,7 +277,7 @@ static void put_ed(register Namval_t* np,const char *val,int flags,Namfun_t *fp)
 		goto done;
 	if(!(cp=val) && (*name=='E' || !(cp=nv_getval(sh_scoped(shp,EDITNOD)))))
 		goto done;
-	/* turn on vi or emacs option if editor name is either*/
+	/* turn on vi or emacs option if editor name is either */
 	cp = path_basename(cp);
 #if SHOPT_VSH
 	if(strmatch(cp,"*[Vv][Ii]*"))
@@ -1970,7 +1963,7 @@ static void env_import_attributes(Shell_t *shp, char *next)
 			int size = *(unsigned char*)(cp+1)-' ';
 			if((flag&NV_INTEGER) && size==0)
 			{
-				/* check for floating*/
+				/* check for floating */
 				char *dp, *val = nv_getval(np);
 				strtol(val,&dp,10);
 				if(*dp=='.' || *dp=='e' || *dp=='E')

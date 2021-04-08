@@ -72,7 +72,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - A new --globcasedetect shell option is added to ksh on OSs where we can check
   for a case-insensitive file system (currently macOS, Windows/Cygwin, Linux
-  5.2+, and QNX 7.0+). When this option is turned on, file name generation
+  and QNX 7.0+). When this option is turned on, file name generation
   (globbing), as well as file name tab completion on interactive shells,
   automatically become case-insensitive on file systems where the difference
   between upper- and lowercase is ignored for file names. This is transparently

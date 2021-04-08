@@ -191,7 +191,13 @@ int    b_alias(int argc,register char *argv[],Shbltin_t *context)
 
 #if 0
     /* for the dictionary generator */
-    int    b_local(int argc,char *argv[],Shbltin_t *context){}
+    int    b_autoload(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_compound(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_float(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_functions(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_integer(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_local(int argc,register char *argv[],Shbltin_t *context){}
+    int    b_nameref(int argc,register char *argv[],Shbltin_t *context){}
 #endif
 int    b_typeset(int argc,register char *argv[],Shbltin_t *context)
 {

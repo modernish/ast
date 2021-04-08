@@ -776,7 +776,7 @@ got=$(umask 777; set +x; { cat <(echo ok); } 2>&1)
 
 # ======
 # https://github.com/att/ast/issues/1336
-# Use the /proc psuedo filesystem on Linux as a convenient way to force a write I/O error.
+# Use the /proc pseudo filesystem on Linux as a convenient way to force a write I/O error.
 if [[ $(uname) == Linux ]]
 then
 	actual=$($SHELL -c 'echo > /proc/self/uid_map; echo okay' 2>&1)

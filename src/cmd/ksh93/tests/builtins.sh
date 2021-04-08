@@ -226,11 +226,11 @@ if	(( $(printf 'x\0y' | wc -c) != 3 ))
 then	err_exit 'printf \0 not working'
 fi
 if	[[ $(printf "%bx%s\n" 'f\to\cbar') != $'f\to' ]]
-then	err_exit 'printf %bx%s\n  not working'
+then	err_exit 'printf %bx%s\n not working'
 fi
 alpha=abcdefghijklmnop
 if	[[ $(printf "%10.*s\n" 5 $alpha) != '     abcde' ]]
-then	err_exit 'printf %10.%s\n  not working'
+then	err_exit 'printf %10.%s\n not working'
 fi
 float x2=.0000625
 if	[[ $(printf "%10.5E\n" x2) != 6.25000E-05 ]]
@@ -748,11 +748,11 @@ foo=BUG command eval ':'
 # 'whence -f' should ignore functions
 foo_bar() { true; }
 actual="$(whence -f foo_bar)"
-whence -f foo_bar >/dev/null && err_exit "'whence -f' doesn't ignore functions (got '$(printf %q "$actual")')"
+whence -f foo_bar >/dev/null && err_exit "'whence -f' doesn't ignore functions (got $(printf %q "$actual"))"
 
 # whence -vq/type -q must be tested as well
 actual="$(type -f foo_bar 2>&1)"
-type -f foo_bar >/dev/null 2>&1 && err_exit "'type -f' doesn't ignore functions (got '$(printf %q "$actual")')"
+type -f foo_bar >/dev/null 2>&1 && err_exit "'type -f' doesn't ignore functions (got $(printf %q "$actual"))"
 type -qf foo_bar && err_exit "'type -qf' doesn't ignore functions"
 
 # Test the exit status of 'whence -q'
@@ -1060,7 +1060,7 @@ exp=1
 [[ $got == $exp ]] || err_exit "'kill %' has the wrong exit status (expected '$exp'; got '$got')"
 
 # ======
-# 'cd -' should recognize the value of an overriden $OLDPWD variable
+# 'cd -' should recognize the value of an overridden $OLDPWD variable
 # https://github.com/ksh93/ksh/pull/249
 # https://github.com/att/ast/issues/8
 

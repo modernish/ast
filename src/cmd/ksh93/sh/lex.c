@@ -19,7 +19,7 @@
 ***********************************************************************/
 #pragma prototyped
 /*
- * KornShell  lexical analyzer
+ * KornShell lexical analyzer
  *
  * Written by David Korn
  * AT&T Labs
@@ -73,7 +73,7 @@ local_iswblank(wchar_t wc)
 struct lexstate
 {
 	char		incase;		/* 1 for case pattern, 2 after case */
-	char		intest;		/* 1 inside [[...]] */
+	char		intest;		/* 1 inside [[ ... ]] */
 	char		testop1;	/* 1 when unary test op legal */
 	char		testop2;	/* 1 when binary test op legal */
 	char		reservok;	/* >0 for reserved word legal */
@@ -758,7 +758,7 @@ int sh_lex(Lex_t* lp)
 				mode = ST_NORM;
 				continue;
 			case S_LIT:
-				if(oldmode(lp)==ST_NONE && !lp->lexd.noarg)	/*  in ((...)) */
+				if(oldmode(lp)==ST_NONE && !lp->lexd.noarg)	/* in ((...)) */
 				{
 					if((c=fcpeek(0))==LPAREN || c==RPAREN || c=='$' || c==LBRACE || c==RBRACE || c=='[' || c==']')
 					{
@@ -813,7 +813,7 @@ int sh_lex(Lex_t* lp)
 					ingrave = !ingrave;
 				/* FALLTHROUGH */
 			case S_QUOTE:
-				if(oldmode(lp)==ST_NONE && lp->lexd.arith)	/*  in ((...)) */
+				if(oldmode(lp)==ST_NONE && lp->lexd.arith)	/* in ((...)) */
 				{
 					if(n!=S_GRAVE || fcpeek(0)=='\'')
 						continue;
@@ -2321,10 +2321,6 @@ struct argnod *sh_endword(Shell_t *shp,int mode)
 				break;
 			}
 			n = *sp;
-#if SHOPT_DOS
-			if(!(inquote&1) && sh_lexstates[ST_NORM][n]==0)
-				break;
-#endif /* SHOPT_DOS */
 			if(!(inquote&1) || (sh_lexstates[ST_QUOTE][n] && n!=RBRACE))
 			{
 				if(n=='\n')
