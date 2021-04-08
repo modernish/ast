@@ -289,7 +289,7 @@ int sh_lex(Lex_t *lp)
 	Shell_t *shp = lp->sh;
 	register int flag;
 	char *quoted, *macro, *split, *expand; 
-	char tokstr[3];
+	char tokstr[4];
 	register int tok = lextoken(lp);
 	quoted = macro = split = expand = "";
 	if(tok==0 && (flag=lp->arg->argflag))
@@ -2108,7 +2108,7 @@ noreturn void sh_syntax(Lex_t *lp)
 	register const char *cp = sh_translate(e_unexpected);
 	register char *tokstr;
 	register int tok = lp->token;
-	char tokbuf[3];
+	char tokbuf[4];
 	Sfio_t *sp;
 	if((tok==EOFSYM) && lp->lasttok)
 	{
