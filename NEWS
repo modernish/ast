@@ -5,6 +5,14 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-04-08:
 
+- Path-bound builtins (such as /opt/ast/bin/cat) can now be executed by
+  invoking the canonical path, so the following will now work as expected:
+	$ /opt/ast/bin/cat --version
+	  version         cat (AT&T Research) 2012-05-31
+	$ (PATH=/opt/ast/bin:$PATH; "$(whence -p cat)" --version)
+	  version         cat (AT&T Research) 2012-05-31
+  Non-canonical paths such as /opt/ast/./bin/cat will not find the builtins.
+
 - Path-bound builtins will now be used by restricted shells if /opt/ast/bin
   is in the $PATH upon invoking the shell or before setting it to restricted.
 

@@ -1157,15 +1157,20 @@ got=$(ulimit -t unlimited; uname -d > /dev/null; uname -o)
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
-# Default path-bound builtins should be available to restricted shells if they are in $PATH on invocation
-# https://github.com/ksh93/ksh/issues/138#issuecomment-813886069
+# https://github.com/ksh93/ksh/issues/138
 builtin -d cat
 if	[[ $'\n'${ builtin; }$'\n' == *$'\n/opt/ast/bin/cat\n'* ]]
 then	exp='  version         cat (*) ????-??-??'
+	got=$(/opt/ast/bin/cat --version 2>&1)
+	[[ $got == $exp ]] || err_exit "path-bound builtin not executable by literal canonical path" \
+		"(expected match of $(printf %q "$exp"), got $(printf %q "$got"))"
+	got=$(PATH=/opt/ast/bin:$PATH; "${ whence -p cat; }" --version 2>&1)
+	[[ $got == $exp ]] || err_exit "path-bound builtin not executable by canonical path resulting from expansion" \
+		"(expected match of $(printf %q "$exp"), got $(printf %q "$got"))"
 	got=$(PATH=/opt/ast/bin:$PATH "$SHELL" -o restricted -c 'cat --version' 2>&1)
 	[[ $got == $exp ]] || err_exit "restricted shells do not recognize path-bound builtins" \
 		"(expected match of $(printf %q "$exp"), got $(printf %q "$got"))"
-else	warning 'skipping path-bound builtin test for restricted shells: builtin /opt/ast/bin/cat not found'
+else	warning 'skipping path-bound builtin tests: builtin /opt/ast/bin/cat not found'
 fi
 
 # ======
