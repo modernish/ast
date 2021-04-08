@@ -689,7 +689,7 @@ d 15
 p :test-1:
 w do something
 r ^:test-1: do something\r\n$
-r : syntax error: `do' unexpected\r\n$
+r : syntax error: 'do' unexpected\r\n$
 w fc -lN1
 r ^:test-2: fc -lN1\r\n$
 r \tdo something\r\n$
