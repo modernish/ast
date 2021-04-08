@@ -41,12 +41,12 @@ static const char sh_opttype[] =
 	"field splitting and pathname expansion are not performed on "
 	"the arguments.  Tilde expansion occurs on \avalue\a.]"
 "[r?Enables readonly.  Once enabled, the value cannot be changed or unset.]"
-"[a]:?[type?Indexed array. Each \aname\a will converted to an indexed "
+"[a]:?[type?Indexed array. Each \aname\a is converted to an indexed "
 	"array of type \b\f?\f\b.  If a variable already exists, the current "
 	"value will become index \b0\b.  If \b[\b\atype\a\b]]\b is "
 	"specified, each subscript is interpreted as a value of enumeration "
 	"type \atype\a.]"
-"[A?Associative array. Each \aname\a will converted to an associative "
+"[A?Associative array. Each \aname\a is converted to an associative "
         "array of type \b\f?\f\b.  If a variable already exists, the current "
 	"value will become subscript \b0\b.]"
 "[h]:[string?Used within a type definition to provide a help string  "
@@ -666,7 +666,6 @@ static int typeinfo(Opt_t* op, Sfio_t *out, const char *str, Optdisc_t *fp)
 		nq = nv_namptr(dp->nodes,i);
 		if(tp=nv_type(nq))
 		{
-			Namfun_t *pp = nv_hasdisc(nq,&type_disc);
 			sfprintf(out,"\t[+%s?%s.\n",nq->nvname,tp->nvname);
 			n = strlen(nq->nvname);
 			while((cp=nv_namptr(dp->nodes,i+1)->nvname) && memcmp(cp,nq->nvname,n)==0 && cp[n]=='.')

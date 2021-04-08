@@ -305,7 +305,7 @@ int tty_raw(register int fd, int echomode)
 		return(-1);
 	ep->e_ttyspeed = (ttyparm.sg_ospeed>=B1200?FAST:SLOW);
 #   ifdef TIOCGLTC
-	/* try to remove effect of ^V  and ^Y and ^O */
+	/* try to remove effect of ^V and ^Y and ^O */
 	if(ioctl(fd,TIOCGLTC,&l_chars) != SYSERR)
 	{
 		lchars = l_chars;

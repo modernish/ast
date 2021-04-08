@@ -132,7 +132,7 @@ y=* z=[
 s[$y]=1
 s[$z]=2
 if	(( ${#s[@]} != 2  ))
-then	err_exit 'number of elements of  is not 2'
+then	err_exit 'number of elements of s is not 2'
 fi
 (( s[$z] = s[$z] + ${s[$y]} ))
 if	[[ ${s[$z]} != 3  ]]

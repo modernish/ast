@@ -1261,7 +1261,7 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 
 /*
  * File is executable but not machine code.
- * Assume file is a Shell script and execute it.
+ * Assume file is a shell script and execute it.
  */
 
 static noreturn void exscript(Shell_t *shp,register char *path,register char *argv[],char **envp)
@@ -1285,7 +1285,7 @@ static noreturn void exscript(Shell_t *shp,register char *path,register char *ar
 	sh_setstate(sh_state(SH_FORKED));
 	sfsync(sfstderr);
 #if SHOPT_SUID_EXEC && !SHOPT_PFSH
-	/* check if file cannot open for read or script is setuid/setgid  */
+	/* check if file cannot open for read or script is setuid/setgid */
 	{
 		static char name[] = "/tmp/euidXXXXXXXXXX";
 		register int n;

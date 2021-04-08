@@ -127,7 +127,7 @@ typedef struct edit
 	struct termio e_ott;
 #endif
 	int	*e_globals;	/* global variables */
-	genchar	*e_window;	/* display window  image */
+	genchar	*e_window;	/* display window image */
 	char	e_inmacro;	/* processing macro expansion */
 #if KSHELL
 	char	e_vi_insert[2];	/* for sh_keytrap */

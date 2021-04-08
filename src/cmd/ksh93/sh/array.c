@@ -871,13 +871,8 @@ static struct index_array *array_grow(Namval_t *np, register struct index_array 
 			}
 		}
 		else
-		if((ap->val[0].cp=np->nvalue.cp))
+		if((ap->val[0].cp=np->nvalue.cp) || (nv_isattr(np,NV_INTEGER) && !nv_isnull(np)))
 			i++;
-		else if(nv_isattr(np,NV_INTEGER) && !nv_isnull(np))
-		{
-			Sfdouble_t d= nv_getnum(np);
-			i++;
-		}
 		ap->header.nelem = i;
 		ap->header.hdr.disc = &array_disc;
 		nv_disc(np,(Namfun_t*)ap, NV_FIRST);
@@ -1525,7 +1520,7 @@ char *nv_endsubscript(Namval_t *np, register char *cp, int mode)
 	{
 		Namarr_t *ap = nv_arrayptr(np);
 		/* Block an attempt to alter a readonly array via subscript assignment or by appending the array.
-		   However need to allow instances of type variables. This exception is observed when np->nvflag
+		   However instances of type variables must be allowed. This exception is observed when np->nvflag
 		   has NV_BINARY and NV_LJUST set besides NV_RDONLY and NV_ARRAY. */
 		if(nv_isattr(np,NV_RDONLY) && nv_isattr(np,NV_ARRAY) && mode&NV_ASSIGN && np->nvflag&(NV_BINARY|NV_LJUST)^(NV_BINARY|NV_LJUST))
 		{
