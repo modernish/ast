@@ -789,7 +789,7 @@ fi
 # Test for BUG_CSUBSTDO: If stdout is closed before running a command substitution,
 # redirecting any file descriptor in the command substitution would break stdout
 # inside of the command substitution. This only occurred when redirecting any other
-# descriptor inside of the command substitution.
+# file descriptor inside of the command substitution.
 exp='Foo bar'
 { got=$(echo 'Foo bar' 2>/dev/null); } >&-
 [[ $exp == $got ]] || err_exit "BUG_CSUBSTDO: Closing stdout outside of command substitution breaks stdout inside of command substitution" \
