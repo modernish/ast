@@ -3,6 +3,11 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-04-07:
+
+- The $LC_TIME variable is now recognized by ksh and if set to an invalid
+  locale will show an error.
+
 2021-04-05:
 
 - Fixed a regression, introduced in ksh 93t+ 2009-07-31, that caused a command
