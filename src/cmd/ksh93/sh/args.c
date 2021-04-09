@@ -176,30 +176,12 @@ int sh_argopts(int argc,register char *argv[], void *context)
 				UNREACHABLE();
 			}
 			break;
-		    case -5:	/* --posix must be handled explicitly to stop AST optget(3) overriding it */
-			if(opt_info.num)
-			{
-				on_option(&newflags,SH_POSIX);
-				on_option(&newflags,SH_LETOCTAL);
-#if SHOPT_BRACEPAT
-				off_option(&newflags,SH_BRACEEXPAND);
-#endif
-			}
-			else
-			{
-				off_option(&newflags,SH_POSIX);
-				off_option(&newflags,SH_LETOCTAL);
-#if SHOPT_BRACEPAT
-				on_option(&newflags,SH_BRACEEXPAND);
-#endif
-			}
-			continue;
 		    case -6:	/* --default */
 			{
 				register const Shtable_t *tp;
 				for(tp=shtab_options; o = tp->sh_number; tp++)
-					if(!(o&SH_COMMANDLINE) && is_option(&newflags,o&0xff))
-						off_option(&newflags,o&0xff);
+					if(!(o&SH_COMMANDLINE) && (o&=0xff)!=SH_RESTRICTED && is_option(&newflags,o))
+						off_option(&newflags,o);
 			}
 			defaultflag++;
 		    	continue;
@@ -243,6 +225,7 @@ int sh_argopts(int argc,register char *argv[], void *context)
 			if(cp=strchr(optksh,n))
 				o = flagval[cp-optksh];
 			break;
+		    case -5:	/* --posix must be handled explicitly to stop AST optget(3) overriding it */
 		    case ':':
 			if(opt_info.name[0]=='-'&&opt_info.name[1]=='-')
 			{
