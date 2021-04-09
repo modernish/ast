@@ -1222,7 +1222,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				shp->lastpath = 0;
 				if(!np)
 				{
-					if(*com0 == '/')
+					if(*com0 == '/' && !sh_isoption(SH_RESTRICTED))
 					{
 						/* Check for path-bound builtin referenced by absolute canonical path, in
 						   case the parser didn't provide a pointer (e.g. '$(whence -p cat) foo') */
@@ -1230,7 +1230,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 					}
 					else if(strchr(com0,'/'))
 					{
-						/* Don't do anything for a command containing '/' but not beginning with '/' */
+						/* Do nothing */
 					}
 					else if(path_search(shp,com0,NIL(Pathcomp_t**),1))
 					{
