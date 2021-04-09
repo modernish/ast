@@ -178,10 +178,22 @@ int sh_argopts(int argc,register char *argv[], void *context)
 			break;
 		    case -5:	/* --posix must be handled explicitly to stop AST optget(3) overriding it */
 			if(opt_info.num)
+			{
 				on_option(&newflags,SH_POSIX);
+				on_option(&newflags,SH_LETOCTAL);
+#if SHOPT_BRACEPAT
+				off_option(&newflags,SH_BRACEEXPAND);
+#endif
+			}
 			else
+			{
 				off_option(&newflags,SH_POSIX);
-			break;
+				off_option(&newflags,SH_LETOCTAL);
+#if SHOPT_BRACEPAT
+				on_option(&newflags,SH_BRACEEXPAND);
+#endif
+			}
+			continue;
 		    case -6:	/* --default */
 			{
 				register const Shtable_t *tp;
