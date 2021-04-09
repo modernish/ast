@@ -11,6 +11,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Fixed a related bug that caused 'set --posix' to leave the braceexpand and
   letoctal shell options unchanged.
 
+- Fixed a bug that caused 'set --default' to unset the restricted option
+  in restricted shells.
+
 2021-04-08:
 
 - Path-bound builtins will now be used by restricted shells if /opt/ast/bin
