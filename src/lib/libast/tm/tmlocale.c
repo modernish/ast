@@ -638,7 +638,7 @@ tmlocale(void)
 			state.format = tm_info.deformat;
 	}
 
-	/* load the locate set in LC_TIME */
+	/* load the locale set in LC_TIME */
 	li = LCINFO(AST_LC_TIME);
 	if (!li->data || state.locale != li)
 	{
