@@ -85,10 +85,29 @@ do	[[ $locale == *[Jj][Ii][Ss] ]] || continue
 done
 unset LC_ALL
 
+# Test the effect of setting a locale, followed by setting a different locale
+# then setting the previous locale. The output from 'printf %T' should use
+# the current locale.
+# https://github.com/ksh93/ksh/issues/261
+((SHOPT_MULTIBYTE)) && for locale in "${locales[@]}"
+do	[[ $locale == *nl_NL*[Uu][Tt][Ff]* ]] && nl_NL=$locale
+	[[ $locale == *ja_JP*[Uu][Tt][Ff]* ]] && ja_JP=$locale
+done
+if [[ -n $nl_NL ]] && [[ -n $ja_JP ]]; then
+	LC_ALL=$nl_NL
+	exp=$(printf '%(%A)T' now)
+	LC_ALL=$ja_JP
+	printf '%T' now > /dev/null
+	LC_ALL=$nl_NL
+	got=$(printf '%(%A)T' now)
+	[[ $exp == $got ]] || err_exit "'printf %T' ignores changes to LC_ALL when locale is set, unset then set (expected $exp, got $got)"
+fi
+unset LC_ALL
+
 # this locale is supported by ast on all platforms
 # EU for { decimal_point="," thousands_sep="." }
 
-if((SHOPT_MULTIBYTE)); then
+if ((SHOPT_MULTIBYTE)); then
 locale=C_EU.UTF-8
 else
 locale=C_EU

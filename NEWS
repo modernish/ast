@@ -8,6 +8,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - Path-bound builtins will now be used by restricted shells if /opt/ast/bin
   is in the $PATH upon invoking the shell or before setting it to restricted.
 
+- Fixed a bug that caused "printf '%T\n' now" to ignore $LC_ALL and $LC_TIME
+  if the current locale was previously set, unset then set again.
+
 2021-04-07:
 
 - The $LC_TIME variable is now recognized by ksh and if set to an invalid
