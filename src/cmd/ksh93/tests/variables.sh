@@ -1177,10 +1177,10 @@ In definition file, outside function: \$LINENO on line 8 is 8
 ./lineno_autoload[7]: main_script_fn: line 9: \${bad\subst\in\def\file\on\line\9}: bad substitution
 Hi, I'm a function! On line 3, my \$LINENO is 3
 ./lineno_autoload[7]: main_script_fn[4]: lineno_autoload_fn: line 4: \${bad\subst\in\function\on\line\4}: bad substitution
-./lineno_autoload[7]: main_script_fn[4]: lineno_autoload_fn[5]: eval: syntax error at line 1: '(' unexpected
+./lineno_autoload[7]: main_script_fn[4]: lineno_autoload_fn[5]: eval: syntax error at line 1: \`(' unexpected
 Hi, I'm still a function! On line 6, my \$LINENO is 6
 ./lineno_autoload[7]: main_script_fn: line 5: \${bad\subst\in\main_script_fn\on\line\5}: bad substitution
-./lineno_autoload[8]: eval: syntax error at line 1: '(' unexpected
+./lineno_autoload[8]: eval: syntax error at line 1: \`(' unexpected
 ./lineno_autoload: line 9: \${bad\subst\in\main\script\on\line\9}: bad substitution
 end: main script \$LINENO == 10"
 
