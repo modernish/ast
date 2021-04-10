@@ -318,15 +318,14 @@ typeset -i i
 n=${#rtests[@]}
 for ((i=0; i<$n; i++))
 do
-	got=$(
-		trap "${rtests[$i].res}" EXIT
+	(	trap "${rtests[$i].res}" EXIT
 		eval "${rtests[$i].ini}"
-		eval "${rtests[$i].chg}" 2>&1
-	)
+		eval "${rtests[$i].chg}"
+	) 2>&1 | read -d $'\x17' got
 	[[ $got == *$': is read only\n'* ]] || err_exit "Readonly variable did not warn for rtests[$i]: "\
 		"setup='${rtests[$i].ini}', change='${rtests[$i].chg}'"
 	got=${got#*$': is read only\n'}
-	[[ ${rtests[$i].exp} == "$got" ]] || err_exit "Readonly variable changed on rtests[$i]: "\
+	[[ $got == *"${rtests[$i].exp}"$'\n' ]] || err_exit "Readonly variable changed on rtests[$i]: "\
 		"expected '${rtests[$i].exp}', got '$got'"
 done
 unset i n got rtests
