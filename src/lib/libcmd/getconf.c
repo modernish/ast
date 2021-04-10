@@ -137,13 +137,10 @@ b_getconf(int argc, char** argv, Shbltin_t* context)
 	register char*		path;
 	register char*		value;
 	register const char*	s;
-	register const char*	t;
 	char*			pattern;
 	char*			native;
 	int			flags;
 	int			n;
-	int			i;
-	int			m;
 	char**			oargv;
 	static const char	empty[] = "-";
 
