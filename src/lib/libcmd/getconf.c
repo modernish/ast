@@ -56,7 +56,8 @@ static const char usage[] =
 "	system calls."
 "	Invalid options and/or names not supported by \bastgetconf\b(3) cause"
 "	the default native \bgetconf\b, named by \b$(getconf GETCONF)\b, to"
-"	be executed.]"
+"	be executed (unless the shell is in restricted mode, in which case"
+"	an error will occur).]"
 
 "[a:all?Call the native \bgetconf\b(1) with option \b-a\b.]"
 "[b:base?List base variable name sans call and standard prefixes.]"
