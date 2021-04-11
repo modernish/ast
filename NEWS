@@ -13,8 +13,6 @@ Any uppercase BUG_* names are modernish shell bug IDs.
        3
   2. Any += assignment used in an invocation-local scope could modify
      readonly variables.
-  Both of the bugs above were caused by ksh failing to clone the variable
-  from the previous scope into the invocation-local scope.
 
 2021-04-10:
 

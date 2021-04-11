@@ -1601,7 +1601,6 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 #if SHOPT_FIXEDARRAY
 	Namarr_t	*ap;
 #endif /* SHOPT_FIXEDARRAY */
-
 	/*
 	 * When we are in an invocation-local scope and we are using the
 	 * += operator, clone the variable from the previous scope.
@@ -1612,14 +1611,12 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 		if(mp)
 			nv_clone(mp,np,0);
 	}
-
 	/* Don't alter readonly variables */
 	if(!(flags&NV_RDONLY) && nv_isattr(np,NV_RDONLY))
 	{
 		errormsg(SH_DICT,ERROR_exit(1),e_readonly, nv_name(np));
 		UNREACHABLE();
 	}
-
 	/* Create a local scope when inside of a virtual subshell */
 	shp->argaddr = 0;
 	if(shp->subshell && !nv_local && !(flags&NV_RDONLY))

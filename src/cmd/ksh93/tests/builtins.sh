@@ -750,12 +750,18 @@ unset foo
 integer foo=1
 exp=4
 got=$(foo+=3 command eval 'echo $foo')
-[[ $exp == $got ]] || err_exit "+= assignment for environment variables doesn't work with 'command special_builtin'" \
+[[ $exp == $got ]] || err_exit "[1]: += assignment for environment variables doesn't work with 'command special_builtin'" \
 	"(expected $exp, got $got)"
 (( foo == 1 )) || err_exit "environment isn't restored after 'command special_builtin'" \
 	"(expected 1, got $foo)"
 got=$(foo+=3 eval 'echo $foo')
 [[ $exp == $got ]] || err_exit "+= assignment for environment variables doesn't work with builtins" \
+	"(expected $exp, got $got)"
+
+unset foo
+exp=barbaz
+got=$(foo=bar; foo+=baz command eval 'echo $foo')
+[[ $exp == $got ]] || err_exit "[2]: += assignment for environment variables doesn't work with 'command special_builtin'" \
 	"(expected $exp, got $got)"
 
 # Attempting to modify a readonly variable with the += operator should fail
