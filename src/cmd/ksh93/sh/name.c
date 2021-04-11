@@ -1601,15 +1601,26 @@ void nv_putval(register Namval_t *np, const char *string, int flags)
 #if SHOPT_FIXEDARRAY
 	Namarr_t	*ap;
 #endif /* SHOPT_FIXEDARRAY */
-	if(!(flags&NV_RDONLY) && nv_isattr (np, NV_RDONLY))
+
+	/*
+	 * When we are in an invocation-local scope and we are using the
+	 * += operator, clone the variable from the previous scope.
+	 */
+	if((flags&NV_APPEND) && nv_isnull(np) && shp->var_tree->view)
+	{
+		Namval_t *mp = nv_search(np->nvname,shp->var_tree->view,0);
+		if(mp)
+			nv_clone(mp,np,0);
+	}
+
+	/* Don't alter readonly variables */
+	if(!(flags&NV_RDONLY) && nv_isattr(np,NV_RDONLY))
 	{
 		errormsg(SH_DICT,ERROR_exit(1),e_readonly, nv_name(np));
 		UNREACHABLE();
 	}
-	/*
-	 * The following could cause the shell to fork if assignment
-	 * would cause a side effect
-	 */
+
+	/* Create a local scope when inside of a virtual subshell */
 	shp->argaddr = 0;
 	if(shp->subshell && !nv_local && !(flags&NV_RDONLY))
 		np = sh_assignok(np,1);
