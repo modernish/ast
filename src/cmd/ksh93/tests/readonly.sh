@@ -320,7 +320,6 @@ ulimit --cpu 3 2>/dev/null
 for ((i=0; i<n; i++))
 do
 	got=$(
-		((.sh.version < 20210404)) && ulimit -t unlimited 2>/dev/null	# fork to dodge an arith recursion detection bug
 		trap "${rtests[$i].res}" EXIT
 		eval "${rtests[$i].ini}"
 		eval "${rtests[$i].chg}" 2>&1
