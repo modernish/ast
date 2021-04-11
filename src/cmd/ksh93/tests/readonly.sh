@@ -314,18 +314,20 @@ rtests=(
 	)
 )
 
-typeset -i i
+typeset -i i n
 n=${#rtests[@]}
-for ((i=0; i<$n; i++))
+ulimit --cpu 3 2>/dev/null
+for ((i=0; i<n; i++))
 do
-	(	trap "${rtests[$i].res}" EXIT
+	got=$(
+		trap "${rtests[$i].res}" EXIT
 		eval "${rtests[$i].ini}"
-		eval "${rtests[$i].chg}"
-	) 2>&1 | read -d $'\x17' got
+		eval "${rtests[$i].chg}" 2>&1
+	)
 	[[ $got == *$': is read only\n'* ]] || err_exit "Readonly variable did not warn for rtests[$i]: "\
 		"setup='${rtests[$i].ini}', change='${rtests[$i].chg}'"
 	got=${got#*$': is read only\n'}
-	[[ $got == *"${rtests[$i].exp}"$'\n' ]] || err_exit "Readonly variable changed on rtests[$i]: "\
+	[[ $got == *"${rtests[$i].exp}" ]] || err_exit "Readonly variable changed on rtests[$i]: "\
 		"expected '${rtests[$i].exp}', got '$got'"
 done
 unset i n got rtests
