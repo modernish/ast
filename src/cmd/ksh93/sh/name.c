@@ -261,6 +261,7 @@ void nv_setlist(register struct argnod *arg,register int flags, Namval_t *typ)
 	Shell_t		*shp = sh_getinterp();
 	register char	*cp;
 	register Namval_t *np, *mp;
+	char		*eqp;
 	char		*trap=shp->st.trap[SH_DEBUGTRAP];
 	char		*prefix = shp->prefix;
 	int		traceon = (sh_isoption(SH_XTRACE)!=0);
@@ -591,6 +592,19 @@ void nv_setlist(register struct argnod *arg,register int flags, Namval_t *typ)
 			}
 			cp = arg->argval;
 			mp = 0;
+		}
+		if(eqp = strchr(cp,'='))
+		{
+			/* Check for read-only */
+			*eqp = '\0';
+			np = nv_search(cp,shp->var_tree,0);
+			*eqp = '=';
+			if(np && nv_isattr(np,NV_RDONLY))
+			{
+				errormsg(SH_DICT,ERROR_exit(1),e_readonly,nv_name(np));
+				UNREACHABLE();
+			}
+
 		}
 		np = nv_open(cp,shp->prefix_root?shp->prefix_root:shp->var_tree,flags);
 		if(!np->nvfun && (flags&NV_NOREF))

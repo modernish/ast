@@ -320,6 +320,7 @@ ulimit --cpu 3 2>/dev/null
 for ((i=0; i<n; i++))
 do
 	got=$(
+		((.sh.version < 20210404)) && ulimit -t unlimited 2>/dev/null	# fork to dodge an arith recursion detection bug
 		trap "${rtests[$i].res}" EXIT
 		eval "${rtests[$i].ini}"
 		eval "${rtests[$i].chg}" 2>&1
@@ -340,6 +341,10 @@ unset i n got rtests
 (readonly v=1; export v) 2>/dev/null || err_exit "readonly variable cannot be exported (1)"
 (readonly v=1; typeset -x v) 2>/dev/null || err_exit "readonly variable cannot be exported (2)"
 (readonly v=1; typeset -rx v) 2>/dev/null || err_exit "readonly variable cannot be set readonly and exported"
+
+# ======
+# the environment list was not checked for readonly for commands that are not fork()ed
+(readonly v=1; v=2 true) 2>/dev/null && err_exit 'readonly not verified for command environment list'
 
 # ======
 exit $((Errors<125?Errors:125))
