@@ -752,6 +752,7 @@ exp=4
 got=$(foo+=3 command eval 'echo $foo')
 [[ $exp == $got ]] || err_exit "[1]: += assignment for environment variables doesn't work with 'command special_builtin'" \
 	"(expected $exp, got $got)"
+foo+=3 command eval 'test $foo'
 (( foo == 1 )) || err_exit "environment isn't restored after 'command special_builtin'" \
 	"(expected 1, got $foo)"
 got=$(foo+=3 eval 'echo $foo')
