@@ -102,18 +102,13 @@ struct _sfio_s;
 #define EXIT_NOTFOUND	127	/* command not found	*/
 #define EXIT_NOEXEC	126	/* other exec error	*/
 
-#define EXIT_CODE(x)	((x)&((1<<EXIT_BITS)-1))
-#define EXIT_CORE(x)	(EXIT_CODE(x)|(1<<EXIT_BITS)|(1<<(EXIT_BITS-1)))
-#define EXIT_TERM(x)	(EXIT_CODE(x)|(1<<EXIT_BITS))
+#define EXIT_CODE(x)	((x) & EXIT_QUIT)
+#define EXIT_CORE(x)	(EXIT_CODE(x) | 256 | 128)
+#define EXIT_TERM(x)	(EXIT_CODE(x) | 256)
 
-/*
- * NOTE: for compatibility the following work for EXIT_BITS={7,8}
- */
-
-#define EXIT_STATUS(x)	(((x)&((1<<(EXIT_BITS-2))-1))?(x):EXIT_CODE((x)>>EXIT_BITS))
-
-#define EXITED_CORE(x)	(((x)&((1<<EXIT_BITS)|(1<<(EXIT_BITS-1))))==((1<<EXIT_BITS)|(1<<(EXIT_BITS-1)))||((x)&((1<<(EXIT_BITS-1))|(1<<(EXIT_BITS-2))))==((1<<(EXIT_BITS-1))|(1<<(EXIT_BITS-2))))
-#define EXITED_TERM(x)	((x)&((1<<EXIT_BITS)|(1<<(EXIT_BITS-1))))
+#define EXIT_STATUS(x)	(((x) & 63) ? (x) : EXIT_CODE((x) >> 8))
+#define EXITED_CORE(x)	(((x) & (256 | 128)) == (256 | 128) || ((x) & (128 | 64)) == (128 | 64))
+#define EXITED_TERM(x)	((x) & (256 | 128))
 
 /*
  * astconflist() flags
