@@ -3622,6 +3622,11 @@ static pid_t sh_ntfork(Shell_t *shp,const Shnode_t *t,char *argv[],int *jobid,in
 		    case ENOENT:
 			errormsg(SH_DICT,ERROR_exit(ERROR_NOENT),e_found+4);
 			UNREACHABLE();
+#ifdef ENAMETOOLONG
+		    case ENAMETOOLONG:
+			errormsg(SH_DICT,ERROR_exit(ERROR_NOENT),e_toolong+4);
+			UNREACHABLE();
+#endif
 		    default:
 			errormsg(SH_DICT,ERROR_system(ERROR_NOEXEC),e_exec+4);
 			UNREACHABLE();
