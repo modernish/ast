@@ -1042,7 +1042,7 @@ noreturn void path_exec(Shell_t *shp,register const char *arg0,register char *ar
 		else
 			opath = arg0;
 		spawnpid = path_spawn(shp,opath,argv,envp,libpath,0);
-		if(spawnpid<0 && shp->path_err!=ENOENT)
+		if(spawnpid==-1 && shp->path_err!=ENOENT)
 		{
 			/*
 			 * A command was found but it couldn't be executed.
