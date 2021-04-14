@@ -3627,7 +3627,7 @@ static pid_t sh_ntfork(Shell_t *shp,const Shnode_t *t,char *argv[],int *jobid,in
 	fail:
 		if(jobfork && spawnpid<0) 
 			job_fork(-2);
-		if(spawnpid < 0) switch(errno=shp->path_err)
+		if(spawnpid == -1) switch(errno=shp->path_err)
 		{
 		    case ENOENT:
 			errormsg(SH_DICT,ERROR_exit(ERROR_NOENT),e_found+4);

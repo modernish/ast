@@ -1060,6 +1060,20 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 	char		*s, *v;
 	int		r, n, pidsize;
 	pid_t		pid= -1;
+	if(nv_search(opath,shp->bltin_tree,0))
+	{
+		/* Found a path-bound built-in. Since this was not caught earlier in sh_exec(), it must
+		   have been found on a temporarily assigned PATH, as with 'PATH=/opt/ast/bin:$PATH cat'.
+		   Now that that local PATH assignment is in effect, we can just sh_run() the built-in. */
+		int argc = 0;
+		while(argv[argc])
+			argc++;
+		sh_run(argc,argv);
+		if(!spawn)
+			sh_done(shp,0);
+		errno = 0;
+		return(-2);  /* treat like failure to spawn in sh_ntfork() except for the error message */
+	}
 	/* leave room for inserting _= pathname in environment */
 	envp--;
 #if _lib_readlink
