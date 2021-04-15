@@ -989,7 +989,7 @@ EOF
 # Note: To workaround https://github.com/ksh93/ksh/issues/165, put the list
 # of builtins in a file, then read from that.
 builtin > "$tmp/builtin-list"
-while IFS= read -r bltin
+while IFS= read -r bltin <&3
 do	case $bltin in
 	echo | test | true | false | \[ | : | getconf | */getconf | uname | */uname | catclose | catgets | catopen | Dt* | _Dt* | X* | login | newgrp )
 		continue ;;
@@ -1002,7 +1002,7 @@ do	case $bltin in
 	esac
 	[[ $actual == *"$expect"* ]] || err_exit "$bltin should show usage info on unrecognized options" \
 			"(expected string containing $(printf %q "$expect"), got $(printf %q "$actual"))"
-done < "$tmp/builtin-list"
+done 3< "$tmp/builtin-list"
 
 # ======
 # The 'alarm' builtin could make 'read' crash due to IFS table corruption caused by unsafe asynchronous execution.
