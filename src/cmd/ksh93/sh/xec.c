@@ -1003,8 +1003,8 @@ int sh_exec(register const Shnode_t *t, int flags)
 		shp->exitval=0;
 		shp->lastsig = 0;
 		shp->lastpath = 0;
-		if(shp->exittrap || shp->errtrap)
-			execflg = 0;
+		if(shp->exittrap || shp->errtrap || (t->tre.treio && t->tre.treio->iofile&IOREWRITE))
+			execflg = 0; /* don't run the command with execve(2) */
 		switch(type&COMMSK)
 		{
 		    case TCOM:

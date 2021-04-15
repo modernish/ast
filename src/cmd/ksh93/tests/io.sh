@@ -500,12 +500,19 @@ actual=$(cat "$tmp/nums1")
 [[ "$actual" = "$expect" ]] || err_exit "Failed to truncate file in subshell \
 (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
 
-: <<\INACTIVE	# TODO: the >#5 is optimised away by a '-c' optimisation corner case bug
+# The <>; redirection operator didn't work correctly in -c scripts
+# https://github.com/att/ast/issues/9
 "$SHELL" -c '1<>;"$1/nums2" >#5' x "$tmp"
 actual=$(cat "$tmp/nums2")
 [[ "$actual" = "$expect" ]] || err_exit "Failed to truncate file in -c script \
 (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
-INACTIVE
+
+echo test > "$tmp/ast-9-reproducer"
+"$SHELL" -c "echo x 1<>; \"$tmp/ast-9-reproducer\""
+exp=x
+got=$(cat "$tmp/ast-9-reproducer")
+[[ $exp == "$got" ]] || err_exit "<>; redirection operator fails in -c scripts \
+(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 # Exit behaviour of 'exec', 'command exec', 'redirect' on redirections
