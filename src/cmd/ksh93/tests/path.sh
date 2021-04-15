@@ -739,15 +739,15 @@ PATH=$PWD $SHELL -c 'noexecute' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 1A: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c 'noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -c 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 1B: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -ic 'noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -ic 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 1C: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c 'command -x noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -c 'command -x noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 1D: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
@@ -761,15 +761,15 @@ PATH=$PWD:$PWD/emptydir $SHELL -c 'noexecute' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 2A: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/emptydir $SHELL -c 'noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/emptydir $SHELL -c 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 2B: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/emptydir $SHELL -ic 'noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/emptydir $SHELL -ic 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 2C: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/emptydir $SHELL -c 'command -x noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/emptydir $SHELL -c 'command -x noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 2D: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
@@ -786,15 +786,15 @@ PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute'
 got=$?
 [[ $exp == $got ]] || err_exit "Test 3A: failed to run executable command after encountering non-executable command" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute'
+PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute; exit $?'
 got=$?
 [[ $exp == $got ]] || err_exit "Test 3B: failed to run executable command after encountering non-executable command" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -ic 'noexecute'
+PATH=$PWD:$PWD/cmddir $SHELL -ic 'noexecute; exit $?'
 got=$?
 [[ $exp == $got ]] || err_exit "Test 3C: failed to run executable command after encountering non-executable command" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -c 'command -x noexecute'
+PATH=$PWD:$PWD/cmddir $SHELL -c 'command -x noexecute; exit $?'
 got=$?
 [[ $exp == $got ]] || err_exit "Test 3D: failed to run executable command after encountering non-executable command" \
 	"(expected $exp, got $got)"
@@ -810,15 +810,15 @@ PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 4A: failed to run executable command after encountering directory with same name in PATH" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/cmddir $SHELL -c 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 4B: failed to run executable command after encountering directory with same name in PATH" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -ic 'noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/cmddir $SHELL -ic 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 4C: failed to run executable command after encountering directory with same name in PATH" \
 	"(expected $exp, got $got)"
-PATH=$PWD:$PWD/cmddir $SHELL -c 'command -x noexecute' > /dev/null 2>&1
+PATH=$PWD:$PWD/cmddir $SHELL -c 'command -x noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 4D: failed to run executable command after encountering directory with same name in PATH" \
 	"(expected $exp, got $got)"
@@ -837,15 +837,15 @@ PATH=$PWD $SHELL -c 'noexecute' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 5A: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c 'noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -c 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 5B: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -ic 'noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -ic 'noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 5C: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c 'command -x noexecute' > /dev/null 2>&1
+PATH=$PWD $SHELL -c 'command -x noexecute; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 5D: exit status of non-executable command wrong" \
 	"(expected $exp, got $got)"
@@ -860,15 +860,15 @@ PATH=/dev/null $SHELL -c 'nonexist' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 6A: exit status of non-existent command wrong" \
 	"(expected $exp, got $got)"
-PATH=/dev/null $SHELL -c 'nonexist' > /dev/null 2>&1
+PATH=/dev/null $SHELL -c 'nonexist; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 6B: exit status of non-existent command wrong" \
 	"(expected $exp, got $got)"
-PATH=/dev/null $SHELL -ic 'nonexist' > /dev/null 2>&1
+PATH=/dev/null $SHELL -ic 'nonexist; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 6C: exit status of non-existent command wrong" \
 	"(expected $exp, got $got)"
-PATH=/dev/null $SHELL -c 'command -x nonexist' > /dev/null 2>&1
+PATH=/dev/null $SHELL -c 'command -x nonexist; exit $?' > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 6D: exit status of non-existent command wrong" \
 	"(expected $exp, got $got)"
@@ -886,15 +886,15 @@ PATH=$PWD $SHELL -c "$long_cmd" > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 7A: exit status or error message for command with long name wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c "$long_cmd" > /dev/null 2>&1
+PATH=$PWD $SHELL -c "$long_cmd; exit \$?" > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 7B: exit status or error message for command with long name wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -ic "$long_cmd" > /dev/null 2>&1
+PATH=$PWD $SHELL -ic "$long_cmd; exit \$?" > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 7C: exit status or error message for command with long name wrong" \
 	"(expected $exp, got $got)"
-PATH=$PWD $SHELL -c "command -x $long_cmd" > /dev/null 2>&1
+PATH=$PWD $SHELL -c "command -x $long_cmd; exit \$?" > /dev/null 2>&1
 got=$?
 [[ $exp == $got ]] || err_exit "Test 7D: exit status or error message for command with long name wrong" \
 	"(expected $exp, got $got)"
