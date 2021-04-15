@@ -575,7 +575,7 @@ static void	exfile(register Shell_t *shp, register Sfio_t *iop,register int fno)
 		{
 			execflags = sh_state(SH_ERREXIT)|sh_state(SH_INTERACTIVE);
 			/* The last command may not have to fork */
-			if(!sh_isstate(SH_PROFILE) && sh_isoption(SH_CFLAG) &&
+			if(!sh_isstate(SH_PROFILE) && !sh_isstate(SH_INTERACTIVE) &&
 				(fno<0 || !(shp->fdstatus[fno]&(IOTTY|IONOSEEK)))
 				&& !sfreserve(iop,0,0))
 			{
