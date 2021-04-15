@@ -539,10 +539,10 @@ fi # SHOPT_BRACEPAT
 	(set -o posix; [[ -o letoctal ]]) || err_exit "set -o posix fails to enable letoctal"
 
 	# Note: To workaround erratic behavior caused by https://github.com/ksh93/ksh/issues/165,
-	# avoid parsing the process substitutions with shcomp by running the
-	# whole command with ksh -c.
-	$SHELL -c "$SHELL --posix < <(echo 'exit 0')" || err_exit "ksh fails to handle --posix during startup"
-	$SHELL -c "$SHELL -o posix < <(echo 'exit 0')" || err_exit "ksh fails to handle -o posix during startup"
+	# avoid parsing the process substitutions with shcomp by running
+	# the tests with eval.
+	eval "$SHELL --posix < <(echo 'exit 0')" || err_exit "ksh fails to handle --posix during startup"
+	eval "$SHELL -o posix < <(echo 'exit 0')" || err_exit "ksh fails to handle -o posix during startup"
 fi
 
 # ======
