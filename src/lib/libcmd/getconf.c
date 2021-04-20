@@ -27,7 +27,7 @@
  */
 
 static const char usage[] =
-"[-?\n@(#)$Id: getconf (ksh 93u+m) 2021-04-09 $\n]"
+"[-?\n@(#)$Id: getconf (ksh 93u+m) 2021-04-20 $\n]"
 "[--catalog?" ERROR_CATALOG "]"
 "[+NAME?getconf - get configuration values]"
 "[+DESCRIPTION?\bgetconf\b displays the system configuration value for"
