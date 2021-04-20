@@ -12,7 +12,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   -q only quoted string values that had a space in them.
 
 - Fixed a bug that caused the -c, -n and -s flags to match all variable
-  names provided by 'getconf -a', even if nome of the variable names were
+  names provided by 'getconf -a', even if none of the variable names were
   actual matches.
 
 2021-04-16:
