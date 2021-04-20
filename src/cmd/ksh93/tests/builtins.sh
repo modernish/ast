@@ -26,19 +26,7 @@ bincat=$(whence -p cat)
 # These are regression tests for the getconf builtin.
 builtin getconf
 bingetconf=$(getconf GETCONF)
-
-# The -c option should defer to the system's getconf command
-# if given an unsupported prefix.
-# https://github.com/att/ast/issues/1169
 bad_result=$(getconf --version 2>&1)
-got=$(getconf -c INVALID --version 2>&1)
-[[ $bad_result == "$got" ]] && err_exit "'getconf -c' should defer to $bingetconf when given unknown prefix" \
-	"(got $(printf %q "$got"))"
-# Additionally, if the prefix is empty then it should still
-# defer to the system's getconf.
-got=$(getconf -c '' --version 2>&1)
-[[ $bad_result == "$got" ]] && err_exit "'getconf -c' should defer to $bingetconf when given an empty prefix" \
-	"(got $(printf %q "$got"))"
 
 # The -l option should convert all variable names to lowercase.
 # https://github.com/att/ast/issues/1171

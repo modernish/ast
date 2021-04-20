@@ -5,10 +5,6 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-04-20:
 
-- The getconf builtin's -c flag now rejects invalid prefixes (the valid
-  prefixes are CS, PC, SC, SI and XX). Rejected prefixes cause getconf to
-  call the native getconf command instead.
-
 - Fixed a bug that caused 'getconf -l' to print some variable names using
   capital letters instead of lowercase letters.
 

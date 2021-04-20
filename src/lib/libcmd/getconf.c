@@ -164,17 +164,6 @@ b_getconf(int argc, char** argv, Shbltin_t* context)
 			continue;
 		case 'c':
 			flags |= ASTCONF_matchcall;
-			/*
-			 * We have to validate the prefix used with 'getconf -c'.
-			 * The strlen handles a possible "" argument.
-			 */
-			if(strlen(opt_info.arg) < 2 || !strmatch(opt_info.arg,"?(CS)?(PC)?(SC)?(SI)?(XX)"))
-			{
-				if(native)
-					goto defer;
-				error(2, "%s", opt_info.arg);
-				break;
-			}
 			pattern = opt_info.arg;
 			continue;
 		case 'd':
