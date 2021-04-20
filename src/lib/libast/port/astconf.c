@@ -1636,6 +1636,25 @@ astconflist(Sfio_t* sp, const char* path, int flags, const char* pattern)
 					for (*s++ = 0; isspace(*s); s++);
 				if (!lookup(&look, f, flags))
 				{
+					if(pattern)
+					{
+
+						if (flags & ASTCONF_matchcall)
+						{
+							if (regexec(&re, prefix[look.conf->call + CONF_call].name, 0, NiL, 0))
+								continue;
+						}
+						else if (flags & ASTCONF_matchname)
+						{
+							if (regexec(&re, f, 0, NiL, 0))
+								continue;
+						}
+						else if (flags & ASTCONF_matchstandard)
+						{
+							if (regexec(&re, prefix[look.standard].name, 0, NiL, 0))
+								continue;
+						}
+					}
 					if (flags & ASTCONF_table)
 					{
 						if (look.standard < 0)

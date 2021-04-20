@@ -11,6 +11,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 - The getconf builtin's -q flag now quotes all string values. Previously,
   -q only quoted string values that had a space in them.
 
+- Fixed a bug that caused the -c, -n and -s flags to match all variable
+  names provided by 'getconf -a', even if nome of the variable names were
+  actual matches.
+
 2021-04-16:
 
 - Fixed a bug in emacs mode: after using tab completion to complete the name

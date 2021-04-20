@@ -41,6 +41,12 @@ got=$(getconf -q | grep 'GETCONF=')
 [[ $exp == "$got" ]] || err_exit "'getconf -q' fails to quote string values" \
 	"(expected $exp, got $got)"
 
+# The -n option should only return matching names
+exp=$(print "GETCONF=$bingetconf")
+got=$(getconf -n GETCONF)
+[[ $exp == "$got" ]] || err_exit "'getconf -n' doesn't match names correctly" \
+	"(expected $exp, got $got)"
+
 # ======
 # Test shell builtin commands
 : ${foo=bar} || err_exit ": failed"
