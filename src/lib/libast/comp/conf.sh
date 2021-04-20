@@ -367,7 +367,7 @@ IFS=$ifs; set +f
 export CONF_getconf CONF_getconf_a
 
 case $verbose in
-1)	echo "$command: check ${CONF_getconf:+$CONF_getconf(1),}confstr(2),pathconf(2),sysconf(2),sysinfo(2) configuration names" >&2 ;;
+1)	echo "$command: check ${CONF_getconf:+$CONF_getconf(1),}confstr(3),pathconf(2),sysconf(3),sysinfo(2) configuration names" >&2 ;;
 esac
 {
 	echo "#include <unistd.h>$systeminfo

@@ -66,7 +66,7 @@ static const char usage[] =
 "\n[ name ... ]\n"
 "\n"
 "[+SEE ALSO?\bhostname\b(1), \bgetconf\b(1), \buname\b(2),"
-"	\bsysconf\b(2), \bsysinfo\b(2)]"
+"	\bsysconf\b(3), \bsysinfo\b(2)]"
 ;
 
 #if defined(__STDPP__directive) && defined(__STDPP__hide)

@@ -3,6 +3,18 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-04-21:
+
+- The getconf builtin's -c flag now rejects invalid prefixes (the valid
+  prefixes are CS, PC, SC, SI and XX). Rejected prefixes cause getconf to
+  call the native getconf command instead.
+
+- Fixed a bug that caused 'getconf -l' to print some variable names using
+  capital letters instead of lowercase letters.
+
+- The getconf builtin's -q flag now quotes all string values. Previously,
+  -q only quoted string values that had a space in them.
+
 2021-04-16:
 
 - Fixed a bug in emacs mode: after using tab completion to complete the name

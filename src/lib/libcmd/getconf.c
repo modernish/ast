@@ -52,7 +52,7 @@ static const char usage[] =
 "	\aname\a=\avalue\a form to the standard output, one per line."
 "	Only one of \b--call\b, \b--name\b or \b--standard\b may be specified.]"
 "[+?This implementation uses the \bastgetconf\b(3) string interface to the native"
-"	\bsysconf\b(2), \bconfstr\b(2), \bpathconf\b(2), and \bsysinfo\b(2)"
+"	\bsysconf\b(3), \bconfstr\b(3), \bpathconf\b(2), and \bsysinfo\b(2)"
 "	system calls."
 "	Invalid options and/or names not supported by \bastgetconf\b(3) cause"
 "	the default native \bgetconf\b, named by \b$(getconf GETCONF)\b, to"
@@ -63,9 +63,9 @@ static const char usage[] =
 "[b:base?List base variable name sans call and standard prefixes.]"
 "[c:call?Display variables with call prefix that matches \aRE\a. The call"
 "	prefixes are:]:[RE]{"
-"		[+CS?\bconfstr\b(2)]"
+"		[+CS?\bconfstr\b(3)]"
 "		[+PC?\bpathconf\b(2)]"
-"		[+SC?\bsysconf\b(2)]"
+"		[+SC?\bsysconf\b(3)]"
 "		[+SI?\bsysinfo\b(2)]"
 "		[+XX?Constant value.]"
 "}"
@@ -75,7 +75,7 @@ static const char usage[] =
 "[p:portable?Display the named \bwritable\b variables and values in a form that"
 "	can be directly executed by \bsh\b(1) to set the values. If \aname\a"
 "	is omitted then all \bwritable\b variables are listed.]"
-"[q:quote?\"...\" quote values.]"
+"[q:quote?\"...\" quote string values.]"
 "[r:readonly?Display the named \breadonly\b variables in \aname\a=\avalue\a form."
 "	If \aname\a is omitted then all \breadonly\b variables are listed.]"
 "[s:standard?Display variables with standard prefix that matches \aRE\a."
@@ -116,8 +116,8 @@ static const char usage[] =
             "is an implementation detail of process inheritance; it may "
             "change or vanish in the future; don't rely on it.]"
     "}"
-"[+SEE ALSO?\bpathchk\b(1), \bconfstr\b(2), \bpathconf\b(2),"
-"	\bsysconf\b(2), \bastgetconf\b(3)]"
+"[+SEE ALSO?\bpathchk\b(1), \bconfstr\b(3), \bpathconf\b(2),"
+"	\bsysconf\b(3), \bastgetconf\b(3)]"
 ;
 
 #include <cmd.h>
@@ -164,6 +164,17 @@ b_getconf(int argc, char** argv, Shbltin_t* context)
 			continue;
 		case 'c':
 			flags |= ASTCONF_matchcall;
+			/*
+			 * We have to validate the prefix used with 'getconf -c'.
+			 * The strlen handles a possible "" argument.
+			 */
+			if(strlen(opt_info.arg) < 2 || !strmatch(opt_info.arg,"?(CS)?(PC)?(SC)?(SI)?(XX)"))
+			{
+				if(native)
+					goto defer;
+				error(2, "%s", opt_info.arg);
+				break;
+			}
 			pattern = opt_info.arg;
 			continue;
 		case 'd':
