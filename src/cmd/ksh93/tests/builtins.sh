@@ -30,19 +30,20 @@ bad_result=$(getconf --version 2>&1)
 
 # The -l option should convert all variable names to lowercase.
 # https://github.com/att/ast/issues/1171
-got=$(getconf -l | awk '{gsub("=", " ")} $1 ~ /[A-Z]/ {print $0}')
-[[ $got =~ [A-Z] ]] && err_exit "'getconf -l' doesn't convert all variable names to lowercase" \
+got=$(getconf -l | awk '{ gsub(/=.*/, "") } /[[:upper:]]/ { print }')
+[[ -n $got ]] && err_exit "'getconf -l' doesn't convert all variable names to lowercase" \
 	"(got $(printf %q "$got"))"
 
 # The -q option should quote all string values.
 # https://github.com/att/ast/issues/1173
-exp=$(print "GETCONF=\"$bingetconf\"")
+exp="GETCONF=\"$bingetconf\""
 got=$(getconf -q | grep 'GETCONF=')
 [[ $exp == "$got" ]] || err_exit "'getconf -q' fails to quote string values" \
 	"(expected $exp, got $got)"
 
-# The -n option should only return matching names
-exp=$(print "GETCONF=$bingetconf")
+# The -n option should only return matching names.
+# https://github.com/ksh93/ksh/issues/279
+exp="GETCONF=$bingetconf"
 got=$(getconf -n GETCONF)
 [[ $exp == "$got" ]] || err_exit "'getconf -n' doesn't match names correctly" \
 	"(expected $exp, got $got)"
