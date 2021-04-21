@@ -5,15 +5,12 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-04-20:
 
-- Fixed a bug that caused 'getconf -l' to print some variable names using
-  capital letters instead of lowercase letters.
-
-- The getconf builtin's -q flag now quotes all string values. Previously,
-  -q only quoted string values that had a space in them.
-
-- Fixed a bug that caused the -c, -n and -s flags to match all variable
-  names provided by 'getconf -a', even if none of the variable names were
-  actual matches.
+- Fixed three problems with the /opt/ast/bin/getconf built-in command:
+  1. The -l/--lowercase option did not change all variable names to lower case.
+  2. The -q/--quote option now quotes all string values. Previously, it only
+     quoted string values that had a space or other non-shellsafe character.
+  3. The -c/--call, -n/--name and -s/--standard options matched all variable
+     names provided by 'getconf -a', even if none were actual matches.
 
 2021-04-16:
 
