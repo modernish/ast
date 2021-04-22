@@ -1413,7 +1413,7 @@ Namval_t *nv_open(const char *name, Dt_t *root, int flags)
 	{
 		if(xp->root!=root)
 			continue;
-		if(*name==*xp->name && xp->namespace==shp->namespace && (flags&(NV_ARRAY|NV_NOSCOPE))==xp->flags && memcmp(xp->name,name,xp->len)==0 && (name[xp->len]==0 || name[xp->len]=='=' || name[xp->len]=='+'))
+		if(*name==*xp->name && xp->namespace==shp->namespace && (flags&(NV_ARRAY|NV_NOSCOPE))==xp->flags && strncmp(xp->name,name,xp->len)==0 && (name[xp->len]==0 || name[xp->len]=='=' || name[xp->len]=='+'))
 		{
 			sh_stats(STAT_NVHITS);
 			np = xp->np;

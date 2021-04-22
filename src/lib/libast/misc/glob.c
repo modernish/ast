@@ -587,7 +587,7 @@ skip:
 }
 
 int
-glob(const char* pattern, int flags, int (*errfn)(const char*, int), register glob_t* gp)
+_ast_glob(const char* pattern, int flags, int (*errfn)(const char*, int), register glob_t* gp)
 {
 	register globlist_t*	ap;
 	register char*		pat;
@@ -831,7 +831,7 @@ glob(const char* pattern, int flags, int (*errfn)(const char*, int), register gl
 }
 
 void
-globfree(glob_t* gp)
+_ast_globfree(glob_t* gp)
 {
 	if ((gp->gl_flags & GLOB_MAGIC) == GLOB_MAGIC)
 	{

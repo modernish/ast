@@ -1636,7 +1636,7 @@ static Namval_t *create_stat(Namval_t *np,const char *name,int flag,Namfun_t *fp
 	for(i=0; i < sp->numnodes; i++)
 	{
 		nq = nv_namptr(sp->nodes,i);
-		if((n==0||memcmp(name,nq->nvname,n)==0) && nq->nvname[n]==0)
+		if((n==0||strncmp(name,nq->nvname,n)==0) && nq->nvname[n]==0)
 			goto found;
 	}
 	nq = 0;

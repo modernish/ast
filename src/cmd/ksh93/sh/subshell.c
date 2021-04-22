@@ -327,7 +327,7 @@ Namval_t *sh_assignok(register Namval_t *np,int add)
 		{
 			walk = root->walk?root->walk:root;
 			mpnext = dtnext(root,mp);
-			if(memcmp(name,mp->nvname,len) || mp->nvname[len]!='.')
+			if(strncmp(name,mp->nvname,len) || mp->nvname[len]!='.')
 				break;
 			nv_delete(mp,walk,NV_NOFREE);
 			*((Namval_t**)mp) = lp->child;
