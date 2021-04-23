@@ -186,7 +186,7 @@ int sh_main(int ac, char *av[], Shinit_f userinit)
 #if SHOPT_REMOTE
 		/*
 		 * Building ksh with SHOPT_REMOTE=1 causes ksh to set --rc if stdin is
-		 * a socket (presumably part of a remote shell invocation.)
+		 * a socket (presumably part of a remote shell invocation).
 		 */
 		if(!sh_isoption(SH_RC) && !fstat(0, &statb) && REMOTE(statb.st_mode))
 			sh_onoption(SH_RC);

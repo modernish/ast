@@ -44,14 +44,6 @@ set abc def
 if	[[ $_ != def ]]
 then	err_exit _ variable not working
 fi
-# ERRNO
-#set abc def
-#rm -f foobar#
-#ERRNO=
-#2> /dev/null < foobar#
-#if	(( ERRNO == 0 ))
-#then	err_exit ERRNO variable not working
-#fi
 # PWD
 if	[[ !  $PWD -ef . ]]
 then	err_exit PWD variable failed, not equivalent to .

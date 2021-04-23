@@ -43,7 +43,7 @@ static const char usage[] =
 	"is written.]"
 "[n:name?Write the name instead of the numeric ID.]"
 "[r:real?Writes real ID instead of the effective ID.]"
-"[[a?This option is ignored.]"
+"[a?This option is ignored.]"
 "[g:group?Writes only the group ID.]"
 "[u:user?Writes only the user ID.]"
 "[G:groups?Writes only the supplementary group IDs.]"

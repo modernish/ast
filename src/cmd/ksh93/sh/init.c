@@ -416,7 +416,7 @@ static void put_cdpath(register Namval_t* np,const char *val,int flags,Namfun_t 
 }
 
 #ifdef _hdr_locale
-    /* Trap for LC_ALL, LC_CTYPE, LC_MESSAGES, LC_COLLATE and LANG */
+    /* Trap for the LC_* and LANG variables */
     static void put_lang(Namval_t* np,const char *val,int flags,Namfun_t *fp)
     {
 	Shell_t *shp = sh_getinterp();

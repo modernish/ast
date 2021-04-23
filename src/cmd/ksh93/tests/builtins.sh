@@ -280,7 +280,7 @@ if	[[ $(trap --version 2> /dev/null;print done) != done ]]
 then	err_exit 'trap builtin terminating after --version'
 fi
 if	[[ $(set --version 2> /dev/null;print done) != done ]]
-then	err_exit 'set builtin terminating after --veresion'
+then	err_exit 'set builtin terminating after --version'
 fi
 unset -f foobar
 function foobar
@@ -776,7 +776,7 @@ unset foo
 integer foo=1
 exp=4
 got=$(foo+=3 command eval 'echo $foo')
-[[ $exp == $got ]] || err_exit "[1]: += assignment for environment variables doesn't work with 'command special_builtin'" \
+[[ $exp == $got ]] || err_exit "Test 1: += assignment for environment variables doesn't work with 'command special_builtin'" \
 	"(expected $exp, got $got)"
 foo+=3 command eval 'test $foo'
 (( foo == 1 )) || err_exit "environment isn't restored after 'command special_builtin'" \
@@ -788,7 +788,7 @@ got=$(foo+=3 eval 'echo $foo')
 unset foo
 exp=barbaz
 got=$(foo=bar; foo+=baz command eval 'echo $foo')
-[[ $exp == $got ]] || err_exit "[2]: += assignment for environment variables doesn't work with 'command special_builtin'" \
+[[ $exp == $got ]] || err_exit "Test 2: += assignment for environment variables doesn't work with 'command special_builtin'" \
 	"(expected $exp, got $got)"
 
 # Attempting to modify a readonly variable with the += operator should fail

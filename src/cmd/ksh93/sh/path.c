@@ -1198,7 +1198,7 @@ pid_t path_spawn(Shell_t *shp,const char *opath,register char **argv, char **env
 	if(*path!='/' && path!=opath)
 	{
 		/*
-		 * The following code because execv(foo,) and execv(./foo,)
+		 * The following code is because execv(foo,) and execv(./foo,)
 		 * may not yield the same results
 		 */
 		char *sp = (char*)sh_malloc(strlen(path)+3);

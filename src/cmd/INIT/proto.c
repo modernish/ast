@@ -2310,7 +2310,7 @@ astlicense __PARAM__((char* p, int size, char* file, char* options, int cc1, int
 			comment(&notice, &buf, ((char*)0), 0, 0);
 			comment( &notice, &buf, "You should have received a copy of the",sizeof( "You should have received a copy of the")-1, 0);
 			comment( &notice, &buf, "GNU General Public License",sizeof( "GNU General Public License")-1, 0);
-			comment( &notice, &buf, "along with this software (see the file COPYING.)",sizeof( "along with this software (see the file COPYING.)")-1, 0);
+			comment( &notice, &buf, "along with this software (see the file COPYING).",sizeof( "along with this software (see the file COPYING).")-1, 0);
 			comment( &notice, &buf, "If not, a copy is available at",sizeof( "If not, a copy is available at")-1, 0);
 			comment( &notice, &buf, "http://www.gnu.org/copyleft/gpl.html",sizeof( "http://www.gnu.org/copyleft/gpl.html")-1, 0);
 			comment(&notice, &buf, ((char*)0), 0, 0);

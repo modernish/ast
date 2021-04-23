@@ -37,7 +37,7 @@ The options have the following defaults and meanings:
                      beginning of the trap.
     BRACEPAT     on  C-shell type abc{d,e}f style file generation
     CMDLIB_HDR   "<cmdlist.h>"
-                     The header in which yuo can provide a custom list of
+                     The header in which you can provide a custom list of
                      libcmd commands to provide as path-bound built-ins.
     CMDLIB_DIR   "\"/opt/ast/bin\""
                      The default virtual directory prefix for path-bound

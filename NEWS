@@ -64,7 +64,7 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 - Corrected a memory fault when an attempt was made to unset the default
   nameref KSH_VERSION from the shell environment prior to any other name
-  reference variable creation or modificaton.
+  reference variable creation or modification.
 
 2021-04-11:
 

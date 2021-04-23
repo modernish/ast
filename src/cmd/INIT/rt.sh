@@ -35,7 +35,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [-copyright?Copyright (c) 2005-2012 AT&T Intellectual Property]
 [-license?http://www.eclipse.org/org/documents/epl-v10.html]
 [+NAME?rt - run "nmake test" and filter output]
-[+DESCRIPTION?\brt\b runs \vnmake test\v and filters the regression
+[+DESCRIPTION?\brt\b runs \bnmake test\b and filters the regression
 	test output to contain only test summary lines. If no \atest\a
 	operands are specified then \btest\b is assumed. If \b-\b is
 	specified then the \afile\a operands, or the standard input
@@ -44,7 +44,7 @@ case `(getopts '[-][123:xyz]' opt --xyz; echo 0$opt) 2>/dev/null` in
 [f:failed?Only list failed test results.]
 [h!:heading?Enable per-file heading when more than one \afile\a operand
 	follows \b-\b.]
-[v:verbose?Run with \vREGRESSFLAGS=-v\v.]
+[v:verbose?Run with \bREGRESSFLAGS=-v\b.]
 
 [ test ... | - [ file ... ] ]
 

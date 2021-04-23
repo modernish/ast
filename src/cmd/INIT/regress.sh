@@ -53,7 +53,7 @@ case $(getopts '[-][123:xyz]' opt --xyz 2>/dev/null; echo 0$opt) in
 [r!:regular?Run each test with the standard input and standard output
     redirected through regular files.]
 [t:test?Run only tests matching \apattern\a. Tests are numbered and
-    consist of at least two digits (0 filled if necessary.) Tests matching
+    consist of at least two digits (0 filled if necessary). Tests matching
     \b+(0)\b are always run.]:[pattern]
 [x:trace?Enable debug tracing.]
 [v:verbose?List differences between actual (<) and expected (>) output,
