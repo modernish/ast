@@ -1098,7 +1098,7 @@ $SHELL -c '
 	do
 		(
 			ulimit -t unlimited
-			test $var
+			test -v $var
 		)
 	done
 	exit $((errors + 1))	# a possible erroneous asynchronous fork would cause exit status 0
