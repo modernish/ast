@@ -25,10 +25,45 @@ unset ss
 [[ ${@ss} ]] && err_exit '${@ss} should be empty string when ss is unset'
 [[ ${!ss} == ss ]] ||  err_exit '${!ss} should be ss when ss is unset'
 [[ ${#ss} == 0 ]] ||  err_exit '${#ss} should be 0 when ss is unset'
+
 # RANDOM
 if	(( RANDOM==RANDOM || $RANDOM==$RANDOM ))
 then	err_exit RANDOM variable not working
 fi
+
+# When the $RANDOM variable is used in a forked subshell, it shouldn't
+# use the same pseudorandom seed as the main shell.
+# https://github.com/ksh93/ksh/issues/285
+RANDOM=123
+function rand_print {
+	ulimit -t unlimited 2> /dev/null
+	print $RANDOM
+}
+integer rand1=$(rand_print)
+integer rand2=$(rand_print)
+(( rand1 == rand2 )) && err_exit "Test 1: \$RANDOM seed in subshell doesn't change" \
+	"(both results are $rand1)"
+
+# Make sure we're actually using a different pseudorandom seed
+integer rand1=$(
+	ulimit -t unlimited 2> /dev/null
+	test $RANDOM
+	print $RANDOM
+)
+integer rand2=${ print $RANDOM ;}
+(( rand1 == rand2 )) && err_exit "Test 2: \$RANDOM seed in subshell doesn't change" \
+	"(both results are $rand1)"
+
+# Test for a possible crash
+$SHELL -c '
+	unset RANDOM
+	(
+		ulimit -t unlimited
+		test $RANDOM
+	)
+	exit 0
+' || err_exit 'Crash after unsetting $RANDOM, then launching a forked subshell'
+
 # SECONDS
 float secElapsed=0.0 secSleep=0.001
 let SECONDS=$secElapsed
@@ -164,7 +199,6 @@ if	[[ $LANG != "$save_LANG" ]]
 then	err_exit "$save_LANG locale not working"
 fi
 
-unset RANDOM
 unset -n foo
 foo=junk
 function foo.get

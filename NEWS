@@ -3,6 +3,12 @@ For full details, see the git log at: https://github.com/ksh93/ksh
 
 Any uppercase BUG_* names are modernish shell bug IDs.
 
+2021-04-24:
+
+- When a forked subshell is created, ksh will now set a new pseudorandom seed.
+  This fixes a bug that caused forked subshells to use the same random numbers
+  for the $RANDOM variable.
+
 2021-04-22:
 
 - shcomp (the shell bytecode compiler) was fixed to correctly compile process

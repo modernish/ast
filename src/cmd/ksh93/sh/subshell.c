@@ -207,6 +207,10 @@ void sh_subfork(void)
 			sp->subpid = pid;
 		if(trap)
 			free((void*)trap);
+		/* set a different pseudorandom seed to avoid using the same one as the forked subshell */
+		char *random = nv_getval(RANDNOD);
+		if(random)
+			srand((unsigned int)atoi(random));
 		siglongjmp(*shp->jmplist,SH_JMPSUB);
 	}
 	else
