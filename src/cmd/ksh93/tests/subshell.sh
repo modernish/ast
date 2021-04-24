@@ -700,6 +700,7 @@ got=$( f() { echo WRONG; }; ( unset -f f; PATH=/dev/null f 2>&1 ) )
 	"(expected match of $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # Functions unset in a subshell shouldn't be detected by type (whence -v)
+# https://github.com/ksh93/ksh/pull/287
 notafunc() {
 	echo 'Failure'
 }
