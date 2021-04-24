@@ -54,16 +54,6 @@ integer rand2=${ print $RANDOM ;}
 (( rand1 == rand2 )) && err_exit "Test 2: \$RANDOM seed in subshell doesn't change" \
 	"(both results are $rand1)"
 
-# Test for a possible crash
-$SHELL -c '
-	unset RANDOM
-	(
-		ulimit -t unlimited
-		test $RANDOM
-	)
-	exit 0
-' || err_exit 'Crash after unsetting $RANDOM, then launching a forked subshell'
-
 # SECONDS
 float secElapsed=0.0 secSleep=0.001
 let SECONDS=$secElapsed
@@ -1098,6 +1088,22 @@ $SHELL -c '
 	exit $((errors + 1))
 ' changecase_test "$@"
 (((e = $?) == 1)) || err_exit "typeset -l/-u doesn't work on special variables" \
+	"(exit status $e$( ((e>128)) && print -n / && kill -l "$e"))"
+
+# ... unset followed by launching a forked subshell
+$SHELL -c '
+	errors=0
+	unset -v "$@" || let errors++
+	for var
+	do
+		(
+			ulimit -t unlimited
+			test $var
+		)
+	done
+	exit $((errors + 1))	# a possible erroneous asynchronous fork would cause exit status 0
+' unset_to_fork_test "$@"
+(((e = $?) == 1)) || err_exit "Failure in unsetting one or more special variables followed by launching forked subshell" \
 	"(exit status $e$( ((e>128)) && print -n / && kill -l "$e"))"
 
 # ======
