@@ -1097,7 +1097,7 @@ $SHELL -c '
 	for var
 	do
 		(
-			ulimit -t unlimited
+			ulimit -t unlimited 2> /dev/null
 			test -v $var
 		)
 	done
