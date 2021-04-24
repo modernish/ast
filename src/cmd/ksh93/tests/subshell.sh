@@ -699,6 +699,15 @@ got=$( f() { echo WRONG; }; ( unset -f f; PATH=/dev/null f 2>&1 ) )
 [[ $got == $exp ]] || err_exit 'unset -f fails in sub-subshell on function set in subshell' \
 	"(expected match of $(printf %q "$exp"), got $(printf %q "$got"))"
 
+# Functions unset in a subshell shouldn't be detected by type (whence -v)
+notafunc() {
+	echo 'Failure'
+}
+exp=Success
+got=$(unset -f notafunc; type notafunc 2>/dev/null || echo Success)
+[[ $got == "$exp" ]] || err_exit "type/whence -v finds function in virtual subshell after it's unset with 'unset -f'" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
 # ======
 # Unsetting or redefining aliases within subshells
 

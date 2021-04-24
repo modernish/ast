@@ -192,7 +192,7 @@ static int whence(Shell_t *shp,char **argv, register int flags)
 		}
 		/* built-ins and functions next */
 	bltins:
-		if(!(flags&F_FLAG) && (np = nv_bfsearch(name, shp->fun_tree, &nq, &notused)) && !is_abuiltin(np))
+		if(!(flags&F_FLAG) && (np = nv_bfsearch(name, shp->fun_tree, &nq, &notused)) && !is_abuiltin(np) && nv_isattr(np, NV_FUNCTION))
 		{
 			if(flags&Q_FLAG)
 				continue;
