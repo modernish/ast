@@ -142,13 +142,6 @@ struct seconds
 	Shell_t		*sh;
 };
 
-struct rand
-{
-	Namfun_t	hdr;
-	Shell_t		*sh;
-	int32_t		rand_last;
-};
-
 struct ifs
 {
 	Namfun_t	hdr;
@@ -658,8 +651,8 @@ static void put_rand(register Namval_t* np,const char *val,int flags,Namfun_t *f
 	if(flags&NV_INTEGER)
 		n = *(double*)val;
 	else
-		n = sh_arith(rp->sh,val);
-	srand((int)(n&RANDMASK));
+		n = sh_arith(&sh,val);
+	srand(rp->rand_seed = (unsigned int)n);
 	rp->rand_last = -1;
 	if(!np->nvalue.lp)
 		np->nvalue.lp = &rp->rand_last;
@@ -671,10 +664,11 @@ static void put_rand(register Namval_t* np,const char *val,int flags,Namfun_t *f
  */
 static Sfdouble_t nget_rand(register Namval_t* np, Namfun_t *fp)
 {
+	struct rand *rp = (struct rand*)fp;
 	register long cur, last= *np->nvalue.lp;
 	NOT_USED(fp);
 	do
-		cur = (rand()>>rand_shift)&RANDMASK;
+		cur = (rand_r(&rp->rand_seed)>>rand_shift)&RANDMASK;
 	while(cur==last);
 	*np->nvalue.lp = cur;
 	return((Sfdouble_t)cur);
@@ -1748,7 +1742,7 @@ static Init_t *nv_init(Shell_t *shp)
 	ip->SECONDS_init.hdr.nofree = 1;
 	ip->RAND_init.hdr.disc = &RAND_disc;
 	ip->RAND_init.hdr.nofree = 1;
-	ip->RAND_init.sh = shp;
+	srand(ip->RAND_init.rand_seed = shgd->current_pid);
 	ip->SH_MATCH_init.hdr.disc = &SH_MATCH_disc;
 	ip->SH_MATCH_init.hdr.nofree = 1;
 	ip->SH_MATH_init.disc = &SH_MATH_disc;

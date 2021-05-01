@@ -100,8 +100,10 @@ static struct subshell
 	int		subdup;
 	char		subshare;
 	char		comsub;
+	unsigned int	rand_seed;	/* parent shell $RANDOM seed */
+	int		rand_last;	/* last random number from $RANDOM in parent shell */
 #if _lib_fchdir
-	int		pwdfd;	/* file descriptor for PWD */
+	int		pwdfd;		/* file descriptor for PWD */
 	char		pwdclose;
 #endif /* _lib_fchdir */
 } *subshell_data;
@@ -109,7 +111,7 @@ static struct subshell
 static char subshell_noscope;	/* for temporarily disabling all virtual subshell scope creation */
 
 static unsigned int subenv;
-
+static unsigned int rand_seed_seq;
 
 /*
  * This routine will turn the sftmp() file into a real /tmp file or pipe
@@ -478,6 +480,7 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 {
 	struct subshell sub_data;
 	register struct subshell *sp = &sub_data;
+	struct rand *rp = (struct rand*)RANDNOD->nvfun;
 	int jmpval,isig,nsig=0,fatalerror=0,saveerrno=0;
 	unsigned int savecurenv = shp->curenv;
 	int savejobpgid = job.curpgid;
@@ -601,6 +604,13 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		sp->cpipe = shp->cpipe[1];
 		shp->cpid = 0;
 		sh_sigreset(0);
+		/* save the current $RANDOM seed and state */
+		sp->rand_seed = rp->rand_seed;
+		sp->rand_last = rp->rand_last;
+		/* reseed $RANDOM for the subshell */
+		rp->rand_seed = shgd->current_pid ^ ++rand_seed_seq;
+		srand(rp->rand_seed);
+		rp->rand_last = -1;
 	}
 	jmpval = sigsetjmp(buff.buff,0);
 	if(jmpval==0)
@@ -856,6 +866,10 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		shp->cpid = sp->cpid;
 		shp->cpipe[1] = sp->cpipe;
 		shp->coutpipe = sp->coutpipe;
+		/* restore $RANDOM seed and state */
+		rp->rand_seed = sp->rand_seed;
+		rp->rand_last = sp->rand_last;
+		srand(rp->rand_seed);
 	}
 	shp->subshare = sp->subshare;
 	shp->subdup = sp->subdup;
