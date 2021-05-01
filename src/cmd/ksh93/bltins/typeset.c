@@ -1581,7 +1581,7 @@ static void print_scan(Sfio_t *file, int flag, Dt_t *root, int option,struct tda
 			if(name)
 			{
 				char *newname = nv_name(np);
-				if(memcmp(name,newname,len)==0 && newname[len]== '.')
+				if(strncmp(name,newname,len)==0 && newname[len]== '.')
 					continue;
 				name = 0;
 			}

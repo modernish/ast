@@ -826,5 +826,22 @@ w :\E_
 r ^:test-2: : One\\ "Two Three"\$'Four Five'\.mp3\r\n$
 !
 
+# err_exit #
+((SHOPT_VSH)) && tst $LINENO <<"!"
+L crash when entering comment into history file (vi mode)
+# https://github.com/att/ast/issues/798
+
+d 15
+p :test-1:
+w set -o vi
+r ^:test-1: set -o vi\r\n$
+c foo \E#
+r ^:test-2: #foo\r\n$
+w hist -lnN 1
+r ^:test-3: hist -lnN 1\r\n$
+r \t#foo\r\n$
+r \thist -lnN 1\r\n$
+!
+
 # ======
 exit $((Errors<125?Errors:125))
