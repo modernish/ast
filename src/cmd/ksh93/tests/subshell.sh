@@ -1035,4 +1035,13 @@ got=$(ulimit -t unlimited 2>/dev/null; (dummy=${ exec true; }); echo ok)
 [[ $got == ok ]] || err_exit "'exec' command run in subshare disregards parent virtual subshell"
 
 # ======
+# https://github.com/ksh93/ksh/pull/294#discussion_r624627501
+exp='this should be run once'
+$SHELL -c '( ( : & ) ); echo "this should be run once"' >r624627501.out
+sleep .01
+got=$(<r624627501.out)
+[[ $got == "$exp" ]] || err_exit 'background job optimization within virtual subshell causes program flow corruption' \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
 exit $((Errors<125?Errors:125))

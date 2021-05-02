@@ -52,6 +52,17 @@ integer rand1=$(
 integer rand2=${ print $RANDOM ;}
 (( rand1 == rand2 )) && err_exit "Test 2: \$RANDOM seed in subshell doesn't change" \
 	"(both results are $rand1)"
+# $RANDOM should be reseeded when the final command is inside of a subshell
+rand1=$($SHELL -c 'RANDOM=1; (echo $RANDOM)')
+rand2=$($SHELL -c 'RANDOM=1; (echo $RANDOM)')
+(( rand1 == rand2 )) && err_exit "Test 3: \$RANDOM seed in subshell doesn't change" \
+	"(both results are $rand1)"
+# $RANDOM should be reseeded for the ( simple_command & ) optimization
+( echo $RANDOM & ) >r1
+( echo $RANDOM & ) >r2
+sleep .01
+(( $(<r1) == $(<r2) )) && err_exit "Test 4: \$RANDOM seed in ( simple_command & ) doesn't change" \
+	"(both results are $(<r1))"
 # Virtual subshells should not influence the parent shell's RANDOM sequence
 RANDOM=456
 exp="$RANDOM $RANDOM $RANDOM $RANDOM $RANDOM"
@@ -735,6 +746,12 @@ actual=$(
 )
 expect=$'4\n3\n3\n2\n1'
 [[ $actual == "$expect" ]] || err_exit "\${.sh.subshell} failure (expected $(printf %q "$expect"), got $(printf %q "$actual"))"
+
+# ${.sh.subshell} should increment when the final command is inside of a subshell
+exp=1
+got=$($SHELL -c '(echo ${.sh.subshell})')
+[[ $exp == $got ]] || err_exit '${.sh.subshell} fails to increment when the final command is inside of a subshell' \
+	"(expected '$exp', got '$got')"
 
 unset IFS
 if	((SHOPT_BRACEPAT)) && command set -o braceexpand

@@ -1937,9 +1937,11 @@ int sh_exec(register const Shnode_t *t, int flags)
 			flags &= ~OPTIMIZE_FLAG;
 			if(!shp->subshell && !shp->st.trapcom[0] && !shp->st.trap[SH_ERRTRAP] && (flags&sh_state(SH_NOFORK)))
 			{
+				/* This is the last command, so avoid creating a subshell */
 				char *savsig;
 				int nsig,jmpval;
 				struct checkpt *buffp = (struct checkpt*)stkalloc(shp->stk,sizeof(struct checkpt));
+				struct rand *rp = (struct rand*)RANDNOD->nvfun;
 				shp->st.otrapcom = 0;
 				if((nsig=shp->st.trapmax*sizeof(char*))>0 || shp->st.trapcom[0])
 				{
@@ -1948,6 +1950,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 					memcpy(savsig,(char*)&shp->st.trapcom[0],nsig);
 					shp->st.otrapcom = (char**)savsig;
 				}
+				/* Still act like a subshell: reseed $RANDOM and increment ${.sh.subshell} */
+				srand(rp->rand_seed = shgd->current_pid ^ ++shgd->rand_seed_seq);
+				rp->rand_last = -1;
+				shgd->realsubshell++;
 				sh_sigreset(0);
 				sh_pushcontext(shp,buffp,SH_JMPEXIT);
 				jmpval = sigsetjmp(buffp->buff,0);
@@ -1961,7 +1967,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				sh_done(shp,0);
 			}
 			else if(((type=t->par.partre->tre.tretyp)&FAMP) && ((type&COMMSK)==TFORK)
-			&& !sh_isoption(SH_INTERACTIVE))
+			&& !job.jobcontrol && !shp->subshell)
 			{
 				/* Optimize '( simple_command & )' */
 				pid_t	pid;
@@ -1970,7 +1976,10 @@ int sh_exec(register const Shnode_t *t, int flags)
 					_sh_fork(shp,pid,0,0);
 				if(pid==0)
 				{
-					shgd->current_pid = getpid();
+					struct rand *rp = (struct rand*)RANDNOD->nvfun;
+					srand(rp->rand_seed = (shgd->current_pid = getpid()) ^ ++shgd->rand_seed_seq);
+					rp->rand_last = -1;
+					shgd->realsubshell++;
 					sh_exec(t->par.partre,flags);
 					shp->st.trapcom[0]=0;
 					sh_done(shp,0);
