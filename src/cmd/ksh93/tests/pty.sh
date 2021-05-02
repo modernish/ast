@@ -833,12 +833,10 @@ L crash when entering comment into history file (vi mode)
 
 d 15
 p :test-1:
-w set -o vi
-r ^:test-1: set -o vi\r\n$
 c foo \E#
-r ^:test-2: #foo\r\n$
+r ^:test-1: #foo\r\n$
 w hist -lnN 1
-r ^:test-3: hist -lnN 1\r\n$
+r ^:test-2: hist -lnN 1\r\n$
 r \t#foo\r\n$
 r \thist -lnN 1\r\n$
 !
