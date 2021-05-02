@@ -604,13 +604,11 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		sp->cpipe = shp->cpipe[1];
 		shp->cpid = 0;
 		sh_sigreset(0);
-		/* save the current $RANDOM seed and state */
+		/* save the current $RANDOM seed and state; reseed $RANDOM */
 		rp = (struct rand*)RANDNOD->nvfun;
 		save_rand_seed = rp->rand_seed;
 		save_rand_last = rp->rand_last;
-		/* reseed $RANDOM for the subshell */
-		srand(rp->rand_seed = shgd->current_pid ^ ++shgd->rand_seed_seq);
-		rp->rand_last = -1;
+		sh_reseed_rand(rp);
 	}
 	jmpval = sigsetjmp(buff.buff,0);
 	if(jmpval==0)

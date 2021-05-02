@@ -34,6 +34,7 @@ struct rand
 	unsigned int	rand_seed;
 	int32_t		rand_last;
 };
+extern void sh_reseed_rand(struct rand *);
 
 /* The following defines must be kept synchronous with shtab_variables[] in data/variables.c */
 

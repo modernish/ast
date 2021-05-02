@@ -1941,7 +1941,6 @@ int sh_exec(register const Shnode_t *t, int flags)
 				char *savsig;
 				int nsig,jmpval;
 				struct checkpt *buffp = (struct checkpt*)stkalloc(shp->stk,sizeof(struct checkpt));
-				struct rand *rp = (struct rand*)RANDNOD->nvfun;
 				shp->st.otrapcom = 0;
 				if((nsig=shp->st.trapmax*sizeof(char*))>0 || shp->st.trapcom[0])
 				{
@@ -1951,8 +1950,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 					shp->st.otrapcom = (char**)savsig;
 				}
 				/* Still act like a subshell: reseed $RANDOM and increment ${.sh.subshell} */
-				srand(rp->rand_seed = shgd->current_pid ^ ++shgd->rand_seed_seq);
-				rp->rand_last = -1;
+				sh_reseed_rand((struct rand*)RANDNOD->nvfun);
 				shgd->realsubshell++;
 				sh_sigreset(0);
 				sh_pushcontext(shp,buffp,SH_JMPEXIT);
@@ -1976,9 +1974,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 					_sh_fork(shp,pid,0,0);
 				if(pid==0)
 				{
-					struct rand *rp = (struct rand*)RANDNOD->nvfun;
-					srand(rp->rand_seed = (shgd->current_pid = getpid()) ^ ++shgd->rand_seed_seq);
-					rp->rand_last = -1;
+					sh_reseed_rand((struct rand*)RANDNOD->nvfun);
 					shgd->realsubshell++;
 					sh_exec(t->par.partre,flags);
 					shp->st.trapcom[0]=0;

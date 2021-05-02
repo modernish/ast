@@ -135,7 +135,6 @@ struct shared
 	pid_t		ppid;		/* $PPID, the main shell's parent's PID */
 	pid_t		current_pid;	/* ${.sh.pid}, PID of current ksh process (updates when subshell forks) */
 	int		realsubshell;	/* ${.sh.subshell}, actual subshell level (including virtual and forked) */
-	unsigned int	rand_seed_seq;	/* incremented each time $RANDOM is reseeded on init'ing a subshell */
 	unsigned char	sigruntime[2];
 	Namval_t	*bltin_nodes;
 	Namval_t	*bltin_cmds;
