@@ -1284,7 +1284,7 @@ cat > $tmp/foo.sh <<EOF
 echo "foo"
 EOF
 . $tmp/foo.sh > /dev/null
-[[ ${.sh.file} == $0 ]] || err_exit ".sh.file is not set to correct value after sourcing a file"
+[[ ${.sh.file} == $0 ]] || err_exit "\${.sh.file} is not set to the correct value after sourcing a file"
 
 # ======
 exit $((Errors<125?Errors:125))
