@@ -795,7 +795,7 @@ trap - DEBUG  # bug compat
 # In ksh93v- and ksh2020 EXIT traps don't work in forked subshells
 # https://github.com/att/ast/issues/1452
 exp="forked subshell EXIT trap okay"
-got="$(ulimit -t unlimited; trap 'echo forked subshell EXIT trap okay' EXIT)"
+got="$(ulimit -t unlimited 2> /dev/null; trap 'echo forked subshell EXIT trap okay' EXIT)"
 [[ $got == $exp ]] || err_exit "EXIT trap did not trigger in forked subshell" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
@@ -831,6 +831,22 @@ exp='1
 got="$(join <(printf '%d\n' 1 2) <(printf '%d\n' 1 2))"
 [[ $exp == $got ]] || err_exit "pipeline fails with illegal seek error" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
+
+# ======
+# In ksh93v- and ksh2020 eval'ing a function definition may dump the
+# function body to stdout.
+# https://github.com/att/ast/issues/1160
+got="$($SHELL -c '
+	for i in $(seq 1024)
+	do	str="${str}12345678"
+	done
+	eval "foo() { $str; }"
+
+	baz() { eval "bar() { FAILURE; }"; }
+	( baz >&3 ) 3>&1
+')"
+[[ -n "$got" ]] && err_exit "eval'ing function dumps function body to stdout" \
+	"(got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))

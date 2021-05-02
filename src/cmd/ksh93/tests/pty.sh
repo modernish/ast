@@ -577,6 +577,10 @@ actual=$(echo begin; exec >/dev/tty; [ -t ] && test -t) \
 && echo OK7 || echo 'test -t in comsub with exec >/dev/tty fails'
 actual=$(echo begin; exec >/dev/tty; [ -n X -a -t ] && test -n X -a -t) \
 && echo OK8 || echo 'test -t in comsub with exec >/dev/tty fails (compound expression)'
+# The broken ksh2020 fix for [ -t 1 ] (https://github.com/att/ast/pull/1083) caused
+# [ -t 1 ] to fail in non-comsub virtual subshells.
+( test -t 1 ) && echo OK9 || echo 'test -t 1 in virtual subshell fails'
+( test -t ) && echo OK10 || echo 'test -t in virtual subshell fails'
 EOF
 tst $LINENO <<"!"
 L test -t 1 inside command substitution
@@ -593,6 +597,8 @@ r ^OK5\r\n$
 r ^OK6\r\n$
 r ^OK7\r\n$
 r ^OK8\r\n$
+r ^OK9\r\n$
+r ^OK10\r\n$
 r ^:test-2:
 !
 
@@ -839,6 +845,17 @@ w hist -lnN 1
 r ^:test-2: hist -lnN 1\r\n$
 r \t#foo\r\n$
 r \thist -lnN 1\r\n$
+!
+
+# err_exit #
+((SHOPT_VSH || SHOPT_ESH)) && tst $LINENO <<"!"
+L tab completion while expanding ${.sh.*} variables
+# https://github.com/att/ast/issues/1461
+
+d 15
+p :test-1:
+w test \$\{.sh.level\t
+r ^:test-1: test \$\{.sh.level\}\r\n$
 !
 
 # ======

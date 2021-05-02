@@ -1278,4 +1278,13 @@ got=$($SHELL "$lineno_subshell")
 [[ $exp == $got ]] || err_exit "LINENO corrupted after leaving virtual subshell (expected $exp, got $got)"
 
 # ======
+# Check if ${.sh.file} is set to correct value after sourcing a file
+# https://github.com/att/ast/issues/472
+cat > $tmp/foo.sh <<EOF
+echo "foo"
+EOF
+. $tmp/foo.sh > /dev/null
+[[ ${.sh.file} == $0 ]] || err_exit ".sh.file is not set to correct value after sourcing a file"
+
+# ======
 exit $((Errors<125?Errors:125))
