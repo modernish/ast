@@ -642,8 +642,8 @@ fi
 
 # ======
 # "&>file" redirection operator, shorthand for ">file 2>&1" (new as of 93u+m; inherited from old SHOPT_BASH)
-if	[[ -o ?posix ]]
-then	set -o posix
+if	[[ -o ?posix ]] && command set -o posix
+then
 	# This should print in a background job, then create an empty file, as '>aha1.txt' is a separate command.
 	eval '	print -u1 bad1 &>aha1.txt
 		print -u2 bad2 &>aha2.txt
@@ -657,11 +657,8 @@ then	set -o posix
 	' >/dev/null 2>&1
 	[[ $(< aha1.txt) == ok1 ]] || err_exit '&> does not redirect stdout'
 	[[ $(< aha2.txt) == ok2 ]] || err_exit '&> does not redirect stderr'
-fi
-
-# In POSIX mode, file descriptors > 2 should remain open when invoking another program
-if	[[ -o ?posix ]]
-then	(set -o posix; exec 7>ok.txt; "$SHELL" -c 'print ok >&7' 2>/dev/null)
+	# In POSIX mode, file descriptors > 2 should remain open when invoking another program
+	(set -o posix; exec 7>ok.txt; "$SHELL" -c 'print ok >&7' 2>/dev/null)
 	[[ $(<ok.txt) == ok ]] || err_exit 'File descriptors > 2 not inherited in POSIX mode'
 fi
 (exec 7>bad.txt; "$SHELL" -c 'print bad >&7' 2>/dev/null)
