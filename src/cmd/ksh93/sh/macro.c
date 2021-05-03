@@ -1659,7 +1659,7 @@ retry1:
 			}
 			else
 			{
-				sh_lexskip(lp, RBRACE, 0, sh_lexstates[ST_BRACE][c]==S_MOD1 ? ST_QUOTE : ST_NESTED);
+				sh_lexskip(lp, RBRACE, 0, sh_lexstates[ST_BRACE][c]==S_MOD1 ? ST_MOD1 : ST_NESTED);
 				stkseek(stkp,offset);
 			}
 			argp=stkptr(stkp,offset);
