@@ -11,6 +11,9 @@ Any uppercase BUG_* names are modernish shell bug IDs.
   the parent environment. In addition, upon invoking a subshell, $RANDOM is now
   reseeded (as mksh and bash do).
 
+- Fixed program flow corruption that occurred in scripts on executing a
+  background job in a nested subshell, as in ( ( simple_command & ) ).
+
 - Completed the 2021-04-30 fix for ${var<OP>'{}'} where <OP> is '-', '+',
   ':-' or ':+' by fixing a bug that caused an extra '}' to be output.
 
