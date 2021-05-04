@@ -40,14 +40,14 @@ got=$(getconf -l | awk '{ gsub(/=.*/, "") } /[[:upper:]]/ { print }')
 exp="GETCONF=\"$bingetconf\""
 got=$(getconf -q | grep 'GETCONF=')
 [[ $exp == "$got" ]] || err_exit "'getconf -q' fails to quote string values" \
-	"(expected $exp, got $got)"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # The -n option should only return matching names.
 # https://github.com/ksh93/ksh/issues/279
 exp="GETCONF=$bingetconf"
 got=$(getconf -n GETCONF)
 [[ $exp == "$got" ]] || err_exit "'getconf -n' doesn't match names correctly" \
-	"(expected $exp, got $got)"
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 # Test shell builtin commands
@@ -1201,12 +1201,12 @@ exp=$(uname -o)
 
 # Test for a possible crash (to avoid crashing the script, fork the subshell)
 (
-	ulimit -t unlimited
+	ulimit -t unlimited 2> /dev/null
 	uname -d > /dev/null
 ) || err_exit "'uname -d' crashes"
 
 # 'uname -d' shouldn't change the output of 'uname -o'
-got=$(ulimit -t unlimited; uname -d > /dev/null; uname -o)
+got=$(ulimit -t unlimited 2> /dev/null; uname -d > /dev/null; uname -o)
 [[ $exp == $got ]] || err_exit "'uname -d' changes the output of 'uname -o'" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
@@ -1240,6 +1240,31 @@ got=$("$SHELL" -c 'cd /; echo "$OLDPWD"' 2>&1)
 [[ $got == "$exp" ]] || err_exit "OLDPWD not correct after cd'ing from a nonexistent PWD" \
 	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 cd "$tmp"
+
+# ======
+# BUG_CMDSPEXIT
+exp='ok1ok2ok3ok4ok5ok6ok7ok8ok9ok10ok11ok12end'
+got=$(	readonly v=foo
+	exec 2>/dev/null
+	# All the "special builtins" below should fail, and not exit, so 'print end' is reached.
+	# Ref.: http://pubs.opengroup.org/onlinepubs/9699919799/utilities/contents.html
+	# Left out are 'command exec /dev/null/nonexistent', where no shell follows the standard,
+	# as well as 'command exit' and 'command return', because, well, obviously.
+	command : </dev/null/no		|| print -n ok1
+	command . /dev/null/no		|| print -n ok2
+	command set +o bad@option	|| print -n ok3
+	command shift $(($# + 1))	|| print -n ok4
+	(unalias times; PATH=/dev/null; eval 'command times foo bar >/dev/null || print -n ok5')
+	command trap foo bar baz quux	|| print -n ok6
+	command unset v			|| print -n ok7
+	command eval "("		|| print -n ok8
+	command export v=baz		|| print -n ok9
+	command readonly v=bar		|| print -n ok10
+	command break			&& print -n ok11  # 'break' and 'continue' are POSIXly allowed to quietly...
+	command continue		&& print -n ok12  # ..."succeed" if they are used outside of a loop :-/
+	print end)
+[[ $got == "$exp" ]] || err_exit "prefixing special builtin with 'command' does not stop it from exiting the shell on error" \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))

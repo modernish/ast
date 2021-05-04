@@ -488,6 +488,9 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 	struct sh_scoped savst;
 	struct dolnod   *argsav=0;
 	int argcnt;
+	struct rand *rp;		/* current $RANDOM discipline function data */
+	unsigned int save_rand_seed;	/* parent shell $RANDOM seed */
+	int save_rand_last;		/* last random number from $RANDOM in parent shell */
 	memset((char*)sp, 0, sizeof(*sp));
 	sfsync(shp->outpool);
 	sh_sigcheck(shp);
@@ -601,6 +604,11 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		sp->cpipe = shp->cpipe[1];
 		shp->cpid = 0;
 		sh_sigreset(0);
+		/* save the current $RANDOM seed and state; reseed $RANDOM */
+		rp = (struct rand*)RANDNOD->nvfun;
+		save_rand_seed = rp->rand_seed;
+		save_rand_last = rp->rand_last;
+		sh_reseed_rand(rp);
 	}
 	jmpval = sigsetjmp(buff.buff,0);
 	if(jmpval==0)
@@ -856,6 +864,10 @@ Sfio_t *sh_subshell(Shell_t *shp,Shnode_t *t, volatile int flags, int comsub)
 		shp->cpid = sp->cpid;
 		shp->cpipe[1] = sp->cpipe;
 		shp->coutpipe = sp->coutpipe;
+		/* restore $RANDOM seed and state */
+		rp = (struct rand*)RANDNOD->nvfun;
+		srand(rp->rand_seed = save_rand_seed);
+		rp->rand_last = save_rand_last;
 	}
 	shp->subshare = sp->subshare;
 	shp->subdup = sp->subdup;

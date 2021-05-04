@@ -477,9 +477,14 @@ then	EXP=$(printf %q "$exp")
 	err_exit "'$cmd' failed -- expected $EXP, got $GOT"
 fi
 
-(
-$SHELL -c 'sleep 20 & pid=$!; { x=$( ( seq 60000 ) );kill -9 $pid;}&;wait $pid'
-) 2> /dev/null
+("$SHELL" -c '
+	sleep 20 & pid=$!
+	{
+		x=$( ( "$SHELL" -c "integer i; for((i=1;i<=60000;i++)); do print \$i; done" ) )
+		kill -9 $pid
+	} &
+	wait $pid
+') 2> /dev/null
 (( $? )) ||  err_exit 'nested command substitution with large output hangs'
 
 (.sh.foo=foobar)
@@ -1033,6 +1038,15 @@ got=$(_AST_FEATURES="TEST_TMP_VAR - $$" "$SHELL" -c '(d=${ builtin getconf;}); g
 [[ $got == $$ ]] && err_exit "'builtin' command run in subshare leaks out of parent virtual subshell"
 got=$(ulimit -t unlimited 2>/dev/null; (dummy=${ exec true; }); echo ok)
 [[ $got == ok ]] || err_exit "'exec' command run in subshare disregards parent virtual subshell"
+
+# ======
+# https://github.com/ksh93/ksh/pull/294#discussion_r624627501
+exp='this should be run once'
+$SHELL -c '( ( : & ) ); echo "this should be run once"' >r624627501.out
+sleep .01
+got=$(<r624627501.out)
+[[ $got == "$exp" ]] || err_exit 'background job optimization within virtual subshell causes program flow corruption' \
+	"(expected $(printf %q "$exp"), got $(printf %q "$got"))"
 
 # ======
 exit $((Errors<125?Errors:125))

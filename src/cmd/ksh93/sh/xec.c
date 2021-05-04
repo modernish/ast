@@ -1172,7 +1172,24 @@ int sh_exec(register const Shnode_t *t, int flags)
 						flgs |= NV_IDENT;
 					else
 						flgs |= NV_VARNAME;
-					nv_setlist(argp,flgs,tp);
+					/* execute the list of assignments */
+					if((!np || nv_isattr(np,BLT_SPC)) && !command)
+					{
+						/* bare assignment(s) or special builtin, and no 'command' prefix: exit on error */
+						nv_setlist(argp,flgs,tp);
+					}
+					else
+					{
+						/* avoid exit on error from nv_setlist, e.g. read-only variable */
+						struct checkpt *chkp = (struct checkpt*)stakalloc(sizeof(struct checkpt));
+						sh_pushcontext(shp,chkp,SH_JMPCMD);
+						jmpval = sigsetjmp(chkp->buff,1);
+						if(!jmpval)
+							nv_setlist(argp,flgs,tp);
+						sh_popcontext(shp,chkp);
+						if(jmpval)	/* error occurred */
+							goto setexit;
+					}
 					if(np==shp->typeinit)
 						shp->typeinit = 0;
 					shp->envlist = argp;
@@ -1937,6 +1954,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 			flags &= ~OPTIMIZE_FLAG;
 			if(!shp->subshell && !shp->st.trapcom[0] && !shp->st.trap[SH_ERRTRAP] && (flags&sh_state(SH_NOFORK)))
 			{
+				/* This is the last command, so avoid creating a subshell */
 				char *savsig;
 				int nsig,jmpval;
 				struct checkpt *buffp = (struct checkpt*)stkalloc(shp->stk,sizeof(struct checkpt));
@@ -1948,6 +1966,9 @@ int sh_exec(register const Shnode_t *t, int flags)
 					memcpy(savsig,(char*)&shp->st.trapcom[0],nsig);
 					shp->st.otrapcom = (char**)savsig;
 				}
+				/* Still act like a subshell: reseed $RANDOM and increment ${.sh.subshell} */
+				sh_reseed_rand((struct rand*)RANDNOD->nvfun);
+				shgd->realsubshell++;
 				sh_sigreset(0);
 				sh_pushcontext(shp,buffp,SH_JMPEXIT);
 				jmpval = sigsetjmp(buffp->buff,0);
@@ -1961,7 +1982,7 @@ int sh_exec(register const Shnode_t *t, int flags)
 				sh_done(shp,0);
 			}
 			else if(((type=t->par.partre->tre.tretyp)&FAMP) && ((type&COMMSK)==TFORK)
-			&& !sh_isoption(SH_INTERACTIVE))
+			&& !job.jobcontrol && !shp->subshell)
 			{
 				/* Optimize '( simple_command & )' */
 				pid_t	pid;
@@ -1970,7 +1991,8 @@ int sh_exec(register const Shnode_t *t, int flags)
 					_sh_fork(shp,pid,0,0);
 				if(pid==0)
 				{
-					shgd->current_pid = getpid();
+					sh_reseed_rand((struct rand*)RANDNOD->nvfun);
+					shgd->realsubshell++;
 					sh_exec(t->par.partre,flags);
 					shp->st.trapcom[0]=0;
 					sh_done(shp,0);
