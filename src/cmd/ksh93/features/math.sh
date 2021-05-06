@@ -164,6 +164,10 @@ do	eval x='$'_lib_${name}l y='$'_lib_${name} r='$'TYPE_${name} a='$'ARGS_${name}
 	x)	L=Sfdouble_t R=4 ;;
 	*)	L=Sfdouble_t R=0 ;;
 	esac
+	# some identifiers can't be functions in C but can in ksh #
+	case $name in
+	float|int)	x=0 y=1 ;;
+	esac
 	F=local_$name
 	case $x:$y in
 	1:*)	f=${name}l
@@ -172,7 +176,10 @@ do	eval x='$'_lib_${name}l y='$'_lib_${name} r='$'TYPE_${name} a='$'ARGS_${name}
 		;;
 	*:1)	f=${name}
 		t=double
-		local=$_typ_long_double
+		case $name in
+		float|int)	local=1 ;;
+		*)		local=$_typ_long_double ;;
+		esac
 		;;
 	*)	body=
 		for k in $aka
@@ -298,7 +305,15 @@ do	eval x='$'_lib_${name}l y='$'_lib_${name} r='$'TYPE_${name} a='$'ARGS_${name}
 			esac
 			sep=","
 		done
-		code="$code){return $f($args);}"
+		code="$code)"
+
+		# catch functions not in the math lib here #
+
+		case $f in
+		float)	code="$code{return $args;}" ;;
+		int)	code="$code{return ($args < LDBL_LLONG_MIN || $args > LDBL_ULLONG_MAX) ? (Sfdouble_t)0 : ($args < 0) ? (Sfdouble_t)((Sflong_t)$args) : (Sfdouble_t)((Sfulong_t)$args);}" ;;
+		*)	code="$code{return $f($args);}" ;;
+		esac
 		echo "$code"
 		f=local_$f
 		;;
