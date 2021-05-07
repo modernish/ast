@@ -1,7 +1,7 @@
 ########################################################################
 #                                                                      #
 #               This software is part of the ast package               #
-#          Copyright (c) 1982-2012 AT&T Intellectual Property          #
+#          Copyright (c) 1982-2013 AT&T Intellectual Property          #
 #          Copyright (c) 2020-2021 Contributors to ksh 93u+m           #
 #                      and is licensed under the                       #
 #                 Eclipse Public License, Version 1.0                  #
@@ -21,7 +21,7 @@
 : generate the ksh math builtin table
 : include math.tab
 
-# @(#)math.sh (AT&T Research) 2012-06-13
+# @(#)math.sh (AT&T Research) 2013-08-11
 
 case $ZSH_VERSION in
 ?*)	emulate ksh ;;
