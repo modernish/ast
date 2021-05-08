@@ -5,9 +5,10 @@ Any uppercase BUG_* names are modernish shell bug IDs.
 
 2021-05-07:
 
-- Back ported three ksh93v- math.tab changes allowing for an exp10 math
-  function if one exits, a new float function, and lastly an updated int
-  function that rounds to zero instead of being an alias to floor.
+- Backported three ksh 93v- math.tab changes, allowing for an exp10()
+  arithmetic function if one exists in the C library, a new float()
+  function, and lastly an updated int() function that rounds to zero
+  instead of being an alias to floor().
 
 2021-05-05:
 
