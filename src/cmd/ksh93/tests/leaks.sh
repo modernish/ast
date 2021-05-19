@@ -29,6 +29,7 @@ if	builtin vmstate 2>/dev/null &&
 then	N=512			# number of iterations for each test
 	unit=bytes
 	tolerance=$((4*N))	# tolerate 4 bytes per iteration to account for vmalloc artefacts
+	vmalloc=enabled
 	function getmem
 	{
 		vmstate --format='%(busy_size)u'
@@ -253,8 +254,11 @@ err_exit_if_leak 'script sourced in virtual subshell'
 # Multiple leaks when using arrays in functions (Red Hat #921455)
 # Fix based on: https://src.fedoraproject.org/rpms/ksh/blob/642af4d6/f/ksh-20120801-memlik.patch
 
-# TODO: both of these tests still leak (although much less after the patch) when run in a non-C locale.
-saveLANG=$LANG; LANG=C	# comment out to test remaining leak (1/2)
+# TODO: When ksh is compiled with vmalloc, both of these tests still leak (although much less
+# after the patch) when run in a non-C locale.
+if [[ $vmalloc == enabled ]]
+then	saveLANG=$LANG; LANG=C	# comment out to test remaining leak (1/2)
+fi
 
 function _hash
 {
@@ -282,7 +286,9 @@ done
 after=$(getmem)
 err_exit_if_leak 'indexed array in function'
 
-LANG=$saveLANG		# comment out to test remaining leak (2/2)
+if [[ $vmalloc == enabled ]]
+then	LANG=$saveLANG	# comment out to test remaining leak (2/2)
+fi
 
 # ======
 # Memory leak in typeset (Red Hat #1036470)
