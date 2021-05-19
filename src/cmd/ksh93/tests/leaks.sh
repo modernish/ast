@@ -256,9 +256,7 @@ err_exit_if_leak 'script sourced in virtual subshell'
 
 # TODO: When ksh is compiled with vmalloc, both of these tests still leak (although much less
 # after the patch) when run in a non-C locale.
-if [[ $vmalloc == enabled ]]
-then	saveLANG=$LANG; LANG=C	# comment out to test remaining leak (1/2)
-fi
+[[ $vmalloc == enabled ]] && saveLANG=$LANG && LANG=C	# comment out to test remaining leak (1/2)
 
 function _hash
 {
