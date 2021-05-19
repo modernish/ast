@@ -286,9 +286,7 @@ done
 after=$(getmem)
 err_exit_if_leak 'indexed array in function'
 
-if [[ $vmalloc == enabled ]]
-then	LANG=$saveLANG	# comment out to test remaining leak (2/2)
-fi
+[[ $vmalloc == enabled ]] && LANG=$saveLANG	# comment out to test remaining leak (2/2)
 
 # ======
 # Memory leak in typeset (Red Hat #1036470)
