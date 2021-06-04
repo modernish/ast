@@ -722,6 +722,7 @@ static void fixargs(char **argv, int mode)
 	int offset=0,size;
 #   ifdef PSTAT
 	static int command_len;
+	static int max_command_len;
 	char *buff;
 	union pstun un;
 	if(mode==0)
@@ -731,37 +732,47 @@ static void fixargs(char **argv, int mode)
 		if(pstat(PSTAT_STATIC, un, sizeof(struct pst_static), 1, 0)<0)
 			return;
 		command_len = st.command_length;
+		max_command_len = command_len;
 		return;
 	}
 	stakseek(command_len+2);
 	buff = stakseek(0);
 #   elif _lib_setproctitle
 #	define command_len 255
+#	define max_command_len command_len
 	char buff[command_len + 1];
 	if(mode==0)
 		return;
 #   else
 	static int command_len;
+	static int max_command_len;
 	static char *buff;
 	if(mode==0)
 	{
+		char** strs;
 		buff = argv[0];
 		command_len = environ[0] - buff - 1;
+		for (strs = argv; *strs; strs++)
+		  max_command_len += strlen(*strs);
+		for (strs = environ; *strs; strs++)
+		  max_command_len += strlen(*strs);
 		return;
 	}
 #   endif /* PSTAT */
 	if(command_len==0)
 		return;
-	while((cp = *argv++) && offset < command_len)
+	while((cp = *argv++) && offset < max_command_len)
 	{
-		if(offset + (size=strlen(cp)) >= command_len)
-			size = command_len - offset;
+		if(offset + (size=strlen(cp)) > max_command_len)
+			size = max_command_len - offset;
 		memcpy(buff+offset,cp,size);
 		offset += size;
 		buff[offset++] = ' ';
 	}
-	offset--;
-	memset(&buff[offset], 0, command_len - offset + 1);
+	if(offset)
+		buff[offset-1] = '\0';
+	if (offset < command_len)
+		memset(&buff[offset], 0, command_len - offset);
 #   ifdef PSTAT
 	un.pst_command = stakptr(0);
 	pstat(PSTAT_SETCMD,un,0,0,0);
